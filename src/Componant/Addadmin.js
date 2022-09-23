@@ -14,9 +14,14 @@ import { MdLocalPrintshop } from "react-icons/md";
 import { IoMdInformationCircle } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
 import Swal from "sweetalert2";
+import { useAlert } from "react-alert";
+
+import { CreateAdmin } from "../hooks/usePost";
 
 const Addadmin = () => {
   // for table print
+  const alert = useAlert();
+
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -43,10 +48,14 @@ const Addadmin = () => {
     resetField,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const OnSubmit = (data) => {
+    const result = CreateAdmin(data);
+    console.log(result);
   };
 
+  const showAlert = () => {
+    alert.error("Error");
+  };
   const handleClick = (e) => {
     resetField("full_name");
     resetField("email");
@@ -57,16 +66,15 @@ const Addadmin = () => {
     resetField("qualification");
     resetField("address");
     resetField("gender");
-    resetField("Username");
+    resetField("username");
     resetField("password");
     resetField("security_pin");
 
     console.log(e.currentTarget);
   };
-  const navigate = useNavigate();
 
   return (
-    <div className="relative  ">
+    <div className="relative min-h-screen  ">
       {model && (
         <div className="flex justify-center shadow-2xl  ">
           <div className="absolute h-2/3 mx-auto  opacity-100 shadow-2xl rounded xl:mt-4 2xl:mt-10 bg-white w-2/3 z-50 ">
@@ -86,7 +94,7 @@ const Addadmin = () => {
 
                 <form
                   className="flex justify-center items-center "
-                  onSubmit={handleSubmit(onSubmit)}
+                  onSubmit={handleSubmit(OnSubmit)}
                 >
                   <div className=" w-full grid grid-cols-1 rounded-lg drop-shadow-md truncate bg-white pb-5  ">
                     <div className=" flex flex-col items-center gap-4">
@@ -106,31 +114,31 @@ const Addadmin = () => {
                         </div>
                       </div>
                       <div className="flex lg:flex-row md:flex-col gap-4">
-                        <div className="Username">
+                        <div className="username">
                           <label className="block">
                             <span className="block text-sm font-medium text-slate-700">
-                              Username
+                              username
                             </span>
                             <input
                               type="text"
-                              placeholder="Enter Your Username"
+                              placeholder="Enter Your username"
                               className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                                 errors.qualification && "border-red-600"
                               }`}
-                              {...register("Username", {
-                                required: "Username is required",
+                              {...register("username", {
+                                required: "username is required",
                                 pattern: {
                                   value: /^[A-Za-z ]+$/,
                                   message: "Please enter only characters",
                                 },
                               })}
                               onKeyUp={() => {
-                                trigger("Username");
+                                trigger("username");
                               }}
                             />
-                            {errors.Username && (
+                            {errors.username && (
                               <small className="text-red-700">
-                                {errors.Username.message}
+                                {errors.username.message}
                               </small>
                             )}
                           </label>
@@ -475,6 +483,7 @@ const Addadmin = () => {
                           <button
                             type="button"
                             className="bg-blue-900 hover:bg-white border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-11 w-28 rounded-md tracking-wider"
+                            onClick={showAlert}
                           >
                             Clear
                           </button>

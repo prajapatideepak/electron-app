@@ -47,7 +47,7 @@ export default function Dashboard() {
         <Cards />
       </div>
       <div className="flex justify-center items-center p-10 pt-0">
-        <div class="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
+        <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
           <div className="print-btn flex items-center space-x-3">
             <button
               id="year-btn"
@@ -72,7 +72,7 @@ export default function Dashboard() {
               <a
                 href="#"
                 id="print"
-                class="text-3xl bg-class2-50 rounded-md text-white  w-10 h-8 flex justify-center  " onClick={handlePrint}
+                className="text-3xl bg-class2-50 rounded-md text-white  w-10 h-8 flex justify-center  " onClick={handlePrint}
               >
                 <MdLocalPrintshop />
               </a>
@@ -80,35 +80,35 @@ export default function Dashboard() {
 
           </div>
           <div ref={componentRef} className='p-5 pt-3 pb-0'>
-          <table class="w-full text-sm text-center bg-class2-50 rounded-xl shadow-xl " >
-            <thead class="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+          <table className="w-full text-sm text-center bg-class2-50 rounded-xl shadow-xl " >
+            <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
               <tr className="text-white text-base">
-                <th scope="col" class="w-20 h-20">
+                <th scope="col" className="w-20 h-20">
                   Profile
                 </th>
-                <th scope="col" class="w-20 h-20">
+                <th scope="col" className="w-20 h-20">
                   Class
                 </th>
-                <th scope="col" class="w-20 h-20">
+                <th scope="col" className="w-20 h-20">
                   Phone
                 </th>
-                <th scope="col" class="w-20 h-20">
+                <th scope="col" className="w-20 h-20">
                   Total
                 </th>
-                <th scope="col" class="w-20 h-20">
+                <th scope="col" className="w-20 h-20">
                   Paidup
                 </th>
-                <th scope="col" class="w-20 h-20">
+                <th scope="col" className="w-20 h-20">
                   Pending
                 </th>
-                <th scope="col" class="w-20 h-20">
+                <th scope="col" className="w-20 h-20">
                   Action
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white border items-center ">
-              <tr class=" border-b">
-                <th scope="row" class="w-20 h-20">
+              <tr className=" border-b">
+                <th scope="row" className="w-20 h-20">
                   <div className="flex justify-center items-center space-x-2">
                     <img
                       className="h-1/3 w-1/3 rounded-full"
@@ -121,12 +121,12 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </th>
-                <td class="w-20 h-20">12</td>
-                <td class="w-20 h-20">1234567891</td>
-                <td class="w-20 h-20">20000</td>
-                <td class="w-20 h-20">10000</td>
-                <td class="w-20 h-20">10000</td>
-                <td class="w-20 h-20 ">
+                <td className="w-20 h-20">12</td>
+                <td className="w-20 h-20">1234567891</td>
+                <td className="w-20 h-20">20000</td>
+                <td className="w-20 h-20">10000</td>
+                <td className="w-20 h-20">10000</td>
+                <td className="w-20 h-20 ">
                   <div className="flex justify-center space-x-2">
                     <NavLink className="nav-link" to="Profilestudent">
                       <Tooltip
@@ -134,9 +134,9 @@ export default function Dashboard() {
                         placement="bottom-end"
                         className="text-white bg-black rounded p-2"
                       >
-                        <a href="#" class="text-xl text-darkblue-500">
+                        <span className="text-xl text-darkblue-500">
                           <AiFillEye />
-                        </a>
+                        </span>
                       </Tooltip>
                     </NavLink>
                     {/* <Tooltip
@@ -146,7 +146,7 @@ export default function Dashboard() {
                     >
                       <div
                         href="#"
-                        class="text-xl text-red-600 cursor-pointer"
+                        className="text-xl text-red-600 cursor-pointer"
                        
                       >
                         <MdDelete />
@@ -162,24 +162,24 @@ export default function Dashboard() {
             aria-label="Page navigation example"
             className="flex justify-end"
           >
-            <ul class="inline-flex items-center -space-x-px ">
+            <ul className="inline-flex items-center -space-x-px ">
               <li>
                 <a
                   href="#"
-                  class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
-                  <span class="sr-only">Previous</span>
+                  <span className="sr-only">Previous</span>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5"
+                    className="w-5 h-5"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     ></path>
                   </svg>
                 </a>
@@ -187,7 +187,7 @@ export default function Dashboard() {
               <li>
                 <a
                   href="#"
-                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   1
                 </a>
@@ -195,7 +195,7 @@ export default function Dashboard() {
               <li>
                 <a
                   href="#"
-                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   2
                 </a>
@@ -204,7 +204,7 @@ export default function Dashboard() {
                 <a
                   href="#"
                   aria-current="page"
-                  class="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                  className="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
                 >
                   3
                 </a>
@@ -212,7 +212,7 @@ export default function Dashboard() {
               <li>
                 <a
                   href="#"
-                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   4
                 </a>
@@ -220,7 +220,7 @@ export default function Dashboard() {
               <li>
                 <a
                   href="#"
-                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   5
                 </a>
@@ -228,20 +228,20 @@ export default function Dashboard() {
               <li>
                 <a
                   href="#"
-                  class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
-                  <span class="sr-only">Next</span>
+                  <span className="sr-only">Next</span>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5"
+                    className="w-5 h-5"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     ></path>
                   </svg>
                 </a>

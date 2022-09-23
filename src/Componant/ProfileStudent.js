@@ -69,7 +69,7 @@ const Profilestudent = () => {
                         </div>
                     </div>
                 </div>
-                <div class="overflow-x-auto relative  sm:rounded-lg bg-white  shadow-xl space-y-5 w-full">
+                <div className="overflow-x-auto relative  sm:rounded-lg bg-white  shadow-xl space-y-5 w-full">
                     <div className="button flex justify-end m-5 ">
 
                         <NavLink className="nav-link" to="Transfer">
@@ -440,7 +440,7 @@ const Profilestudent = () => {
                         </div>
                     </form>
 
-                    <div class="overflow-x-auto relative  sm:rounded-lg  p-10  space-y-5 w-full">
+                    <div className="overflow-x-auto relative  sm:rounded-lg  p-10  space-y-5 w-full">
 
                         <div className="print-btn flex items-center space-x-3">
                             <button id="year-btn" className=" flex items-center border bg-white p-2 xl:p-2 xl:py-1 rounded-md shadow-2xl space-x-1 ">
@@ -452,76 +452,73 @@ const Profilestudent = () => {
                             </button>
 
 
-                            <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" id='print' class="text-3xl bg-class3-50 rounded-md text-white  w-10 h-8 flex justify-center  " onClick={handlePrint} ><MdLocalPrintshop /></a></Tooltip>
+                            <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" id='print' className="text-3xl bg-class3-50 rounded-md text-white  w-10 h-8 flex justify-center  " onClick={handlePrint} ><MdLocalPrintshop /></a></Tooltip>
 
                         </div>
                         <div ref={componentRef} className='p-5 pt-3 pb-0'>
-                            <table class="w-full text-sm text-center bg-class3-50 rounded-xl shadow-xl ">
-                                <thead class="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+                            <table className="w-full text-sm text-center bg-class3-50 rounded-xl shadow-xl ">
+                                <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
                                     <tr className='text-white text-base'>
-                                        <th scope="col" class="w-20 h-20">Batch</th>
-                                        <th scope="col" class="w-20 h-20">Class</th>
-                                        <th scope="col" class="w-20 h-20">Total</th>
-                                        <th scope="col" class="w-20 h-20">Discount</th>
-                                        <th scope="col" class="w-20 h-20">Paidup</th>
-                                        <th scope="col" class="w-20 h-20">Pending</th>
-                                        <th scope="col" class="w-20 h-20">Action</th>
+                                        <th scope="col" className="w-20 h-20">Batch</th>
+                                        <th scope="col" className="w-20 h-20">Class</th>
+                                        <th scope="col" className="w-20 h-20">Total</th>
+                                        <th scope="col" className="w-20 h-20">Discount</th>
+                                        <th scope="col" className="w-20 h-20">Paidup</th>
+                                        <th scope="col" className="w-20 h-20">Pending</th>
+                                        <th scope="col" className="w-20 h-20">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className='bg-white border items-center '>
-                                    <tr class=" border-b">
-                                        <td scope="row" class="w-20 h-20">
+                                    <tr className=" border-b">
+                                        <td scope="row" className="w-20 h-20">
                                             2022-23
                                         </td>
-                                        <td class="w-20 h-20">12</td>
-                                        <td class="w-20 h-20">20000</td>
-                                        <td class="w-20 h-20">10%</td>
-                                        <td class="w-20 h-20">10000</td>
-                                        <td class="w-20 h-20">10000</td>
-                                        <td class="w-20 h-20 ">
+                                        <td className="w-20 h-20">12</td>
+                                        <td className="w-20 h-20">20000</td>
+                                        <td className="w-20 h-20">10%</td>
+                                        <td className="w-20 h-20">10000</td>
+                                        <td className="w-20 h-20">10000</td>
+                                        <td className="w-20 h-20 ">
                                             <div className='flex justify-center space-x-2'>
                                                 <NavLink className="nav-link" to="Studenthistory">
 
-                                                    <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" class="text-xl text-darkblue-500"><AiFillEye /></a></Tooltip>
+                                                    <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl text-darkblue-500"><AiFillEye /></span></Tooltip>
                                                 </NavLink>
 
 
                                             </div>
                                         </td>
                                     </tr>
-
-
-
                                 </tbody>
                             </table>
                         </div>
                         <nav aria-label="Page navigation example" className='flex justify-end'>
-                            <ul class="inline-flex items-center -space-x-px ">
+                            <ul className="inline-flex items-center -space-x-px ">
                                 <li>
-                                    <a href="#" class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                        <span class="sr-only">Previous</span>
-                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    <a href="#" className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <span className="sr-only">Previous</span>
+                                        <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                                    <a href="#" className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                                    <a href="#" className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
                                 </li>
                                 <li>
-                                    <a href="#" aria-current="page" class="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                                    <a href="#" aria-current="page" className="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                                    <a href="#" className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                                    <a href="#" className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                        <span class="sr-only">Next</span>
-                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                                    <a href="#" className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <span className="sr-only">Next</span>
+                                        <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path></svg>
                                     </a>
                                 </li>
                             </ul>

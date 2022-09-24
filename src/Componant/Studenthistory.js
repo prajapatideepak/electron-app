@@ -33,7 +33,7 @@ const Studenthistory = () => {
 
 
           <div className='btn flex justify-start'>
-            <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" id='print' class="text-3xl bg-darkblue-500 rounded-md text-white p-1  " onClick={handlePrint}><MdLocalPrintshop /></a></Tooltip>
+            <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" id='print' className="text-3xl bg-darkblue-500 rounded-md text-white p-1  " onClick={handlePrint}><MdLocalPrintshop /></a></Tooltip>
           </div>
 
           <div ref={componentRef} className='p-5 pt-2 pb-0'>
@@ -62,7 +62,7 @@ const Studenthistory = () => {
                     <div className='flex justify-center space-x-2'>
                       <NavLink className="nav-link" to="">
 
-                        <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" class="text-xl bg-white text-darkblue-500"><AiFillEye /></a></Tooltip>
+                        <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl bg-white text-darkblue-500"><AiFillEye /></span></Tooltip>
                       </NavLink>
 
 

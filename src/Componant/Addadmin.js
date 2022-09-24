@@ -66,6 +66,15 @@ const Addadmin = () => {
     // console.log(e.currentTarget);
   };
 
+  function handleNotification(data) {
+    console.log(data);
+    if (data.ok) {
+      alert.success("Register Succuesfully");
+    } else {
+      alert.error(`${data.error}`);
+    }
+  }
+
   return (
     <div className="relative min-h-screen bg-[#f5f7ff]  w-full ">
       {model && (

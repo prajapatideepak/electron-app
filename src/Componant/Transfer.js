@@ -254,7 +254,7 @@ const Transfer = () => {
 
                     <div className='flex justify-center items-center p-10 pt-0'>
 
-                        <div class="overflow-x-auto relative  sm:rounded-lg bg-white p-10 pt-5 shadow-xl space-y-5 w-full">
+                        <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 pt-5 shadow-xl space-y-5 w-full">
                             <div className='flex justify-between items-center'>
                                 <h1 className='pl-5 text-xl text-red-600 font-bold'>
                                     Not Eligible For Transfer
@@ -262,24 +262,24 @@ const Transfer = () => {
 
                             </div>
 
-                            <table class="w-full text-sm text-center bg-red-500 rounded-xl  ">
-                                <thead class="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+                            <table className="w-full text-sm text-center bg-red-500 rounded-xl  ">
+                                <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
                                     <tr className='text-white text-base'>
 
-                                        <th scope="col" class="w-20 h-20">Profile</th>
-                                        <th scope="col" class="w-20 h-20">Class</th>
-                                        <th scope="col" class="w-20 h-20">Phone</th>
-                                        <th scope="col" class="w-20 h-20">Total</th>
-                                        <th scope="col" class="w-20 h-20">Paidup</th>
-                                        <th scope="col" class="w-20 h-20">Pending</th>
-                                        <th scope="col" class="w-20 h-20">Action</th>
+                                        <th scope="col" className="w-20 h-20">Profile</th>
+                                        <th scope="col" className="w-20 h-20">Class</th>
+                                        <th scope="col" className="w-20 h-20">Phone</th>
+                                        <th scope="col" className="w-20 h-20">Total</th>
+                                        <th scope="col" className="w-20 h-20">Paidup</th>
+                                        <th scope="col" className="w-20 h-20">Pending</th>
+                                        <th scope="col" className="w-20 h-20">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className=' border items-center '>
 
-                                    <tr class=" border-b bg-white cursor-pointer">
+                                    <tr className=" border-b bg-white cursor-pointer">
 
-                                        <td scope="row" class="w-20 h-20">
+                                        <td scope="row" className="w-20 h-20">
                                             <div className='flex justify-center items-center space-x-2'>
 
                                                 <img className='h-14 w-14 rounded-full' src="/images/user.png" alt="profile" />
@@ -289,18 +289,18 @@ const Transfer = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="w-20 h-20">12</td>
-                                        <td class="w-20 h-20">1234567891</td>
-                                        <td class="w-20 h-20">20000</td>
-                                        <td class="w-20 h-20">10000</td>
-                                        <td class="w-20 h-20">10000</td>
-                                        <td class="w-20 h-20 ">
+                                        <td className="w-20 h-20">12</td>
+                                        <td className="w-20 h-20">1234567891</td>
+                                        <td className="w-20 h-20">20000</td>
+                                        <td className="w-20 h-20">10000</td>
+                                        <td className="w-20 h-20">10000</td>
+                                        <td className="w-20 h-20 ">
                                             <div className='flex justify-center space-x-2'>
                                                 <NavLink className="nav-link" to="Profilestudent">
 
-                                                    <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'><div class="text-xl text-darkblue-500 cursor-pointer" ><AiFillEye /></div></Tooltip>
+                                                    <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'><div className="text-xl text-darkblue-500 cursor-pointer" ><AiFillEye /></div></Tooltip>
                                                 </NavLink>
-                                                <Tooltip content="Sent To Eligible Table" placement="bottom-end" className='text-white bg-black rounded p-2'><div href="#" class="text-xl text-darkblue-500 cursor-pointer" onClick={Remove}><FaHandPointDown /></div></Tooltip>
+                                                <Tooltip content="Sent To Eligible Table" placement="bottom-end" className='text-white bg-black rounded p-2'><div href="#" className="text-xl text-darkblue-500 cursor-pointer" onClick={Remove}><FaHandPointDown /></div></Tooltip>
 
 
                                             </div>
@@ -322,26 +322,26 @@ const Transfer = () => {
                         </div>
                     </div>
                     <div className='flex justify-center items-center p-10 pt-0 '>
-                        <div class="overflow-x-auto relative  sm:rounded-lg bg-white p-10 pt-5 shadow-2xl space-y-5 w-full">
+                        <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 pt-5 shadow-2xl space-y-5 w-full">
                             <h1 className='pl-5 text-xl text-green-600 font-bold'>
                                 Eliglible for Transfer
                             </h1>
 
-                            <table class="w-full text-sm text-center bg-green-500 rounded-xl ">
-                                <thead class="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+                            <table className="w-full text-sm text-center bg-green-500 rounded-xl ">
+                                <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
                                     <tr className='text-white text-base'>
-                                        <th scope="col" class="w-20 h-20">Profile</th>
-                                        <th scope="col" class="w-20 h-20">Class</th>
-                                        <th scope="col" class="w-20 h-20">Phone</th>
-                                        <th scope="col" class="w-20 h-20">Total</th>
-                                        <th scope="col" class="w-20 h-20">Paidup</th>
-                                        <th scope="col" class="w-20 h-20">Pending</th>
-                                        <th scope="col" class="w-20 h-20">Action</th>
+                                        <th scope="col" className="w-20 h-20">Profile</th>
+                                        <th scope="col" className="w-20 h-20">Class</th>
+                                        <th scope="col" className="w-20 h-20">Phone</th>
+                                        <th scope="col" className="w-20 h-20">Total</th>
+                                        <th scope="col" className="w-20 h-20">Paidup</th>
+                                        <th scope="col" className="w-20 h-20">Pending</th>
+                                        <th scope="col" className="w-20 h-20">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className='bg-white border items-center '>
-                                    <tr class=" border-b">
-                                        <th scope="row" class="w-20 h-20">
+                                    <tr className=" border-b">
+                                        <th scope="row" className="w-20 h-20">
                                             <div className='flex justify-center items-center space-x-2'>
 
                                                 <img className='h-14 w-14 rounded-full' src="/images/user.png" alt="profile" />
@@ -351,18 +351,18 @@ const Transfer = () => {
                                                 </div>
                                             </div>
                                         </th>
-                                        <td class="w-20 h-20">12</td>
-                                        <td class="w-20 h-20">1234567891</td>
-                                        <td class="w-20 h-20">20000</td>
-                                        <td class="w-20 h-20">10000</td>
-                                        <td class="w-20 h-20">10000</td>
-                                        <td class="w-20 h-20 ">
+                                        <td className="w-20 h-20">12</td>
+                                        <td className="w-20 h-20">1234567891</td>
+                                        <td className="w-20 h-20">20000</td>
+                                        <td className="w-20 h-20">10000</td>
+                                        <td className="w-20 h-20">10000</td>
+                                        <td className="w-20 h-20 ">
                                             <div className='flex justify-center space-x-2'>
                                                 <NavLink className="nav-link" to="Profilestudent">
 
-                                                    <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'><div class="text-xl text-darkblue-500 cursor-pointer" ><AiFillEye /></div></Tooltip>
+                                                    <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'><div className="text-xl text-darkblue-500 cursor-pointer" ><AiFillEye /></div></Tooltip>
                                                 </NavLink>
-                                                <Tooltip content="Sent To Not Eligible Table" placement="bottom-end" className='text-white bg-black rounded p-2'><div href="#" class="text-xl text-darkblue-500 cursor-pointer" onClick={Remove}><FaHandPointUp /></div></Tooltip>
+                                                <Tooltip content="Sent To Not Eligible Table" placement="bottom-end" className='text-white bg-black rounded p-2'><div href="#" className="text-xl text-darkblue-500 cursor-pointer" onClick={Remove}><FaHandPointUp /></div></Tooltip>
 
 
                                             </div>

@@ -52,6 +52,7 @@ export default function Searchbar() {
           >
             <div className="">
               <div className="mt-3 mb-3 ">
+
                 <NavLink to="/Componant/Updateprofile">
                   <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
                     <div className="bg-blue-200 w-1/6 h-9 flex justify-center items-center rounded-full">
@@ -60,9 +61,10 @@ export default function Searchbar() {
                     <span className="md:text-sm xl:text-base">
                       Admin Profile
                     </span>
+                    
                   </div>
                 </NavLink>
-                <NavLink to="/Componant/Changepassword">
+                <NavLink className="nav-link" to="/Componant/Changepassword">
                   <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
                     <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
                       <VscKey className="text-blue-500 text-xl" />
@@ -72,6 +74,7 @@ export default function Searchbar() {
                     </span>
                   </div>
                 </NavLink>
+                
                 <NavLink to="/Componant/Addadmin">
                   <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
                     <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
@@ -79,6 +82,7 @@ export default function Searchbar() {
                     </div>
                     <span className="md:text-sm xl:text-base">Add Admin</span>
                   </div>
+                  
                 </NavLink>
 
                 <NavLink className="nav-link" to="/dashboardsection">

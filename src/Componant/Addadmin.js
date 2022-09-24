@@ -2,38 +2,29 @@ import React, { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import { FaPlus } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { AiOutlineUser } from "react-icons/ai";
-import { MdPendingActions } from "react-icons/md";
-import { FcMoneyTransfer } from "react-icons/fc";
-import { NavLink, useNavigate } from "react-router-dom";
+
+import { NavLink } from "react-router-dom";
 import { AiFillEye } from "react-icons/ai";
 import { useForm } from "react-hook-form";
-import { FaUserTimes } from "react-icons/fa";
-import { AiOutlineSearch } from "react-icons/ai";
 import { MdLocalPrintshop } from "react-icons/md";
-import { IoMdInformationCircle } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
-import Swal from "sweetalert2";
 import { useAlert } from "react-alert";
 
 import { CreateAdmin } from "../hooks/usePost";
 
 const Addadmin = () => {
-  // for table print
   const alert = useAlert();
-
   const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
-
   // for register form
   const [openModel, setOpenModel] = useState(false);
   const [model, setModel] = React.useState(true);
   const [data, setdata] = React.useState([]);
-
   // for form validation
   const [img, setImg] = useState("./images/profile.jpeg");
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   const onImageChange = (e) => {
     const [file] = e.target.files;
     setImg(URL.createObjectURL(file));
@@ -50,7 +41,8 @@ const Addadmin = () => {
 
   const OnSubmit = (data) => {
     const result = CreateAdmin(data);
-    console.log(result);
+    console.log(data);
+    handleNotification(data.data);
   };
 
   const showAlert = () => {
@@ -72,6 +64,15 @@ const Addadmin = () => {
 
     console.log(e.currentTarget);
   };
+
+  function handleNotification(data) {
+    console.log(data);
+    if (data.ok) {
+      alert.success("Register Succuesfully");
+    } else {
+      alert.error(`${data.error}`);
+    }
+  }
 
   return (
     <div className="relative min-h-screen  ">

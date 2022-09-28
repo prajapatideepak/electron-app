@@ -6,7 +6,7 @@ import { useCreateAdmin } from "../hooks/usePost";
 import { toast } from "react-toastify";
 
 const Addadmin = () => {
-  const [img, setImg] = useState("./images/profile.jpeg");
+  const [img, setImg] = useState("/images/user.png");
   const createPost = useCreateAdmin();
 
   const onImageChange = (e) => {
@@ -18,7 +18,6 @@ const Addadmin = () => {
     if (createPost.isSuccess) {
       toast.success("Registration SuccuesFull");
     }
-
     if (createPost.isError) {
       toast.error("Error Try Again");
     }

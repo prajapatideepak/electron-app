@@ -1,24 +1,19 @@
-import React from 'react'
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "../Componant/Login"
-import Loginimage from '../Componant/Loginimage';
+import Login from "../Componant/Login";
+import Loginimage from "../Componant/Loginimage";
 
-
-function AdminLogin() {
-   
-    return (
-        <section className="h-full w-full flex justify-center items-center ">
-            <div className="flex w-full h-screen overflow-hidden ">
-                    <Loginimage/>
-                <div className="flex flex-1 flex-col justify-center items-center bg-[#E9EFFD]">
-                        <Login/>
-
-                </div>
-            </div>
-
-        </section>
-
-    )
+function AdminLogin({ setUser }) {
+  return (
+    <section className="h-full w-full flex justify-center items-center ">
+      <div className="flex w-full h-screen overflow-hidden ">
+        <Loginimage />
+        <div className="flex flex-1 flex-col justify-center items-center bg-[#E9EFFD]">
+        <Login setUser={setUser} />
+        </div>
+      </div>
+    </section>
+  );
 }
 
-export default AdminLogin
+export default AdminLogin;

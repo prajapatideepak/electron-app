@@ -7,7 +7,7 @@ import { MdPublishedWithChanges } from "react-icons/md";
 import { VscKey } from "react-icons/vsc";
 import { NavLink, useNavigate } from "react-router-dom";
 
-export default function Searchbar() {
+export default function Searchbar({ setSection }) {
   const [toggle, SetToggle] = useState(false);
 
   function handleToggle() {
@@ -52,7 +52,6 @@ export default function Searchbar() {
           >
             <div className="">
               <div className="mt-3 mb-3 ">
-
                 <NavLink to="/Componant/Updateprofile">
                   <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
                     <div className="bg-blue-200 w-1/6 h-9 flex justify-center items-center rounded-full">
@@ -61,7 +60,6 @@ export default function Searchbar() {
                     <span className="md:text-sm xl:text-base">
                       Admin Profile
                     </span>
-                    
                   </div>
                 </NavLink>
                 <NavLink className="nav-link" to="/Componant/Changepassword">
@@ -74,7 +72,7 @@ export default function Searchbar() {
                     </span>
                   </div>
                 </NavLink>
-                
+
                 <NavLink to="/Componant/Addadmin">
                   <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
                     <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
@@ -82,10 +80,9 @@ export default function Searchbar() {
                     </div>
                     <span className="md:text-sm xl:text-base">Add Admin</span>
                   </div>
-                  
                 </NavLink>
 
-                <NavLink className="nav-link" to="/dashboardsection">
+                <div className="nav-link" onClick={(e) => setSection(null)}>
                   <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
                     <div className="bg-blue-200 w-1/6 h-9  flex justify-center items-center rounded-full">
                       <MdPublishedWithChanges className="text-blue-500 text-xl" />
@@ -94,7 +91,7 @@ export default function Searchbar() {
                       Change Section
                     </span>
                   </div>
-                </NavLink>
+                </div>
 
                 <hr></hr>
                 <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">

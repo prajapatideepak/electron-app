@@ -7,3 +7,7 @@ export function getToken(key) {
   let token = localStorage.getItem(key);
   return token;
 }
+
+export function handleLogout() {
+localStorage.clear();
+}

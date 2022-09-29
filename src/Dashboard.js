@@ -26,13 +26,13 @@ import Addadmin from "./Componant/Addadmin";
 import Transfer from "./Componant/Transfer";
 import Dashboardsection from "./Componant/Dashboardsection";
 
-function DashboardMenu() {
+function DashboardMenu({ setSection }) {
   return (
     <>
-      <div className="bg-[#f5f7ff] min-h-screen flex">  
+      <div className="bg-[#f5f7ff] min-h-screen flex">
         {<Sidebar />}
         <div className="w-full">
-          {<Searchbar />}
+          {<Searchbar setSection={setSection} />}
           <div className="relative" style={{ minHeight: "calc(100% - 70px)" }}>
             <Routes>
               <Route exact path="/admin-login" element={<AdminLogin />} />

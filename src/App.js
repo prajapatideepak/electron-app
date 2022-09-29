@@ -12,7 +12,9 @@ function App() {
     return getToken("token");
   });
   console.log(user);
-  const [section, setSection] = React.useState(true);
+  const [section, setSection] = React.useState(() => {
+    return getToken("section");
+  });
   return (
     <div>
       {!user ? (
@@ -21,8 +23,8 @@ function App() {
             <Route path="/*" element={<AdminLogin setUser={setUser} />} />
           </Routes>
         </div>
-      ) : !section ? (
-        <DashboardMenu />
+      ) : section ? (
+        <DashboardMenu setSection={setSection} />
       ) : (
         <Dashboardsection setSection={setSection} />
       )}

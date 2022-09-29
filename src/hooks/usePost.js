@@ -8,3 +8,9 @@ export function useCreateAdmin() {
     axios.post(`${SERVER}/admin`, values).then((res) => res.data)
   );
 }
+
+export function useLoginAdmmin() {
+  return useMutation((values) =>
+    axios.post(`${SERVER}/admin/login`, values).then((res) => res.data)
+  );
+}

@@ -19,7 +19,7 @@ const Addadmin = () => {
       toast.success("Registration SuccuesFull");
     }
     if (createPost.isError) {
-      toast.error("Error Try Again");
+      toast.error(createPost.error.response.data.error);
     }
   }, [createPost.isSuccess, createPost.isError]);
 

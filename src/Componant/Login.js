@@ -1,17 +1,35 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useLoginAdmmin } from "../hooks/usePost";
+import { toast } from "react-toastify";
+import Loginimage from "./Loginimage";
+import { getToken, setToken } from "../AuthProvider";
 
 const Login = ({ setUser }) => {
+  const requestLogin = useLoginAdmmin();
+  React.useEffect(() => {
+    console.log(requestLogin);
+    if (requestLogin.isSuccess) {
+      toast.success("Login SuccuesFull");
+      setToken("token", requestLogin.data.token);
+      setUser(() => {
+        return getToken("token");
+      });
+    }
+    if (requestLogin.isError) {
+      toast.error(requestLogin.error.response.data.error);
+    }
+  }, [requestLogin.isSuccess, requestLogin.isError]);
+
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
+    requestLogin.mutate(data);
     console.log(data);
-    reset();
   };
   return (
     <>
@@ -59,10 +77,12 @@ const Login = ({ setUser }) => {
             </div>
             <div className="mt-10">
               <button
-                onClick={(e) => setUser(false)}
+                type="submit"
                 className="border-2 bg-[#494BF5] w-64 py-2 rounded-md hover:bg-[#7D97F4]"
               >
-                <span className="text-white">Login</span>
+                <span className="text-white">
+                  {requestLogin.isLoading ? "Login......" : "Login"}
+                </span>
               </button>
             </div>
           </form>

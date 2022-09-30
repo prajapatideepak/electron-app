@@ -17,8 +17,14 @@ export function useCreateAdmin() {
   );
 }
 
+  
+
 export function useLoginAdmmin() {
   return useMutation((values) =>
     axiosInstance.post(`${SERVER}/admin/login`, values).then((res) => res.data)
   );
+}
+
+export function usegetAdmin() {
+  return axiosInstance.get(`${SERVER}/admin`).then((res) => res.data);
 }

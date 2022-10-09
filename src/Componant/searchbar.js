@@ -7,7 +7,9 @@ import { MdPublishedWithChanges } from "react-icons/md";
 import { VscKey } from "react-icons/vsc";
 import { NavLink, useNavigate } from "react-router-dom";
 
-export default function Searchbar({ setSection }) {
+export default function Searchbar({ setSection, data }) {
+  const admindata = data?.data?.data;
+  // console.log(admindata);
   const [toggle, SetToggle] = useState(false);
 
   function handleToggle() {
@@ -39,8 +41,17 @@ export default function Searchbar({ setSection }) {
               />
             </div>
             <div className="text-left">
-              <p className="text-base">Nasir Khan</p>
-              <p className="text-xs text-gray-500">nasirkhan@gmail.com</p>
+              <p className="text-base">
+                {admindata?.staff_id?.basic_info_id?.full_name
+                  ? admindata?.staff_id?.basic_info_id?.full_name
+                  : "...."}
+              </p>
+              <p className="text-xs text-gray-500">
+                {" "}
+                {admindata?.staff_id?.contact_info_id?.email
+                  ? admindata?.staff_id?.contact_info_id?.email
+                  : "...."}
+              </p>
             </div>
             <BsThreeDotsVertical className="cursor-pointer text-gray-500" />
           </form>

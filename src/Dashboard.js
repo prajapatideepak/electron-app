@@ -25,14 +25,25 @@ import Staffhistory from "./Componant/Staffhistory";
 import Addadmin from "./Componant/Addadmin";
 import Transfer from "./Componant/Transfer";
 import Dashboardsection from "./Componant/Dashboardsection";
+import { usegetAdmin } from "./hooks/usePost";
+import { useQuery } from "react-query";
+import { VerifyAdmin } from "./AuthProvider";
+import Whatsapp from "./Componant/Whatsapp";
 
 function DashboardMenu({ setSection }) {
+  const data = useQuery("admin", usegetAdmin);
+
+  if (data.isError) {
+    // localStorage.clear();
+  }
+  // console.log(data);
+
   return (
     <>
       <div className="bg-[#f5f7ff] min-h-screen flex">
-        {<Sidebar />}
+        {<Sidebar data={data} />}
         <div className="w-full">
-          {<Searchbar setSection={setSection} />}
+          {<Searchbar setSection={setSection} data={data} />}
           <div className="relative" style={{ minHeight: "calc(100% - 70px)" }}>
             <Routes>
               <Route exact path="/admin-login" element={<AdminLogin />} />
@@ -41,6 +52,7 @@ function DashboardMenu({ setSection }) {
                 path="/dashboardsection"
                 element={<Dashboardsection />}
               />
+              <Route exact path="/whatsapp" element={<Whatsapp />} />
               <Route
                 exact
                 path="/dashboardsection/dashboard"

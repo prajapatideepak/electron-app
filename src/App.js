@@ -24,7 +24,7 @@ function App() {
           </Routes>
         </div>
       ) : section ? (
-        <DashboardMenu setSection={setSection} />
+        <DashboardMenu  setSection={setSection} />
       ) : (
         <Dashboardsection setSection={setSection} />
       )}

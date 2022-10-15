@@ -12,7 +12,7 @@ function AdminLogin() {
                     <Loginimage/>
                 <div className="flex flex-1 flex-col justify-center items-center bg-[#E9EFFD]">
                         <Login/>
-
+                
                 </div>
             </div>
 

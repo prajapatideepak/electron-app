@@ -9,12 +9,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FiAlertCircle } from "react-icons/fi";
 import { BsCheck2All } from "react-icons/bs";
+import {useLocation} from 'react-router-dom'
 import Swal from 'sweetalert2';
 import Confomodel from "../Componant/Confomodel"
-
-
-
-
 
 function Send() {
     Swal.fire({
@@ -66,8 +63,6 @@ function Addall() {
     })
 }
 
-
-
 const studentData = [{ profile: "shad" },
 { class: "12" },
 { id: "12" },
@@ -77,15 +72,14 @@ const studentData = [{ profile: "shad" },
 { pending: "10500" }]
 
 
-
-
-
 const Transfer = () => {
 
     const [model1, Classselection] = React.useState(false);
     const [model2, Warning ] = React.useState(false);
     const [model3, Seccess] = React.useState(false);
     const [users, setUsers] = useState([]);
+    const location = useLocation();
+
     useEffect(() => {
         setUsers(studentData)
     }, [])
@@ -156,21 +150,13 @@ const Transfer = () => {
                                         SUBMIT
                                     </button>
                                 </div>
-
-
-
-
-
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             )}
-
                 
-            {/* model for conformation */}
+            {/* model for confirmation */}
             {model2 && (
                 <div className='absolute w-full h-full   ' >
                     <div className='flex justify-center shadow-2xl opacity-100 '>
@@ -193,10 +179,6 @@ const Transfer = () => {
                                         Cancel
                                     </button>
                                 </div>
-
-
-
-
                             </div>
                         </div>
                     </div>
@@ -226,10 +208,6 @@ const Transfer = () => {
                                     </button>
 
                                 </div>
-
-
-
-
                             </div>
                         </div>
                     </div>
@@ -301,24 +279,11 @@ const Transfer = () => {
                                                     <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'><div className="text-xl text-darkblue-500 cursor-pointer" ><AiFillEye /></div></Tooltip>
                                                 </NavLink>
                                                 <Tooltip content="Sent To Eligible Table" placement="bottom-end" className='text-white bg-black rounded p-2'><div href="#" className="text-xl text-darkblue-500 cursor-pointer" onClick={Remove}><FaHandPointDown /></div></Tooltip>
-
-
                                             </div>
                                         </td>
                                     </tr>
-
-
-
                                 </tbody>
                             </table>
-
-
-
-
-
-
-
-
                         </div>
                     </div>
                     <div className='flex justify-center items-center p-10 pt-0 '>
@@ -363,17 +328,11 @@ const Transfer = () => {
                                                     <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'><div className="text-xl text-darkblue-500 cursor-pointer" ><AiFillEye /></div></Tooltip>
                                                 </NavLink>
                                                 <Tooltip content="Sent To Not Eligible Table" placement="bottom-end" className='text-white bg-black rounded p-2'><div href="#" className="text-xl text-darkblue-500 cursor-pointer" onClick={Remove}><FaHandPointUp /></div></Tooltip>
-
-
                                             </div>
                                         </td>
                                     </tr>
-
-
-
                                 </tbody>
                             </table>
-
 
                             <div className="button flex justify-end ">
 
@@ -384,14 +343,10 @@ const Transfer = () => {
                                     <p className='text-white text-lg'>Transfer</p>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </section>
-
             </div>
-
-
         </div>
     )
 }

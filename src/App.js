@@ -25,6 +25,8 @@ import Staffhistory from "./Componant/Staffhistory";
 import Addadmin from "./Componant/Addadmin";
 import Transfer from "./Componant/Transfer";
 import Dashboardsection from "./Componant/Dashboardsection";
+import UpdateStudentReceipt from './screens/UpdateStudentReceipt';
+import CancelAdmission from './screens/CancelAdmission';
 
 function App() { 
   return (
@@ -52,10 +54,11 @@ function App() {
               <Route exact path='faculty/Profilefaculty' element={<Profilefaculty/>} />
               <Route exact path='faculty/Profilefaculty/Staffhistory' element={<Staffhistory/>} />
               <Route exact path="help" element={<Help />} />
-              <Route exact path="reciept/recipet" element={<Reciept />} />
-              <Route exact path="/reciept/recipet/Editreciept/FeesDetail" element={<FeesDetail />} />
-              <Route exact path="reciept" element={<ReciptScreen />} />
-              <Route exact path="reciept/FeesDetail" element={<FeesDetail />} />
+              <Route exact path="receipt/receipt" element={<Reciept />} />
+              <Route exact path="/reciept/recipet/Editreceipt/FeesDetail" element={<FeesDetail />} />
+              <Route exact path="receipt" element={<ReciptScreen />} />
+              <Route exact path="receipt/FeesDetail" element={<FeesDetail />} />
+              <Route exact path="/receipt/update/student" element={<UpdateStudentReceipt />} />
               <Route exact path="report" element={<Report />} />
               <Route exact path="studentregister" element={<Studentregister />} />
               <Route path="/fee/:id" element={<FeesDetail />} />
@@ -63,6 +66,7 @@ function App() {
               <Route exact path="/Componant/Updateprofile" element={<Updateprofile />} />
               <Route exact path="/Componant/Changepassword" element={<Changepassword />}/>
               <Route exact path="/Componant/Addadmin" element={<Addadmin />}/>
+              <Route exact path="/cancelAdmission/:student_id" element={<CancelAdmission />}/>
             </Routes>
           </div>
         </div>

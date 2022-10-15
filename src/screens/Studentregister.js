@@ -1,24 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 // import {MdModeEditOutline} from 'react-icons/md';
 import "../Styles/Studentform.css";
 import { FaUserEdit } from 'react-icons/fa';
 import axios from 'axios';
-import {
-   useQuery,
-   useMutation,
-   useQueryClient
- } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+ import {registerStudent, getActiveClasses} from '../hooks/usePost';
+import { useNavigate } from "react-router-dom";
+import Toaster from '../hooks/showToaster'
+import Swal from 'sweetalert2';
 
 
 const Studentregister = () => {
-    const [img, setImg] = useState("./images/profile.jpeg");
-    const [classes, setClasses] = useState([]);
-    const [medium, setMedium] = useState('--');
+    const queryClient = useQueryClient()
+    const form = useRef(null);
 
+    const [img, setImg] = useState("./images/user.png");
+    const [medium, setMedium] = useState('--');
     const [stream, setStream] = useState('--');
     const [netFees, setNetFees] = useState(0);
+    const [classes, setClasses] = useState([]);
+    const [isLoadingOnSubmit, setIsLoadingOnSubmit] = useState(false);
 
+    const navigate = useNavigate();
+    
     const onImageChange = (e) => {
         const [file] = e.target.files;
         setImg(URL.createObjectURL(file));
@@ -33,33 +38,60 @@ const Studentregister = () => {
         resetField,
     } = useForm();
 
-    const onSubmit = (data, e) => {
+    const onSubmit = async (data, e) => {
         e.preventDefault();
+        Object.assign(data,{net_fees: netFees, photo: data.photo[0], class_id: data.class_name})
+        delete data.class_name;
+        delete data.total_fees;
 
-        Object.assign(data,{net_fees: netFees})
-        // reset();
+        // const formdata = new FormData(form.current);
+
+        setIsLoadingOnSubmit(true);
+
+        try{
+            const result = await registerStudent(data);
+            setIsLoadingOnSubmit(false);
+
+            if(result.data.success){
+                Toaster('success', result.data.message);
+                reset();
+                navigate('/');
+                return;
+            }
+            else if(result.data.success == false){
+                Toaster('error', result.data.message);
+                return;
+            }
+        }
+        catch(err){
+            Toaster('error', err.response.data.message);
+            setIsLoadingOnSubmit(false);
+        }
+
+        
     };
 
-    const onError = (errors, e) => console.log(errors, e);
+    const onError = (errors, e) => Toaster('error', errors.message);
 
     const handleClick = () => {
-        resetField("fullname");
-        resetField("mothername");
-        resetField("whatsappno");
-        resetField("mobileno");
-        resetField("dateofbirth");
+        resetField("photo");
+        resetField("full_name");
+        resetField("mother_name");
+        resetField("whatsapp_no");
+        resetField("alternate_no");
+        resetField("dob");
         resetField("gender");
-        resetField("class");
+        resetField("class_name");
         setMedium('--');
         setStream('--');
-        resetField("admissiondate");
-        resetField("totalfee");
+        resetField("admission_date");
+        resetField("total_fees");
         resetField("discount");
-        resetField("netpayable");
+        resetField("net_fees");
         resetField("email");
         resetField("reference");
         resetField("note");
-        resetField("school");
+        resetField("school_name");
         resetField("address");
         setNetFees(0);
     };
@@ -90,14 +122,22 @@ const Studentregister = () => {
     }
 
     useEffect(()=>{
-        axios.get("http://localhost:4000/classes")
-        .then((res)=>{
-            setClasses(res.data.data)
-        })
-        .catch((err) =>{
-            console.log(err)
-        });
-    },[]);
+        async function getCurrentClasses(){
+            try{
+                const data = await getActiveClasses();
+                if(!data.data.success){
+                    Toaster('error', data.data.message)
+                    navigate(-1);
+                    return;
+                }
+                setClasses(data.data.data)
+            }
+            catch(err){
+                Toaster('error', err.response.data.message);
+            }
+        }
+        getCurrentClasses();
+    },[])
 
     return (
         <>
@@ -107,13 +147,13 @@ const Studentregister = () => {
                         Student Registration
                     </h1>
                 </div>
-                <form className="flex justify-center items-center " onSubmit={handleSubmit(onSubmit, onError)} method="post">
+                <form id="student_reg_form" ref={form} encType="multipart/formdata" className="flex justify-center items-center " onSubmit={handleSubmit(onSubmit, onError)} method="post">
                     <div className=" w-11/12 grid grid-cols-2 rounded-lg  truncate bg-white p-5 2xl:p-10  shadow-2xl">
                         <div className="left flex flex-col items-center gap-5">
                             <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
                                 <img src={img} width="100%" height="100%" alt="student profile" />
                                 <div className='profile_img_overlay flex flex-col justify-center items-center'>
-                                    <input type='file' className="rounded-md w-16" onChange={onImageChange} />
+                                    <input type='file' className="rounded-md w-16"  accept=".png, .jpg, .jpeg" onInput={onImageChange} {...register('photo')} />
 
                                 </div>
                             </div>
@@ -121,37 +161,37 @@ const Studentregister = () => {
                                 <div className="fullname">
                                     <label className="block">
                                         <span className="block text-sm font-medium text-slate-700">
-                                            Full Name
+                                            Full Name *
                                         </span>
                                         <input
                                             type="text"
                                             name="full_name"
                                             placeholder="First Name, Middle Name, Last Name"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.fullname && 'border-red-600'}`}
-                                            {...register("fullname", { required: "Fullname is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
+                                            className={`xl:w-52 2xl:w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.full_name && 'border-red-600'}`}
+                                            {...register("full_name", { required: "Fullname is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                                             onKeyUp={() => {
-                                                trigger('fullname')
+                                                trigger('full_name')
                                             }}
                                         />
-                                        {errors.fullname && (<small className="text-red-700">{errors.fullname.message}</small>)}
+                                        {errors.full_name && (<small className="text-red-700">{errors.full_name.message}</small>)}
                                     </label>
                                 </div>
                                 <div className="mothername">
                                     <label className="block">
                                         <span className="block text-sm font-medium text-slate-700">
-                                            Mother Name
+                                            Mother Name *
                                         </span>
                                         <input
                                             type="text"
                                             name="mother_name"
                                             placeholder="Enter Your Mother Name"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.mothername && 'border-red-600'}`}
-                                            {...register("mothername", { required: "Mothername is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
+                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.mother_name && 'border-red-600'}`}
+                                            {...register("mother_name", { required: "Mothername is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                                             onKeyUp={() => {
-                                                trigger('mothername')
+                                                trigger('mother_name')
                                             }}
                                         />
-                                        {errors.mothername && (<small className="text-red-700">{errors.mothername.message}</small>)}
+                                        {errors.mother_name && (<small className="text-red-700">{errors.mother_name.message}</small>)}
                                     </label>
                                 </div>
                             </div>
@@ -159,19 +199,19 @@ const Studentregister = () => {
                                 <div className="whatsappno">
                                     <label className="block">
                                         <span className="block text-sm font-medium text-slate-700">
-                                            WhatsApp No
+                                            WhatsApp No *
                                         </span>
                                         <input
                                             type="text"
                                             name="whatsapp_no"
                                             placeholder="Enter Your WhatsApp No"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.whatsappno && 'border-red-600'}`}
-                                            {...register("whatsappno", { required: "Whatsapp no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida whatsapp no" } })}
+                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.whatsapp_no && 'border-red-600'}`}
+                                            {...register("whatsapp_no", { required: "Whatsapp no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida whatsapp no" } })}
                                             onKeyUp={() => {
-                                                trigger('whatsappno')
+                                                trigger('whatsapp_no')
                                             }}
                                         />
-                                        {errors.whatsappno && (<small className="text-red-700">{errors.whatsappno.message}</small>)}
+                                        {errors.whatsapp_no && (<small className="text-red-700">{errors.whatsapp_no.message}</small>)}
                                     </label>
                                 </div>
                                 <div className="mobileno">
@@ -183,13 +223,13 @@ const Studentregister = () => {
                                             type="text"
                                             name="alternate_no"
                                             placeholder="Enter Your Mobile No"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.mobileno && 'border-red-600'}`}
-                                            {...register("mobileno", { required: "Mobile no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida mobile no" } })}
+                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.alternate_no && 'border-red-600'}`}
+                                            {...register("alternate_no", { required: "Mobile no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida mobile no" } })}
                                             onKeyUp={() => {
-                                                trigger('mobileno')
+                                                trigger('alternate_no')
                                             }}
                                         />
-                                        {errors.mobileno && (<small className="text-red-700">{errors.mobileno.message}</small>)}
+                                        {errors.alternate_no && (<small className="text-red-700">{errors.alternate_no.message}</small>)}
                                     </label>
                                 </div>
                             </div>
@@ -197,15 +237,15 @@ const Studentregister = () => {
                                 <div className="dateofbirth">
                                     <label className="block">
                                         <span className="block text-sm font-medium text-slate-700">
-                                            Date Of Birth
+                                            Date Of Birth *
                                         </span>
                                         <input
                                             type="date"
                                             name="dob"
-                                            className={`xl:w-52 2xl:w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.dateofbirth && 'border-red-600'}`}
-                                            {...register("dateofbirth", { required: "Date of birth is required" })}
+                                            className={`xl:w-52 2xl:w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.dob && 'border-red-600'}`}
+                                            {...register("dob", { required: "Date of birth is required" })}
                                         />
-                                        {errors.dateofbirth && (<small className="text-red-700">{errors.dateofbirth.message}</small>)}
+                                        {errors.dob && (<small className="text-red-700">{errors.dob.message}</small>)}
                                     </label>
                                 </div>
                                 <div className="gender ">
@@ -252,7 +292,7 @@ const Studentregister = () => {
                                 <div className="Addresss w-full">
                                     <label className="block flex flex-col">
                                         <span className="block text-sm font-medium text-slate-700">
-                                            Address
+                                            Address *
                                         </span>
                                         <textarea name="address" className={`mt-1 rounded-md px-3 py-2 outline-none border  border-slate-300 text-sm shadow-sm placeholder-slate-400 ${errors.address && 'border-red-600'}`} {...register("address", { required: "Address is required" })} placeholder="Enter Address" id="" cols="71" rows="2"></textarea>
                                         {/* <input
@@ -271,26 +311,30 @@ const Studentregister = () => {
                                 <div className="selectstd">
                                     <label className="block">
                                         <span className="block text-sm font-medium text-slate-700">
-                                            Class
+                                            Class *
                                         </span>
                                         <select
                                             name="class"
                                             id=""
-                                            className={` xl:w-32 2xl:w-36 hover:cursor-pointer mt-1 block  px-3 py-[6px] bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.class && 'border-red-600'}`}
-                                            {...register("class", { required: "Class required" })}
+                                            className={` xl:w-32 2xl:w-36 hover:cursor-pointer mt-1 block  px-3 py-[6px] bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.class_name && 'border-red-600'}`}
+                                            {...register("class_name", { required: "Class required" })}
                                             onChange={handleClassChange}
                                         >
                                             <option value="">Select</option>
                                             {
-                                                classes.map((item, key) => {
-                                                    return (
-                                                        <option key={key} value={item._id}>{item.class_name}</option>
-                                                    )
-                                                })
+                                                classes && classes[0] 
+                                                ?
+                                                    classes.map((item, key) => {
+                                                        return (
+                                                            <option key={key} value={item._id}>{item.class_name}</option>
+                                                        )
+                                                    })
+                                                :
+                                                    null
                                             }
                                         </select>
                                     </label>
-                                    {errors.class && (<small className="text-red-700">{errors.class.message}</small>)}
+                                    {errors.class_name && (<small className="text-red-700">{errors.class_name.message}</small>)}
                                 </div>
                                 <div className="selectstream">
                                     <label className="block">
@@ -303,6 +347,7 @@ const Studentregister = () => {
                                             id=""
                                             placeholder="--"
                                             value={stream}
+                                            disabled={true}
                                             className={`xl:w-32 2xl:w-36 mt-1 block px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none `}
                                             {...register("stream")}
                                         />
@@ -318,6 +363,7 @@ const Studentregister = () => {
                                             name=""
                                             id=""
                                             placeholder="--"
+                                            disabled={true}
                                             value={medium}
                                             className={`xl:w-32 2xl:w-36 mt-1 block  px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
                                             {...register("medium")}
@@ -331,34 +377,34 @@ const Studentregister = () => {
                                 <div className="admissiondate">
                                     <label className="block">
                                         <span className="block text-sm font-medium text-slate-700">
-                                            Admission Date
+                                            Admission Date *
                                         </span>
                                         <input
                                             type="date"
                                             name="admission_date"
-                                            className={`xl:w-52 2xl:w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.admissiondate && 'border-red-600'}`}
-                                            {...register("admissiondate", { required: "Admission date is required" })}
+                                            className={`xl:w-52 2xl:w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.admission_date && 'border-red-600'}`}
+                                            {...register("admission_date", { required: "Admission date is required" })}
                                         />
-                                        {errors.admissiondate && (<small className="text-red-700">{errors.admissiondate.message}</small>)}
+                                        {errors.admission_date && (<small className="text-red-700">{errors.admission_date.message}</small>)}
                                     </label>
                                 </div>
                                 <div className="totalfee">
                                     <label className="block">
                                         <span className="block text-sm font-medium text-slate-700">
-                                            Total Fee
+                                            Total Fee *
                                         </span>
                                         <input
                                             type="text" id='totalfee'
                                             name="total_fees"
                                             placeholder="Enter Your Total Fee"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.totalfee && 'border-red-600'}`}
-                                            {...register("totalfee", { required: "Total Fee is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" } })}
+                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.total_fees && 'border-red-600'}`}
+                                            {...register("total_fees", { required: "Total Fee is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" } })}
                                             onKeyUp={() => {
-                                                trigger('totalfee')
+                                                trigger('total_fees')
                                                 totalDis()
                                             }}
                                         />
-                                        {errors.totalfee && (<small className="text-red-700">{errors.totalfee.message}</small>)}
+                                        {errors.total_fees && (<small className="text-red-700">{errors.total_fees.message}</small>)}
                                     </label>
                                 </div>
                             </div>
@@ -446,13 +492,13 @@ const Studentregister = () => {
                                         <input
                                             type="text"
                                             placeholder="Enter Your School Name"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.note && 'border-red-600'}`}
-                                            {...register("school", { pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
+                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.school_name && 'border-red-600'}`}
+                                            {...register("school_name", { pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                                             onKeyUp={() => {
-                                                trigger('school')
+                                                trigger('school_name')
                                             }}
                                         />
-                                        {errors.note && (<small className="text-red-700">{errors.note.message}</small>)}
+                                        {errors.school_name && (<small className="text-red-700">{errors.school_name.message}</small>)}
                                     </label>
                                 </div>
                                 <div className="note">
@@ -475,11 +521,11 @@ const Studentregister = () => {
                                 </div>
                             </div>
                             <div className="flex w-full justify-end pr-7 h-20">
-                                <button type="clear" className="mt-9 px-8 mr-4 text-darkblue-500 border-darkblue-500 hover:bg-darkblue border-2 hover:bg-darkblue-500 text-white hover:text-white font-medium rounded-md tracking-wider flex justify-center items-center" onClick={handleClick}>
+                                <button type="clear" disabled={isLoadingOnSubmit} className="mt-9 px-8 mr-4 text-darkblue-500 border-darkblue-500 hover:bg-darkblue border-2 hover:bg-darkblue-500 text-white hover:text-white font-medium rounded-md tracking-wider flex justify-center items-center" onClick={handleClick}>
                                     CLEAR
                                 </button>
-                                <button type="submit" className="mt-9 px-8 bg-darkblue-500  hover:bg-white border-2 border-darkblue-500 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center">
-                                    SUBMIT
+                                <button type="submit" disabled={isLoadingOnSubmit} className={`mt-9 px-8 ${isLoadingOnSubmit ? 'opacity-40' : 'opacity-100'} bg-darkblue-500 border-2 border-darkblue-500 text-white font-medium rounded-md tracking-wider flex justify-center items-center`}>
+                                    {isLoadingOnSubmit ? 'Loading...' : 'SUBMIT'}
                                 </button>
                             </div>
                         </div>

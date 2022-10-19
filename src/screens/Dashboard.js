@@ -37,12 +37,10 @@ export default function Dashboard() {
     async function fetchfacultdata() {
       const res = await Alloverstudent();
       setstudent(() => res.data)
-      console.log(res)
       setloading(false);
     }
     fetchfacultdata()
   }, [])
-  // console.log(Student, "data")
 
   if (isloading) {
     return <Loader />
@@ -135,38 +133,40 @@ export default function Dashboard() {
                 <tbody className="bg-white border items-center ">
                   {
                     Student.map((item, key) => {
-                        const Paid_up = [
-                          item.fees_id.net_fees - item.fees_id.pending_amount
-                        ]
-                       
-                      return (
-                        <tr className={` border-b ${item.fees_id.pending_amount > 0 ? "flex" : "hidden"}`}>
+                      const Paid_up = [
+                        item.fees_id.net_fees - item.fees_id.pending_amount
+                      ]
+                      if (item.fees_id.pending_amount > 0) {
+                        return (
+                          <tr className="border-b" >
 
-                          <td className="py-7 px-5 text-center ">{item.student_id.student_id}</td>
-                          <td className="py-7 px-5 text-center ">{item.student_id.basic_info_id.full_name}</td>
-                          <td className="py-7 px-5 text-center ">{item.class_id.class_name}</td>
-                          <td className="py-7 px-5 text-center ">{item.student_id.contact_info_id.whatsapp_no}</td>
-                          <td className="py-7 px-5 text-center ">{item.fees_id.net_fees}</td>
-                          <td className="py-7 px-5 text-center ">{Paid_up}</td>
-                          <td className="py-7 px-5 text-center ">{item.fees_id.pending_amount}</td>
-                          <td className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
-                            <div className="flex justify-center space-x-2">
-                              <NavLink className="nav-link" to="Profilestudent">
-                                <Tooltip
-                                  content="Show"
-                                  placement="bottom-end"
-                                  className="text-white bg-black rounded p-2"
-                                >
-                                  <a href="#" className="text-xl text-darkblue-500">
-                                    <AiFillEye />
-                                  </a>
-                                </Tooltip>
-                              </NavLink>
+                            <td className="py-7 px-5 text-center ">{item.student_id.student_id}</td>
+                            <td className="py-7 px-5 text-center ">{item.student_id.basic_info_id.full_name}</td>
+                            <td className="py-7 px-5 text-center ">{item.class_id.class_name}</td>
+                            <td className="py-7 px-5 text-center ">{item.student_id.contact_info_id.whatsapp_no}</td>
+                            <td className="py-7 px-5 text-center ">{item.fees_id.net_fees}</td>
+                            <td className="py-7 px-5 text-center ">{Paid_up}</td>
+                            <td className="py-7 px-5 text-center ">{item.fees_id.pending_amount}</td>
+                            <td className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
+                              <div className="flex justify-center space-x-2">
+                                <NavLink className="nav-link" to="Profilestudent">
+                                  <Tooltip
+                                    content="Show"
+                                    placement="bottom-end"
+                                    className="text-white bg-black rounded p-2"
+                                  >
+                                    <a href="#" className="text-xl text-darkblue-500">
+                                      <AiFillEye />
+                                    </a>
+                                  </Tooltip>
+                                </NavLink>
 
-                            </div>
-                          </td>
-                        </tr>
-                      )
+                              </div>
+                            </td>
+                          </tr>
+                        )
+
+                      }
                     })}
                 </tbody>) : (
                 <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">

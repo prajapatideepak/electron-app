@@ -244,7 +244,7 @@ function Receipt_teacher({ isSalaried }) {
             <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
             <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
           </div>
-          {/* <div className="py-5 pt-2" ref={printRef}>
+          <div className="py-5 pt-2" ref={printRef}>
             <ReceiptMainDiv className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`} ref={printRef} isSalaried={true} >
               <div className="p-5">
                 <div className="flex justify-between">
@@ -425,7 +425,7 @@ function Receipt_teacher({ isSalaried }) {
                 </div>
               </div>
             </ReceiptMainDiv>}
-          </div> */}
+          </div>
           <div className="flex justify-center items-center">
             <button className="flex justify-center items-center my-5 bg-indigo-900 py-1 px-3 rounded-md hover:bg-indigo-800" onClick={(e) => setModel(true)}>
               <MdModeEditOutline className="text-white text-lg my-1" />

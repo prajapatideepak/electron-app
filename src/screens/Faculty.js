@@ -1,4 +1,4 @@
-import React, {  useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactToPrint from 'react-to-print';
 import { FiUsers } from "react-icons/fi";
 import Facultytable from "../Componant/facultytable";
@@ -13,16 +13,52 @@ import Loader from '../Componant/loader';
 
 
 const Faculty = () => {
-  // ----------------------
-  // ----- Model ---------
-  // ----------------------
+  // ------------------------------------------------------------------------------------
+  // -------------------------- Use_State -----------------------------------------------
+  // ------------------------------------------------------------------------------------
   const [model, setModel] = React.useState(false);
   const [isloading, setloading] = React.useState(true)
   const [isPrint, setIsPrint] = useState(false);
 
-  // -----------------------
-  // ----- API WORKS -------
-  // -----------------------
+  // ------------------------------------------------------------------------------------
+  // --------------------------IMAGE UPLOAD ---------------------------------------------
+  // ------------------------------------------------------------------------------------
+
+  // const formidable = require('formidable');
+  // const fs = require('fs');
+
+  // const form = new formidable.IncomingForm();
+  // form.parse(req, async function (err, fields, files) {
+  //   let photo = '';
+  //   if (files.photo.originalFilename != '' && files.photo.size != 0) {
+  //     const ext = files.photo.mimetype.split('/')[1].trim();
+
+  //     if (files.photo.size >= 2000000) { // 2000000(bytes) = 2MB
+  //       return res.status(400).json({ success: false, message: 'Photo size should be less than 2MB' })
+  //     }
+  //     if (ext != "png" && ext != "jpg" && ext != "jpeg") {
+  //       return res.status(400).json({ success: false, message: 'Only JPG, JPEG or PNG photo is allowed' })
+  //     }
+
+  //     var oldPath = files.photo.filepath;
+  //     var fileName = Date.now() + '_' + files.photo.originalFilename;
+  //     var newPath = 'public/images' + '/' + fileName;
+  //     var rawData = fs.readFileSync(oldPath)
+
+  //     fs.writeFile(newPath, rawData, function (err) {
+  //       if (err) {
+  //         return res.status(500).json({ success: false, message: err.message })
+  //       }
+  //       photo = fileName.trim();
+  //     })
+  //   }
+  // })
+
+
+
+  // ------------------------------------------------------------------------------------
+  // -------------------------- API Works -----------------------------------------------
+  // ------------------------------------------------------------------------------------
   const [data, setData] = useState();
   const Toaster = () => { toast.success('New Staff Register successfully') }
   const errtoast = () => { toast.error("Something Wrong") }
@@ -36,9 +72,9 @@ const Faculty = () => {
     fetchfacultdata()
   }, [])
 
-  // ----------------------------------
-  // ------ Form Validarion -----------
-  // -----------------------------------
+  // ------------------------------------------------------------------------------------
+  // -------------------------- FORM VALIDATION -----------------------------------------
+  // ------------------------------------------------------------------------------------
   const [img, setImg] = useState("./images/profile.jpeg");
   const onImageChange = (e) => {
     const [file] = e.target.files;
@@ -380,8 +416,8 @@ const Faculty = () => {
                   className=" p-5 flex items-center  rounded-lg  bg-class5-50 drop-shadow-lg space-x-7  ml-10 "
                 >
                   <div className="space-y-3">
-                  <div className='flex items-center justify-center bg-white h-14 w-14 ml-5 rounded-md'>
-                    <FiUsers className="text-4xl text-class5-50" />
+                    <div className='flex items-center justify-center bg-white h-14 w-14 ml-5 rounded-md'>
+                      <FiUsers className="text-4xl text-class5-50" />
                     </div>
                     <h1 className="text-gray-200 xl:text-xl uppercase text-center  ">
                       Staff Total

@@ -9,7 +9,7 @@ function AdminLogin({ setUser }) {
       <div className="flex w-full h-screen overflow-hidden ">
         <Loginimage />
         <div className="flex flex-1 flex-col justify-center items-center bg-[#E9EFFD]">
-        <Login setUser={setUser} />
+          <Login />
         </div>
       </div>
     </section>

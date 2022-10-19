@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 
 import { useCreateAdmin } from "../hooks/usePost";
 import { toast } from "react-toastify";
+import FormData from "form-data";
 
 const Addadmin = () => {
   const [img, setImg] = useState("/images/user.png");
@@ -32,6 +33,7 @@ const Addadmin = () => {
   } = useForm();
 
   const OnSubmit = (data) => {
+    console.log(data);
     createPost.mutate(data);
   };
 
@@ -53,6 +55,7 @@ const Addadmin = () => {
               <form
                 className="flex justify-center items-center "
                 onSubmit={handleSubmit(OnSubmit)}
+                encType="multipart/form-data"
               >
                 <div className=" w-full grid grid-cols-1 rounded-lg drop-shadow-md truncate bg-white pb-5  ">
                   <div className=" flex flex-col items-center gap-4">
@@ -86,7 +89,7 @@ const Addadmin = () => {
                             {...register("username", {
                               required: "username is required",
                               pattern: {
-                                value: /^[A-Za-z ]+$/,
+                                value: /^[A-Za-z0-9]+$/,
                                 message: "Please enter only characters",
                               },
                             })}

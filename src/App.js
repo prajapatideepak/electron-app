@@ -6,27 +6,31 @@ import Dashboardsection from "./Componant/Dashboardsection";
 import DashboardMenu from "./Dashboard";
 import { Route, Routes } from "react-router-dom";
 import { getToken } from "./AuthProvider";
+import { NasirContext } from "./NasirContext";
 
 function App() {
-  const [user, setUser] = React.useState(() => {
-    return getToken("token");
-  });
-  console.log(user);
-  const [section, setSection] = React.useState(() => {
-    return getToken("section");
-  });
+  const { token, section } = React.useContext(NasirContext);
+  console.log(token);
+  console.log(section);
+
+  React.useEffect(() => {
+    console.log(token);
+  }, [token]);
+
+  console.log(token);
+
   return (
     <div>
-      {!user ? (
+      {!token ? (
         <div>
           <Routes>
-            <Route path="/*" element={<AdminLogin setUser={setUser} />} />
+            <Route path="/*" element={<AdminLogin />} />
           </Routes>
         </div>
-      ) : section ? (
-        <DashboardMenu  setSection={setSection} />
+      ) : !section ? (
+        <Dashboardsection />
       ) : (
-        <Dashboardsection setSection={setSection} />
+        <DashboardMenu />
       )}
     </div>
   );

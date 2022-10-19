@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { BsFillKeyFill } from "react-icons/bs";
 import { IoMdUnlock } from "react-icons/io";
 import { IoMdLock } from "react-icons/io";
+import { toast } from "react-toastify";
+import { useChangePassword } from "../hooks/usePost";
 
 const Changepassword = () => {
   const {
@@ -13,11 +15,17 @@ const Changepassword = () => {
     resetField,
   } = useForm();
 
+  const changePassword = useChangePassword();
+
+  console.log(changePassword);
   const onSubmit = (data) => {
     if (data.newpassword !== data.confirmpassword) {
       document.getElementById("msg").style.display = "flex";
+      console.log(`deepak`, data);
     } else {
+      console.log(data);
       document.getElementById("msg").style.display = "none";
+      changePassword.mutate(data);
     }
   };
 
@@ -26,6 +34,16 @@ const Changepassword = () => {
     resetField("newpassword");
     resetField("confirmpassword");
   };
+
+  React.useEffect(() => {
+    if (changePassword.isSuccess) {
+      toast.success("Password Successfully Change");
+    }
+    if (changePassword.isError) {
+      console.log(changePassword?.error?.response?.data);
+      toast.error(changePassword?.error?.response?.data);
+    }
+  }, [changePassword.isSuccess, changePassword.isError]);
 
   return (
     <>
@@ -142,6 +160,7 @@ const Changepassword = () => {
                       </button>
                       <button
                         type="submit"
+                        disabled={changePassword.isLoading}
                         className="bg-blue-900 hover:bg-white border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-11 w-28 rounded-md tracking-wider"
                       >
                         Change

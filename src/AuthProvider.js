@@ -2,8 +2,6 @@ import { useQuery } from "react-query";
 import { usegetAdmin } from "./hooks/usePost";
 
 export function setToken(key, value) {
-  console.log(value);
-
   localStorage.setItem(key, value);
 }
 

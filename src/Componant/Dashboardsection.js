@@ -5,13 +5,14 @@ import { TbSchool } from "react-icons/tb";
 import { BiChevronRight } from "react-icons/bi";
 import Loginimage from "../Componant/Loginimage";
 import { getToken, setToken } from "../AuthProvider";
+import { NasirContext } from "../NasirContext";
 
-const Dashboardsection = ({ setSection }) => {
-  function handleSectionChange(section) {
-    setToken("section", section);
-    setSection(() => {
-      return getToken("section");
-    });
+const Dashboardsection = () => {
+  const { changeSection, section } = React.useContext(NasirContext);
+
+  function handleSectionChange(s) {
+    setToken("section", s);
+    changeSection();
   }
 
   return (

@@ -1,36 +1,39 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useLoginAdmmin } from "../hooks/usePost";
+import { axiosInstance, useLoginAdmmin } from "../hooks/usePost";
 import { toast } from "react-toastify";
-import Loginimage from "./Loginimage";
-import { getToken, setToken } from "../AuthProvider";
+import {  setToken } from "../AuthProvider";
+import { NasirContext } from "../NasirContext";
 
-const Login = ({ setUser }) => {
+const Login = () => {
+  const { login } = React.useContext(NasirContext);
   const requestLogin = useLoginAdmmin();
-  React.useEffect(() => {
-    console.log(requestLogin);
-    if (requestLogin.isSuccess) {
-      toast.success("Login SuccuesFull");
-      setToken("token", requestLogin.data.token);
-      setUser(() => {
-        return getToken("token");
-      });
-    }
-    if (requestLogin.isError) {
-      toast.error(requestLogin.error.response.data.error);
-    }
-  }, [requestLogin.isSuccess, requestLogin.isError]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  React.useEffect(() => {
+    console.log(requestLogin);
+    if (requestLogin.isSuccess) {
+      toast.success("Login SuccuesFull");
+      setToken("token", requestLogin.data.token);
+      axiosInstance.defaults.headers.Authorization = requestLogin.data.token;
+
+      login();
+    }
+    if (requestLogin.isError) {
+      toast.error(requestLogin.error.response.data.error);
+    }
+  }, [requestLogin.isSuccess, requestLogin.isError]);
+
   const onSubmit = (data) => {
     requestLogin.mutate(data);
     console.log(data);
   };
+
   return (
     <>
       <section className="h-full w-full flex justify-center items-center ">
@@ -49,7 +52,7 @@ const Login = ({ setUser }) => {
               <input
                 type="text"
                 {...register("username", { required: "Field is required" })}
-                className={`border-2 outline-none rounded-md h-10 w-64  px-2 ${
+                className={`border-2 outline-none bg-white focus:bg-white rounded-md h-10 w-64  px-2 ${
                   errors.username && "border-red-600"
                 }`}
                 placeholder="Username"
@@ -64,7 +67,7 @@ const Login = ({ setUser }) => {
               <input
                 type="password"
                 {...register("password", { required: "Field is required" })}
-                className={`border-2 outline-none rounded-md h-10 w-64 px-2 ${
+                className={`border-2 bg-white outline-none rounded-md h-10 w-64 px-2 ${
                   errors.password && "border-red-600"
                 }`}
                 placeholder="Password"

@@ -1,35 +1,53 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from "react";
+import ReactToPrint from 'react-to-print';
 import { useReactToPrint } from 'react-to-print';
 import Cards from "../asset/cards";
 import { AiFillEye } from "react-icons/ai";
+import { AiOutlineLeft } from "react-icons/ai";
+import { IoMdInformationCircle } from "react-icons/io";
+import { AiOutlineRight } from "react-icons/ai";
 import { MdLocalPrintshop } from "react-icons/md";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-import Swal from "sweetalert2";
+import { Alloverstudent } from "../Hooks/usePost";
+import { toast } from "react-toastify";
+import Loader from '../Componant/loader';
 
 
 
-// function Remove() {
-//   Swal.fire({
-//     title: "Are you sure?",
-//     text: "You won't be able to revert this!",
-//     icon: "warning",
-//     showCancelButton: true,
-//     confirmButtonColor: "#3085d6",
-//     cancelButtonColor: "#d33",
-//     confirmButtonText: "Yes, delete it!",
-//   }).then((result) => {
-//     if (result.isConfirmed) {
-//       Swal.fire("Deleted!", "Your file has been deleted.", "success");
-//     }
-//   });
-// }
+
+
+
 
 export default function Dashboard() {
   const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
+  const [isPrint, setIsPrint] = useState(false);
+  const [isloading, setloading] = React.useState(true)
+
+
+  // ---------------------------------------------------------------
+  // --------------------    API Works       -----------------------
+  // ---------------------------------------------------------------
+
+  const [Student, setstudent] = useState();
+  const Toaster = () => { toast.success('New Staff Register successfully') }
+  const errtoast = () => { toast.error("Something Wrong") }
+
+  useEffect(() => {
+    async function fetchfacultdata() {
+      const res = await Alloverstudent();
+      setstudent(() => res.data)
+      console.log(res)
+      setloading(false);
+    }
+    fetchfacultdata()
+  }, [])
+  // console.log(Student, "data")
+
+  if (isloading) {
+    return <Loader />
+  }
+
   return (
     <div className="">
       <div className=" ">
@@ -37,7 +55,7 @@ export default function Dashboard() {
           <h1 className=" text-xl md:text-3xl text-center md:text-left text-darkblue-500 font-semibold ">
             Welcome Nasir
           </h1>
-         
+
         </div>
       </div>
       <div className="pt-0 md:flex items-center justify-center md:justify-between mr-5 ">
@@ -47,7 +65,7 @@ export default function Dashboard() {
         <Cards />
       </div>
       <div className="flex justify-center items-center p-10 pt-0">
-        <div class="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
+        <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
           <div className="print-btn flex items-center space-x-3">
             <button
               id="year-btn"
@@ -64,99 +82,100 @@ export default function Dashboard() {
               </select>
             </button>
 
-            <Tooltip
-              content="Print"
-              placement="bottom-end"
-              className="text-white bg-black  p-2"
-            >
-              <a
-                href="#"
-                id="print"
-                class="text-3xl bg-class2-50 rounded-md text-white  w-10 h-8 flex justify-center  " onClick={handlePrint}
-              >
-                <MdLocalPrintshop />
-              </a>
-            </Tooltip>
+            <ReactToPrint
+              trigger={() => (
+                // <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                <button id='print' className="text-3xl bg-class2-50 rounded-md text-white p-1">
+                  <MdLocalPrintshop />
+                </button>
+                // </Tooltip>
+              )}
+              content={() => componentRef.current}
+              onBeforeGetContent={(e) => {
+                return new Promise((resolve) => {
+                  setIsPrint(true);
+                  resolve();
+                });
+              }}
+              onAfterPrint={() => setIsPrint(false)}
+            />
 
           </div>
           <div ref={componentRef} className='p-5 pt-3 pb-0'>
-          <table class="w-full text-sm text-center bg-class2-50 rounded-xl shadow-xl " >
-            <thead class="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
-              <tr className="text-white text-base">
-                <th scope="col" class="w-20 h-20">
-                  Profile
-                </th>
-                <th scope="col" class="w-20 h-20">
-                  Class
-                </th>
-                <th scope="col" class="w-20 h-20">
-                  Phone
-                </th>
-                <th scope="col" class="w-20 h-20">
-                  Total
-                </th>
-                <th scope="col" class="w-20 h-20">
-                  Paidup
-                </th>
-                <th scope="col" class="w-20 h-20">
-                  Pending
-                </th>
-                <th scope="col" class="w-20 h-20">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white border items-center ">
-              <tr class=" border-b">
-                <th scope="row" class="w-20 h-20">
-                  <div className="flex justify-center items-center space-x-2">
-                    <img
-                      className="h-1/3 w-1/3 rounded-full"
-                      src="../images/user.png"
-                      alt="profile"
-                    />
-                    <div>
-                      <p className="text-darkblue-500">Deepak</p>
-                      <p className="text-gray-500">01</p>
-                    </div>
-                  </div>
-                </th>
-                <td class="w-20 h-20">12</td>
-                <td class="w-20 h-20">1234567891</td>
-                <td class="w-20 h-20">20000</td>
-                <td class="w-20 h-20">10000</td>
-                <td class="w-20 h-20">10000</td>
-                <td class="w-20 h-20 ">
-                  <div className="flex justify-center space-x-2">
-                    <NavLink className="nav-link" to="Profilestudent">
-                      <Tooltip
-                        content="Show"
-                        placement="bottom-end"
-                        className="text-white bg-black rounded p-2"
-                      >
-                        <a href="#" class="text-xl text-darkblue-500">
-                          <AiFillEye />
-                        </a>
-                      </Tooltip>
-                    </NavLink>
-                    {/* <Tooltip
-                      content="Remove"
-                      placement="bottom-end"
-                      className="text-white bg-black rounded p-2"
-                    >
-                      <div
-                        href="#"
-                        class="text-xl text-red-600 cursor-pointer"
+            <table className="w-full text-sm text-center bg-class2-50 rounded-xl  " >
+              <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+                <tr className="text-white text-base">
+                  <th scope="col" className="py-7 px-5 text-center ">
+                    Serial No
+                  </th>
+                  <th scope="col" className="py-7 px-5 text-center ">
+                    Name
+                  </th>
+                  <th scope="col" className="py-7 px-5 text-center ">
+                    Class
+                  </th>
+                  <th scope="col" className="py-7 px-5 text-center ">
+                    Phone
+                  </th>
+                  <th scope="col" className="py-7 px-5 text-center ">
+                    Total
+                  </th>
+                  <th scope="col" className="py-7 px-5 text-center ">
+                    Paidup
+                  </th>
+                  <th scope="col" className="py-7 px-5 text-center ">
+                    Pending
+                  </th>
+                  <th scope="col" className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              {Student.length > 0 ? (
+                <tbody className="bg-white border items-center ">
+                  {
+                    Student.map((item, key) => {
+                        const Paid_up = [
+                          item.fees_id.net_fees - item.fees_id.pending_amount
+                        ]
                        
-                      >
-                        <MdDelete />
-                      </div>
-                    </Tooltip> */}
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                      return (
+                        <tr className={` border-b ${item.fees_id.pending_amount > 0 ? "flex" : "hidden"}`}>
+
+                          <td className="py-7 px-5 text-center ">{item.student_id.student_id}</td>
+                          <td className="py-7 px-5 text-center ">{item.student_id.basic_info_id.full_name}</td>
+                          <td className="py-7 px-5 text-center ">{item.class_id.class_name}</td>
+                          <td className="py-7 px-5 text-center ">{item.student_id.contact_info_id.whatsapp_no}</td>
+                          <td className="py-7 px-5 text-center ">{item.fees_id.net_fees}</td>
+                          <td className="py-7 px-5 text-center ">{Paid_up}</td>
+                          <td className="py-7 px-5 text-center ">{item.fees_id.pending_amount}</td>
+                          <td className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
+                            <div className="flex justify-center space-x-2">
+                              <NavLink className="nav-link" to="Profilestudent">
+                                <Tooltip
+                                  content="Show"
+                                  placement="bottom-end"
+                                  className="text-white bg-black rounded p-2"
+                                >
+                                  <a href="#" className="text-xl text-darkblue-500">
+                                    <AiFillEye />
+                                  </a>
+                                </Tooltip>
+                              </NavLink>
+
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                </tbody>) : (
+                <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
+                  <IoMdInformationCircle className="text-xl text-red-600" />
+
+                  <h1 className="text-red-800">Student Not avaiable </h1>
+                </div>
+              )}
+            </table>
           </div>
           <nav
             aria-label="Page navigation example"
@@ -169,19 +188,8 @@ export default function Dashboard() {
                   class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   <span class="sr-only">Previous</span>
-                  <svg
-                    aria-hidden="true"
-                    class="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
+                  <AiOutlineLeft />
+
                 </a>
               </li>
               <li>
@@ -231,19 +239,8 @@ export default function Dashboard() {
                   class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   <span class="sr-only">Next</span>
-                  <svg
-                    aria-hidden="true"
-                    class="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
+                  <AiOutlineRight />
+
                 </a>
               </li>
             </ul>

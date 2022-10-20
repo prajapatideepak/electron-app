@@ -1,15 +1,12 @@
 import React, { useState } from 'react'
 import Facultyheader from '../Componant/Facultyheader'
-import Facultytable from '../Componant/facultytable'
 import Studentheader from '../Componant/Studentheader'
-import Table from '../Componant/Table'
 
 
 const Report = () => {
   const [reportState, setReportState] = useState("Student")
   return (
     <div>
-
       <div className="print-btn flex justify-end items-center space-x-3 mt-10 pr-5">
        
         <button id='reportselect' className=" flex items-center border bg-white p-2 xl:p-2 xl:py-1 rounded-md drop-shadow-2xl  space-x-1 ">

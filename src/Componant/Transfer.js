@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { FaHandPointDown } from 'react-icons/fa';
-import { FaHandPointUp } from 'react-icons/fa';
-import { AiFillEye } from 'react-icons/ai';
+import React, { useEffect, useState } from "react";
+import { FaHandPointDown } from "react-icons/fa";
+import { FaHandPointUp } from "react-icons/fa";
+import { AiFillEye } from "react-icons/ai";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-import { FiSend } from "react-icons/fi"
+import { FiSend } from "react-icons/fi";
 import { FaArrowLeft } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FiAlertCircle } from "react-icons/fi";
@@ -14,53 +14,45 @@ import Swal from 'sweetalert2';
 import Confomodel from "../Componant/Confomodel"
 
 function Send() {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't Transfer Student ??",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Transfer it!'
-    })
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't Transfer Student ??",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Transfer it!",
+  });
 }
 function Remove() {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-            )
-        }
-    })
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("Deleted!", "Your file has been deleted.", "success");
+    }
+  });
 }
 function Addall() {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't add all Student!!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Add it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire(
-                'Added All!',
-                'Your file has been Add.',
-                'success'
-            )
-        }
-    })
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't add all Student!!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Add it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("Added All!", "Your file has been Add.", "success");
+    }
+  });
 }
 
 const studentData = [{ profile: "shad" },
@@ -216,29 +208,38 @@ const Transfer = () => {
 
             )}
 
-            <div className={`bg-slate-100 ${model1 ? "opacity-20" :  model2 || model3 ?  "opacity-20" : ""}`}>
-                <div className="wrapper py-5 pl-5">
-                    <NavLink className="nav-link" to="class">
+      <div
+        className={`bg-slate-100 ${
+          model1 ? "opacity-20" : model2 || model3 ?  "opacity-20" : ""
+        }`}
+      >
+        <div className="wrapper py-5 pl-5">
+          <NavLink className="nav-link" to="class">
+            <div
+              className="btn cursor-pointer  h-10 w-24 rounded-lg bg-white text-left border  overflow-hidden "
+              id="btn"
+            >
+              <div
+                className="icons  h-10 w-40 flex ml-2 items-center "
+                id="icons"
+              >
+                <FaArrowLeft className="text-2xl text-darkblue-500  " />
+                <span className="ml-3 text-lg text-darkblue-500 font-semibold">
+                  Back
+                </span>
+              </div>
+            </div>
+          </NavLink>
+        </div>
+        <section className="table h-full w-full  shadow-none">
+          <div className="flex justify-center items-center p-10 pt-0">
+            <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 pt-5 shadow-xl space-y-5 w-full">
+              <div className="flex justify-between items-center">
+                <h1 className="pl-5 text-xl text-red-600 font-bold">
+                  Not Eligible For Transfer
+                </h1>
 
-                        <div className="btn cursor-pointer  h-10 w-24 rounded-lg bg-white text-left border  overflow-hidden " id="btn">
-                            <div className="icons  h-10 w-40 flex ml-2 items-center " id="icons">
-                                <FaArrowLeft className="text-2xl text-darkblue-500  " />
-                                <span className="ml-3 text-lg text-darkblue-500 font-semibold">Back</span>
-                            </div>
-                        </div>
-                    </NavLink>
-                </div>
-                <section className='table h-full w-full  shadow-none'>
-
-                    <div className='flex justify-center items-center p-10 pt-0'>
-
-                        <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 pt-5 shadow-xl space-y-5 w-full">
-                            <div className='flex justify-between items-center'>
-                                <h1 className='pl-5 text-xl text-red-600 font-bold'>
-                                    Not Eligible For Transfer
-                                </h1>
-
-                            </div>
+              </div>
 
                             <table className="w-full text-sm text-center bg-red-500 rounded-xl  ">
                                 <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
@@ -351,4 +352,4 @@ const Transfer = () => {
     )
 }
 
-export default Transfer
+export default Transfer;

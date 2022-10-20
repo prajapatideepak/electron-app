@@ -1,31 +1,15 @@
-import React, { useRef } from 'react';
-import { useReactToPrint } from 'react-to-print';
+import React, { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 import Cards from "../asset/cards";
 import { AiFillEye } from "react-icons/ai";
 import { MdLocalPrintshop } from "react-icons/md";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useQuery } from "react-query";
+import { usegetAdmin } from "../hooks/usePost";
 
-
-
-// function Remove() {
-//   Swal.fire({
-//     title: "Are you sure?",
-//     text: "You won't be able to revert this!",
-//     icon: "warning",
-//     showCancelButton: true,
-//     confirmButtonColor: "#3085d6",
-//     cancelButtonColor: "#d33",
-//     confirmButtonText: "Yes, delete it!",
-//   }).then((result) => {
-//     if (result.isConfirmed) {
-//       Swal.fire("Deleted!", "Your file has been deleted.", "success");
-//     }
-//   });
-// }
-
-export default function Dashboard() {
+export default function Dashboard(match) {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -35,12 +19,11 @@ export default function Dashboard() {
       <div className=" ">
         <div className="flex justify-between items-center pr-5 pt-8  md:pl-8 space-y-5">
           <h1 className=" text-xl md:text-3xl text-center md:text-left text-darkblue-500 font-semibold ">
-            Welcome Nasir
+            {/* {data.isLoading ? "....." : "gi"} */}
           </h1>
-         
         </div>
       </div>
-      <div className="pt-0 md:flex items-center justify-center md:justify-between mr-5 ">
+      <div className="w-3/4 md:w-full pt-0 md:flex items-center justify-center md:justify-between mr-5 ">
         <div className="left pt-0 ">
           <img src="/images/desk.webp" alt="" className="" />
         </div>
@@ -69,15 +52,13 @@ export default function Dashboard() {
               placement="bottom-end"
               className="text-white bg-black  p-2"
             >
-              <a
-                href="#"
+              <span
                 id="print"
                 className="text-3xl bg-class2-50 rounded-md text-white  w-10 h-8 flex justify-center  " onClick={handlePrint}
               >
                 <MdLocalPrintshop />
-              </a>
+              </span>
             </Tooltip>
-
           </div>
           <div ref={componentRef} className='p-5 pt-3 pb-0'>
           <table className="w-full text-sm text-center bg-class2-50 rounded-xl shadow-xl " >
@@ -152,11 +133,11 @@ export default function Dashboard() {
                         <MdDelete />
                       </div>
                     </Tooltip> */}
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <nav
             aria-label="Page navigation example"
@@ -182,7 +163,7 @@ export default function Dashboard() {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                </a>
+                </span>
               </li>
               <li>
                 <a
@@ -190,7 +171,7 @@ export default function Dashboard() {
                   className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   1
-                </a>
+                </span>
               </li>
               <li>
                 <a
@@ -198,16 +179,15 @@ export default function Dashboard() {
                   className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   2
-                </a>
+                </span>
               </li>
               <li>
-                <a
-                  href="#"
+                <span
                   aria-current="page"
                   className="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
                 >
                   3
-                </a>
+                </span>
               </li>
               <li>
                 <a
@@ -215,7 +195,7 @@ export default function Dashboard() {
                   className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   4
-                </a>
+                </span>
               </li>
               <li>
                 <a
@@ -223,7 +203,7 @@ export default function Dashboard() {
                   className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   5
-                </a>
+                </span>
               </li>
               <li>
                 <a
@@ -244,7 +224,7 @@ export default function Dashboard() {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                </a>
+                </span>
               </li>
             </ul>
           </nav>

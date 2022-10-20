@@ -11,23 +11,19 @@ import { FaArrowLeft } from "react-icons/fa"
 
 
 function Remove() {
-    Swal.fire({
-        title: 'Are you sure to start new year ?',
-        text: "After starting new year, your current classes will be deleted!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Start New Year'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire(
-                'New Year Started!',
-                '',
-                'success'
-            )
-        }
-    })
+  Swal.fire({
+    title: "Are you sure to start new year ?",
+    text: "After starting new year, your current classes will be deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Start New Year",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("New Year Started!", "", "success");
+    }
+  });
 }
 
 const ChangeYear = () => {

@@ -38,18 +38,16 @@ function Receipt_teacher({isSalaried}) {
           <div className="mt-5">
             <p className={`${receiptTextColor} font-bold italic`}>by Cash/UPI/Cheque No: <span className="text-black">676899</span> </p>
           </div>
-          {isSalaried 
-            ?
-              <div className="flex">
-                  <div className={`flex justify-center items-center w-36 h-8 ${receiptBgColor} mt-5 mr-5 rounded-md`}>
-                      <p className="text-white">Per Lecture: 800</p>
-                  </div>
-                  <div className={`flex justify-center items-center w-36 h-8 ${receiptBgColor} mt-5 mr-5 rounded-md`}>
-                      <p className="text-white">Total Lectures: 88</p>
-                  </div>
-              </div>
-            :
-              null
+          {isSalaried &&
+            <div className="flex">
+                <div className={`flex justify-center items-center w-36 h-8 ${receiptBgColor} mt-5 mr-5 rounded-md`}>
+                    <p className="text-white">Per Lecture: 800</p>
+                </div>
+                <div className={`flex justify-center items-center w-36 h-8 ${receiptBgColor} mt-5 mr-5 rounded-md`}>
+                    <p className="text-white">Total Lectures: 88</p>
+                </div>
+            </div>
+            
           }
           <div className="flex justify-between items-center mt-5">
             <div className="flex flex-col">

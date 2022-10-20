@@ -44,8 +44,8 @@ module.exports = {
         },
         darkblue: {
           500: "#020D46",
-          300: "#01136d"
         },
+        
         student: {
           900: "#F3797E",
         },

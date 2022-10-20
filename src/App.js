@@ -27,7 +27,6 @@ import Transfer from "./Componant/Transfer";
 import Dashboardsection from "./Componant/Dashboardsection";
 import UpdateStudentReceipt from './screens/UpdateStudentReceipt';
 import CancelAdmission from './screens/CancelAdmission';
-
 function App() { 
   return (
     <>

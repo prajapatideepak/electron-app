@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useReactToPrint } from 'react-to-print';
+import ReactToPrint from 'react-to-print';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
@@ -15,11 +15,10 @@ const Studenthistory = () => {
 
   const navigate = useNavigate();
   const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
+
   const [isLoadingDetails, setIsLoadingDetails] = useState(true);
   const [feesReceipts, setFeesReceipts] = useState([]);
+  const [isPrint, setIsPrint] = useState(false);  
   let date;
   let time;
 
@@ -65,20 +64,40 @@ const Studenthistory = () => {
             ?
               <>
                 <div className='btn flex justify-start'>
-                  <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" id='print' className="text-3xl bg-darkblue-500 rounded-md text-white p-1  " onClick={handlePrint}><MdLocalPrintshop /></a></Tooltip>
+                  <ReactToPrint
+                    trigger={() => (
+                          // <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                      <button id='print' className="text-3xl bg-darkblue-500 rounded-md text-white p-1">
+                            <MdLocalPrintshop />
+                        </button>
+                          // </Tooltip>
+                    )}
+                    content={() => componentRef.current}
+                    onBeforeGetContent={(e) => {
+                      return new Promise((resolve) => {
+                        setIsPrint(true);
+                        resolve();
+                      });
+                    }}
+                    onAfterPrint={() => setIsPrint(false)}
+                    />
+                  
                 </div>
                 <div ref={componentRef} className='p-5 pt-2 pb-0'>
-                  <div className="overflow-x-auto relative rounded-lg  ">
+                  <div className={`${isPrint ? 'flex' : 'hidden'} justify-between items-center py-2 bg-gray-200`}>
+                    <h3 className="text-lg mx-4 font-medium">Name: {location.state.full_name}</h3> 
+                    <h3 className="text-lg mx-4 font-medium">Roll No: {location.state.student_id}</h3> 
+                  </div>
+                  <div className={`overflow-x-auto relative ${isPrint ? '' : 'rounded-lg'}`}>
                     <table  className="w-full text-sm text-left  ">
                       <thead className="text-sm uppercase bg-darkblue-500">
                         <tr className='text-white'>
                           <th scope="col" className="py-3 px-6 text-center">Reciept No</th>
-                          <th scope="col" className="py-3 px-6 text-center">Admin</th>
-                          <th scope="col" className="py-3 px-6 text-center">Date</th>
-                          <th scope="col" className="py-3 px-6 text-center">Time</th>
                           <th scope="col" className="py-3 px-6 text-center">Amount</th>
                           <th scope="col" className="py-3 px-6 text-center">Discount</th>
-                          <th scope="col" className="py-3 px-6 text-center">Action</th>
+                          <th scope="col" className="py-3 px-6 text-center">Date</th>
+                          <th scope="col" className="py-3 px-6 text-center">Admin</th>
+                          <th scope="col" className={`py-3 px-6 text-center ${isPrint ? 'hidden' : 'flex'}`}>Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -86,20 +105,25 @@ const Studenthistory = () => {
                             feesReceipts.map((receipt, index) => {
                               { 
                                 date = new Date(receipt.date).toLocaleString();
-                                time = date.split(',')[1].trim()
-                                time = time.split(':')[0]+ ":"+ time.split(':')[1] + " " + time.split(' ')[1]
+                                // time = date.split(',')[1].trim()
+                                // time = time.split(':')[0]+ ":"+ time.split(':')[1] + " " + time.split(' ')[1]
                                 date = date.split(',')[0]
                               }
                               return <tr key={index} className="bg-white border-b">
                                 <td className="py-4 px-7 text-center">{receipt.fees_receipt_id}</td>
-                                <td className="py-4 px-7 text-center">{receipt.admin_id.username}</td>
-                                <td className="py-4 px-7 text-center">{date}</td>
-                                <td className="py-4 px-7 text-center">{time}</td>
                                 <td className="py-4 px-7 text-center">{receipt.transaction_id.amount}</td>
                                 <td className="py-4 px-7 text-center">{receipt.discount}</td>
-                                <td className="py-4 px-7 text-center">
+                                <td className="py-4 px-7 text-center">{date}</td>
+                                <td className="py-4 px-7 text-center">{receipt.admin_id.username}</td>
+                                <td className={`py-4 px-7 text-center ${isPrint ? 'hidden' : 'flex'} `}>
                                   <div className='flex justify-center space-x-2'>
-                                    <NavLink className="nav-link" to="/receipt/receipt" state={{isStaff: false, fees_receipt_id: receipt.fees_receipt_id}}>
+                                    <NavLink className="nav-link" to="/receipt/receipt" 
+                                      state={{
+                                        isStaff: false,
+                                        is_cancelled: location.state.is_cancelled, 
+                                        fees_receipt_id: 
+                                        receipt.fees_receipt_id
+                                    }}>
                                       <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl bg-white text-darkblue-500"><AiFillEye /></span></Tooltip>
                                     </NavLink>
                                   </div>

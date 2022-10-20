@@ -4,6 +4,8 @@ import { IoMdInformationCircle } from "react-icons/io";
 import { NavLink } from "react-router-dom";
 import {getStudentDetails} from '../hooks/usePost';
 import Loader from '../Componant/Loader';
+import Toaster from '../hooks/showToaster';
+import {AxiosError} from 'axios';
 
 export default function Fess() {
   const [data, setdata] = useState([]);
@@ -11,13 +13,30 @@ export default function Fess() {
   const [searchValue, setSearchValue] = useState('');
   
   async function searchStudent() {
-    if(searchValue == '' || searchValue == ' '){
-      return;
+    try{
+      if(searchValue == '' || searchValue == ' '){
+        return;
+      }
+      setLoading(true);
+      const res = await getStudentDetails(searchValue)
+      setLoading(false);
+      setdata(res?.data?.data?.students_detail?.length > 0 ? res?.data?.data?.students_detail : null);
     }
-    setLoading(true);
-    const res = await getStudentDetails(searchValue)
-    setLoading(false);
-    setdata(res?.data?.data?.students_detail?.length > 0 ? res?.data?.data?.students_detail : null);
+    catch(err){
+      console.log(err)
+        setLoading(false);
+        if(err instanceof AxiosError){
+          if(err.response){
+            Toaster("error",err.response.data.message);
+          }
+          else{
+            Toaster("error",err.message);
+          }
+        }
+        else{
+            Toaster("error", err.message);
+        }
+    }
   }
   return (
     <div className="bg-student-100 m-1 min-h-screen py-10 px-14">

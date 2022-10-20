@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-// import {MdModeEditOutline} from 'react-icons/md';
 import "../Styles/Studentform.css";
 import { FaUserEdit } from 'react-icons/fa';
 import axios from 'axios';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
- import {registerStudent, getActiveClasses} from '../hooks/usePost';
+import {registerStudent, getActiveClasses} from '../hooks/usePost';
 import { useNavigate } from "react-router-dom";
 import Toaster from '../hooks/showToaster'
 import Swal from 'sweetalert2';
@@ -14,8 +13,9 @@ import Swal from 'sweetalert2';
 const Studentregister = () => {
     const queryClient = useQueryClient()
     const form = useRef(null);
-
-    const [img, setImg] = useState("./images/user.png");
+    const defaultImage = "http://localhost:4000/user_default@123.png"
+    
+    const [img, setImg] = useState(defaultImage);
     const [medium, setMedium] = useState('--');
     const [stream, setStream] = useState('--');
     const [netFees, setNetFees] = useState(0);
@@ -40,16 +40,11 @@ const Studentregister = () => {
 
     const onSubmit = async (data, e) => {
         e.preventDefault();
-        Object.assign(data,{net_fees: netFees, photo: data.photo[0], class_id: data.class_name})
-        delete data.class_name;
-        delete data.total_fees;
-
-        // const formdata = new FormData(form.current);
-
+        const formdata = new FormData(form.current);
         setIsLoadingOnSubmit(true);
 
         try{
-            const result = await registerStudent(data);
+            const result = await registerStudent(formdata);
             setIsLoadingOnSubmit(false);
 
             if(result.data.success){
@@ -147,13 +142,27 @@ const Studentregister = () => {
                         Student Registration
                     </h1>
                 </div>
-                <form id="student_reg_form" ref={form} encType="multipart/formdata" className="flex justify-center items-center " onSubmit={handleSubmit(onSubmit, onError)} method="post">
+                <form id="student_reg_form" ref={form} encType="multipart/form-data" className="flex justify-center items-center " onSubmit={handleSubmit(onSubmit, onError)} method="post">
                     <div className=" w-11/12 grid grid-cols-2 rounded-lg  truncate bg-white p-5 2xl:p-10  shadow-2xl">
                         <div className="left flex flex-col items-center gap-5">
                             <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
                                 <img src={img} width="100%" height="100%" alt="student profile" />
                                 <div className='profile_img_overlay flex flex-col justify-center items-center'>
-                                    <input type='file' className="rounded-md w-16"  accept=".png, .jpg, .jpeg" onInput={onImageChange} {...register('photo')} />
+                                    <input type='file' id="file" className="rounded-md w-16"  accept=".png, .jpg, .jpeg" onInput={onImageChange} {...register('photo')} />
+
+                                    {
+                                                        img != defaultImage
+                                                        ?
+                                                            <button  
+                                                            className='bg-red-600 px-1 rounded text-white hover:bg-red-400 mt-5 flex items-center justify-center gap-3' onClick={()=>{
+                                                                setImg(defaultImage);
+                                                                document.getElementById('file').value = ''
+                                                            }}>
+                                                                <span> Remove</span>
+                                                            </button>
+                                                        :
+                                                            null
+                                                    }
 
                                 </div>
                             </div>

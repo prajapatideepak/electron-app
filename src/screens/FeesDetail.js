@@ -316,7 +316,15 @@ export default function FeesDetail() {
 
         if (res.data.success == true) {
             Toaster('success', 'Receipt generated successfully')
-            navigate("/receipt/receipt", {state:{isStaff: false, fees_receipt_id: res.data.data.fees_receipt_details.fees_receipt_id, prevPath: location.pathname}});
+            navigate("/receipt/receipt", 
+            {
+              state:{
+                  isStaff: false,
+                  is_cancelled: 0,
+                  fees_receipt_id: res.data.data.fees_receipt_details.fees_receipt_id, 
+                  prevPath: location.pathname
+              }
+            });
         } else {
             setErrors((prevData)=>{
               return{
@@ -345,7 +353,7 @@ export default function FeesDetail() {
         <div className='absolute w-full h-full  z-30 ' >
 
         <div className="flex justify-center mt-4   bg-white ">
-          <div className="absolute h-2/3 mx-auto  opacity-100 shadow-2xl rounded      bg-white w-2/3 z-50">
+          <div className="absolute h-2/3 mx-auto  opacity-100 shadow-2xl rounded bg-white w-2/3 z-50">
             <div className="flex justify-end">
               <button
                 onClick={(e) => {

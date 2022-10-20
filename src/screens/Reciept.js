@@ -11,11 +11,12 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import Receipt_student from "../Componant/Receipt_student";
 import Receipt_teacher from "../Componant/Receipt_teacher";
-import { getStudentReceipt, getAdminVerification } from '../hooks/usePost';
+import { searchReceipt, getAdminVerification } from '../hooks/usePost';
 import { AxiosError } from "axios";
 
 const Reciept = () => {
   const location = useLocation();
+  console.log(location)
   let isStaff = location.state?.isStaff;
   let isSalaried = location.state?.isSalaried ? location.state?.isSalaried : false;
 
@@ -81,7 +82,7 @@ const Reciept = () => {
         //call staff receipt api
       }
       else{
-        let receipt_details = await getStudentReceipt(location.state.fees_receipt_id);
+        let receipt_details = await searchReceipt(location.state.fees_receipt_id);
         
         receipt_details = receipt_details.data.student_receipts[0]
         setReceiptDetails(()=>{
@@ -262,15 +263,21 @@ const Reciept = () => {
 
       </div>
       <div className="flex justify-center items-center">
-        <button className="flex justify-center items-center my-5 bg-indigo-900 py-1 px-3 rounded-md hover:bg-indigo-800"  onClick={(e) => setModel(true)}>
-          <MdModeEditOutline className="text-white text-lg my-1" />
-          
-            <span className="text-white text-sm pl-1">Edit</span>
-         
-        </button>
+        {
+          location?.state?.is_cancelled == 0
+          ?
+            <button className="flex justify-center items-center my-5 bg-indigo-900 py-1 px-3 rounded-md hover:bg-indigo-800"  onClick={(e) => setModel(true)}>
+              <MdModeEditOutline className="text-white text-lg my-1" />
+              
+                <span className="text-white text-sm pl-1">Edit</span>
+            
+            </button>
+          :
+            null
+        }
         <ReactToPrint
           trigger={() => (
-            <button className="mx-5 bg-indigo-900 py-1 px-3 rounded-md hover:bg-indigo-800">
+            <button className="mx-5 bg-indigo-900 my-5 py-1 px-3 rounded-md hover:bg-indigo-800">
               <span className="text-white text-sm">Download/Print</span>
             </button>
           )}

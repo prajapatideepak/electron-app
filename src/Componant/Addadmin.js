@@ -475,4 +475,3 @@ const Addadmin = () => {
   );
 };
 
-export default Addadmin;

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -31,28 +32,15 @@ export default function Searchbar({ setSection, data }) {
     changeSection();
   }
   return (
-    <div
-      onClick={handleToggle}
-      className="w-full z-[100] sticky top-0 bg-white h-[70px] flex flex-row items-center justify-between shadow-[0_10px_10px_-15px_rgba(0,0,0,0.3)]"
-    >
+    <div className="w-full z-[999] sticky top-0 bg-white h-[70px] flex flex-row items-center justify-between shadow-[0_10px_10px_-15px_rgba(0,0,0,0.3)]">
       <div className="left pl-5 w-1/4">
         {/* This sectione empty for searchbar */}
       </div>
       <div className="right">
-        <div className="top grid grid-col-2 items-center cursor-pointer justify-right space-x-5 pr-5 static">
-          <form
-            action=""
-            className="flex items-center space-x-2 cursor-pointer"
-            id="profile"
-          >
+        <div className="top grid grid-col-2 items-center cursor-pointer justify-right space-x-5 pr-5 static"  >
+          <form onClick={handleToggle} action="" className="flex items-center space-x-2 cursor-pointer" id="profile">
             <div className="profile">
-              <img
-                className="rounded-full w-10 mx-auto"
-                src="/images/user.png"
-                width="7%"
-                height="7%"
-                alt="profile"
-              />
+              <img className="rounded-full w-10 mx-auto" src="/images/user.png" width="7%" height="7%" alt="profile" />
             </div>
             <div className="text-left">
               <p className="text-base">

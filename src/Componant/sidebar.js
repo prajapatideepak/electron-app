@@ -24,16 +24,12 @@ export default function Sidebar({ data }) {
         <div className="navigation mt-4">
           <ul className="text-center">
             <div className="mb-3">
-              <NavLink
-                className="nav-link"
-                activeclassname="active"
-                to={{ pathname: "/", state: { dipu: "ok" } }}
-              >
-                <li className="inline-flex pl-11 items-center py-2 w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
-                  <RiDashboardFill className="w-5 h-5 mr-2" />
-                  <h1 className="text-base hidden xl:block  ">Dashboard</h1>
-                </li>
-              </NavLink>
+            <NavLink className="nav-link" activeclassname="active" to="dashboard">
+              <li className="inline-flex pl-11 items-center py-2 w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                <RiDashboardFill className="w-5 h-5 mr-2" />
+                <h1 className="text-base hidden xl:block  ">Dashboard</h1>
+              </li>
+            </NavLink>
             </div>
 
             <div className="mb-3">

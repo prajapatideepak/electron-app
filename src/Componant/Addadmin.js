@@ -6,7 +6,7 @@ import { useCreateAdmin } from "../hooks/usePost";
 import { toast } from "react-toastify";
 import FormData from "form-data";
 
-const Addadmin = () => {
+ export const Addadmin = () => {
   const [img, setImg] = useState("/images/user.png");
   const createPost = useCreateAdmin();
 
@@ -474,4 +474,3 @@ const Addadmin = () => {
     </div>
   );
 };
-

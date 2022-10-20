@@ -22,7 +22,7 @@ import Updateprofile from "./Componant/Updateprofile";
 import AdminLogin from "./screens/AdminLogin";
 import Profilefaculty from "./Componant/Profilefaculty";
 import Staffhistory from "./Componant/Staffhistory";
-import Addadmin from "./Componant/Addadmin";
+import { Addadmin } from "./Componant/Addadmin";
 import Transfer from "./Componant/Transfer";
 import Dashboardsection from "./Componant/Dashboardsection";
 import { usegetAdmin } from "./hooks/usePost";

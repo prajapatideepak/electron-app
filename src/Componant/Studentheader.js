@@ -1,14 +1,9 @@
 import React, { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { AiOutlineUser } from "react-icons/ai"
-import { MdPendingActions } from "react-icons/md"
-import { FcMoneyTransfer } from "react-icons/fc"
-import { MdLocalPrintshop } from "react-icons/md"
+import { MdLocalPrintshop } from "react-icons/md";
 import { AiFillEye } from 'react-icons/ai';
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-
-
 
 
 const Studenthearder = () => {

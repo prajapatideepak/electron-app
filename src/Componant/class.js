@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import { FaArrowRight } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -12,9 +12,6 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { MdLocalPrintshop } from "react-icons/md";
 import { IoMdInformationCircle } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
-import { Link, useParams } from "react-router-dom";
-import { getAllStudentsInClass } from "../hooks/usePost";
-import _ from "lodash";
 
 const Class = () => {
   //----------------------------
@@ -43,104 +40,6 @@ const Class = () => {
   const [model, setModel] = React.useState(false);
   const [data, setdata] = React.useState([]);
 
-  const [allClassStudents, setAllClassStudents] = React.useState([]);
-
-  // ------------------------------------
-  //---------- Pagination Work ----------
-  // ------------------------------------
-  const pageSize = 10;
-  const pageCount = classStudents
-    ? Math.ceil(classStudents.length / pageSize)
-    : 0;
-  const pages = _.range(1, pageCount + 1);
-
-  const handlePagination = (pageNo) => {
-    setPaginationData(
-      classStudents.filter((data, index) => {
-        if (pageNo == 1) {
-          if (index + 1 >= 1 && index + 1 <= pageSize) {
-            return data;
-          }
-        } else if (
-          index + 1 > pageNo * pageSize - pageSize + 1 &&
-          index + 1 <= pageNo * pageSize
-        ) {
-          return data;
-        }
-      })
-    );
-  };
-
-  useEffect(() => {
-    async function fetchClassStudents() {
-      const res = await getAllStudentsInClass(params.id);
-
-      if (res.success) {
-        setClassStudents(() => res.data);
-        setAllClassStudents(() => res.data);
-        setTotalStudents(() => res.data[0]?.class_id.total_student);
-        setClassName(() => res.data[0]?.class_id.class_name);
-        setTotalPendingStudents(() =>
-          res.data.filter((data) => {
-            return data.fees_id.pending_amount != 0;
-          })
-        );
-        setTotalPendingFees(() =>
-          res.data.filter((data) => {
-            return data.fees_id.pending_amount != 0;
-          })
-        );
-      }
-    }
-    fetchClassStudents();
-
-    setPaginationData(
-      classStudents?.filter((data, index) => {
-        if (index + 1 >= 1 && index + 1 <= pageSize) {
-          return data;
-        }
-      })
-    );
-  }, []);
-
-  const handlePendingPaidUpClick = (e) => {
-    setPaginationData(() =>
-      allClassStudents?.filter((data) => {
-        if (e.target.value == 2) {
-          return data.fees_id.pending_amount == 0;
-        } else if (e.target.value == 1) {
-          return data.fees_id.pending_amount != 0;
-        } else {
-          return data;
-        }
-      })
-    );
-  };
-
-  const handleSearchStudents = (e) => {
-    setPaginationData(() =>
-      allClassStudents?.filter((data) => {
-        let searched_value = e.target.value;
-        const full_name =
-          data.student_id.basic_info_id.full_name?.toLowerCase();
-        let isNameFound = false;
-
-        if (isNaN(searched_value)) {
-          searched_value = searched_value.toLowerCase();
-        }
-
-        if (full_name.indexOf(searched_value) > -1) {
-          isNameFound = true;
-        }
-
-        return (
-          data.student_id.student_id == searched_value ||
-          isNameFound ||
-          data.student_id.contact_info_id.whatsapp_no == searched_value
-        );
-      })
-    );
-  };
 
   // model card data
   function loadData() {
@@ -234,6 +133,7 @@ const Class = () => {
                     ) : (
                       <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
                         <IoMdInformationCircle className="text-xl text-red-600" />
+
                         <h1 className="text-red-800">Student Not available </h1>
                       </div>
                     )}

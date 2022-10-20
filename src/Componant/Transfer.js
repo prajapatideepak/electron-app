@@ -9,13 +9,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FiAlertCircle } from "react-icons/fi";
 import { BsCheck2All } from "react-icons/bs";
-import Swal from "sweetalert2";
-import Confomodel from "../Componant/Confomodel";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getActiveClasses, transferStudent } from "../hooks/usePost";
-import Toaster from "../hooks/showToaster";
-import SweetAlert from "../hooks/sweetAlert";
-import { AxiosError } from "axios";
+import {useLocation} from 'react-router-dom'
+import Swal from 'sweetalert2';
+import Confomodel from "../Componant/Confomodel"
 
 function Send() {
   Swal.fire({
@@ -59,189 +55,162 @@ function Addall() {
   });
 }
 
+const studentData = [{ profile: "shad" },
+{ class: "12" },
+{ id: "12" },
+{ phone: "1234567890" },
+{ total: "12000" },
+{ paidup: "2500" },
+{ pending: "10500" }]
+
+
 const Transfer = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
 
-  const [studentsData, setStudentsData] = React.useState(
-    location.state.classStudents
-  );
+    const [model1, Classselection] = React.useState(false);
+    const [model2, Warning ] = React.useState(false);
+    const [model3, Seccess] = React.useState(false);
+    const [users, setUsers] = useState([]);
+    const location = useLocation();
 
-  let Eligible = [],
-    NotEligible = [];
-  const [studentsEligibleData, setStudentsEligibleData] = React.useState([]);
-  const [studentsNotEligibleData, setStudentsNotEligibleData] = React.useState(
-    []
-  );
+    useEffect(() => {
+        setUsers(studentData)
+    }, [])
 
-  const [classSelectionModel, setClassSelectionModel] = useState(false);
-  const [classes, setClasses] = useState([]);
-  const [selectedClass, setSelectedClass] = useState("");
-  const [classNotSelectedError, setClassNotSelectedError] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+    const handleChange = (e) => {
+        const { id, checked } = e.target;
+        if (id === "allselect") {
+            let tempUser = users.map(users => { return { ...users, isChecked: checked } })
+            setUsers(tempUser)
+        } else {
 
-  studentsData?.map((item) => {
-    if (item.fees_id.pending_amount == 0) {
-      Eligible.push(item);
-    } else {
-      NotEligible.push(item);
-    }
-  });
-
-  const handleTransfer = (e) => {
-    if (selectedClass == "") {
-      return setClassNotSelectedError(true);
-    }
-
-    SweetAlert(
-      "Are you sure to transfer?",
-      "Students will be transfered to selected class"
-    ).then(async (res) => {
-      if (res.isConfirmed) {
-        try {
-          let student_ids = [];
-          studentsEligibleData.forEach((student) => {
-            student_ids.push(student.student_id.student_id);
-          });
-
-          const data = {
-            student_ids,
-            class_id: selectedClass,
-          };
-          setIsProcessing(true);
-
-          //api call
-          const res = await transferStudent(data);
-
-          setIsProcessing(false);
-
-          if (res.data.success) {
-            Toaster("success", res.data.message);
-            navigate("/");
-            return;
-          } else {
-            Toaster("error", res.data.message);
-          }
-        } catch (err) {
-          setIsProcessing(false);
-
-          if (err instanceof AxiosError) {
-            Toaster("error", err.response.data.message);
-          } else {
-            Toaster("error", err.message);
-          }
+            let tempUser = users.map(users => users.id === id ? { ...users, isChecked: checked } : users
+            );
+            setUsers(tempUser)
         }
-      }
-    });
-  };
+    }
 
-  useEffect(() => {
-    setStudentsEligibleData(Eligible);
-    setStudentsNotEligibleData(NotEligible);
+    // warning model for classselection
+    function warning(){
+        Classselection (false)
+        Warning (true)
+        Seccess (false)
+    }
+    // warning-cancel model for classselection
+    function warning_cansel(){
+        Classselection (true)
+        Warning (false)
+        Seccess (false)
+    }
+    // warning-select model for classselection
+    function warning_true(){
+        Classselection (false)
+        Warning (false)
+        Seccess (true)
+    }
+    // Success Modela for Classselection
+    function allremove() {
+        Classselection (false)
+        Warning (false)
+        Seccess (false)
+    }
+    return (
+        <div className='relative' >
+            {/* model for class selection */}
+            {model1 && (
+                <div className='absolute w-full h-full  z-30 ' >
+                    <div className='flex justify-center shadow-2xl opacity-100 '>
+                        <div className='absolute h-1/3 mx-auto  opacity-100 shadow-2xl rounded mt-32 bg-white w-1/3 z-50'>
+                            <div className=''>
+                                <div className='flex justify-end '>
+                                    <button onClick={(e) => Classselection(!model1)} className='absolute translate-x-4 -translate-y-4 font-bold text-2xl p-2 text-red-700'>
 
-    const loadClassesData = async () => {
-      //Loading classes
-      const activeClasses = await getActiveClasses();
-      setClasses(activeClasses.data.data);
-    };
-    loadClassesData();
-  }, []);
+                                        <AiFillCloseCircle />
+                                    </button>
 
-  // classesData.map((item,index)=>{
-  //     return {...item,is_selected:true}
-  // })
-
-  const handleSendToEligibleTable = (id, index) => {
-    let getData = studentsNotEligibleData.find((item) => item._id === id);
-    setStudentsEligibleData((arr) => [...arr, getData]);
-    setStudentsNotEligibleData([
-      ...studentsNotEligibleData.slice(0, index),
-      ...studentsNotEligibleData.slice(
-        index + 1,
-        studentsNotEligibleData.length
-      ),
-    ]);
-  };
-
-  const handleSendToNotEligibleTable = (id, index) => {
-    let getData = studentsEligibleData.find((item) => item._id === id);
-    setStudentsNotEligibleData((arr) => [...arr, getData]);
-    setStudentsEligibleData([
-      ...studentsEligibleData.slice(0, index),
-      ...studentsEligibleData.slice(index + 1, studentsEligibleData.length),
-    ]);
-  };
-
-  return (
-    <div className="relative">
-      {classSelectionModel && (
-        <div className="absolute w-full h-full z-30">
-          <div className="flex justify-center shadow-2xl opacity-100 ">
-            <div className="absolute mx-auto  opacity-100 shadow-2xl rounded mt-32 bg-white w-1/3 z-50">
-              <div className="">
-                <div className="flex justify-end ">
-                  <button
-                    onClick={(e) =>
-                      setClassSelectionModel(!classSelectionModel)
-                    }
-                    className="absolute translate-x-4 -translate-y-4 font-bold text-2xl p-2 text-red-700"
-                  >
-                    <AiFillCloseCircle />
-                  </button>
+                                </div>
+                                <div className='mt-7'>
+                                    <h1 className='text-2xl font-bold text-darkblue-500 px-6 '>Class Selection</h1>
+                                </div>
+                                <div className="select-clas flex justify-center items-center mt-10">
+                                    <select name="class" id="" className='border px-2 py-1 rounded-md drop-shadow-md w-8/12 '>
+                                        <option value="none">Select</option>
+                                        <option value="none">1-English-2022/23</option>
+                                    </select>
+                                </div>
+                                <div className="submit flex justify-center mt-10" >
+                                    <button className='bg-darkblue-500 text-white px-5 py-1 rounded-md' onClick={warning} >
+                                        SUBMIT
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="mt-7">
-                  <h1 className="text-2xl font-bold text-darkblue-500 px-6 ">
-                    Class Selection
-                  </h1>
+            )}
+                
+            {/* model for confirmation */}
+            {model2 && (
+                <div className='absolute w-full h-full   ' >
+                    <div className='flex justify-center shadow-2xl opacity-100 '>
+                        <div className='absolute h-1/2 mx-auto  opacity-100 shadow-2xl rounded mt-32 bg-white w-1/2 z-50'>
+                            <div className=''>
+                              
+                                <div className="alert flex justify-center mt-8 text-9xl">
+
+                                    <FiAlertCircle className='text-orange-200' />
+                                </div>
+                                <div className='text-center'>
+                                    <p className='text-4xl  py-5 font-bold'>Are You Sure?</p>
+                                    <p className='pt-2'>You Wont to transefr Class in selected year ??</p>
+                                </div>
+                                <div className="btn flex justify-center py-8 space-x-3">
+                                    <button className='bg-blue-500  px-4 py-3 text-white rounded-md' onClick={warning_true}>
+                                        Yes, Transefr it!
+                                    </button>
+                                    <button className='bg-[#FF0000] px-5 py-3 text-white rounded-md' onClick={warning_cansel}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="select-clas flex flex-col justify-center items-center px-10 pt-10">
-                  <select
-                    name="class"
-                    id=""
-                    className="border px-2 py-1 rounded-md drop-shadow-md w-8/12"
-                    onChange={(e) => {
-                      setSelectedClass(e.target.value);
-                      setClassNotSelectedError(false);
-                    }}
-                  >
-                    <option value="">Select</option>
-                    {classes.map((classes, index) => {
-                      return (
-                        <option key={index} value={classes._id}>
-                          {classes.class_name + " | " + classes.medium}
-                          {classes.stream.toLowerCase() != "none" ? (
-                            <>{" | " + classes.stream}</>
-                          ) : null}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  {classNotSelectedError ? (
-                    <small className="text-red-700 mt-5">
-                      *Please select class
-                    </small>
-                  ) : null}
+                
+
+            )}
+
+            {/* model for afetr comformation */}
+            {model3 && (
+                <div className='absolute w-full h-full   ' >
+                    <div className='flex justify-center shadow-2xl opacity-100 '>
+                        <div className='absolute h-1/2 mx-auto  opacity-100 shadow-2xl rounded mt-32 bg-white w-1/2 z-50'>
+                            <div className=''>
+
+                                <div className="alert flex justify-center mt-8 text-9xl text-green-400 ">
+                                <BsCheck2All className='border-2  px-1 rounded-full py-4 border-green-400'/>
+
+                                </div>
+                                <div className='text-center'>
+                                    <p className='text-4xl  py-5 font-bold'>Success!!</p>
+                                    <p className='pt-2'>Your student has been transfered</p>
+                                </div>
+                                <div className="btn flex justify-center py-8 space-x-3">
+                                    <button className='bg-blue-500  px-5 py-3 text-white rounded-md' onClick={allremove}>
+                                        OK
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="submit flex justify-center mt-10 pb-10">
-                  <button
-                    disabled={isProcessing}
-                    className={`${
-                      isProcessing ? "bg-darkblue-300" : "bg-darkblue-500"
-                    } bg-darkblue-500 text-white px-5 py-1 rounded-md`}
-                    onClick={handleTransfer}
-                  >
-                    SUBMIT
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+
+
+            )}
 
       <div
         className={`bg-slate-100 ${
-          classSelectionModel ? "opacity-20" : "opacity-100"
+          model1 ? "opacity-20" : model2 || model3 ?  "opacity-20" : ""
         }`}
       >
         <div className="wrapper py-5 pl-5">
@@ -269,224 +238,118 @@ const Transfer = () => {
                 <h1 className="pl-5 text-xl text-red-600 font-bold">
                   Not Eligible For Transfer
                 </h1>
+
               </div>
 
-              <table className="w-full text-sm text-center bg-red-500 rounded-xl  ">
-                <thead className="text-xs text-gray-700 uppercase">
-                  <tr className="text-white text-base">
-                    <th scope="col" className="w-20 h-20">
-                      Roll No
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Name
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Class
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Phone
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Total
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Paidup
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Pending
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className=" border items-center ">
-                  {studentsNotEligibleData.map((item, index) => {
-                    return (
-                      <tr
-                        className="border-b bg-white cursor-pointer"
-                        key={index}
-                      >
-                        <td scope="row" className="w-20 h-20">
-                          <div className="flex justify-center items-center space-x-2">
-                            <div>
-                              <p className="text-gray-500">
-                                {item.student_id.student_id}
-                              </p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="w-20 h-20">
-                          {item.student_id.basic_info_id.full_name}
-                        </td>
-                        <td className="w-20 h-20">
-                          {item.class_id.class_name}
-                        </td>
-                        <td className="w-20 h-20">
-                          {item.student_id.contact_info_id.whatsapp_no}
-                        </td>
-                        <td className="w-20 h-20">{item.fees_id.net_fees}</td>
-                        <td className="w-20 h-20">
-                          {item.fees_id.net_fees - item.fees_id.pending_amount}
-                        </td>
-                        <td className="w-20 h-20">
-                          {item.fees_id.pending_amount}
-                        </td>
-                        <td className="w-20 h-20 ">
-                          <div className="flex justify-center space-x-2">
-                            <NavLink className="nav-link" to="Profilestudent">
-                              <Tooltip
-                                content="Show Details"
-                                placement="bottom-end"
-                                className="text-white bg-black rounded p-2"
-                              >
-                                <div className="text-xl text-darkblue-500 cursor-pointer">
-                                  <AiFillEye />
-                                </div>
-                              </Tooltip>
-                            </NavLink>
-                            <Tooltip
-                              content="Sent To Eligible Table"
-                              placement="bottom-end"
-                              className="text-white bg-black rounded p-2"
-                            >
-                              <div
-                                href="#"
-                                className="text-xl text-darkblue-500 cursor-pointer"
-                                onClick={() => {
-                                  handleSendToEligibleTable(item._id, index);
-                                }}
-                              >
-                                <FaHandPointDown />
-                              </div>
-                            </Tooltip>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="flex justify-center items-center p-10 pt-0 ">
-            <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 pt-5 shadow-2xl space-y-5 w-full">
-              <h1 className="pl-5 text-xl text-green-600 font-bold">
-                Eliglible for Transfer
-              </h1>
+                            <table className="w-full text-sm text-center bg-red-500 rounded-xl  ">
+                                <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+                                    <tr className='text-white text-base'>
 
-              <table className="w-full text-sm text-center bg-green-500 rounded-xl ">
-                <thead className="text-xs text-gray-700 uppercase">
-                  <tr className="text-white text-base">
-                    <th scope="col" className="w-20 h-20">
-                      Roll No
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Name
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Class
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Phone
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Total
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Paidup
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Pending
-                    </th>
-                    <th scope="col" className="w-20 h-20">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white border items-center ">
-                  {studentsEligibleData.map((item, index) => {
-                    return (
-                      <tr className="border-b" key={index}>
-                        <th scope="row" className="w-20 h-20">
-                          <div className="flex justify-center items-center space-x-2">
-                            <div>
-                              <p className="text-gray-500">
-                                {item.student_id.student_id}
-                              </p>
-                            </div>
-                          </div>
-                        </th>
-                        <td className="w-20 h-20">
-                          {item.student_id.basic_info_id.full_name}
-                        </td>
-                        <td className="w-20 h-20">
-                          {item.class_id.class_name}
-                        </td>
-                        <td className="w-20 h-20">
-                          {item.student_id.contact_info_id.whatsapp_no}
-                        </td>
-                        <td className="w-20 h-20">{item.fees_id.net_fees}</td>
-                        <td className="w-20 h-20">
-                          {item.fees_id.net_fees - item.fees_id.pending_amount}
-                        </td>
-                        <td className="w-20 h-20">
-                          {item.fees_id.pending_amount}
-                        </td>
-                        <td className="w-20 h-20 ">
-                          <div className="flex justify-center space-x-2">
-                            <NavLink className="nav-link" to="Profilestudent">
-                              <Tooltip
-                                content="Show Details"
-                                placement="bottom-end"
-                                className="text-white bg-black rounded p-2"
-                              >
-                                <div className="text-xl text-darkblue-500 cursor-pointer">
-                                  <AiFillEye />
-                                </div>
-                              </Tooltip>
-                            </NavLink>
-                            <Tooltip
-                              content="Sent To Not Eligible Table"
-                              placement="bottom-end"
-                              className="text-white bg-black rounded p-2"
-                            >
-                              <div
-                                href="#"
-                                className="text-xl text-darkblue-500 cursor-pointer"
-                                onClick={() => {
-                                  handleSendToNotEligibleTable(item._id, index);
-                                }}
-                              >
-                                <FaHandPointUp />
-                              </div>
-                            </Tooltip>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                                        <th scope="col" className="w-20 h-20">Profile</th>
+                                        <th scope="col" className="w-20 h-20">Class</th>
+                                        <th scope="col" className="w-20 h-20">Phone</th>
+                                        <th scope="col" className="w-20 h-20">Total</th>
+                                        <th scope="col" className="w-20 h-20">Paidup</th>
+                                        <th scope="col" className="w-20 h-20">Pending</th>
+                                        <th scope="col" className="w-20 h-20">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody className=' border items-center '>
 
-              <div className="button flex justify-end ">
-                <div
-                  id="transfer-btn"
-                  className="flex items-center bg-green-500 hover:bg-green-700 w-28 h-10 justify-center rounded-lg cursor-pointer space-x-2"
-                  onClick={(e) => setClassSelectionModel(true)}
-                >
-                  <div className="">
-                    <FiSend className=" ml-1  text-white text-2xl  " />
-                  </div>
-                  <p className="text-white text-lg">Transfer</p>
-                </div>
-              </div>
+                                    <tr className=" border-b bg-white cursor-pointer">
+
+                                        <td scope="row" className="w-20 h-20">
+                                            <div className='flex justify-center items-center space-x-2'>
+
+                                                <img className='h-14 w-14 rounded-full' src="/images/user.png" alt="profile" />
+                                                <div>
+                                                    <p className='text-darkblue-500'>{users.id}</p>
+                                                    <p className='text-gray-500'>01</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="w-20 h-20">12</td>
+                                        <td className="w-20 h-20">1234567891</td>
+                                        <td className="w-20 h-20">20000</td>
+                                        <td className="w-20 h-20">10000</td>
+                                        <td className="w-20 h-20">10000</td>
+                                        <td className="w-20 h-20 ">
+                                            <div className='flex justify-center space-x-2'>
+                                                <NavLink className="nav-link" to="Profilestudent">
+
+                                                    <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'><div className="text-xl text-darkblue-500 cursor-pointer" ><AiFillEye /></div></Tooltip>
+                                                </NavLink>
+                                                <Tooltip content="Sent To Eligible Table" placement="bottom-end" className='text-white bg-black rounded p-2'><div href="#" className="text-xl text-darkblue-500 cursor-pointer" onClick={Remove}><FaHandPointDown /></div></Tooltip>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div className='flex justify-center items-center p-10 pt-0 '>
+                        <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 pt-5 shadow-2xl space-y-5 w-full">
+                            <h1 className='pl-5 text-xl text-green-600 font-bold'>
+                                Eliglible for Transfer
+                            </h1>
+
+                            <table className="w-full text-sm text-center bg-green-500 rounded-xl ">
+                                <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+                                    <tr className='text-white text-base'>
+                                        <th scope="col" className="w-20 h-20">Profile</th>
+                                        <th scope="col" className="w-20 h-20">Class</th>
+                                        <th scope="col" className="w-20 h-20">Phone</th>
+                                        <th scope="col" className="w-20 h-20">Total</th>
+                                        <th scope="col" className="w-20 h-20">Paidup</th>
+                                        <th scope="col" className="w-20 h-20">Pending</th>
+                                        <th scope="col" className="w-20 h-20">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody className='bg-white border items-center '>
+                                    <tr className=" border-b">
+                                        <th scope="row" className="w-20 h-20">
+                                            <div className='flex justify-center items-center space-x-2'>
+
+                                                <img className='h-14 w-14 rounded-full' src="/images/user.png" alt="profile" />
+                                                <div>
+                                                    <p className='text-darkblue-500'>Deepak</p>
+                                                    <p className='text-gray-500'>01</p>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td className="w-20 h-20">12</td>
+                                        <td className="w-20 h-20">1234567891</td>
+                                        <td className="w-20 h-20">20000</td>
+                                        <td className="w-20 h-20">10000</td>
+                                        <td className="w-20 h-20">10000</td>
+                                        <td className="w-20 h-20 ">
+                                            <div className='flex justify-center space-x-2'>
+                                                <NavLink className="nav-link" to="Profilestudent">
+
+                                                    <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'><div className="text-xl text-darkblue-500 cursor-pointer" ><AiFillEye /></div></Tooltip>
+                                                </NavLink>
+                                                <Tooltip content="Sent To Not Eligible Table" placement="bottom-end" className='text-white bg-black rounded p-2'><div href="#" className="text-xl text-darkblue-500 cursor-pointer" onClick={Remove}><FaHandPointUp /></div></Tooltip>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div className="button flex justify-end ">
+
+                                <div id='transfer-btn' className='flex items-center bg-green-500 hover:bg-green-700 w-28 h-10 justify-center rounded-lg cursor-pointer space-x-2' onClick={(e) => Classselection(true)} >
+                                    <div className=''>
+                                        <FiSend className=' ml-1  text-white text-2xl  ' />
+                                    </div>
+                                    <p className='text-white text-lg'>Transfer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  );
-};
+        </div>
+    )
+}
 
 export default Transfer;

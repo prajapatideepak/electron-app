@@ -3,32 +3,48 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { FaRupeeSign } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router-dom";
+import {updateStudentReceipt} from '../hooks/usePost';
 import { AxiosError } from "axios";
 import Toaster from '../hooks/showToaster';
-import {generateStudentReceipt} from '../hooks/usePost';
 
-export default function FeesDetail() {
+export default function UpdateStudentReceipt() {
   const location = useLocation();
 
-  const admin_id = '632324e55f67f65bf8a5f53a';
+    const student = {
+        name: location.state.receiptDetails.full_name,
+        fees: location.state.receiptDetails.amount,
+        class_name: location.state.receiptDetails.class_name,
+        stream: location.state.receiptDetails.stream,
+        rollno: location.state.receiptDetails.roll_no,
+        batch: location.state.receiptDetails.batch,
+        receipt_no: location.state.receiptDetails.receipt_no,
+        medium: location.state.receiptDetails.medium,
+        amount: location.state.receiptDetails.amount,
+        discount: location.state.receiptDetails.discount,
+        is_by_cash: location.state.receiptDetails.is_by_cash,
+        is_by_cheque: location.state.receiptDetails.is_by_cheque,
+        is_by_upi: location.state.receiptDetails.is_by_upi,
+        upi_no: location.state.receiptDetails.upi_no,
+        cheque_no: location.state.receiptDetails.cheque_no
+    };
+    const admin = {
+        id: '632324e55f67f65bf8a5f53a',
+        name: 'sadikali',
+    };
 
-  const student = location?.state;
-
-  const [fee, setFee] = React.useState('');
-  const [discount, setDiscount] = React.useState('');
+  const [fee, setFee] = React.useState(student?.amount);
+  const [discount, setDiscount] = React.useState(student?.discount == 0 ? '' : student?.discount);
+  const [chequeNo, setChequeNo] = React.useState(student?.cheque_no == -1 ? '' : student?.cheque_no);
+  const [upiNo, setUpiNo] = React.useState(student?.upi_no == "-1" ? '' : student?.upi_no);
   const [payment, setPayment] = React.useState("cash");
-  const [chequeNo, setChequeNo] = React.useState('');
-  const [upiNo, setUpiNo] = React.useState('');
-  const [toggleCheque, setToggleCheque] = React.useState(false);
-  const [toggleUpi, setToggleUpi] = React.useState(false);
-  const [toggleCash, setToggleCash] = React.useState(true);
+  const [toggleCheque, setToggleCheque] = React.useState(student?.is_by_cheque);
+  const [toggleUpi, setToggleUpi] = React.useState(student?.is_by_upi);
+  const [toggleCash, setToggleCash] = React.useState(student?.is_by_cash);
 
-  const [deduction, setDeduction] = React.useState(0);
-  const [discountAppliedMsg, setDiscountAppliedMsg] = React.useState(true);
+  const [deduction, setDeduction] = React.useState(student?.discount);
+  const [discountAppliedMsg, setDiscountAppliedMsg] = React.useState(student?.discount > 0 ? false : true);
   const [model, setModel] = React.useState(false);
-  const [pin, setPin] = React.useState("");
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-
+  const [pin, setPin] = React.useState(""); 
   const [errors, setErrors]  = React.useState({
       amount: '',
       discount: '',
@@ -37,10 +53,6 @@ export default function FeesDetail() {
       invalid_pin: '' 
   });
 
-  const admin = {
-    id: '632324e55f67f65bf8a5f53a',
-    name: "Sadikali",
-  };
 
   var today = new Date();
   var date =
@@ -273,7 +285,7 @@ export default function FeesDetail() {
       }
       if((errors.amount != '' && errors.amount != undefined) || (errors.upi != '' && errors.upi != undefined) || (errors.cheque != '' && errors.cheque != undefined)){
           err++;
-      }
+        }
       
       if(err == 0){
           setPayment(
@@ -295,11 +307,12 @@ export default function FeesDetail() {
 
   }
 
+
   const navigate = useNavigate();
   async function handlePINsubmit() {
-    try{
-        setIsSubmitting(true);
+      try{
         const feesData = {
+            fees_receipt_id: student.receipt_no,
             is_by_cash: toggleCash ? 1 : 0,
             is_by_cheque: toggleCheque ? 1 : 0,
             is_by_upi: toggleUpi ? 1 : 0,
@@ -307,41 +320,33 @@ export default function FeesDetail() {
             upi_no: upiNo,
             amount: Number(fee) + Number(deduction),
             discount: deduction,
+            method: payment,
             admin_id: admin.id,
-            security_pin: pin,
-            student_id: student.rollno
+            security_pin: pin
         };
         
-        const res = await generateStudentReceipt(feesData)
+        const res = await updateStudentReceipt(feesData)
 
         if (res.data.success == true) {
-            Toaster('success', 'Receipt generated successfully')
-            navigate("/receipt/receipt", 
-            {
-              state:{
-                  isStaff: false,
-                  is_cancelled: 0,
-                  fees_receipt_id: res.data.data.fees_receipt_details.fees_receipt_id, 
-                  prevPath: location.pathname
-              }
-            });
+            Toaster('success', 'Receipt updated successfully')
+            navigate("/receipt/receipt", {state:{isStaff: false, fees_receipt_id: student.receipt_no, prevPath: location.pathname}});
         } else {
-            setErrors((prevData)=>{
-              return{
-                ...prevData,
+            setErrors({
                 invalid_pin: res.data.message
-              }
             });
         }
 
       }
       catch(err){
-        setIsSubmitting(false);
           if(err instanceof AxiosError){
-            Toaster('success', err.response?.data?.message)
+            setErrors({
+                invalid_pin: err.response?.data?.message
+            });
           }
           else{
-             Toaster('success', err.message)
+              setErrors({
+                invalid_pin: err.response?.data?.message
+            });
           }
       }
   }
@@ -353,7 +358,7 @@ export default function FeesDetail() {
         <div className='absolute w-full h-full  z-30 ' >
 
         <div className="flex justify-center mt-4   bg-white ">
-          <div className="absolute h-2/3 mx-auto  opacity-100 shadow-2xl rounded bg-white w-2/3 z-50">
+          <div className="absolute h-2/3 mx-auto  opacity-100 shadow-2xl rounded      bg-white w-2/3 z-50">
             <div className="flex justify-end">
               <button
                 onClick={(e) => {
@@ -364,7 +369,6 @@ export default function FeesDetail() {
                             invalid_pin: ''
                         }
                     }); 
-                    setIsSubmitting(false);
                 }}
                 className="absolute translate-x-4 -translate-y-4 font-bold text-2xl p-2 text-red-700"
               >
@@ -374,11 +378,11 @@ export default function FeesDetail() {
 
             <div className="mt-7">
               <h1 className="text-2xl font-bold text-darkblue-500 px-6 ">
-                Confirm Payment{" "}
+                Confirm Payment
               </h1>
               <div className="flex  justify-between px-7 py-3">
                 <div>
-                  <h1 className="font-bold">NAME : {student.full_name.toUpperCase()}</h1>
+                    <h1 className="font-bold">NAME : {student.name.toUpperCase()}</h1>
                     <h2 className="text-sm"> Class: {student.class_name}
                         <span className="ml-5">Medium: {student.medium}</span>
                         <span className="ml-5">Stream: {student.stream}</span>
@@ -427,24 +431,23 @@ export default function FeesDetail() {
                   onChange={(e) => setPin(e.target.value)}
                 />
                 <button
-                  disabled={isSubmitting}
                   className="px-4 py-1 bg-darkblue-500 text-white "
                   onClick={handlePINsubmit}
                 >
-                  {isSubmitting ? 'Loading...' : 'Submit'}
+                  Submit
                 </button>
               </div>
 
         </div>
-              {
-                errors.invalid_pin != '' 
-                ? 
-                  <h1 className=" text-red-700  text-sm my-1 font-bold w-full pr-44  text-right">
-                      {errors.invalid_pin}
-                  </h1>
-                :
-                  null
-              }
+            {
+              errors.invalid_pin != '' 
+              ? 
+                <h1 className=" text-red-700  text-sm my-1 font-bold w-full pr-44  text-right">
+                    {errors.invalid_pin}
+                </h1>
+              :
+                null
+            }
             </div>
           </div>
         </div>
@@ -454,7 +457,7 @@ export default function FeesDetail() {
       >
       <div className="flex justify-between items-center">
         <h1 className="font-bold text-3xl text-darkblue-500 ">
-          Generate Fees Receipt
+          Update Fees Receipt
         </h1>
         <div className="group h-9 w-20 flex justify-center items-center gap-1 cursor-pointer" id="" onClick={() => navigate(-1)}>
             <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
@@ -465,7 +468,10 @@ export default function FeesDetail() {
         <div className="bg-white px-1 py-3 mt-9 shadow-2xl rounded-2xl ">
           <div className="flex py-4  justify-between  relative">
             <div className="space-y-2 px-7 text-sm">
-               <h2 className="font-bold text-lg tracking-wide">NAME : {student.full_name.toUpperCase()}</h2>
+                <div className="bg-darkblue-500 w-48 p-1">
+                    <p className="text-md text-white font-bold text-center font-mono tracking-wide">Receipt No: {student.receipt_no}</p>
+                </div>
+                <h2 className="font-bold text-lg tracking-wide">NAME : {student.name.toUpperCase()}</h2>
                 <h2 className="text-[16px] tracking-wide"> Class: {student.class_name}
                     <span className="ml-5">Medium: {student.medium}</span>
                     <span className="ml-5">Stream: {student.stream}</span>
@@ -549,6 +555,7 @@ export default function FeesDetail() {
                 id="sme"
                 className=""
                 value="2"
+                checked={toggleUpi ? 'checked' : ''}
                 onChange={handlePaymentMethod}
                 />
                 <span> UPI </span>
@@ -558,6 +565,7 @@ export default function FeesDetail() {
                 id="sme"
                 className=""
                 value="3"
+                checked={toggleCheque ? 'checked' : ''}
                 onChange={handlePaymentMethod}
                 />
                 <span> Cheque </span>
@@ -601,7 +609,7 @@ export default function FeesDetail() {
           }
 
           <div></div>
-          <div className="text-sm flex justify-between items-center uppercase font-bold font-mono mt-4 ">
+          <div className="text-sm flex justify-between items-center uppercase font-bold font-mono tracking-wide mt-4 ">
             <h1 className="px-6"> admin : {admin.name}</h1>
             <button
               className="px-7  mx-7 py-2 text-base tracking-widest
@@ -617,7 +625,7 @@ export default function FeesDetail() {
             "
               onClick={onSubmit}
             >
-              Generate
+              Update
             </button>
           </div>
         </div>

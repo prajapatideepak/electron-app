@@ -19,7 +19,7 @@ const Studenthearder = () => {
     return (
         <div>
             <div className='flex justify-center items-center p-10 pt-10'>
-                <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
+                <div class="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
             <div>
                 <p className="text-base md:text-lg lg:text-xl font-bold leading-tight text-gray-800">
                     Student Transection List
@@ -35,7 +35,7 @@ const Studenthearder = () => {
                             </select>
                         </button>
                         <input id="" type="Date" className='outline-none bg-white border rounded-md p-2 cursor-pointer' />
-                        <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#"  className="text-3xl bg-green-200 rounded-md text-green-900  w-10 h-8 flex justify-center  " onClick={handlePrint}><MdLocalPrintshop /></a></Tooltip>
+                        <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#"  class="text-3xl bg-green-200 rounded-md text-green-900  w-10 h-8 flex justify-center  " onClick={handlePrint}><MdLocalPrintshop /></a></Tooltip>
 
                     </div>
                     <div ref={componentRef} className='p-5 pt-3 pb-0'>

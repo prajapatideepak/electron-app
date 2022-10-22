@@ -5,15 +5,31 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlinePersonAddAlt } from "react-icons/md";
 import { MdPublishedWithChanges } from "react-icons/md";
 import { VscKey } from "react-icons/vsc";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { NasirContext } from "../NasirContext";
+import { handleLogout } from "../AuthProvider";
 
-export default function Searchbar() {
+export default function Searchbar({ setSection, data }) {
+  const { admin } = React.useContext(NasirContext);
+  const { logout, changeSection } = React.useContext(NasirContext);
+  const myData = admin;
   const [toggle, SetToggle] = useState(false);
+  console.log("rerender");
 
   function handleToggle() {
     SetToggle(!toggle);
   }
 
+  function handleLogoutButton() {
+    handleLogout();
+    logout();
+    changeSection();
+  }
+
+  function handleSection() {
+    localStorage.removeItem("section");
+    changeSection();
+  }
   return (
     <div
       onClick={handleToggle}
@@ -39,8 +55,17 @@ export default function Searchbar() {
               />
             </div>
             <div className="text-left">
-              <p className="text-base">Nasir Khan</p>
-              <p className="text-xs text-gray-500">nasirkhan@gmail.com</p>
+              <p className="text-base">
+                {myData?.staff_id?.basic_info_id?.full_name
+                  ? myData?.staff_id?.basic_info_id?.full_name
+                  : "...."}
+              </p>
+              <p className="text-xs text-gray-500">
+                {" "}
+                {myData?.staff_id?.contact_info_id?.email
+                  ? myData?.staff_id?.contact_info_id?.email
+                  : "...."}
+              </p>
             </div>
             <BsThreeDotsVertical className="cursor-pointer text-gray-500" />
           </form>
@@ -61,7 +86,6 @@ export default function Searchbar() {
                     <span className="md:text-sm xl:text-base">
                       Admin Profile
                     </span>
-                    
                   </div>
                 </NavLink>
                 <NavLink className="nav-link" to="/Componant/Changepassword">
@@ -74,7 +98,7 @@ export default function Searchbar() {
                     </span>
                   </div>
                 </NavLink>
-                
+
                 <NavLink to="/Componant/Addadmin">
                   <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
                     <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
@@ -82,10 +106,16 @@ export default function Searchbar() {
                     </div>
                     <span className="md:text-sm xl:text-base">Add Admin</span>
                   </div>
-                  
                 </NavLink>
-
-                <NavLink className="nav-link" to="/dashboardsection">
+                <NavLink to="/Componant/AdminList">
+                  <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
+                    <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
+                      <MdOutlinePersonAddAlt className="text-blue-500 text-xl" />
+                    </div>
+                    <span className="md:text-sm xl:text-base">Admin List</span>
+                  </div>
+                </NavLink>
+                <div className="nav-link" onClick={(e) => handleSection()}>
                   <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
                     <div className="bg-blue-200 w-1/6 h-9  flex justify-center items-center rounded-full">
                       <MdPublishedWithChanges className="text-blue-500 text-xl" />
@@ -94,10 +124,13 @@ export default function Searchbar() {
                       Change Section
                     </span>
                   </div>
-                </NavLink>
+                </div>
 
                 <hr></hr>
-                <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
+                <div
+                  onClick={handleLogoutButton}
+                  className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center"
+                >
                   <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
                     <RiLogoutCircleRLine className="text-blue-500 text-xl" />
                   </div>

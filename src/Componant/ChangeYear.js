@@ -8,28 +8,24 @@ import { Tooltip } from "@material-tailwind/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Swal from 'sweetalert2'
 import { FaArrowLeft } from "react-icons/fa"
-import { transferClasses } from "../Hooks/usePost";
+import { transferClasses } from "../hooks/usePost";
 import { toast } from 'react-toastify';
 
 
 function Remove() {
-    Swal.fire({
-        title: 'Are you sure to start new year ?',
-        text: "After starting new year, your current classes will be deleted!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Start New Year'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire(
-                'New Year Started!',
-                '',
-                'success'
-            )
-        }
-    })
+  Swal.fire({
+    title: "Are you sure to start new year ?",
+    text: "After starting new year, your current classes will be deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Start New Year",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("New Year Started!", "", "success");
+    }
+  });
 }
 
 const ChangeYear = () => {

@@ -12,9 +12,9 @@ import { BsCheck2All } from "react-icons/bs";
 import Swal from 'sweetalert2';
 import Confomodel from "../Componant/Confomodel"
 import { useLocation, useNavigate } from "react-router-dom";
-import { getActiveClasses, transferStudent } from "../Hooks/usePost";
-import Toaster from '../Hooks/showToaster';
-import SweetAlert from '../Hooks/sweetAlert';
+import { getActiveClasses, transferStudent } from "../hooks/usePost";
+import Toaster from '../hooks/showToaster';
+import SweetAlert from '../hooks/sweetAlert';
 import {AxiosError} from 'axios';
 
 

@@ -3,31 +3,32 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { HashRouter } from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
-import {
-   useQuery,
-   useMutation,
-   useQueryClient,
-   QueryClient,
-   QueryClientProvider,
- } from 'react-query';
- import "react-toastify/dist/ReactToastify.css";
- 
- const queryClient = new QueryClient()
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { NasirProvider } from "./NasirContext";
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  <HashRouter>
     <QueryClientProvider client={queryClient}>
-      <HashRouter>
-        <App />
-        <ToastContainer 
-          position= "top-right"
-            autoClose= {4000}
-            hideProgressBar= {false}
-            closeOnClick= "true"
-            pauseOnHover= "true"
-            draggable= "true"
+      <NasirProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
         />
-      </HashRouter>
+        <App />
+        <ToastContainer />
+      </NasirProvider>
     </QueryClientProvider>
+  </HashRouter>
 );

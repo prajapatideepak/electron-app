@@ -9,7 +9,7 @@ import { MdDelete } from "react-icons/md";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-import { AddClass, updateClass, deleteClass, getAllClasses, getAllClassesByYear } from "../Hooks/usePost";
+import { AddClass, updateClass, deleteClass, getAllClasses, getAllClassesByYear } from "../hooks/usePost";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

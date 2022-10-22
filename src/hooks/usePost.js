@@ -1,78 +1,151 @@
-import axios from "axios";
+import { useMutation } from "react-query";
+import { getToken } from "../AuthProvider";
+import React from "react";
+import { NasirContext } from "../NasirContext";
+const axios = require("axios");
 
+const token = getToken("token");
+console.log(token);
+
+export const axiosInstance = axios.create({
+  headers: {
+    Authorization: token,
+  },
+});
 const SERVER = "http://localhost:4000";
 
+
 //-----------------------------------------------------------------------
-//--------------------------------- CLASSES -----------------------------
+//--------------------------------- ADMIN -----------------------------
 //-----------------------------------------------------------------------
+
+export function useCreateAdmin() {
+  return useMutation((values) =>
+    axiosInstance.post(`${SERVER}/admin`, values).then((res) => res.data)
+  );
+}
+
+export function useLoginAdmmin() {
+  return useMutation((values) =>
+    axiosInstance.post(`${SERVER}/admin/login`, values).then((res) => res.data)
+  );
+}
+
+export function useChangePassword() {
+  return useMutation((values) =>
+    axiosInstance.put(`${SERVER}/admin/forgot`, values).then((res) => res.data)
+  );
+}
+
+export function useChangeByAdmin() {
+  return useMutation((values) =>
+    axiosInstance.put(`${SERVER}/admin/change`, values).then((res) => res.data)
+  );
+}
+
+export function useUpdateAdmin() {
+  return useMutation((values) =>
+    axiosInstance.put(`${SERVER}/admin/`, values).then((res) => res.data)
+  );
+}
+
+export function useSetDefault() {
+  return useMutation((values) => {
+    console.log(values);
+    return axiosInstance
+      .post(`${SERVER}/admin/default`, values)
+      .then((res) => res.data);
+  });
+}
+
+export function usegetAdmin() {
+  return axiosInstance.get(`${SERVER}/admin`).then((res) => res.data);
+}
+
+export function useGetAllAdmin() {
+  return axiosInstance.get(`${SERVER}/admin/all`).then((res) => res.data);
+}
+
+//-----------------------------------------------------------------------
+//--------------------------------- CLASS -----------------------------
+//-----------------------------------------------------------------------
+
 
 export async function AddClass(addnew) {
-    try {
-        const response = await axios.post(`${SERVER}/classes/create`, addnew)
-        return response
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export async function updateClass(classID,updatenew) {
-    try {
-        const response = await axios.put(`${SERVER}/classes/update/${classID}`, updatenew)
-        return response
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export async function deleteClass(classID,deleteClass) {
-    try {
-        const response = await axios.put(`${SERVER}/classes/delete/${classID}`, deleteClass)
-        return response
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export async function getAllClasses (){
   try {
-    const {data} = await axios.get(`${SERVER}/classes/`)
-    return data;
+    const response = await axios.post(`${SERVER}/classes/create`, addnew);
+    return response;
   } catch (error) {
-      throw Error("data is not fatched")
+    console.log(error);
   }
 }
 
-export async function getAllStudentsInClass (classID){
+export async function updateClass(classID, updatenew) {
   try {
-    const {data} = await axios.get(`${SERVER}/classes/displaystudentinclass/` + classID)
-    return data;
+    const response = await axios.put(
+      `${SERVER}/classes/update/${classID}`,
+      updatenew
+    );
+    return response;
   } catch (error) {
-      throw Error("data is not fatched")
+    console.log(error);
   }
-
 }
 
-export async function getAllClassesByYear (){
+export async function deleteClass(classID, deleteClass) {
   try {
-    const {data} = await axios.get(`${SERVER}/classes/classesbyyear`)
+    const response = await axios.put(
+      `${SERVER}/classes/delete/${classID}`,
+      deleteClass
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getAllClasses() {
+  try {
+    const { data } = await axios.get(`${SERVER}/classes/`);
     return data;
   } catch (error) {
-      throw Error("data is not fatched")
+    throw Error("data is not fatched");
   }
+}
 
+export async function getAllStudentsInClass(classID) {
+  try {
+    const { data } = await axios.get(
+      `${SERVER}/classes/displaystudentinclass/` + classID
+    );
+    return data;
+  } catch (error) {
+    throw Error("data is not fatched");
+  }
+}
+
+export async function getAllClassesByYear() {
+  try {
+    const { data } = await axios.get(`${SERVER}/classes/classesbyyear`);
+    return data;
+  } catch (error) {
+    throw Error("data is not fatched");
+  }
 }
 
 export async function transferClasses(addnew) {
   try {
-      const response = await axios.post(`${SERVER}/classes/transferclasses`, addnew)
-      return response
+    const response = await axios.post(
+      `${SERVER}/classes/transferclasses`,
+      addnew
+    );
+    return response;
   } catch (error) {
-      console.log(error)
+    console.log(error);
   }
-
 }
 
-export async function getActiveClasses(){
+export async function getActiveClasses() {
   return await axios.get(`${SERVER}/classes/active`);
 }
 
@@ -135,13 +208,155 @@ export async function transferStudent(data){
 }
 
 
-//-----------------------------------------------------------------------
-//--------------------------------- ADMIN -----------------------------
-//-----------------------------------------------------------------------
-
-
 
 //-----------------------------------------------------------------------
 //--------------------------------- STAFF -----------------------------
 //-----------------------------------------------------------------------
 
+// ------------------------------------------------------------------------
+// ----------------------- Add_Faculty ------------------------------------
+// ------------------------------------------------------------------------
+export async function Addfaculty(addnew) {
+  try {
+    const response = await axios.post(`${SERVER}/Faculty/register`, addnew)
+      return response    
+  } catch (error) {
+    
+    toast.error("Error!!")
+    console.log(error)
+  }
+
+}
+
+// -----------------------------------------------------------------------
+// ------------------------All_Faculty -----------------------------------
+// -----------------------------------------------------------------------
+export const getAllFaculty = async () => {
+  try {
+    const { data } = await axios.get(`${SERVER}/Faculty`);
+    return data;
+  } catch (error) {
+    throw error("data is not fatched")
+  }
+
+}
+
+// -----------------------------------------------------------------------
+// -----------------staff_table_one_faculty_details ----------------------
+// -----------------------------------------------------------------------
+export async function Facultydetails (id){
+  try {
+    const res = await axios.get(`${SERVER}/faculty//Facultydetails/` + id)
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// ------------------------------------------------------------------------
+// -----------------------------Update_faculty ----------------------------
+// ------------------------------------------------------------------------
+export async function Update_faculty (data) {
+  try {
+    const staff_id = data.faculty_id
+    delete data.faculty_id
+    const res = await axios.put(`${SERVER}/Faculty/update/${staff_id}`, data)
+    return res
+  } catch (error) {
+    return error
+  }
+}
+
+// ------------------------------------------------------------------------
+// ------------------reciept_table_one_faculty_details --------------------
+// ------------------------------------------------------------------------
+export async function getFaculty (id){
+  try {
+    const res = await axios.get(`${SERVER}/faculty/Profilefaculty/` + id)
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// ------------------------------------------------------------------------
+// --------------------------- Reaciept_gen -------------------------------
+// ------------------------------------------------------------------------
+export async function salarypay(gen_reciept) {
+  try {
+    const response = await axios.post(`${SERVER}/salary/create-reciept/`, gen_reciept)
+    console.log(response)
+    return response
+
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+// ------------------------------------------------------------------------
+// ---------------------------- All_Reaciept ------------------------------
+// ------------------------------------------------------------------------
+export const recieptdetails = async () => {
+  try {
+    const { data } = await axios.get(`${SERVER}/salary`);
+    return data;
+  } catch (error) {
+    throw error("data is not fatched")
+  }
+
+}
+
+// ------------------------------------------------------------------------
+// ------------------------- Staff_salary_Histery -------------------------
+// ------------------------------------------------------------------------
+export async function Facultyhistory (id) {
+  try {
+    const res = await axios.get(`${SERVER}/salary/Staffhistory/` + id)
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+// ------------------------------------------------------------------------
+// -------------------------- Staff_salary_reciept =-----------------------
+// ------------------------------------------------------------------------
+export async function Facultyreciept (id) {
+  try {
+    const res = await axios.get(`${SERVER}/salary/receipt/` + id)
+    return res
+  } catch (error) {
+    console.log(error , "hsfuh")
+  }
+}
+
+
+
+// ------------------------------------------------------------------------
+// ------------------------ Update_faculty_reciept ------------------------
+// ------------------------------------------------------------------------
+export async function Update_faculty_reciept (data) {
+  try {
+    const salary_receipt_id = data.salary_receipt_id
+    delete data.faculty_id
+    const res = await axios.put(`${SERVER}/salary/update/${salary_receipt_id}`, data)
+    return res
+  } catch (error) {
+    return error
+  }
+}
+
+// -----------------------------------------------------------------------
+// ------------------------ All_Over Student------------------------------
+// -----------------------------------------------------------------------
+export const Alloverstudent = async () => {
+  try {
+    const { data } = await axios.get(`${SERVER}/students/`);
+    return data;
+  } catch (error) {
+    console.log(error)
+  }
+
+}

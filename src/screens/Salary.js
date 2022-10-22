@@ -5,15 +5,18 @@ import { useNavigate , useLocation } from "react-router-dom";
 import { Facultydetails, salarypay } from "../Hooks/usePost"
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import Loader from "../Componant/loader";
+
 
 
 
 export default function Salary() {
-  const location = useLocation
+  const location = useLocation()
   // ------------------------
   // ----- All Usestate ------
   // ------------------------
   const [is_hourly, setishourly] = React.useState('0');
+  const [isloading, setloading] = React.useState(true)
   const [fee, setFee] = React.useState('');
   const [amount, setamount] = React.useState(false);
   const [payment, setPayment] = React.useState('');
@@ -155,12 +158,11 @@ export default function Salary() {
       console.log(res.data.data.salaryreceipt.salary_receipt_id, "res")
        if (res.data.success == true) {
          const salary_receipt_id = res.data.data.salaryreceipt.salary_receipt_id
-        navigate(`/salary/Receipt_teacher/${salary_receipt_id}`) 
+        // navigate(`/salary/Receipt_teacher/${salary_receipt_id}`) 
+        
+        navigate(`/salary/Receipt_teacher/${salary_receipt_id}`, { state: { prevPath: "generate_receipt" } });
         regtoast()
-         
-        //  navigate("/salary/Receipt_teacher", { state: { isStaff: true, 
-        //   salary_receipt_id:salary_receipt_id, prevPath: location.pathname } });
-       } else {
+      } else {
          errtoast({
            invalid_pin: res.data.message
          });
@@ -189,14 +191,17 @@ export default function Salary() {
     async function fetchfacultdata() {
       const res = await Facultydetails(params.id);
       setfaculty(() => res.data.one_staff_Details)
+      setloading(false)
     }
     fetchfacultdata()
   }, [])
-  console.log(faculty, "faculty")
+
+  if (isloading) {
+    return <Loader />
+  }
 
   return (
     <>
-    {faculty ? <section className=''>
     <div className="relative bg-student-100 py-6">
       {model && (
         <div className="flex justify-center mt-4   bg-white ">
@@ -491,8 +496,6 @@ export default function Salary() {
       </div>
 
     </div>
-
-    </section> : "loading..."}
     </>
   );
 }

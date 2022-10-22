@@ -30,6 +30,7 @@ export default function Dashboard() {
   // ---------------------------------------------------------------
 
   const [Student, setstudent] = useState();
+  const [PaginationData, setPaginationData] = useState([]);
   const Toaster = () => { toast.success('New Staff Register successfully') }
   const errtoast = () => { toast.error("Something Wrong") }
 
@@ -41,6 +42,8 @@ export default function Dashboard() {
     }
     fetchfacultdata()
   }, [])
+
+
 
   if (isloading) {
     return <Loader />
@@ -65,20 +68,7 @@ export default function Dashboard() {
       <div className="flex justify-center items-center p-10 pt-0">
         <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
           <div className="print-btn flex items-center space-x-3">
-            <button
-              id="year-btn"
-              className=" flex items-center border bg-white p-2 md:p-2 md:py-1 rounded-lg shadow-2xl space-x-1 "
-            >
-              <select
-                name=""
-                id=""
-                className="cursor-pointer text-darkblue-500 text-xs md:text-lg outline-none"
-              >
-                <option value="All">All</option>
-                <option value="Pending">Pending</option>
-                <option value="Paidup">Paidup</option>
-              </select>
-            </button>
+
 
             <ReactToPrint
               trigger={() => (

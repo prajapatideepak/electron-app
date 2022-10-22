@@ -210,7 +210,7 @@ export default function Salarydetails() {
             console.log(res.data.salary_receipt_details.salary_receipt_id, "res")
             if (res.data.success = true) {
                 const salary_receipt_id = res.data.salary_receipt_details.salary_receipt_id
-                navigate(`/salary/Receipt_teacher/${salary_receipt_id}`)
+                navigate(`/salary/Receipt_teacher/${salary_receipt_id}`,{ state: { prevPath: "update_receipt" } })
                 regtoast()
             } else {
                 errtoast()

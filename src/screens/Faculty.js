@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactToPrint from 'react-to-print';
 import { FiUsers } from "react-icons/fi";
 import Facultytable from "../Componant/facultytable";
@@ -19,40 +19,9 @@ const Faculty = () => {
   const [model, setModel] = React.useState(false);
   const [isloading, setloading] = React.useState(true)
   const [isPrint, setIsPrint] = useState(false);
+  const form = useRef()
 
-  // ------------------------------------------------------------------------------------
-  // --------------------------IMAGE UPLOAD ---------------------------------------------
-  // ------------------------------------------------------------------------------------
 
-  // const formidable = require('formidable');
-  // const fs = require('fs');
-
-  // const form = new formidable.IncomingForm();
-  // form.parse(req, async function (err, fields, files) {
-  //   let photo = '';
-  //   if (files.photo.originalFilename != '' && files.photo.size != 0) {
-  //     const ext = files.photo.mimetype.split('/')[1].trim();
-
-  //     if (files.photo.size >= 2000000) { // 2000000(bytes) = 2MB
-  //       return res.status(400).json({ success: false, message: 'Photo size should be less than 2MB' })
-  //     }
-  //     if (ext != "png" && ext != "jpg" && ext != "jpeg") {
-  //       return res.status(400).json({ success: false, message: 'Only JPG, JPEG or PNG photo is allowed' })
-  //     }
-
-  //     var oldPath = files.photo.filepath;
-  //     var fileName = Date.now() + '_' + files.photo.originalFilename;
-  //     var newPath = 'public/images' + '/' + fileName;
-  //     var rawData = fs.readFileSync(oldPath)
-
-  //     fs.writeFile(newPath, rawData, function (err) {
-  //       if (err) {
-  //         return res.status(500).json({ success: false, message: err.message })
-  //       }
-  //       photo = fileName.trim();
-  //     })
-  //   }
-  // })
 
 
 
@@ -88,10 +57,15 @@ const Faculty = () => {
     trigger,
     resetField,
   } = useForm();
-  const onSubmit = (data) => {
-    const response = Addfaculty(data)
-    if (response) {
+  const onSubmit = async (data) => {
+    const formdata = new FormData(form.current);
+   
+    const response = await Addfaculty(formdata)
+    console.log(response , "res")
+    console.log(response.data.data.success)
+    if (response.data.data.success) {
       Toaster()
+      handleClick()
       return setModel(false)
     } else {
       return errtoast()
@@ -99,8 +73,9 @@ const Faculty = () => {
 
   }
   const handleClick = () => {
-    resetField("full_name"); resetField("email"); resetField("whatsapp_no"); resetField("mobileno"); resetField("dob");
+    resetField("photo"); resetField("full_name"); resetField("email"); resetField("whatsapp_no"); resetField("mobileno"); resetField("dob");
     resetField("joining_date"); resetField("role"); resetField("address"); resetField("gender");
+    setImg('')
     setModel(false)
   }
 
@@ -126,13 +101,13 @@ const Faculty = () => {
                 <div className='mt-7'>
                   <h1 className='text-2xl font-bold text-darkblue-500 px-6 '>Registration</h1>
 
-                  <form className="flex justify-center items-center " onSubmit={handleSubmit(onSubmit)}>
+                  <form ref={form} className="flex justify-center items-center " onSubmit={handleSubmit(onSubmit)}>
                     <div className=" w-full grid grid-cols-1 rounded-lg  bg-white pb-5 pt-10 ">
                       <div className=" flex flex-col items-center gap-4">
                         <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
                           <img src={img} width="100%" height="100%" alt="student profile" />
                           <div className='profile_img_overlay flex flex-col justify-center items-center'>
-                            <input type='file' className="rounded-md w-16" onChange={onImageChange} />
+                            <input type='file' name='photo' className="rounded-md w-16" onChange={onImageChange} />
 
                           </div>
                         </div>

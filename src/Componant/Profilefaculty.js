@@ -38,6 +38,13 @@ const Profilefaculty = () => {
     resetField,
   } = useForm();
 
+  function handlemale(e) {
+    setgender(e.target.value)
+  }
+  function handlefemale(e) {
+    setgender(e.target.value)
+  }
+
   const Toaster = () => { toast.success('Profile updated successfully') }
   const errtoast = () => { toast.error("Something Wrong") }
   const onSubmit = async (data) => {
@@ -71,8 +78,7 @@ const Profilefaculty = () => {
   const [facultysalary, setfacultysalary] = React.useState([]);
   const [Totalpaid, setTotalpaid] = React.useState([]);
   const [isloading, setloading] = React.useState(true)
-
-
+  const [gender, setgender] = useState("");
   // -----------------------------
   // ------ form_details --------
   // -----------------------------
@@ -80,10 +86,14 @@ const Profilefaculty = () => {
     async function fetchfacultdata() {
       const res = await Facultydetails(params.id);
       setfacultydetails(() => res.data.one_staff_Details);
+      console.log(res)
+      setgender(() => res.data.one_staff_Details.basic_info_id?.gender);
       setloading(false)
     }
     fetchfacultdata()
   }, [call])
+
+  console.log(gender, "gender")
   //   // --------------------------------
   //   // -----   Date_birth    ----------
   //   // -------------------------------
@@ -148,7 +158,7 @@ const Profilefaculty = () => {
       <div className="title  flex items-center justify-between  m-5 pt-4">
 
         <h1 className="text-3xl text-center font-medium text-[#020D46] ">
-          {facultydetails.basic_info_id.full_name} Profile :
+          {facultydetails?.basic_info_id?.full_name} Profile :
         </h1>
         <div className="group h-9 w-20 flex justify-center items-center gap-1 cursor-pointer" id="" onClick={() => navigate(-1)}>
           <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
@@ -253,10 +263,11 @@ const Profilefaculty = () => {
                             type="radio"
                             id="male"
                             name="gender"
-                            defaultValue="male" disabled={toggle ? false : true}
-                            checked={facultydetails?.basic_info_id.gender.toLowerCase() == 'male' ? 'checked' : null}
+                            value="male" disabled={toggle ? false : true}
+                            checked={gender == 'male' ? 'checked' : ''}
                             className="  hover:cursor-pointer"
                             {...register("gender", { required: "Gender is required" })}
+                            onChange={handlemale}
                           />
                         </div>
                         <div className="female">
@@ -267,10 +278,11 @@ const Profilefaculty = () => {
                             type="radio"
                             id="female"
                             name="gender"
-                            defaultValue="female" disabled={toggle ? false : true}
-                            checked={facultydetails?.basic_info_id.gender.toLowerCase() == 'female' ? 'checked' : null}
+                            value="female" disabled={toggle ? false : true}
+                            checked={gender == 'female' ? 'checked' : ''}
                             className="   hover:cursor-pointer"
                             {...register("gender", { required: "Gender is required" })}
+                            onChange={handlefemale}
                           />
 
                         </div>

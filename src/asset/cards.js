@@ -16,7 +16,7 @@ export default function Cards() {
     // ---------------------------------------------------------------
 
     const [data, setData] = useState([]);
-    // const [Pending, setpending] = useState([]);
+    const [Pending, setpending] = useState([]);
     const [Paidup, setpaidup] = useState([]);
     const Toaster = () => { toast.success('New Staff Register successfully') }
     const errtoast = () => { toast.error("Something Wrong") }
@@ -25,22 +25,21 @@ export default function Cards() {
         async function fetchfacultdata() {
             const res = await Alloverstudent();
             setData(() => res.data)
-            // setpending(() => res.data)
+            setpending(() => res.data)
             setloading(false);
         }
         fetchfacultdata()
     }, [])
 
-    console.log(data)
     // // ------------------------------
     // // ------ Pending_Student -------
-    // // -----------------------------
+    // // ------------------------------
+    let calculatepending = 0;
+    for (let i = 0; i < Pending.length; i++) {
+        calculatepending += Pending[i].fees_id.pending_amount > 0
+    }
 
-    // let calculateTotalpaid = 0;
-    // for (let i = 0; i < Pending.length; i++) {
-    //     calculateTotalpaid += Pending[i].fees_id.pending_amount.length
 
-    // }
 
 
     if (isloading) {
@@ -71,7 +70,7 @@ export default function Cards() {
                         </div>
                     </div>
                     <div className="text-left ml-2">
-                        {/* <p className='text-white text-4xl'>{Pending}</p> */}
+                        <p className='text-white text-4xl'>{calculatepending}</p>
 
                         <h1 className='text-white  '>Total <span>Pending</span></h1>
                     </div>

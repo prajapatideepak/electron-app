@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { TbCurrencyRupee } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useParams, useLocation } from "react-router-dom";
-import { Facultyreciept } from "../Hooks/usePost"
+import { Facultyreciept } from "../hooks/usePost"
 import { NavLink, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdModeEditOutline } from "react-icons/md";
@@ -11,7 +11,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import { FaBullseye, FaUserAlt } from "react-icons/fa";
 import { IoMdLock } from "react-icons/io";
-import Loader from './loader';
+import Loader from './Loader';
 
 
 

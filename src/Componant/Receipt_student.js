@@ -2,13 +2,14 @@ import React from "react";
 import { TbCurrencyRupee } from "react-icons/tb";
 import styled from "styled-components";
 
-function Receipt_student({}) {
+function Receipt_student({receiptDetails}) {
+  
   const receiptBgColor = "bg-red-600";
   const receiptTextColor = "text-red-600";
 
   return (
     <ReceiptMainDiv
-      className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`}
+      className={`border-4 rounded-3xl border-red-600 mx-auto mt-2`}
     >
       <div className="p-5">
         <div className="flex justify-between">
@@ -29,53 +30,74 @@ function Receipt_student({}) {
           </div>
           <div>
             <p className={`${receiptTextColor} font-bold`}>
-              Receipt No: <span className="text-black">03</span>
+              Receipt No: <span className="text-black">{receiptDetails?.receipt_no}</span>
             </p>
           </div>
         </div>
         <div className="flex justify-between items-center mt-5">
           <div>
             <p className={`${receiptTextColor} font-bold italic`}>
-              Stream: <span className="text-black">Commerce</span>
+              Stream: <span className="text-black">{receiptDetails?.stream?.toUpperCase()}</span>
             </p>
           </div>
           <div>
             <p className={`${receiptTextColor} font-bold italic`}>
-              Date: <span className="text-black">07 / 08 / 22</span>
+              Date: <span className="text-black">{ receiptDetails?.date }</span>
             </p>
           </div>
         </div>
         <div className="flex justify-between items-center mt-5">
           <div>
             <p className={`${receiptTextColor} font-bold italic`}>
-              Roll No: <span className="text-black">01</span>
+              Roll No: <span className="text-black">{receiptDetails?.roll_no}</span>
             </p>
           </div>
           <div>
             <p className={`${receiptTextColor} font-bold italic`}>
-              class: <span className="text-black">9th</span>
+              class: <span className="text-black">{receiptDetails?.class_name?.toUpperCase()}</span>
             </p>
           </div>
           <div>
             <p className={`${receiptTextColor} font-bold italic`}>
-              Batch: <span className="text-black">2022-23</span>
+              Batch: <span className="text-black">{receiptDetails?.batch}</span>
             </p>
           </div>
         </div>
         <div className="mt-5">
           <p className={`${receiptTextColor} font-bold italic`}>
-            Name: <span className="text-black">Nasir Sir</span>
+            Name: <span className="text-black">{receiptDetails?.full_name?.toUpperCase()}</span>
           </p>
         </div>
         <div className="mt-5">
           <p className={`${receiptTextColor} font-bold italic`}>
             The sum of Rupees:{" "}
-            <span className="text-black">Twenty Six Thousand</span>
+            <span className="text-black">{receiptDetails?.amount_in_words}</span>
           </p>
         </div>
-        <div className="mt-5">
+        <div className="mt-5">  
           <p className={`${receiptTextColor} font-bold italic`}>
-            by Cash/UPI/Cheque No: <span className="text-black">676899</span>{" "}
+            By {
+              receiptDetails?.is_by_upi 
+            ?
+               'UPI'
+            :
+              receiptDetails?.is_by_cheque
+              ?
+                "CHEQUE"
+              :
+                null
+            }: <span className="text-black">{
+            receiptDetails?.is_by_upi 
+            ?
+               receiptDetails?.upi_no
+            :
+              receiptDetails?.is_by_cheque
+              ?
+                receiptDetails?.cheque_no
+              :
+                ' CASH'
+
+          }</span>
           </p>
         </div>
         <div className="flex justify-between items-center mt-5">
@@ -94,14 +116,14 @@ function Receipt_student({}) {
                   type="text"
                   className="w-48 h-10 border-2 p-2 pl-14 border-red-600 rounded-full text-2xl font-bold"
                   disabled
-                  value="25000/-"
+                  value={`${receiptDetails?.amount} /-`}
                   style={{ margin: "1px" }}
                 />
               </div>
             </div>
             <div className="pt-2">
               <p className={`${receiptTextColor} font-bold text-sm ml-1 mt-3`}>
-                Admin: <span className="text-black">xyz</span>
+                Admin: <span className="text-black">{receiptDetails?.admin?.toUpperCase()}</span>
               </p>
             </div>
           </div>

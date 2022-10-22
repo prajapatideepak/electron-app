@@ -5,9 +5,9 @@ import { Tooltip } from "@material-tailwind/react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AiFillEye } from 'react-icons/ai';
 import { IoIosArrowBack } from 'react-icons/io';
-import { Facultyhistory } from "../Hooks/usePost"
+import { Facultyhistory } from "../hooks/usePost"
 import { useParams } from "react-router-dom";
-import Loader from './loader';
+import Loader from './Loader';
 
 
 

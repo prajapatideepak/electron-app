@@ -2,10 +2,10 @@ import React from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Facultyreciept, Update_faculty_reciept } from "../Hooks/usePost"
+import { Facultyreciept, Update_faculty_reciept } from "../hooks/usePost"
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import Loader from './loader';
+import Loader from './Loader';
 
 
 

@@ -10,9 +10,9 @@ import { FaUserEdit } from "react-icons/fa";
 import { IoMdInformationCircle } from "react-icons/io";
 import '../Styles/Studentform.css';
 import { useParams } from "react-router-dom";
-import { Facultydetails, Facultyhistory, Update_faculty } from "../Hooks/usePost";
+import { Facultydetails, Facultyhistory, Update_faculty } from "../hooks/usePost";
 import { toast } from "react-toastify";
-import Loader from "./loader";
+import Loader from "./Loader";
 
 
 

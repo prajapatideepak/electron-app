@@ -6,10 +6,10 @@ import { FaPlus } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { getAllFaculty, Addfaculty } from "../Hooks/usePost"
+import { getAllFaculty, Addfaculty } from "../hooks/usePost"
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from '../Componant/loader';
+import Loader from '../Componant/Loader';
 
 
 const Faculty = () => {

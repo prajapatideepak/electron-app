@@ -8,8 +8,8 @@ import { AiOutlineRight } from "react-icons/ai";
 import { IoMdInformationCircle } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-import { getAllFaculty, getFaculty } from "../Hooks/usePost";
-import _ from "loadsh"
+import { getAllFaculty, getFaculty } from "../hooks/usePost";
+import _ from "lodash"
 
 
 

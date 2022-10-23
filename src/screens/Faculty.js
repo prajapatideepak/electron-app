@@ -57,12 +57,11 @@ const Faculty = () => {
     trigger,
     resetField,
   } = useForm();
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     const formdata = new FormData(form.current);
    
     const response = await Addfaculty(formdata)
-    console.log(response , "res")
-    console.log(response.data.data.success)
+    
     if (response.data.data.success) {
       Toaster()
       handleClick()

@@ -10,15 +10,7 @@ import { NasirContext } from "./NasirContext";
 
 function App() {
   const { token, section } = React.useContext(NasirContext);
-  console.log(token);
-  console.log(section);
-
-  React.useEffect(() => {
-    console.log(token);
-  }, [token]);
-
-  console.log(token);
-
+  
   return (
     <div>
       {!token ? (

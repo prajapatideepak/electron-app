@@ -44,7 +44,7 @@ const Facultytable = () => {
     <>
       <section className="table h-full w-full mt-10 shadow-none">
         <div className="flex justify-center items-center p-10 pt-0">
-          <div class="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
+          <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
             {/* <div className="print-btn flex items-center space-x-3">
               <Tooltip
                 content="Print"

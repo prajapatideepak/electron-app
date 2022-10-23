@@ -166,7 +166,7 @@ const Profilefaculty = () => {
         </div>
       </div>
       <section className=" p-10 pt-3 ">
-        <div class="overflow-x-auto relative  sm:rounded-lg bg-white p-10  space-y-5 w-full">
+        <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10  space-y-5 w-full">
 
           <form className="flex justify-center items-center " onSubmit={handleSubmit(onSubmit)}>
             <div className=" w-full grid grid-cols-1 rounded-lg  truncate  pb-5 pt-10 ">
@@ -405,34 +405,34 @@ const Profilefaculty = () => {
             />
 
             <div ref={componentRef} className='p-5 pt-3 pb-0'>
-              <table class="w-full text-sm text-center bg-class5-50 rounded-xl ">
-                <thead class="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+              <table className="w-full text-sm text-center bg-class5-50 rounded-xl ">
+                <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
                   <tr className='text-white text-base'>
 
-                    <th scope="col" class="py-7 px-5 text-center ">Total Paid</th>
-                    <th scope="col" class="py-7 px-5 text-center ">LastPaid</th>
-                    <th scope="col" class="py-7 px-5 text-center ">Date</th>
-                    <th scope="col" class={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>Action</th>
+                    <th scope="col" className="py-7 px-5 text-center ">Total Paid</th>
+                    <th scope="col" className="py-7 px-5 text-center ">LastPaid</th>
+                    <th scope="col" className="py-7 px-5 text-center ">Date</th>
+                    <th scope="col" className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>Action</th>
                   </tr>
                 </thead>
                 {Totalpaid.length > 0 ? (
                   <tbody className='bg-white border items-center '>
 
-                    <tr class=" border-b">
+                    <tr className=" border-b">
 
-                      <td class="py-7 px-5 text-center ">
+                      <td className="py-7 px-5 text-center ">
                         {calculateTotalpaid}
                       </td>
-                      <td class="py-7 px-5 text-center ">
+                      <td className="py-7 px-5 text-center ">
                         {LastPaid?.transaction_id.amount}
                       </td>
-                      <td class="py-7 px-5 text-center ">
+                      <td className="py-7 px-5 text-center ">
                         {date}
                       </td>
-                      <td class={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
+                      <td className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
                         <div className='flex justify-center space-x-2'>
                           <NavLink className="nav-link" to={`/Profilefaculty/Staffhistory/${facultydetails._id}`}>
-                            <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" class="text-xl text-darkblue-500"><AiFillEye /></a></Tooltip>
+                            <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl text-darkblue-500"><AiFillEye /></span></Tooltip>
 
                           </NavLink>
                         </div>

@@ -66,7 +66,7 @@ const Staffhistory = () => {
 
 
         {/* <div className='btn flex justify-end'  >
-          <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" id='print' class="text-3xl bg-darkblue-500 rounded-md text-white p-1  "><MdLocalPrintshop /></a></Tooltip>
+          <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" id='print' className="text-3xl bg-darkblue-500 rounded-md text-white p-1  "><MdLocalPrintshop /></a></Tooltip>
         </div> */}
         <ReactToPrint
           trigger={() => (
@@ -120,7 +120,7 @@ const Staffhistory = () => {
                           <div className='flex justify-center space-x-2'>
                             <NavLink className="nav-link" to={`/Staffhistory/Receipt_teacher/${item.salary_receipt_id}`} state={{ isStaff: true, isSalaried: item.is_hourly }}>
 
-                              <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" class="text-xl bg-white text-darkblue-500"><AiFillEye /></a></Tooltip>
+                              <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl bg-white text-darkblue-500"><AiFillEye /></span></Tooltip>
                             </NavLink>
 
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
-import { useForm } from "react-hook-form";
 import { AiFillEye } from 'react-icons/ai';
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
@@ -12,13 +11,75 @@ import SweetAlert from '../hooks/sweetAlert';
 import Loader from './Loader';
 import { AiFillCloseCircle } from "react-icons/ai";
 import {AxiosError} from 'axios';
+import Validator from '../hooks/validator';
+
+const valid = new Validator();
+valid.register({
+    photo: {
+        required: [false],
+    },
+    full_name: {
+        required: [true, 'Field is required'],
+        pattern: [/^[A-Za-z ]+$/, "Please enter only characters"]
+    },
+    mother_name: {
+        required: [true, 'Field is required'],
+        pattern: [/^[A-Za-z ]+$/, "Please enter only characters"]
+    },
+    dob: {
+        required: [true, 'Field is required']
+    },
+    whatsapp_no: {
+        required: [true, 'Field is required'],
+        pattern: [/^[0-9]*$/, "Please enter only numbers"]
+    },
+    alternate_no: {
+        required: [false],
+        pattern: [/^[0-9]*$/, "Please enter only numbers"]
+    },
+    gender: {
+        required: [false]
+    },
+    address: {
+        required: [true, 'Address is required']
+    },
+    admission_date: {
+        required: [true, 'Field is required']
+    },
+    total_fees: {
+        required: [true, 'Field is required'],
+        pattern: [/^[0-9]*$/, "Please enter only numbers"]
+    },
+    discount: {
+        required: [false],
+        pattern: [/^[0-9]*$/, "Please enter only numbers"]
+    },
+    email: {
+        required: [false],
+        pattern: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "Please enter valid email"]
+    },
+    reference: {
+        required: [false],
+        pattern: [/^[A-Za-z ]+$/, "Please enter only characters"]
+    },
+    school_name: {
+        required: [false],
+        pattern: [/^[A-Za-z ]+$/, "Please enter only characters"]
+    },
+    note: {
+        required: [false],
+        pattern: [/^[A-Za-z ]+$/, "Please enter only characters"]
+    }
+})
 
 const Profilestudent = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const form = useRef(null);
     const server = "http://localhost:4000/";
-    const defaultImage = "http://localhost:4000/user_default@123.png"
+    const defaultImage = "http://localhost:4000/user_default@123.png";
+
+    const [state, setState] = React.useState(true);
     const [img, setImg] = useState(defaultImage); 
     const [isLoadingDetails, setIsLoadingDetails] = useState(true); //used in fetching details and on update details
     const [isProcessing, setIsProcessing] = useState(false); //used in fetching details and on update details
@@ -43,16 +104,7 @@ const Profilestudent = () => {
         school_name: '',
         note: ''
     })
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-        trigger,
-        resetField,
-        clearErrors,
-        setValue 
-    } = useForm();
+    
     const [oldStudentDetails, setOldStudentDetails] = useState({});
     const [call, setCall] = useState(false);
     
@@ -115,22 +167,23 @@ const Profilestudent = () => {
 
         setOldStudentDetails(stud_data)
 
-        setValue('full_name', stud_data.full_name ?? stud_data.full_name)
-        setValue('dob', stud_data.dob ?? stud_data.dob)
-        setValue('admission_date', stud_data.admission_date ?? stud_data.admission_date)
-        setValue('mother_name', stud_data.mother_name ?? stud_data.mother_name)
-        setValue('whatsapp_no', stud_data.whatsapp_no ?? stud_data.whatsapp_no)
-        setValue('alternate_no', stud_data.alternate_no ?? stud_data.alternate_no)
-        setValue('gender', stud_data.gender ?? stud_data.gender)
-        setValue('address', stud_data.address ?? stud_data.address)
-        setValue('total_fees', stud_data.total_fees ?? stud_data.total_fees)
-        setValue('discount', stud_data.discount ?? stud_data.discount)
-        setValue('email', stud_data.email ?? stud_data.email)
-        setValue('reference', stud_data.reference ?? stud_data.reference)
-        setValue('note', stud_data.note ?? stud_data.note)
-        setValue('school_name', stud_data.school_name ?? stud_data.school_name)
-    }
-        
+        valid.fieldsValue = {
+            full_name : stud_data.full_name ?? stud_data.full_name,
+            dob : stud_data.dob ?? stud_data.dob,
+            admission_date : stud_data.admission_date ?? stud_data.admission_date,
+            mother_name : stud_data.mother_name ?? stud_data.mother_name,
+            whatsapp_no : stud_data.whatsapp_no ?? stud_data.whatsapp_no,
+            alternate_no : stud_data.alternate_no ?? stud_data.alternate_no,
+            gender : stud_data.gender ?? stud_data.gender,
+            address : stud_data.address ?? stud_data.address,
+            total_fees : stud_data.total_fees ?? stud_data.total_fees,
+            discount : stud_data.discount ?? stud_data.discount,
+            email : stud_data.email ?? stud_data.email,
+            reference : stud_data.reference ?? stud_data.reference,
+            note : stud_data.note ?? stud_data.note,
+            school_name : stud_data.school_name ?? stud_data.school_name        
+        }
+    }  
     //Loading initial student details
     useEffect(() => {
         async function studentApi(){
@@ -194,8 +247,7 @@ const Profilestudent = () => {
         });
     };
 
-    const onSubmit = async (data, e) => {
-        e.preventDefault();
+    const onSubmit = async (data) => {
         const netFees = studentInputController.total_fees - studentInputController.discount;
 
         Object.assign(data,{net_fees: netFees, photo: data.photo, student_id})
@@ -235,8 +287,6 @@ const Profilestudent = () => {
         }
     }
 
-    const onError = (errors, e) => Toaster('error', errors.message);
-
 
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -248,7 +298,12 @@ const Profilestudent = () => {
 
         let name = e.target.name;
         let value = e.target.value;
-        trigger();
+        
+        valid.validate({
+            fieldName: name, 
+            value: value
+        })
+
         setStudentInputController((prevData) => {
             return {
                 ...prevData,
@@ -394,7 +449,7 @@ const Profilestudent = () => {
                             
                         </div> */}
                         
-                        <form ref={form} className="flex justify-center items-center" onSubmit={handleSubmit(onSubmit, onError)} >
+                        <form ref={form} className="flex justify-center items-center" onSubmit={(e)=> setState(valid.handleSubmit(e, onSubmit))} >
                             <div className="w-11/12 grid grid-cols-2 rounded-lg  truncate bg-white p-10">
                                 <div className="left flex flex-col items-center gap-5">
                                     <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
@@ -434,12 +489,10 @@ const Profilestudent = () => {
                                                     placeholder="First Name, Middle Name, Last Name"
                                                     value={studentInputController.full_name}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.full_name && 'border-red-600'}`}
-                                                    {...register("full_name", { required: "Fullname is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
+                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.full_name != '' && 'border-red-600'}`}
                                                     onChange={handleChange}
-                                                    onKeyDown={()=>{ trigger('full_name');}}
                                                 />
-                                                {errors.full_name && (<small className="text-red-700">{errors.full_name.message}</small>)}
+                                                {valid.errors?.full_name != '' ? <small className="text-red-600 mt-3">*{valid.errors?.full_name}</small> : null}
                                             </label>
                                         </div>
                                         <div className="mothername">
@@ -453,14 +506,13 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Mother Name"
                                                     value={studentInputController.mother_name}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.mother_name && 'border-red-600'}`}
-                                                    {...register("mother_name", { required: "Mothername is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
+                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.mother_name != '' && 'border-red-600'}`}
+                                                    
                                                     onChange={(e) => {
                                                         handleChange(e)
-                                                        trigger('mother_name')
                                                     }}
                                                 />
-                                                {errors.mother_name && (<small className="text-red-700">{errors.mother_name.message}</small>)}
+                                                {valid.errors?.mother_name != '' ? <small className="text-red-600 mt-3">*{valid.errors?.mother_name}</small> : null}
                                             </label>
                                         </div>
                                     </div>
@@ -476,14 +528,13 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your WhatsApp No"
                                                     value={studentInputController.whatsapp_no}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.whatsapp_no && 'border-red-600'}`}
-                                                    {...register("whatsapp_no", { required: "Whatsapp no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida whatsapp no" } })}
+                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.whatsapp_no != '' && 'border-red-600'}`}
+                                                
                                                     onChange={(e) => {
                                                         handleChange(e)
-                                                        trigger('whatsapp_no')
                                                     }}
                                                 />
-                                                {errors.whatsapp_no && (<small className="text-red-700">{errors.whatsapp_no.message}</small>)}
+                                                {valid.errors?.whatsapp_no != '' ? <small className="text-red-600 mt-3">*{valid.errors?.whatsapp_no}</small> : null}
                                             </label>
                                         </div>
                                         <div className="mobileno">
@@ -493,18 +544,17 @@ const Profilestudent = () => {
                                                 </span>
                                                 <input
                                                     type="text"
-                                                    name="mobile_no"
+                                                    name="alternate_no"
                                                     placeholder="Enter Your Mobile No"
                                                     value={studentInputController.alternate_no != '' || studentInputController.alternate_no != '--' ? studentInputController.alternate_no : '--'}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.alternate_no && 'border-red-600'}`}
-                                                    {...register("alternate_no", {required: false, pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida mobile no" } })}
+                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.alternate_no != '' && 'border-red-600'}`}
+                                                    
                                                     onChange={(e) => {
                                                         handleChange(e)
-                                                        trigger('alternate_no')
                                                     }}
                                                 />
-                                                {errors.alternate_no && (<small className="text-red-700">{errors.alternate_no.message}</small>)}
+                                                {valid.errors?.alternate_no != '' ? <small className="text-red-600 mt-3">*{valid.errors?.alternate_no}</small> : null}
                                             </label>
                                         </div>
                                     </div>
@@ -520,10 +570,10 @@ const Profilestudent = () => {
                                                     name="dob"
                                                     disabled={isEnable}
                                                     value={studentInputController.dob}
-                                                    className={`w-60 hover:cursor-pointer mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.dob && 'border-red-600'}`}
-                                                    {...register("dob", { required: "Date of birth is required" })}
+                                                    className={`w-60 hover:cursor-pointer mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.dob != '' && 'border-red-600'}`}
+                                                    
                                                     onChange={handleChange}                                           />
-                                                {errors.dob && (<small className="text-red-700">{errors.dob.message}</small>)}
+                                                {valid.errors?.dob != '' ? <small className="text-red-600 mt-3">*{valid.errors?.dob}</small> : null}
                                             </label>
                                         </div>
                                         <div className="gender w-60">
@@ -531,7 +581,7 @@ const Profilestudent = () => {
                                                 <span className="block text-sm font-medium text-slate-700">
                                                     Gender
                                                 </span>
-                                                <div className={` border border-slate-300 mt-1 rounded-md h-10 flex justify-center items-center space-x-5 ${errors.gender && 'border-red-600'} `}>
+                                                <div className={` border border-slate-300 mt-1 rounded-md h-10 flex justify-center items-center space-x-5 ${valid.errors?.gender != '' && 'border-red-600'} `}>
                                                     <div className="male ">
 
                                                         <label htmlFor="gender" className="m-2">
@@ -542,10 +592,10 @@ const Profilestudent = () => {
                                                             id="male"
                                                             name="gender"
                                                             value="male"
-                                                            checked={studentInputController?.gender?.toLowerCase() == 'male' ? "checked" : ''}
+                                                            checked={studentInputController?.gender?.toLowerCase() == 'male' ? true : false}
                                                             disabled={isEnable}
                                                             className="  hover:cursor-pointer"
-                                                            {...register("gender", { required: "Gender is required" })}
+                                                            
                                                             onChange={handleChange}
                                                         />
                                                     </div>
@@ -558,10 +608,10 @@ const Profilestudent = () => {
                                                             id="female"
                                                             name="gender"
                                                             value="female"
-                                                            checked={studentInputController?.gender?.toLowerCase() == 'female' ? "checked" : ''}
+                                                            checked={studentInputController?.gender?.toLowerCase() == 'female' ? true : false}
                                                             disabled={isEnable}
                                                             className="   hover:cursor-pointer"
-                                                            {...register("gender", { required: "Gender is required" })}
+                                                            
                                                             onChange={handleChange}
                                                         />
 
@@ -569,7 +619,7 @@ const Profilestudent = () => {
 
                                                 </div>
                                             </label>
-                                            {errors.gender && (<small className="text-red-700">{errors.gender.message}</small>)}
+                                            {valid.errors?.gender != '' ? <small className="text-red-600 mt-3">*{valid.errors?.gender}</small> : null}
                                         </div>
                                     </div>
                                     <div className="flex flex-1 w-full px-3">
@@ -580,9 +630,9 @@ const Profilestudent = () => {
                                                 </span>
                                                 <textarea name="address" 
                                                     value={studentInputController.address}
-                                                    disabled={isEnable}className={`mt-1 rounded-md px-3 py-2 outline-none border  border-slate-300 text-sm shadow-sm placeholder-slate-400 ${errors.address && 'border-red-600'}`} {...register("address", { required: "Address is required" })} placeholder="Enter Address" id=""
+                                                    disabled={isEnable}className={`mt-1 rounded-md px-3 py-2 outline-none border  border-slate-300 text-sm shadow-sm placeholder-slate-400 ${valid.errors?.address != '' && 'border-red-600'}`}  placeholder="Enter Address" id=""
                                                     onChange={handleChange} cols="71" rows="2"></textarea>
-                                                {errors.address && (<small className="mt-1 text-red-700">{errors.address.message}</small>)}
+                                                {valid.errors?.address != '' ? <small className="text-red-600 mt-3">*{valid.errors?.address}</small> : null}
                                             </label>
                                         </div>
                                     </div>
@@ -597,8 +647,7 @@ const Profilestudent = () => {
                                                 <select
                                                     name="class_name"
                                                     disabled={true}
-                                                    className={`w-[155px] hover:cursor-pointer mt-1 block w-full px-3 py-[6px] bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.class_name && 'border-red-600'}`}
-                                                    {...register("class_name")}
+                                                    className={`w-[155px] hover:cursor-pointer mt-1 block w-full px-3 py-[6px] bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
                                                 >
                                                     <option value="">{studentInputController.class_name}</option>
                                                 </select>
@@ -612,8 +661,7 @@ const Profilestudent = () => {
                                                 <select
                                                     name="stream"
                                                     disabled={true}
-                                                    className={`w-[155px] hover:cursor-pointer mt-1 block w-full px-3 py-[6px] bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.std && 'border-red-600'}`}
-                                                    {...register("stream")}
+                                                    className={`w-[155px] hover:cursor-pointer mt-1 block w-full px-3 py-[6px] bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
                                                 >
                                                     <option value="">{studentInputController.stream}</option>
                                                 </select>
@@ -627,8 +675,7 @@ const Profilestudent = () => {
                                                 <select
                                                     name="medium"
                                                     disabled={true}
-                                                    className={`w-[155px] hover:cursor-pointer mt-1 block w-full px-3 py-[6px] bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.medium && 'border-red-600'}`}
-                                                    {...register("medium")}
+                                                    className={`w-[155px] hover:cursor-pointer mt-1 block w-full px-3 py-[6px] bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none `}
                                                 >
                                                     <option value="">{studentInputController.medium}</option>
                                                 </select>
@@ -648,11 +695,11 @@ const Profilestudent = () => {
                                                     name="admission_date"
                                                     value={studentInputController.admission_date}
                                                     disabled={isEnable}
-                                                    className={`w-60 hover:cursor-pointer mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.admission_date && 'border-red-600'}`}
-                                                    {...register("admission_date", { required: "Admissiondate is required" })}
+                                                    className={`w-60 hover:cursor-pointer mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.admission_date != '' && 'border-red-600'}`}
+                                                    
                                                     onChange={handleChange}
                                                 />
-                                                {errors.admission_date && (<small className="text-red-700">{errors.admission_date.message}</small>)}
+                                                {valid.errors?.admission_date != '' ? <small className="text-red-600 mt-3">*{valid.errors?.admission_date}</small> : null}
                                             </label>
                                         </div>
                                         <div className="totalfee">
@@ -666,15 +713,14 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Total Fee"
                                                     disabled={isEnable}
                                                     value={studentInputController.total_fees}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.total_fees && 'border-red-600'}`}
-                                                    {...register("total_fees", { required: "Total Fee is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" } })}
+                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.total_fees != '' && 'border-red-600'}`}
+                                                    
                                                     onChange={(e) => {
                                                         handleChange(e)
-                                                        trigger('total_fees')
                                                         totalDis()
                                                     }}
                                                 />
-                                                {errors.total_fees && (<small className="text-red-700">{errors.total_fees.message}</small>)}
+                                                {valid.errors?.total_fees != '' ? <small className="text-red-600 mt-3">*{valid.errors?.total_fees}</small> : null}
                                             </label>
                                         </div>
                                     </div>
@@ -690,14 +736,13 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Email"
                                                     value={studentInputController.email != '' || studentInputController.email != '--' ? studentInputController.email : "--"}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.email && 'border-red-600'}`}
-                                                    {...register("email", {required: false, pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "Please enter valid email" } })}
+                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.email != '' && 'border-red-600'}`}
+                                                    
                                                     onChange={(e) => {
                                                         handleChange(e)
-                                                        trigger('email')
                                                     }}
                                                 />
-                                                {errors.email && (<small className="text-red-700">{errors.email.message}</small>)}
+                                                {valid.errors?.email != '' ? <small className="text-red-600 mt-3">*{valid.errors?.email}</small> : null}
                                             </label>
                                         </div>
                                         <div className="discount">
@@ -711,15 +756,14 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Discount"
                                                     value={studentInputController.discount}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.discount && 'border-red-600'}`}
-                                                    {...register("discount", {required: false, pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" } })}
+                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.discount != '' && 'border-red-600'}`}
+                                                    
                                                     onChange={(e) => {
                                                         handleChange(e)
-                                                        trigger('discount')
                                                         totalDis()
                                                     }}
                                                 />
-                                                {errors.discount && (<small className="text-red-700">{errors.discount.message}</small>)}
+                                                {valid.errors?.discount != '' ? <small className="text-red-600 mt-3">*{valid.errors?.discount}</small> : null}
                                             </label>
                                         </div>
                                     </div>
@@ -735,14 +779,11 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Refeence"
                                                     value={studentInputController.reference != '' || studentInputController.reference != '--' ? studentInputController.reference : "--"}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.reference && 'border-red-600'} `}
-                                                    {...register("reference", {required: false, pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
+                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.reference != '' && 'border-red-600'} `}
+                                                    
                                                     onChange={handleChange}
-                                                    onKeyUp={(e) => {
-                                                        trigger('reference')
-                                                    }}
                                                 />
-                                                {errors.reference && (<small className="text-red-700">{errors.reference.message}</small>)}
+                                                {valid.errors?.reference != '' ? <small className="text-red-600 mt-3">*{valid.errors?.reference}</small> : null}
                                             </label>
                                         </div>
                                         <div className="netpayable">
@@ -757,7 +798,6 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Net Payable"
                                                     disabled={true}
                                                     className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
-                                                    {...register("net_fees",{required: false, pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" } })}
                                                     onChange={handleChange}
                                                 />
                                             </label>
@@ -776,14 +816,11 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your School Name"
                                                     value={studentInputController.school_name != '' || studentInputController.school_name != '--'? studentInputController.school_name : "--"}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.school_name && 'border-red-600'}`}
-                                                    {...register("school_name", {required: false, pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
+                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.school_name != '' && 'border-red-600'}`}
+                                                    
                                                     onChange={handleChange}
-                                                    onKeyUp={(e) => {
-                                                        trigger('school_name')
-                                                    }}
                                                 />
-                                                {errors.school_name && (<small className="text-red-700">{errors.school_name.message}</small>)}
+                                                {valid.errors?.school_name != '' ? <small className="text-red-600 mt-3">*{valid.errors?.school_name}</small> : null}
                                             </label>
                                         </div>
                                         <div className="note">
@@ -797,14 +834,13 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Note"
                                                     value={studentInputController.note != '' || studentInputController.note != '--' ? studentInputController.note : "--"}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.note && 'border-red-600'}`}
-                                                    {...register("note", { required: false, pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
+                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.note != '' && 'border-red-600'}`}
+                                                    
                                                     onChange={(e) => {
                                                         handleChange(e)
-                                                        trigger('note')
                                                     }}
                                                 />
-                                                {errors.note && (<small className="text-red-700">{errors.note.message}</small>)}
+                                                {valid.errors?.note != '' ? <small className="text-red-600 mt-3">*{valid.errors?.note}</small> : null}
                                             </label>
                                         </div>
                                     </div>
@@ -816,7 +852,6 @@ const Profilestudent = () => {
                                             border-2 hover:border-darkblue-500 hover:text-darkblue-500`} 
                                                 onClick={(e)=>{
                                                     e.preventDefault()
-                                                    clearErrors();
                                                     setClassSelectionModel(true); 
                                                 }} >
                                                 Transfer
@@ -845,7 +880,6 @@ const Profilestudent = () => {
                                                                     note: studentInputController.note == '--' ? '' : studentInputController.note
                                                                 }
                                                             })
-                                                            clearErrors()
                                                         }
                                                     }>
                                                         <FaUserEdit className="text-xl" />Edit
@@ -868,8 +902,6 @@ const Profilestudent = () => {
                                                                 }
                                                             })
                                                             setStudentInputController(oldStudentDetails);
-
-                                                            clearErrors()
                                                         }
                                                     }>
                                                         <FaUserEdit className="text-xl" />Cancel

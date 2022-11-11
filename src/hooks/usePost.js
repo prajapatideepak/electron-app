@@ -5,7 +5,6 @@ import { NasirContext } from "../NasirContext";
 const axios = require("axios");
 
 const token = getToken("token");
-console.log(token);
 
 export const axiosInstance = axios.create({
   headers: {
@@ -244,7 +243,7 @@ export const getAllFaculty = async () => {
 // -----------------------------------------------------------------------
 export async function Facultydetails (id){
   try {
-    const res = await axios.get(`${SERVER}/faculty//Facultydetails/` + id)
+    const res = await axios.get(`${SERVER}/faculty/Facultydetails/` + id)
     return res
   } catch (error) {
     console.log(error)

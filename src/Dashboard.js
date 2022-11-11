@@ -28,37 +28,35 @@ import Receipt_teacher from "./Componant/Receipt_teacher";
 import Dashboardsection from "./Componant/Dashboardsection";
 import { usegetAdmin } from "./hooks/usePost";
 import { useQuery } from "react-query";
-import { VerifyAdmin } from "./AuthProvider";
 import Whatsapp from "./Componant/Whatsapp";
 import { NasirContext } from "./NasirContext";
 import AdminList from "./screens/AdminList";
-import UpdateStudentReceipt from './screens/UpdateStudentReceipt';
 import CancelAdmission from './screens/CancelAdmission';
 import Salarydetails from "./Componant/Salarydetails";
 
-function DashboardMenu({ setSection }) {
+function DashboardMenu() {
   const { setAdmin, login } = React.useContext(NasirContext);
   const adminData = useQuery("admin", usegetAdmin);
 
   useEffect(() => {
     login()
+    if (adminData.isSuccess) {
+      setAdmin(adminData.data.data);
+    }
   }, [])
 
-  if (adminData.isSuccess) {
-    setAdmin(adminData.data.data);
-  }
 
   return !adminData.isSuccess ? (
-    <div class="flex bg-[#f5f7ff]  items-center h-screen justify-center space-x-2 ">
-      <div class="w-12 h-12 bg-blue-400 rounded-full animate-bounce"></div>
-      <div class="w-12 h-12 bg-green-400 rounded-full animate-bounce"></div>
-      <div class="w-12 h-12 bg-black rounded-full animate-bounce"></div>
+    <div className="flex bg-[#f5f7ff]  items-center h-screen justify-center space-x-2 ">
+      <div className="w-12 h-12 bg-blue-400 rounded-full animate-bounce"></div>
+      <div className="w-12 h-12 bg-green-400 rounded-full animate-bounce"></div>
+      <div className="w-12 h-12 bg-black rounded-full animate-bounce"></div>
     </div>
   ) : (
     <div className="bg-[#f5f7ff] min-h-screen flex">
       {<Sidebar />}
       <div className="w-full">
-        {<Searchbar setSection={setSection} />}
+        {<Searchbar/>}
         <div className="relative" style={{ minHeight: "calc(100% - 70px)" }}>
           <Routes>
             <Route exact path="/admin-login" element={<AdminLogin />} />

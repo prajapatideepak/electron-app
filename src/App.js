@@ -11,10 +11,6 @@ function App() {
   const { token, section } = React.useContext(NasirContext);
 
 
-  React.useEffect(() => {
-  }, [token]);
-
-
   return (
     <div>
       {!token ? (

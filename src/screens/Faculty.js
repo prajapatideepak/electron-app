@@ -58,7 +58,7 @@ const Faculty = () => {
     trigger,
     resetField,
   } = useForm();
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     const formdata = new FormData(form.current);
    
     const response = await Addfaculty(formdata)

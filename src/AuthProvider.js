@@ -7,7 +7,7 @@ export function setToken(key, value) {
 
 export function VerifyAdmin() {
   const data = useQuery("admin", usegetAdmin);
-  console.log(data);
+
   if (data.isError) {
     localStorage.clear();
   }

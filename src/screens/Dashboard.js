@@ -130,7 +130,7 @@ export default function Dashboard() {
                       ]
                       if (item.fees_id.pending_amount > 0) {
                         return (
-                          <tr className="border-b" >
+                          <tr key={key} className="border-b" >
 
                             <td className="py-7 px-5 text-center ">{item.student_id.student_id}</td>
                             <td className="py-7 px-5 text-center ">{item.student_id.basic_info_id.full_name}</td>
@@ -147,9 +147,9 @@ export default function Dashboard() {
                                     placement="bottom-end"
                                     className="text-white bg-black rounded p-2"
                                   >
-                                    <a href="#" className="text-xl text-darkblue-500">
+                                    <span className="text-xl text-darkblue-500">
                                       <AiFillEye />
-                                    </a>
+                                    </span>
                                   </Tooltip>
                                 </NavLink>
 
@@ -173,13 +173,13 @@ export default function Dashboard() {
             aria-label="Page navigation example"
             className="flex justify-end"
           >
-            <ul class="inline-flex items-center -space-x-px ">
+            <ul className="inline-flex items-center -space-x-px ">
               <li>
                 <a
                   href="#"
-                  class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
-                  <span class="sr-only">Previous</span>
+                  <span className="sr-only">Previous</span>
                   <AiOutlineLeft />
 
                 </a>
@@ -187,7 +187,7 @@ export default function Dashboard() {
               <li>
                 <a
                   href="#"
-                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   1
                 </a>
@@ -195,7 +195,7 @@ export default function Dashboard() {
               <li>
                 <a
                   href="#"
-                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   2
                 </a>
@@ -204,7 +204,7 @@ export default function Dashboard() {
                 <a
                   href="#"
                   aria-current="page"
-                  class="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                  className="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
                 >
                   3
                 </a>
@@ -212,7 +212,7 @@ export default function Dashboard() {
               <li>
                 <a
                   href="#"
-                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   4
                 </a>
@@ -220,7 +220,7 @@ export default function Dashboard() {
               <li>
                 <a
                   href="#"
-                  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
                   5
                 </a>
@@ -228,9 +228,9 @@ export default function Dashboard() {
               <li>
                 <a
                   href="#"
-                  class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
-                  <span class="sr-only">Next</span>
+                  <span className="sr-only">Next</span>
                   <AiOutlineRight />
 
                 </a>

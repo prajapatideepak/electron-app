@@ -9,9 +9,14 @@ import { AiOutlineRight } from "react-icons/ai";
 import { MdLocalPrintshop } from "react-icons/md";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-import { Alloverstudent } from "../hooks/usePost";
+import { Alloverstudent } from "../Hooks/usePost";
 import { toast } from "react-toastify";
-import Loader from '../Componant/Loader';
+import Loader from '../Componant/loader';
+
+
+
+
+
 
 
 export default function Dashboard() {

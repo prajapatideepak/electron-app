@@ -9,12 +9,11 @@ import { NavLink } from "react-router-dom";
 import { NasirContext } from "../NasirContext";
 import { handleLogout } from "../AuthProvider";
 
-export default function Searchbar({ setSection, data }) {
+export default function Searchbar() {
   const { admin } = React.useContext(NasirContext);
   const { logout, changeSection } = React.useContext(NasirContext);
   const myData = admin;
   const [toggle, SetToggle] = useState(false);
-  console.log("rerender");
 
   function handleToggle() {
     SetToggle(!toggle);

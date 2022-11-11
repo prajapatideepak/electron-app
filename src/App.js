@@ -6,8 +6,13 @@ import Staffhistory from "./Componant/Staffhistory";
 import Addadmin from "./Componant/Addadmin";
 import Transfer from "./Componant/Transfer";
 import Dashboardsection from "./Componant/Dashboardsection";
+import DashboardMenu from "./Dashboard";
+import { Route, Routes } from "react-router-dom";
+import { getToken } from "./AuthProvider";
+import { NasirContext } from "./NasirContext";
 
-function App() { 
+function App() {
+  const { token, section } = React.useContext(NasirContext)
   
   return (
     <div className="bg-[#f5f7ff] min-h-screen flex">

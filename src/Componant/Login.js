@@ -18,7 +18,7 @@ const Login = () => {
   React.useEffect(() => {
     console.log(requestLogin);
     if (requestLogin.isSuccess) {
-      toast.success("Login SuccuesFull");
+      toast.success("Login Successfull");
       setToken("token", requestLogin.data.token);
       axiosInstance.defaults.headers.Authorization = requestLogin.data.token;
 

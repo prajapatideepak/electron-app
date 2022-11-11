@@ -5,7 +5,6 @@ import { NasirContext } from "../NasirContext";
 const axios = require("axios");
 
 const token = getToken("token");
-console.log(token);
 
 export const axiosInstance = axios.create({
   headers: {
@@ -221,9 +220,7 @@ export async function Addfaculty(addnew) {
     const response = await axios.post(`${SERVER}/Faculty/register`, addnew)
       return response    
   } catch (error) {
-    
-    toast.error("Error!!")
-    console.log(error)
+      console.log(error)
   }
 
 }
@@ -236,7 +233,7 @@ export const getAllFaculty = async () => {
     const { data } = await axios.get(`${SERVER}/Faculty`);
     return data;
   } catch (error) {
-    throw error("data is not fatched")
+    console.log(error);
   }
 
 }
@@ -246,7 +243,7 @@ export const getAllFaculty = async () => {
 // -----------------------------------------------------------------------
 export async function Facultydetails (id){
   try {
-    const res = await axios.get(`${SERVER}/faculty//Facultydetails/` + id)
+    const res = await axios.get(`${SERVER}/faculty/Facultydetails/` + id)
     return res
   } catch (error) {
     console.log(error)

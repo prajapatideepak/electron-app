@@ -289,7 +289,7 @@ export default function Salary() {
           <div className="flex pt-4  justify-between  relative">
             <div className="space-y-2 px-7 text-sm ">
 
-              <h2 className="font-bold text-lg uppercase ">Name : {faculty.basic_info_id.full_name} </h2>
+              <h2 className="font-bold text-lg uppercase ">Name : {faculty?.basic_info_id.full_name} </h2>
             </div>
             <div className="p-6 pt-0 font-serif">
               <h3 className=""> Date : {date}</h3>

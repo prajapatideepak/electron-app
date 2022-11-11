@@ -12,15 +12,12 @@ export default function AdminList() {
   const admins = useQuery("admins", useGetAllAdmin);
   const changeAdmin = useChangeByAdmin();
   const setDefault = useSetDefault();
-  console.log(setDefault);
 
   function handleMakeAdmin(username) {
     changeAdmin.mutate({ username: username });
-    console.log(changeAdmin);
   }
 
   function handlesetDefault(username) {
-    console.log(username);
     setDefault.mutate({ username: username });
   }
 

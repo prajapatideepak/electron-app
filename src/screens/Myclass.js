@@ -459,7 +459,7 @@ const Myclass = () => {
                     onClick={(e) => {
                         setEditClassModel(!editClassModel)
                         reset();
-                      }}
+                    }}
                     className="absolute translate-x-4 -translate-y-4 font-bold text-2xl p-2 text-red-700"
                   >
                     <AiFillCloseCircle />

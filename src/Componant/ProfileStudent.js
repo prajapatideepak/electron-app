@@ -592,7 +592,7 @@ const Profilestudent = () => {
                                                             id="male"
                                                             name="gender"
                                                             value="male"
-                                                            checked={studentInputController?.gender?.toLowerCase() == 'male' ? true : false}
+                                                            checked={studentInputController?.gender?.toLowerCase() == 'male'}
                                                             disabled={isEnable}
                                                             className="  hover:cursor-pointer"
                                                             
@@ -608,15 +608,13 @@ const Profilestudent = () => {
                                                             id="female"
                                                             name="gender"
                                                             value="female"
-                                                            checked={studentInputController?.gender?.toLowerCase() == 'female' ? true : false}
+                                                            checked={studentInputController?.gender?.toLowerCase() == 'female'}
                                                             disabled={isEnable}
                                                             className="   hover:cursor-pointer"
                                                             
                                                             onChange={handleChange}
                                                         />
-
                                                     </div>
-
                                                 </div>
                                             </label>
                                             {valid.errors?.gender != '' ? <small className="text-red-600 mt-3">*{valid.errors?.gender}</small> : null}

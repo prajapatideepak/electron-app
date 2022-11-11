@@ -220,7 +220,7 @@ export async function Addfaculty(addnew) {
     const response = await axios.post(`${SERVER}/Faculty/register`, addnew)
       return response    
   } catch (error) {
-      console.log(error)
+    console.log(error)
   }
 
 }
@@ -233,7 +233,7 @@ export const getAllFaculty = async () => {
     const { data } = await axios.get(`${SERVER}/Faculty`);
     return data;
   } catch (error) {
-    console.log(error);
+      console.log(error)
   }
 
 }

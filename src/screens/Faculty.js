@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ReactToPrint from 'react-to-print';
 import { FiUsers } from "react-icons/fi";
 import Facultytable from "../Componant/facultytable";
 import { FaPlus } from "react-icons/fa";
@@ -35,11 +34,13 @@ const Faculty = () => {
   useEffect(() => {
     async function fetchfacultdata() {
       const res = await getAllFaculty();
-      setData(() => res)
+      setData(() => res.staffData.length)
       setloading(false);
     }
     fetchfacultdata()
   }, [])
+
+  console.log(data)
 
   // ------------------------------------------------------------------------------------
   // -------------------------- FORM VALIDATION -----------------------------------------
@@ -61,10 +62,10 @@ const Faculty = () => {
     const formdata = new FormData(form.current);
    
     const response = await Addfaculty(formdata)
-    
-    if (response.data.data.success) {
+    console.log(response,"res")
+    if (response.data.success) {
       Toaster()
-      handleClick()
+      // handleClick()
       return setModel(false)
     } else {
       return errtoast()
@@ -361,30 +362,6 @@ const Faculty = () => {
                 />
               </div>
               <div className="right  flex justify-center">
-                {/* <div>
-                  <div className="card h-44 w-52 bg-white drop-shadow-md flex py-5 space-y-5">
-
-                    <div className='bg-blue-300 w-20 h-20 flex justify-center items-center rounded-md relative left-5 bottom-12 drop-shadow-lg'>
-                      <FiUsers className='text-blue-500 text-4xl' />
-                    </div>
-                    <div className='space-y-3'>
-                      <h1 className='text-xl text-gray-600 relative bottom-7 left-32 font-semibold '>Total Staff</h1>
-                      <p className=' text-5xl font-bold ml-12 text-blue-500'>{data.staffData.length}</p>
-                    </div>
-                  </div>
-                </div> */}
-                {/* <div
-                  id="faculty-card"
-                  className=" cursor-pointer  w-48 h-32 2xl:w-52 rounded-lg xl:h-28 bg-class10-50  xl:space-y-3 space-y-2 "
-                >
-                  <div className="flex items-center text-center justify-center space-x-5 pt-3 ">
-                    <MdPendingActions className=" text-class10-50 rounded-full xl:text-5xl text-5xl  xl:p-1 p-1 bg-white" />
-                    <p className="text-white text-4xl">578</p>
-                  </div>
-                  <h1 className="text-white text-xl ">
-                    Pending <span>Staff</span>
-                  </h1>
-                </div> */}
                 <div
                   id="faculty-card"
                   className=" p-5 flex items-center  rounded-lg  bg-class5-50 drop-shadow-lg space-x-7  ml-10 "
@@ -397,7 +374,7 @@ const Faculty = () => {
                       Staff Total
                     </h1>
                   </div>
-                  <p className=" font-semibold text-white xl:text-5xl">578</p>
+                  <p className=" font-semibold text-white xl:text-5xl">{data}</p>
                 </div>
               </div>
             </div>

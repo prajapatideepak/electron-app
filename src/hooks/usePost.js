@@ -221,8 +221,6 @@ export async function Addfaculty(addnew) {
     const response = await axios.post(`${SERVER}/Faculty/register`, addnew)
       return response    
   } catch (error) {
-    
-    toast.error("Error!!")
     console.log(error)
   }
 
@@ -236,7 +234,7 @@ export const getAllFaculty = async () => {
     const { data } = await axios.get(`${SERVER}/Faculty`);
     return data;
   } catch (error) {
-    throw error("data is not fatched")
+      console.log(error)
   }
 
 }

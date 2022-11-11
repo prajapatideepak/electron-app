@@ -9,9 +9,10 @@ import { AiOutlineRight } from "react-icons/ai";
 import { MdLocalPrintshop } from "react-icons/md";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-import { Alloverstudent } from "../Hooks/usePost";
+import { Alloverstudent } from "../hooks/usePost";
 import { toast } from "react-toastify";
-import Loader from '../Componant/loader';
+import Loader from '../Componant/Loader';
+import { NasirContext } from "../NasirContext";
 
 
 
@@ -23,7 +24,7 @@ export default function Dashboard() {
   const componentRef = useRef();
   const [isPrint, setIsPrint] = useState(false);
   const [isloading, setloading] = React.useState(true)
-
+  const { section } = React.useContext(NasirContext);
 
   // ---------------------------------------------------------------
   // --------------------    API Works       -----------------------
@@ -38,6 +39,7 @@ export default function Dashboard() {
     async function fetchfacultdata() {
       const res = await Alloverstudent();
       setstudent(() => res.data)
+      console.log(res, "res")
       setloading(false);
     }
     fetchfacultdata()

@@ -14,7 +14,6 @@ export default function Searchbar({ setSection, data }) {
   const { logout, changeSection } = React.useContext(NasirContext);
   const myData = admin;
   const [toggle, SetToggle] = useState(false);
-  console.log("rerender");
 
   function handleToggle() {
     SetToggle(!toggle);

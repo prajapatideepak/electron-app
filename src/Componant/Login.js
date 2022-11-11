@@ -16,7 +16,6 @@ const Login = () => {
   } = useForm();
 
   React.useEffect(() => {
-    console.log(requestLogin);
     if (requestLogin.isSuccess) {
       toast.success("Login SuccuesFull");
       setToken("token", requestLogin.data.token);
@@ -31,7 +30,6 @@ const Login = () => {
 
   const onSubmit = (data) => {
     requestLogin.mutate(data);
-    console.log(data);
   };
 
   return (

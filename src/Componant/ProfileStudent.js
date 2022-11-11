@@ -142,7 +142,7 @@ const Profilestudent = () => {
                 }
                 setStudentDetails();  //function call
                 setIsLoadingDetails(false);
-
+                
                 //Loading classes
                 const activeClasses = await getActiveClasses()
                 setClasses(activeClasses.data.data.filter((data)=>{ 
@@ -263,7 +263,7 @@ const Profilestudent = () => {
             navigate(`/cancelAdmission/${student_id}`, {state:{studDetails}})
         }
         catch(error){
-            Toaster('error', err.response.data.message);
+            Toaster('error', error.response.data.message);
         }
     }
 

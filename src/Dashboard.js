@@ -63,7 +63,7 @@ function DashboardMenu({ setSection }) {
           <Routes>
             <Route exact path="/admin-login" element={<AdminLogin />} />
             <Route
-              exact
+              exact 
               path="/dashboardsection"
               element={<Dashboardsection />}
             />

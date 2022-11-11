@@ -86,26 +86,27 @@ const Profilefaculty = () => {
     async function fetchfacultdata() {
       const res = await Facultydetails(params.id);
       setfacultydetails(() => res.data.one_staff_Details);
-      console.log(res)
-      setgender(() => res.data.one_staff_Details.basic_info_id?.gender);
+      console.log(res.data.one_staff_Details.basic_info_id.full_name)
+      setgender(() => res.data.one_staff_Details?.basic_info_id?.gender);
       setloading(false)
     }
     fetchfacultdata()
   }, [call])
 
-  console.log(gender, "gender")
+  console.log(facultydetails, "facultydetails")
   //   // --------------------------------
   //   // -----   Date_birth    ----------
   //   // -------------------------------
   let dob = new Date(facultydetails?.basic_info_id.dob);
   dob = `${dob.getFullYear()}-${(dob.getMonth() + 1) < 10 ? "0" + (dob.getMonth() + 1) : (dob.getMonth() + 1)}-${dob.getDate() < 10 ? "0" + dob.getDate() : dob.getDate()}`
+  console.log(dob ,"dob")
   // // //  --------------------------------
   // //   ----- Joinign_Date  ------------
   // //   -------------------------------
   let doj = new Date(facultydetails?.joining_date);
   doj = `${doj.getFullYear()}-${(doj.getMonth() + 1) < 10 ? "0" + (doj.getMonth() + 1) : (doj.getMonth() + 1)}-${doj.getDate() < 10 ? "0" + doj.getDate() : doj.getDate()}`
 
-
+  console.log(doj ,"doj")
 
   // -----------------------------------------------------------------------------
   // ------------------------------Table_details----------------------------------
@@ -174,7 +175,7 @@ const Profilefaculty = () => {
                 <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
                   <img src={img} width="100%" height="100%" alt="student profile" />
                   <div className='profile_img_overlay flex flex-col justify-center items-center'>
-                    <input type='file' className="rounded-md w-16" onChange={onImageChange} />
+                    <input type='file' className="rounded-md w-16"  onChange={onImageChange} />
 
                   </div>
                 </div>
@@ -185,7 +186,7 @@ const Profilefaculty = () => {
                         Full Name
                       </span>
                       <input
-                        type="text" disabled={toggle ? false : true} defaultValue={facultydetails.basic_info_id.full_name}
+                        type="text" disabled={toggle ? false : true} defaultValue={facultydetails?.basic_info_id?.full_name}
                         placeholder="First Name, Middle Name, Last Name"
                         className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.full_name && 'border-red-600'}`}
                         {...register("full_name", { required: "Fullname is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
@@ -203,7 +204,7 @@ const Profilefaculty = () => {
                       </span>
                       <input
                         type="text" disabled={toggle ? false : true}
-                        placeholder="Enter Your Email" defaultValue={facultydetails.contact_info_id.email}
+                        placeholder="Enter Your Email" defaultValue={facultydetails?.contact_info_id?.email}
                         className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.email && 'border-red-600'}`}
                         {...register("email", { required: "Email is required", pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "Please enter valid email" } })}
                         onKeyUp={() => {
@@ -220,7 +221,7 @@ const Profilefaculty = () => {
                       </span>
                       <input
                         type="text" disabled={toggle ? false : true}
-                        placeholder="Enter Your WhatsApp No" defaultValue={facultydetails.contact_info_id.whatsapp_no}
+                        placeholder="Enter Your WhatsApp No" defaultValue={facultydetails?.contact_info_id.whatsapp_no}
                         className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.whatsapp_no && 'border-red-600'}`}
                         {...register("whatsapp_no", { required: "Whatsapp no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida whatsapp no" } })}
                         onKeyUp={() => {
@@ -297,7 +298,7 @@ const Profilefaculty = () => {
                         Role
                       </span>
                       <input
-                        type="text" disabled={toggle ? false : true} defaultValue={facultydetails.role}
+                        type="text" disabled={toggle ? false : true} defaultValue={facultydetails?.role}
                         placeholder="Enter Your Role"
                         className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.role && 'border-red-600'}`}
                         {...register("role", { required: "Role is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
@@ -318,7 +319,7 @@ const Profilefaculty = () => {
                       </span>
                       <input
                         type="text" disabled={toggle ? false : true}
-                        placeholder="Enter Your Address" defaultValue={facultydetails.contact_info_id.address}
+                        placeholder="Enter Your Address" defaultValue={facultydetails?.contact_info_id.address}
                         className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.address && 'border-red-600'}`}
                         {...register("address", { required: "Address is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                         onKeyUp={() => {
@@ -388,11 +389,9 @@ const Profilefaculty = () => {
           <div className="pt-10 space-y-5">
             <ReactToPrint
               trigger={() => (
-                // <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'>
                 <button id='print' className="text-3xl bg-class5-50 rounded-md text-white p-1">
                   <MdLocalPrintshop />
                 </button>
-                // </Tooltip>
               )}
               content={() => componentRef.current}
               onBeforeGetContent={(e) => {
@@ -431,7 +430,7 @@ const Profilefaculty = () => {
                       </td>
                       <td class={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
                         <div className='flex justify-center space-x-2'>
-                          <NavLink className="nav-link" to={`/Profilefaculty/Staffhistory/${facultydetails._id}`}>
+                          <NavLink className="nav-link" to={`/Profilefaculty/Staffhistory/${facultydetails?._id}`}>
                             <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" class="text-xl text-darkblue-500"><AiFillEye /></a></Tooltip>
 
                           </NavLink>
@@ -447,7 +446,7 @@ const Profilefaculty = () => {
                   <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
                     <IoMdInformationCircle className="text-xl text-red-600" />
 
-                    <h1 className="text-red-800">Recipt Not avaiable </h1>
+                    <h1 className="text-red-800">Reciept Not avaiable </h1>
                   </div>
                 )}
               </table>

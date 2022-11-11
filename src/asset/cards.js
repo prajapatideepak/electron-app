@@ -2,9 +2,9 @@ import React, { useRef, useState, useEffect } from "react";
 import { AiOutlineUser } from "react-icons/ai";
 import { MdPendingActions } from "react-icons/md";
 import { FcMoneyTransfer } from "react-icons/fc";
-import { Alloverstudent } from "../Hooks/usePost";
+import { Alloverstudent } from "../hooks/usePost";
 import { toast } from "react-toastify";
-import Loader from '../Componant/loader';
+import Loader from '../Componant/Loader';
 
 export default function Cards() {
 
@@ -12,7 +12,7 @@ export default function Cards() {
 
 
     // ---------------------------------------------------------------
-    // --------------------    API Works       -----------------------
+    // --------------------    API Works    --------------------------
     // ---------------------------------------------------------------
 
     const [data, setData] = useState([]);
@@ -31,9 +31,9 @@ export default function Cards() {
         fetchfacultdata()
     }, [])
 
-    // // ------------------------------
-    // // ------ Pending_Student -------
-    // // ------------------------------
+    // ------------------------------
+    // ------ Pending_Student -------
+    // ------------------------------
     let calculatepending = 0;
     for (let i = 0; i < Pending.length; i++) {
         calculatepending += Pending[i].fees_id.pending_amount > 0

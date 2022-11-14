@@ -13,11 +13,9 @@ export async function Addfaculty(addnew) {
     const response = await axios.post(`${SERVER}/Faculty/register`, addnew)
       return response    
   } catch (error) {
-    
     toast.error("Error!!")
     console.log(error)
   }
-
 }
 
 // -----------------------------------------------------------------------
@@ -120,7 +118,7 @@ export async function Facultyreciept (id) {
     const res = await axios.get(`${SERVER}/salary/receipt/` + id)
     return res
   } catch (error) {
-    console.log(error , "hsfuh")
+    console.log(error)
   }
 }
 

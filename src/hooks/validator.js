@@ -1,15 +1,8 @@
-import React from 'react';
-
-export default class Validator extends React.Component{
+export default class Validator{
     
     errors = {};
     regFields = {};
     fieldsValue = {};
-
-    reRender(){
-        // calling the forceUpdate() method
-        this.forceUpdate();
-    };
     
     //Registering the fields
     register(data){

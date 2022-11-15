@@ -13,9 +13,7 @@ import { Alloverstudent } from "../hooks/usePost";
 import { toast } from "react-toastify";
 import Loader from '../Componant/Loader';
 import { NasirContext } from "../NasirContext";
-
-
-
+import ReactPaginate from "react-paginate";
 
 
 
@@ -25,6 +23,11 @@ export default function Dashboard() {
   const [isPrint, setIsPrint] = useState(false);
   const [isloading, setloading] = React.useState(true)
   const { section } = React.useContext(NasirContext);
+  const [currentItems, setcurrentItems] = useState([])
+  const [pageCount, setPageCount] = useState(0)
+  const [itemOffset, setItemOffset] = useState(0)
+  const [Serialno, setserialno] = useState(1)
+  const itemsPerPage = 6;
 
   // ---------------------------------------------------------------
   // --------------------    API Works       -----------------------
@@ -34,17 +37,37 @@ export default function Dashboard() {
   const [PaginationData, setPaginationData] = useState([]);
   const Toaster = () => { toast.success('New Staff Register successfully') }
   const errtoast = () => { toast.error("Something Wrong") }
+  console.log(section)
+  const response = Alloverstudent(section == "primary" ? 0 : 1)
+
 
   useEffect(() => {
     async function fetchfacultdata() {
-      const res = await Alloverstudent();
+      const res = await Alloverstudent(section);
+      console.log(section)
       setstudent(() => res.data)
-      console.log(res, "res")
       setloading(false);
     }
     fetchfacultdata()
   }, [])
 
+  console.log(Student, "student")
+
+
+  // // -------------------------------
+  // // -------- Pagination -----------
+  // // -------------------------------
+  // useEffect(() => {
+  //   const endOffset = itemOffset + itemsPerPage;
+  //   setcurrentItems(Student.slice(itemOffset, endOffset));
+  //   setPageCount(Math.ceil(Student.length / itemsPerPage));
+  // }, [itemOffset, itemsPerPage, Student])
+
+  // const handlePageClick = (event) => {
+  //   const newOffset = (event.selected * itemsPerPage) % Student.length;
+  //   setserialno(event.selected + 1)
+  //   setItemOffset(newOffset);
+  // };
 
 
   if (isloading) {
@@ -53,14 +76,6 @@ export default function Dashboard() {
 
   return (
     <div className="">
-      <div className=" ">
-        <div className="flex justify-between items-center pr-5 pt-8  md:pl-8 space-y-5">
-          <h1 className=" text-xl md:text-3xl text-center md:text-left text-darkblue-500 font-semibold ">
-            Welcome Nasir
-          </h1>
-
-        </div>
-      </div>
       <div className="pt-0 md:flex items-center justify-center md:justify-between mr-5 ">
         <div className="left pt-0 ">
           <img src="/images/desk.webp" alt="" className="" />
@@ -74,11 +89,9 @@ export default function Dashboard() {
 
             <ReactToPrint
               trigger={() => (
-                // <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'>
                 <button id='print' className="text-3xl bg-class2-50 rounded-md text-white p-1">
                   <MdLocalPrintshop />
                 </button>
-                // </Tooltip>
               )}
               content={() => componentRef.current}
               onBeforeGetContent={(e) => {
@@ -121,122 +134,61 @@ export default function Dashboard() {
                   </th>
                 </tr>
               </thead>
-              {Student.length > 0 ? (
-                <tbody className="bg-white border items-center ">
-                  {
-                    Student.map((item, key) => {
-                      const Paid_up = [
-                        item.fees_id.net_fees - item.fees_id.pending_amount
-                      ]
-                      if (item.fees_id.pending_amount > 0) {
-                        return (
-                          <tr key={key} className="border-b" >
+              {Student.length > 0 ?
+                (
+                  <tbody className="bg-white border items-center ">
+                    {
+                      Student.map((item, key) => {
+                        const Paid_up = [
+                          item.academics[0].fees[0].net_fees - item.academics[0].fees[0].pending_amount
+                        ]
+                        if (item.academics[0].fees[0].pending_amount > 0) {
+                          return (
+                            <tr className="border-b" >
+                              <td className="py-7 px-5 text-center ">{item.student_id}</td>
+                              <td className="py-7 px-5 text-center ">{item.basic_info[0].full_name}</td>
+                              <td className="py-7 px-5 text-center ">{item.academics[0].class[0].class_name}</td>
+                              <td className="py-7 px-5 text-center ">{item.contact_info[0].whatsapp_no}</td>
+                              <td className="py-7 px-5 text-center ">{item.academics[0].fees[0].net_fees}</td>
+                              <td className="py-7 px-5 text-center ">{Paid_up}</td>
+                              <td className="py-7 px-5 text-center ">{item.academics[0].fees[0].pending_amount}</td>
+                              <td className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
+                                <div className="flex justify-center space-x-2">
+                                  <NavLink className="nav-link" to={`ProfileStudent/${item._id}`} >
+                                    <Tooltip
+                                      content="Show"
+                                      placement="bottom-end"
+                                      className="text-white bg-black rounded p-2"
+                                    >
+                                      <span className="text-xl text-darkblue-500">
+                                        <AiFillEye />
+                                      </span>
+                                    </Tooltip>
+                                  </NavLink>
 
-                            <td className="py-7 px-5 text-center ">{item.student_id.student_id}</td>
-                            <td className="py-7 px-5 text-center ">{item.student_id.basic_info_id.full_name}</td>
-                            <td className="py-7 px-5 text-center ">{item.class_id.class_name}</td>
-                            <td className="py-7 px-5 text-center ">{item.student_id.contact_info_id.whatsapp_no}</td>
-                            <td className="py-7 px-5 text-center ">{item.fees_id.net_fees}</td>
-                            <td className="py-7 px-5 text-center ">{Paid_up}</td>
-                            <td className="py-7 px-5 text-center ">{item.fees_id.pending_amount}</td>
-                            <td className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
-                              <div className="flex justify-center space-x-2">
-                                <NavLink className="nav-link" to="Profilestudent">
-                                  <Tooltip
-                                    content="Show"
-                                    placement="bottom-end"
-                                    className="text-white bg-black rounded p-2"
-                                  >
-                                    <span className="text-xl text-darkblue-500">
-                                      <AiFillEye />
-                                    </span>
-                                  </Tooltip>
-                                </NavLink>
+                                </div>
+                              </td>
+                            </tr>
+                          )
 
-                              </div>
-                            </td>
-                          </tr>
-                        )
+                        }
+                      })}
+                  </tbody>
+                ) : (
+                  <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
+                    <IoMdInformationCircle className="text-xl text-red-600" />
 
-                      }
-                    })}
-                </tbody>) : (
-                <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
-                  <IoMdInformationCircle className="text-xl text-red-600" />
-
-                  <h1 className="text-red-800">Student Not avaiable </h1>
-                </div>
-              )}
+                    <h1 className="text-red-800">Student Not avaiable </h1>
+                  </div>
+                )}
             </table>
           </div>
-          <nav
-            aria-label="Page navigation example"
-            className="flex justify-end"
-          >
-            <ul className="inline-flex items-center -space-x-px ">
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  <span className="sr-only">Previous</span>
-                  <AiOutlineLeft />
+          <div className=' flex justify-end items-center ml-32 py-5' >
+            <div className=' py-2'>
 
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  1
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  2
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  aria-current="page"
-                  className="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-                >
-                  3
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  4
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  5
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  <span className="sr-only">Next</span>
-                  <AiOutlineRight />
 
-                </a>
-              </li>
-            </ul>
-          </nav>
+            </div>
+          </div>
         </div>
       </div>
     </div>

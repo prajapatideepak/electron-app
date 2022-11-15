@@ -138,12 +138,12 @@ const Studentregister = () => {
     return (
         <>
             <section className="">
-                <div className="title px-14 py-6">
+                <div className="title px-14 pt-6">
                     <h1 className="text-3xl font-bold text-[#020D46] mb-3">
                         Student Registration
                     </h1>
                 </div>
-                <form id="student_reg_form" ref={form} encType="multipart/form-data" className="flex justify-center items-center " onSubmit={handleSubmit(onSubmit, onError)} method="post">
+                <form id="student_reg_form" ref={form} encType="multipart/form-data" className="flex justify-center  items-center pt-3 " onSubmit={handleSubmit(onSubmit, onError)} method="post">
                     <div className=" w-11/12 grid grid-cols-2 rounded-lg  truncate bg-white p-5 2xl:p-10  shadow-2xl">
                         <div className="left flex flex-col items-center gap-5">
                             <div className='profile_img_div border-2 border-gray-500 shadow-lg'>

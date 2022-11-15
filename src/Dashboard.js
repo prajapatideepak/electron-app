@@ -72,6 +72,7 @@ function DashboardMenu() {
               element={<Dashboard />}
             />
             <Route exact path="/" element={<Dashboard />} />
+            <Route exact path="/ProfileStudent/:id" element={<Profilestudent />} />
             <Route exact path="myclass" element={<Myclass />} />
             <Route exact path="/myclass/class/:id" element={<Class />} />
             <Route

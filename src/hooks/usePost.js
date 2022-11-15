@@ -348,12 +348,12 @@ export async function Update_faculty_reciept (data) {
 // -----------------------------------------------------------------------
 // ------------------------ All_Over Student------------------------------
 // -----------------------------------------------------------------------
-export const Alloverstudent = async () => {
+export const Alloverstudent = async (section) => {
   try {
-    const { data } = await axios.get(`${SERVER}/students/`);
+    console.log(section ,"usepostsection")
+    const { data } = await axios.post(`${SERVER}/students/`, { is_primary : section });
     return data;
   } catch (error) {
     console.log(error)
   }
-
 }

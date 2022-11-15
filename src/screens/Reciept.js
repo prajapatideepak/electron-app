@@ -13,10 +13,12 @@ import Receipt_student from "../Componant/Receipt_student";
 import Receipt_teacher from "../Componant/Receipt_teacher";
 import { searchReceipt, getAdminVerification } from '../hooks/usePost';
 import { AxiosError } from "axios";
+import Toaster from '../hooks/showToaster';
+import Loader from "../Componant/Loader";
 
 const Reciept = () => {
   const location = useLocation();
-  console.log(location)
+
   let isStaff = location.state?.isStaff;
   let isSalaried = location.state?.isSalaried ? location.state?.isSalaried : false;
 
@@ -36,6 +38,7 @@ const Reciept = () => {
   const [pin, setPin] = React.useState("");
   const [error, setError] = React.useState('');
   const [receiptDetails, setReceiptDetails] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
@@ -82,38 +85,53 @@ const Reciept = () => {
         //call staff receipt api
       }
       else{
-        let receipt_details = await searchReceipt(location.state.fees_receipt_id);
-        
-        receipt_details = receipt_details.data.student_receipts[0]
-        setReceiptDetails(()=>{
-          let date = new Date(receipt_details?.academics[0].fees[0].fees_receipt[0].date).toLocaleString()
-          date = date.split(',')[0]
-
-          let amountInWords = inWords(receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].amount)
-          return {
-            receipt_no: receipt_details?.academics[0].fees[0].fees_receipt[0].fees_receipt_id,
-            stream: receipt_details?.academics[0].class[0].stream,
-            medium: receipt_details?.academics[0].class[0].medium,
-            date,
-            roll_no: receipt_details?.student_id,
-            class_name: receipt_details?.academics[0].class[0].class_name,
-            batch: `${receipt_details?.academics[0].class[0].batch_start_year}-${receipt_details?.academics[0].class[0].batch_end_year}`,
-            full_name: receipt_details?.basic_info[0].full_name,
-            amount_in_words: amountInWords,
-            is_by_cash: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].is_by_cash,
-            is_by_upi: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].is_by_upi,
-            is_by_cheque: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].is_by_cheque,
-            upi_no: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].upi_no,
-            cheque_no: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].cheque_no,
-            amount: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].amount,
-            discount: receipt_details?.academics[0].fees[0].fees_receipt[0].discount,
-            admin: receipt_details?.academics[0].fees[0].fees_receipt[0].admin[0].username
+        try{
+          let receipt_details = await searchReceipt(location.state.fees_receipt_id);
+          
+          receipt_details = receipt_details.data.student_receipts[0]
+          setReceiptDetails(()=>{
+            let date = new Date(receipt_details?.academics[0].fees[0].fees_receipt[0].date).toLocaleString()
+            date = date.split(',')[0]
+  
+            let amountInWords = inWords(receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].amount)
+            return {
+              receipt_no: receipt_details?.academics[0].fees[0].fees_receipt[0].fees_receipt_id,
+              stream: receipt_details?.academics[0].class[0].stream,
+              medium: receipt_details?.academics[0].class[0].medium,
+              date,
+              roll_no: receipt_details?.student_id,
+              class_name: receipt_details?.academics[0].class[0].class_name,
+              batch: `${receipt_details?.academics[0].class[0].batch_start_year}-${receipt_details?.academics[0].class[0].batch_end_year}`,
+              full_name: receipt_details?.basic_info[0].full_name,
+              amount_in_words: amountInWords,
+              is_by_cash: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].is_by_cash,
+              is_by_upi: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].is_by_upi,
+              is_by_cheque: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].is_by_cheque,
+              upi_no: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].upi_no,
+              cheque_no: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].cheque_no,
+              amount: receipt_details?.academics[0].fees[0].fees_receipt[0].transaction[0].amount,
+              discount: receipt_details?.academics[0].fees[0].fees_receipt[0].discount,
+              admin: receipt_details?.academics[0].fees[0].fees_receipt[0].admin[0].username
+            }
+          });
+        }
+        catch(err){
+          setLoading(false);
+          if(err instanceof AxiosError){
+            Toaster('success', err.response?.data?.message)
           }
-        });
+          else{
+             Toaster('success', err.message)
+          }
+        }
       }
     }
     getReceiptDetails()
   },[])
+
+  if(loading){
+    return <Loader/>
+  }
 
   return (
     <section className="relative">

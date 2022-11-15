@@ -40,6 +40,7 @@ const Studentregister = () => {
 
     const onSubmit = async (data, e) => {
         e.preventDefault();
+
         const formdata = new FormData(form.current);
         setIsLoadingOnSubmit(true);
 

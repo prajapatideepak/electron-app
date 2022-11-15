@@ -1,8 +1,8 @@
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getToken } from "../AuthProvider";
-import React from "react";
-import { NasirContext } from "../NasirContext";
-const axios = require("axios");
+import axios from "axios";
+import { ToastContainer , toast  } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const token = getToken("token");
 
@@ -148,10 +148,11 @@ export async function getActiveClasses() {
   return await axios.get(`${SERVER}/classes/active`);
 }
 
+
+
 //-----------------------------------------------------------------------
 //--------------------------------- STUDENT -----------------------------
 //-----------------------------------------------------------------------
-
 
 export async function registerStudent(data){
   return await axios.post(`${SERVER}/students/register`, data, 
@@ -207,10 +208,10 @@ export async function transferStudent(data){
 }
 
 
-
 //-----------------------------------------------------------------------
 //--------------------------------- STAFF -----------------------------
 //-----------------------------------------------------------------------
+
 
 // ------------------------------------------------------------------------
 // ----------------------- Add_Faculty ------------------------------------
@@ -220,9 +221,9 @@ export async function Addfaculty(addnew) {
     const response = await axios.post(`${SERVER}/Faculty/register`, addnew)
       return response    
   } catch (error) {
-      console.log(error)
+    toast.error("Error!!")
+    console.log(error)
   }
-
 }
 
 // -----------------------------------------------------------------------
@@ -233,7 +234,7 @@ export const getAllFaculty = async () => {
     const { data } = await axios.get(`${SERVER}/Faculty`);
     return data;
   } catch (error) {
-    console.log(error);
+    throw error("data is not fatched")
   }
 
 }
@@ -243,7 +244,7 @@ export const getAllFaculty = async () => {
 // -----------------------------------------------------------------------
 export async function Facultydetails (id){
   try {
-    const res = await axios.get(`${SERVER}/faculty/Facultydetails/` + id)
+    const res = await axios.get(`${SERVER}/faculty//Facultydetails/` + id)
     return res
   } catch (error) {
     console.log(error)
@@ -325,7 +326,7 @@ export async function Facultyreciept (id) {
     const res = await axios.get(`${SERVER}/salary/receipt/` + id)
     return res
   } catch (error) {
-    console.log(error , "hsfuh")
+    console.log(error)
   }
 }
 
@@ -353,7 +354,30 @@ export const Alloverstudent = async () => {
     const { data } = await axios.get(`${SERVER}/students/`);
     return data;
   } catch (error) {
-    console.log(error)
+    throw error("data is not fatched")
   }
 
 }
+
+
+  
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

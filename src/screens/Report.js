@@ -19,9 +19,8 @@ const Report = () => {
           </select>
         </button>
       </div>
-      {reportState == 'Student' ? <Studentheader /> :
-        <Facultyheader />}
-    </div>
+      {reportState == 'Student' ? <Studentheader /> : <Facultyheader /> }
+    </div>  
   )
 }
 

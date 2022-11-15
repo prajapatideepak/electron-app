@@ -459,7 +459,7 @@ const Myclass = () => {
                     onClick={(e) => {
                         setEditClassModel(!editClassModel)
                         reset();
-                      }}
+                    }}
                     className="absolute translate-x-4 -translate-y-4 font-bold text-2xl p-2 text-red-700"
                   >
                     <AiFillCloseCircle />
@@ -734,7 +734,7 @@ const Myclass = () => {
                 >
                   Select Year
                 </label>
-                <button className=" flex items-center border bg-white p-2 md:p-2 md:py-1 rounded-lg  space-x-1 ">
+              <button className=" flex items-center border bg-white p-2 md:p-2 md:py-1 rounded-lg  space-x-1 ">
                   <select
                     name="" 
                     id="selectYear" value={selectYear} onChange={handleYearChange}

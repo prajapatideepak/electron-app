@@ -14,6 +14,8 @@ const Studenthistory = () => {
 
   const navigate = useNavigate();
   const componentRef = useRef();
+  const Toaster = () => { Toaster.success('New Staff Register successfully') }
+  const errtoast = () => { Toaster.error("Something Wrong") }
 
   const [isLoadingDetails, setIsLoadingDetails] = useState(true);
   const [feesReceipts, setFeesReceipts] = useState([]);

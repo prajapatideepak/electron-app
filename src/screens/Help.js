@@ -4,7 +4,7 @@ const Help = () => {
 
   return (
     <div>
-        help
+        Help
     </div>
   )
 }

@@ -13,6 +13,7 @@ export default function Searchbar() {
   const { admin } = React.useContext(NasirContext);
   const { logout, changeSection } = React.useContext(NasirContext);
   const myData = admin;
+  console.log(admin);
   const [toggle, SetToggle] = useState(false);
 
   function handleToggle() {
@@ -76,7 +77,6 @@ export default function Searchbar() {
           >
             <div className="">
               <div className="mt-3 mb-3 ">
-
                 <NavLink to="/Componant/Updateprofile">
                   <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
                     <div className="bg-blue-200 w-1/6 h-9 flex justify-center items-center rounded-full">

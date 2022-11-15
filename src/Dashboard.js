@@ -31,7 +31,7 @@ import { useQuery } from "react-query";
 import Whatsapp from "./Componant/Whatsapp";
 import { NasirContext } from "./NasirContext";
 import AdminList from "./screens/AdminList";
-import CancelAdmission from './screens/CancelAdmission';
+import CancelAdmission from "./screens/CancelAdmission";
 import Salarydetails from "./Componant/Salarydetails";
 
 function DashboardMenu() {
@@ -39,12 +39,13 @@ function DashboardMenu() {
   const adminData = useQuery("admin", usegetAdmin);
 
   useEffect(() => {
-    login()
+    login();
     if (adminData.isSuccess) {
-      setAdmin(adminData.data.data);
+      setAdmin(adminData?.data?.data);
     }
-  }, [])
+  }, [adminData, login, setAdmin]);
 
+  console.log(adminData);
 
   return !adminData.isSuccess ? (
     <div className="flex bg-[#f5f7ff]  items-center h-screen justify-center space-x-2 ">
@@ -56,7 +57,7 @@ function DashboardMenu() {
     <div className="bg-[#f5f7ff] min-h-screen flex">
       {<Sidebar />}
       <div className="w-full">
-        {<Searchbar/>}
+        {<Searchbar />}
         <div className="relative" style={{ minHeight: "calc(100% - 70px)" }}>
           <Routes>
             <Route exact path="/admin-login" element={<AdminLogin />} />
@@ -96,7 +97,7 @@ function DashboardMenu() {
             />
             <Route
               exact
-              path='/myclass/class/Profilestudent/Studenthistory'
+              path="/myclass/class/Profilestudent/Studenthistory"
               element={<Studenthistory />}
             />
             <Route exact path="fee" element={<Fee />} />
@@ -112,7 +113,11 @@ function DashboardMenu() {
               path="Profilefaculty/Staffhistory/:id"
               element={<Staffhistory />}
             />
-            <Route exact path='/Staffhistory/Receipt_teacher/:id' element={<Receipt_teacher />} />
+            <Route
+              exact
+              path="/Staffhistory/Receipt_teacher/:id"
+              element={<Receipt_teacher />}
+            />
             <Route exact path="help" element={<Help />} />
             <Route exact path="receipt/receipt" element={<Reciept />} />
             <Route
@@ -126,8 +131,14 @@ function DashboardMenu() {
             <Route exact path="studentregister" element={<Studentregister />} />
             <Route path="/fee/:id" element={<FeesDetail />} />
             <Route path="/salary/:id" element={<Salary />} />
-            <Route path="/salary/Salarydetails/:id" element={<Salarydetails />} />
-              <Route path="/salary/Receipt_teacher/:id" element={<Receipt_teacher />} />
+            <Route
+              path="/salary/Salarydetails/:id"
+              element={<Salarydetails />}
+            />
+            <Route
+              path="/salary/Receipt_teacher/:id"
+              element={<Receipt_teacher />}
+            />
             <Route
               exact
               path="/Componant/Updateprofile"
@@ -140,7 +151,11 @@ function DashboardMenu() {
             />
             <Route exact path="/Componant/Addadmin" element={<Addadmin />} />
             <Route exact path="/Componant/AdminList" element={<AdminList />} />
-            <Route exact path="/cancelAdmission/:student_id" element={<CancelAdmission />}/>
+            <Route
+              exact
+              path="/cancelAdmission/:student_id"
+              element={<CancelAdmission />}
+            />
           </Routes>
         </div>
       </div>

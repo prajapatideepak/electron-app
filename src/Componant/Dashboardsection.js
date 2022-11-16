@@ -9,12 +9,10 @@ import { NasirContext } from "../NasirContext";
 
 const Dashboardsection = () => {
   const { changeSection, section } = React.useContext(NasirContext);
-
   function handleSectionChange(s) {
     setToken("section", s);
     changeSection();
   }
-
   return (
     <>
       <section className="h-full w-full flex justify-center items-center ">

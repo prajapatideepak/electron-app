@@ -34,6 +34,9 @@ const Facultytable = () => {
       })
   }, [])
 
+  console.log(facultyData, "facultydata")
+
+
   // -------------------------------
   // -------- Pagination -----------
   // -------------------------------

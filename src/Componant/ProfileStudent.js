@@ -12,6 +12,7 @@ import Loader from './Loader';
 import { AiFillCloseCircle } from "react-icons/ai";
 import {AxiosError} from 'axios';
 import Validator from '../hooks/validator';
+import { useParams } from "react-router-dom";
 
 const valid = new Validator();
 valid.register({
@@ -75,6 +76,7 @@ valid.register({
 const Profilestudent = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const params = useParams();
     const form = useRef(null);
     const server = "http://localhost:4000/";
     const defaultImage = "http://localhost:4000/user_default@123.png";
@@ -121,7 +123,7 @@ const Profilestudent = () => {
     const [classNotSelectedError, setClassNotSelectedError] = useState(false);
     const [studDetails, setStudDetails] = useState({}); //Only used to pass data to next page
 
-    const student_id =86;
+    const student_id = params.student_id;
     
     let student_details;
     
@@ -160,6 +162,8 @@ const Profilestudent = () => {
             note: note == '' ? '--' : note,
             school_name: school_name == '' ? '--' : school_name
         }
+
+        console.log(stud_data)
 
         const photo = student_details.personal.basic_info_id.photo;
         setImg(photo != '' ? server+photo : defaultImage)
@@ -592,7 +596,7 @@ const Profilestudent = () => {
                                                             id="male"
                                                             name="gender"
                                                             value="male"
-                                                            checked={studentInputController?.gender?.toLowerCase() == 'male' ? true : false}
+                                                            checked={studentInputController?.gender?.toLowerCase() == 'male'}
                                                             disabled={isEnable}
                                                             className="  hover:cursor-pointer"
                                                             
@@ -608,15 +612,13 @@ const Profilestudent = () => {
                                                             id="female"
                                                             name="gender"
                                                             value="female"
-                                                            checked={studentInputController?.gender?.toLowerCase() == 'female' ? true : false}
+                                                            checked={studentInputController?.gender?.toLowerCase() == 'female'}
                                                             disabled={isEnable}
                                                             className="   hover:cursor-pointer"
                                                             
                                                             onChange={handleChange}
                                                         />
-
                                                     </div>
-
                                                 </div>
                                             </label>
                                             {valid.errors?.gender != '' ? <small className="text-red-600 mt-3">*{valid.errors?.gender}</small> : null}

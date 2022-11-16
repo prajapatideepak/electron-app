@@ -16,18 +16,19 @@ import { NasirContext } from "../NasirContext";
 import ReactPaginate from "react-paginate";
 
 
-
-
 export default function Dashboard() {
   const componentRef = useRef();
   const [isPrint, setIsPrint] = useState(false);
   const [isloading, setloading] = React.useState(true)
-  const { section } = React.useContext(NasirContext);
   const [currentItems, setcurrentItems] = useState([])
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
   const [Serialno, setserialno] = useState(1)
   const itemsPerPage = 6;
+  
+  const { section, admin } = React.useContext(NasirContext);
+
+  console.log(admin);
 
   // ---------------------------------------------------------------
   // --------------------    API Works       -----------------------
@@ -106,7 +107,7 @@ export default function Dashboard() {
           </div>
           <div ref={componentRef} className='p-5 pt-3 pb-0'>
             <table className="w-full text-sm text-center bg-class2-50 rounded-xl  " >
-              <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+              <thead className="text-xs text-gray-700 uppercase">
                 <tr className="text-white text-base">
                   <th scope="col" className="py-7 px-5 text-center ">
                     Serial No
@@ -154,7 +155,7 @@ export default function Dashboard() {
                               <td className="py-7 px-5 text-center ">{item.academics[0].fees[0].pending_amount}</td>
                               <td className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
                                 <div className="flex justify-center space-x-2">
-                                  <NavLink className="nav-link" to={`ProfileStudent/${item._id}`} >
+                                   <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id}`}>
                                     <Tooltip
                                       content="Show"
                                       placement="bottom-end"

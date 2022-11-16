@@ -11,6 +11,7 @@ import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
 import { AddClass, updateClass, deleteClass, getAllClasses, getAllClassesByYear } from "../hooks/usePost";
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2'
 import 'react-toastify/dist/ReactToastify.css';
 
 const Myclass = () => {
@@ -61,20 +62,18 @@ const Myclass = () => {
 
   let section = "primary";
   let is_primary = section == "primary"?0:1
-  // data.is_primary == is_primary
 
   async function fetchClasses(){
     const res = await getAllClasses();
-    setClasses(()=>res?.data?.filter((data)=>{
-      return data.is_active == 1}))
+    setClasses(()=>
+      res?.data?.filter(
+        (data)=>{
+          return data.is_active == 1
+        }
+      )
+    )
 
-      setFetchData(()=>res?.data?.filter((data) =>{
-        //filtering those classes which are deleted in current year (garbase classses of cue)
-      return ((data.batch_start_year == selectYear) && data.is_active == 0) == true ? false : true;
-    }))
-    //   setFetchData(()=>res?.data?.filter((data) =>{
-    //   return (data.batch_start_year == selectYear && data.is_active == 0) == true ? false : true;
-    // }))
+    setFetchData(()=>res?.data)
   }
 
   useEffect(()=>{
@@ -83,7 +82,8 @@ const Myclass = () => {
 
     async function fetchClassesByYear(){
       const res = await getAllClassesByYear();
-      setClassesByYear(()=>res.data)
+      setClassesByYear(res.data.sort((a, b)=> (a._id.batch_start_year < b._id.batch_start_year) ? 1 :(a._id.batch_start_year > b._id.batch_start_year) ? -1 : 0))
+      
     }
     fetchClassesByYear()
     
@@ -124,11 +124,23 @@ const Myclass = () => {
   }
   
   const handleDeleteClass = async (class_id)=>{
-    const deleteClassResponse = await deleteClass(class_id)
-    if(deleteClassResponse){
-      setCall(()=>!call)
-      return deleteNotify()
-    }
+    Swal.fire({
+      title: "Are you sure to delete class?",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Delete",
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+        const deleteClassResponse = await deleteClass(class_id)
+        if(deleteClassResponse){
+          setCall(()=>!call)
+          return deleteNotify()
+        }
+      }
+    });
   }
   
   const {
@@ -459,7 +471,7 @@ const Myclass = () => {
                     onClick={(e) => {
                         setEditClassModel(!editClassModel)
                         reset();
-                      }}
+                    }}
                     className="absolute translate-x-4 -translate-y-4 font-bold text-2xl p-2 text-red-700"
                   >
                     <AiFillCloseCircle />
@@ -748,7 +760,7 @@ const Myclass = () => {
                       
                     <option key={index} value={item._id.batch_start_year}>
                       {
-                        item._id.batch_start_year === new Date('2-12-2023').getFullYear() - 1 ||  item._id.batch_end_year === new Date('2-12-2023').getFullYear() + 1 ? "Current Year" : `${item._id.batch_start_year}-${item._id.batch_end_year}`
+                        index == 0 ? "Current Year" : `${item._id.batch_start_year}-${item._id.batch_end_year}`
                       }
                     </option>
                       )
@@ -873,7 +885,10 @@ const Myclass = () => {
                           <MdDelete onClick={()=>handleDeleteClass(item._id)}/>
                         </div>
                       </div>
-                      <NavLink className="nav-link" to={`class/${item._id}`}>
+                      <NavLink 
+                        className="nav-link" 
+                        to={`class/${item._id}`} 
+                      >
                         <div className="flex  space-x-2 items-center ml-3 ">
                           <div className="rounded-md" style={{ backgroundColor: headingBgColor[index % headingBgColor.length]}}>
                             <RiFolderUserFill className="text-white text-4xl md:text-5xl xl:text-7xl " />

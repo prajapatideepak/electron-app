@@ -91,7 +91,7 @@ function DashboardMenu() {
             />
             <Route
               exact
-              path="/myclass/class/Profilestudent"
+              path="/myclass/class/Profilestudent/:student_id"
               element={<Profilestudent />}
             />
             <Route

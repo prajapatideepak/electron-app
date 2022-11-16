@@ -75,7 +75,7 @@ const Facultytable = () => {
             />
             <div ref={componentRef} className='p-5 pt-3 pb-0'>
               <table className="w-full text-sm text-center bg-class5-50 rounded-xl ">
-                <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+                <thead className="text-xs text-gray-700 uppercase">
                   <tr className="text-white text-base">
                     <th scope="col" className="py-4 px-6 text-center">
                       Serial No

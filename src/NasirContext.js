@@ -49,7 +49,7 @@ export function NasirProvider({ children }) {
   const [token, dispatch] = React.useReducer(AdminReducer, getToken("token"));
   const [admin, dispatchAdmin] = React.useReducer(userReducer, null);
   const [section, dispatchSection] = React.useReducer(
-    sectionReducer,
+    sectionReducer, 
     getToken("section")
   );
 

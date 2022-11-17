@@ -321,7 +321,7 @@ const Class = () => {
                             </div>
                         </div>
                         <div ref={componentRef} className='p-5 pt-3 pb-0'>
-                            <table className="w-full text-sm text-center rounded-xl shadow-xl ">
+                            <table className="w-full text-sm text-center rounded-xl overflow-hidden shadow-xl ">
                                 <thead className="text-xs text-gray-700 bg-class3-50 uppercase">
                                     <tr className='text-white text-base'>
                                         <th scope="col" className="w-20 h-20">Student Id</th>

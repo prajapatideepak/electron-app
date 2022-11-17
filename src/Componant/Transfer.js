@@ -251,8 +251,8 @@ const Transfer = () => {
                                 </h1>
                             </div>
 
-                            <table className="w-full text-sm text-center bg-red-500 rounded-xl  ">
-                                <thead className="text-xs text-gray-700 uppercase">
+                            <table className="w-full text-sm text-center overflow-hidden  rounded-xl  ">
+                                <thead className="text-xs text-gray-700 bg-red-500 uppercase">
                                     <tr className='text-white text-base'>
                                         <th scope="col" className="w-20 h-20">Roll No</th>
                                         <th scope="col" className="w-20 h-20">Name</th>
@@ -310,8 +310,8 @@ const Transfer = () => {
                                 Eliglible for Transfer
                             </h1>
 
-                            <table className="w-full text-sm text-center bg-green-500 rounded-xl ">
-                                <thead className="text-xs text-gray-700 uppercase">
+                            <table className="w-full text-sm text-center overflow-hidden rounded-xl ">
+                                <thead className="text-xs text-gray-700 bg-green-500 uppercase">
                                     <tr className='text-white text-base'>
                                         <th scope="col" className="w-20 h-20">Roll No</th>
                                         <th scope="col" className="w-20 h-20">Name</th>

@@ -15,7 +15,6 @@ import Loader from '../Componant/Loader';
 import { NasirContext } from "../NasirContext";
 import ReactPaginate from "react-paginate";
 
-
 export default function Dashboard() {
   const componentRef = useRef();
   const [isPrint, setIsPrint] = useState(false);
@@ -28,30 +27,19 @@ export default function Dashboard() {
   
   const { section, admin } = React.useContext(NasirContext);
 
-  console.log(admin);
-
-  // ---------------------------------------------------------------
-  // --------------------    API Works       -----------------------
-  // ---------------------------------------------------------------
-
   const [Student, setstudent] = useState();
   const [PaginationData, setPaginationData] = useState([]);
   const Toaster = () => { toast.success('New Staff Register successfully') }
   const errtoast = () => { toast.error("Something Wrong") }
-  console.log(section)
-  const response = Alloverstudent(section == "primary" ? 0 : 1)
-
 
   useEffect(() => {
     async function fetchfacultdata() {
       const res = await Alloverstudent(section);
-      console.log(section)
-      setstudent(() => res.data)
       setloading(false);
+      setstudent(() => res.data)
     }
     fetchfacultdata()
   }, [])
-
   console.log(Student, "student")
 
 
@@ -106,8 +94,8 @@ export default function Dashboard() {
 
           </div>
           <div ref={componentRef} className='p-5 pt-3 pb-0'>
-            <table className="w-full text-sm text-center bg-class2-50 rounded-xl  " >
-              <thead className="text-xs text-gray-700 uppercase">
+            <table className="w-full text-sm text-center rounded-xl overflow-hidden " >
+              <thead className="text-xs text-gray-700 bg-class2-50 uppercase">
                 <tr className="text-white text-base">
                   <th scope="col" className="py-7 px-5 text-center ">
                     Serial No

@@ -25,23 +25,19 @@ const Myclass = () => {
   const [classes, setClasses] = React.useState([])
   const [classesByYear, setClassesByYear] = React.useState([])
   const [fetchData, setFetchData] = React.useState([]);
- 
   const [call, setCall] = React.useState(false)
-  
+
   // const [selectYear,setSelectYear] = React.useState(new Date().getFullYear());
-  const [selectYear,setSelectYear] = React.useState(2023);
+  const [selectYear,setSelectYear] = React.useState('Current Year');
   const [medium,setMedium] = React.useState("");
   const [stream,setStream] = React.useState("");
-
   const [model, setModel] = React.useState(false);
   const [editClassModel,setEditClassModel] = React.useState(false);
-
   const [edit_class_id,setEdit_class_id] = React.useState();
-
   const bgColors = ["#ffd6d6","#bfdbfe","#c1d1d8","#ffedd5","#f4d5ff","#fbc8bd","#ccfbf1","#d8bbbc","#fef9c3"]
   const headingBgColor = ["#f3797e","#3b82f6","#2f667e","#9a4947","#e08aff","#f24822","#14b8a6","#7e1b1f","#ca8a04"]
-
   const [isHover, setIsHover] = React.useState(false);
+  const [isCurrentYearSelected, setIsCurrentYearSelected] = React.useState(true)
 
   const handleMouseEnterEdit = () => {
     setIsHover(true);
@@ -85,19 +81,34 @@ const Myclass = () => {
       setClassesByYear(res.data.sort((a, b)=> (a._id.batch_start_year < b._id.batch_start_year) ? 1 :(a._id.batch_start_year > b._id.batch_start_year) ? -1 : 0))
       
     }
-    fetchClassesByYear()
+    fetchClassesByYear();
+    
     
   },[call])
   
   const handleYearChange = (e)=>{
     setSelectYear(e.target.value)
-    setClasses( () =>
+    let flag = 0;
+    classesByYear.map((value, index)=>{
+      if(value == e.target.value && index == 0){
+        flag = 1;
+        return;
+      }
+    })
+
+    if(flag){
+      setIsCurrentYearSelected(true);
+    }
+    else{
+      setIsCurrentYearSelected(false);
+    }
+
+    setClasses(() =>
       fetchData.filter((data)=>{
         return data.batch_start_year == e.target.value && (stream != "" ? data.stream == stream : true) && (medium != "" ? data.medium == medium : true)
       })
-      )
-      
-    }
+    )    
+  }
 
   const handleMediumChange = (e)=>{
     setMedium(e.target.value)
@@ -531,7 +542,7 @@ const Myclass = () => {
                                         errors.batch_start_year &&
                                         "border-red-600"
                                       }`}
-                                      {...register("batch_start_year", {
+                                      {...register("batch_start_year_edit", {
                                         pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" },
                                         minLength: {
                                             value: 4,
@@ -558,7 +569,7 @@ const Myclass = () => {
                                         errors.batch_end_year &&
                                         "border-red-600"
                                       }`}
-                                      {...register("batch_end_year", {
+                                      {...register("batch_end_year_edit", {
                                         pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" },
                                         minLength: {
                                             value: 4,
@@ -758,7 +769,7 @@ const Myclass = () => {
                     classesByYear.map((item,index)=>{
                      return(
                       
-                    <option key={index} value={item._id.batch_start_year}>
+                    <option key={index} idx={index} value={item._id.batch_start_year}>
                       {
                         index == 0 ? "Current Year" : `${item._id.batch_start_year}-${item._id.batch_end_year}`
                       }
@@ -859,32 +870,40 @@ const Myclass = () => {
             <ul className="justify-between grid grid-custom gap-10 p-10 pb-0 pt-0">
               { classes[0] ? classes?.map((item,index) => {
                 return (
-                  <li className="  rounded-md h-28 xl:w-72  xl:h-44 p-3 pt-2 cursor-pointer" key={index}>
+                  <li className="rounded-md h-28 xl:w-72  xl:h-44 p-3 pt-2 cursor-pointer" key={index}>
                     <div className="class_card drop-shadow-lg rounded-lg p-2 pr-0 h-40" style={{ backgroundColor: bgColors[index % bgColors.length]}}>
-                      <div className=" h-6  flex justify-end it ems-center space-x-2 mr-2 "
-                     >
-                        <div className=" edit_delete_btns hidden px-1 py-1 rounded-md" 
-                        style={{ color:  isHover? "#fff" :headingBgColor[index % headingBgColor.length],
-                                 backgroundColor: isHover? headingBgColor[index % headingBgColor.length] : "#fff"
-                              }}
-                        onMouseEnter={handleMouseEnterEdit}
-                        onMouseLeave={handleMouseLeaveEdit}>
-                          <MdModeEdit
-                            className=""
-                            onClick={()=>handleEditClass(item._id)}
-                          />
-                        </div>
-
-                        <div className=" edit_delete_btns hidden px-1 py-1 rounded-md"
-                        style={{ color:  isHover? "#fff" :headingBgColor[index % headingBgColor.length],
-                                 backgroundColor: isHover? headingBgColor[index % headingBgColor.length] : "#fff"
-                              }}
-                        onMouseEnter={handleMouseEnterDelete}
-                        onMouseLeave={handleMouseLeaveDelete}
+                          <div className=" h-6  flex justify-end it ems-center space-x-2 mr-2 "
                         >
-                          <MdDelete onClick={()=>handleDeleteClass(item._id)}/>
-                        </div>
-                      </div>
+                        {
+                          isCurrentYearSelected
+                          ?
+                            <>
+                              <div className=" edit_delete_btns hidden px-1 py-1 rounded-md" 
+                              style={{ color:  isHover? "#fff" :headingBgColor[index % headingBgColor.length],
+                                      backgroundColor: isHover? headingBgColor[index % headingBgColor.length] : "#fff"
+                                    }}
+                              onMouseEnter={handleMouseEnterEdit}
+                              onMouseLeave={handleMouseLeaveEdit}>
+                                <MdModeEdit
+                                  className=""
+                                  onClick={()=>handleEditClass(item._id)}
+                                />
+                              </div>
+
+                              <div className=" edit_delete_btns hidden px-1 py-1 rounded-md"
+                              style={{ color:  isHover? "#fff" :headingBgColor[index % headingBgColor.length],
+                                      backgroundColor: isHover? headingBgColor[index % headingBgColor.length] : "#fff"
+                                    }}
+                              onMouseEnter={handleMouseEnterDelete}
+                              onMouseLeave={handleMouseLeaveDelete}
+                              >
+                                <MdDelete onClick={()=>handleDeleteClass(item._id)}/>
+                              </div>
+                            </>
+                          :
+                            null
+                          }
+                          </div>
                       <NavLink 
                         className="nav-link" 
                         to={`class/${item._id}`} 

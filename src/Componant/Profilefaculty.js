@@ -85,28 +85,24 @@ const Profilefaculty = () => {
   useEffect(() => {
     async function fetchfacultdata() {
       const res = await Facultydetails(params.id);
+      console.log(res.data.one_staff_Details)
       setfacultydetails(() => res.data.one_staff_Details);
-      console.log(res.data.one_staff_Details.basic_info_id.full_name)
       setgender(() => res.data.one_staff_Details?.basic_info_id?.gender);
       setloading(false)
     }
     fetchfacultdata()
   }, [call])
 
-  console.log(facultydetails, "facultydetails")
   //   // --------------------------------
   //   // -----   Date_birth    ----------
   //   // -------------------------------
   let dob = new Date(facultydetails?.basic_info_id.dob);
   dob = `${dob.getFullYear()}-${(dob.getMonth() + 1) < 10 ? "0" + (dob.getMonth() + 1) : (dob.getMonth() + 1)}-${dob.getDate() < 10 ? "0" + dob.getDate() : dob.getDate()}`
-  console.log(dob ,"dob")
   // // //  --------------------------------
   // //   ----- Joinign_Date  ------------
   // //   -------------------------------
   let doj = new Date(facultydetails?.joining_date);
   doj = `${doj.getFullYear()}-${(doj.getMonth() + 1) < 10 ? "0" + (doj.getMonth() + 1) : (doj.getMonth() + 1)}-${doj.getDate() < 10 ? "0" + doj.getDate() : doj.getDate()}`
-
-  console.log(doj ,"doj")
 
   // -----------------------------------------------------------------------------
   // ------------------------------Table_details----------------------------------
@@ -379,10 +375,6 @@ const Profilefaculty = () => {
                     ) : null}
                   </div>
                 </div>
-
-
-
-
               </div>
             </div>
           </form>
@@ -404,8 +396,8 @@ const Profilefaculty = () => {
             />
 
             <div ref={componentRef} className='p-5 pt-3 pb-0'>
-              <table className="w-full text-sm text-center bg-class5-50 rounded-xl ">
-                <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+              <table className="w-full text-sm text-center rounded-xl ">
+                <thead className="text-xs text-gray-700 uppercase bg-class5-50">
                   <tr className='text-white text-base'>
 
                     <th scope="col" className="py-7 px-5 text-center ">Total Paid</th>
@@ -414,8 +406,8 @@ const Profilefaculty = () => {
                     <th scope="col" className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>Action</th>
                   </tr>
                 </thead>
+                <tbody className='bg-white border items-center '>
                 {Totalpaid.length > 0 ? (
-                  <tbody className='bg-white border items-center '>
 
                     <tr className=" border-b">
 
@@ -441,14 +433,18 @@ const Profilefaculty = () => {
 
 
 
-                  </tbody>
                 ) : (
-                  <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
-                    <IoMdInformationCircle className="text-xl text-red-600" />
+                  <tr className="">
+                    <td colSpan={7} className="bg-red-200  font-bold p-2 rounded">
+                        <div className="flex space-x-2 justify-center items-center">
 
-                    <h1 className="text-red-800">Reciept Not avaiable </h1>
-                  </div>
+                        <IoMdInformationCircle className="text-xl text-red-600"/>
+                        <h1 className="text-red-800">Receipts not found </h1>
+                        </div>
+                    </td>
+                  </tr>
                 )}
+                  </tbody>
               </table>
             </div>
           </div>

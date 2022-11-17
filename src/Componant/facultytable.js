@@ -97,10 +97,10 @@ const Facultytable = () => {
                     </th>
                   </tr>
                 </thead>
+                <tbody className="bg-white border items-center ">
                 {currentItems.length > 0 ? (
-                  <tbody className="bg-white border items-center ">
 
-                    {
+                    
                       currentItems.map((item, key) => {
                         return (
                           <tr className=" border-b"  >
@@ -134,15 +134,19 @@ const Facultytable = () => {
                             </td>
                           </tr>
                         )
-                      })}
-                  </tbody>
-                ) : (
-                  <div className="bg-red-200 font-bold flex justify-center items-center p-2 rounded  space-x-2">
-                    <IoMdInformationCircle className="text-xl text-red-600" />
+                      })
+                      ) : (
+                        <tr className="">
+                    <td colSpan={7} className="bg-red-200  font-bold p-2 rounded">
+                        <div className="flex space-x-2 justify-center items-center">
 
-                    <h1 className="text-red-800">Staffs Not Founde</h1>
-                  </div>
+                        <IoMdInformationCircle className="text-xl text-red-600"/>
+                        <h1 className="text-red-800">Faculty not found </h1>
+                        </div>
+                    </td>
+                </tr>
                 )}
+                </tbody>
               </table>
             </div>
 

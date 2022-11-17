@@ -57,8 +57,8 @@ export function useSetDefault() {
   });
 }
 
-export function usegetAdmin() {
-  return axiosInstance.get(`${SERVER}/admin`).then((res) => res.data);
+export async function usegetAdmin() {
+  return await axiosInstance.get(`${SERVER}/admin`).then((res) => res.data);
 }
 
 export function useGetAllAdmin() {
@@ -351,33 +351,9 @@ export async function Update_faculty_reciept (data) {
 // -----------------------------------------------------------------------
 export const Alloverstudent = async (section) => {
   try {
-    console.log(section ,"usepostsection")
     const { data } = await axios.post(`${SERVER}/students/`, { is_primary : section });
     return data;
   } catch (error) {
-    throw error("data is not fatched")
+    console.log(error)
   }
 }
-
-
-  
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

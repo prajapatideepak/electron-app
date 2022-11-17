@@ -372,7 +372,7 @@ const Faculty = () => {
                   <div>
                     <p className=" font-semibold text-white mb-3 text-5xl">{data}</p>
                     <h1 className="text-gray-200 text-sm xl:text-xl uppercase text-center  ">
-                      Staff Total
+                      Total Staff
                     </h1>
                   </div>
                 </div>

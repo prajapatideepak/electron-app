@@ -32,11 +32,14 @@ valid.register({
     },
     whatsapp_no: {
         required: [true, 'Field is required'],
-        pattern: [/^[0-9]*$/, "Please enter only numbers"]
+        pattern: [/^[0-9]*$/, "Please enter only numbers"],
+        length: [10, "Number should be of 10 digits"]
     },
     alternate_no: {
         required: [false],
-        pattern: [/^[0-9]*$/, "Please enter only numbers"]
+        pattern: [/^[0-9]*$/, "Please enter only numbers"],
+        length: [10, "Number should be of 10 digits"]
+
     },
     gender: {
         required: [false]
@@ -162,8 +165,6 @@ const Profilestudent = () => {
             note: note == '' ? '--' : note,
             school_name: school_name == '' ? '--' : school_name
         }
-
-        console.log(stud_data)
 
         const photo = student_details.personal.basic_info_id.photo;
         setImg(photo != '' ? server+photo : defaultImage)
@@ -893,6 +894,7 @@ const Profilestudent = () => {
                                                             e.preventDefault();
                                                             setIsEnable(true); 
                                                             setShowUpdateButton(false)
+                                                            setState(valid.clearErrors())
                                                             setStudentInputController((prevData)=>{
                                                                 return { 
                                                                     ...prevData,

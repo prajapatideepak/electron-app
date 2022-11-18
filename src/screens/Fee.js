@@ -1,9 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { AiFillEye, AiOutlineSearch } from "react-icons/ai";
-<<<<<<< HEAD
-=======
 import { Tooltip } from "@material-tailwind/react";
->>>>>>> origin/master
 import { IoMdInformationCircle } from "react-icons/io";
 import { NavLink } from "react-router-dom";
 import {getStudentDetails} from '../hooks/usePost';
@@ -15,10 +12,7 @@ export default function Fess() {
   const [data, setdata] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-<<<<<<< HEAD
-=======
   const [showNotFound, setShowNotFound] = useState(-1)
->>>>>>> origin/master
   
   async function searchStudent() {
     try{
@@ -29,10 +23,7 @@ export default function Fess() {
       const res = await getStudentDetails(searchValue)
       setLoading(false);
       setdata(res?.data?.data?.students_detail?.length > 0 ? res?.data?.data?.students_detail : null);
-<<<<<<< HEAD
-=======
       setShowNotFound(1)
->>>>>>> origin/master
     }
     catch(err){
       console.log(err)
@@ -57,11 +48,7 @@ export default function Fess() {
 
         <div className="px-2 py-2 flex mt-7 items-center justify-center">
           <input
-<<<<<<< HEAD
-            type="text"
-=======
             type="search"
->>>>>>> origin/master
             value={searchValue}
             onChange={(e)=> setSearchValue(e.target.value)}
             className="w-2/3 shadow-xl px-3 py-2 rounded-l-lg outline-none    "
@@ -102,12 +89,7 @@ export default function Fess() {
                           <table className="w-full whitespace-nowrap">
                             <thead>
                               <tr className="bg-gray-100 h-16 w-full text-sm leading-none font-bold text-darkblue-500">
-<<<<<<< HEAD
-                                <th className="font-bold text-left pl-10">Profile</th>
-                                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
-=======
                                 <th className="font-bold text-left px-10 lg:px-6 xl:px-auto">
->>>>>>> origin/master
                                   Student ID
                                 </th>
                                 <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
@@ -132,12 +114,9 @@ export default function Fess() {
                                   Pending
                                 </th>
                                 <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
-<<<<<<< HEAD
-=======
                                   Profile
                                 </th>
                                 <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
->>>>>>> origin/master
                                   Action
                                 </th>
                               </tr>
@@ -146,18 +125,7 @@ export default function Fess() {
                                 {data.map((m, index) => {
                                   return (
                                     <tr key={index} className={`${m.fees.pending_amount > 0 ? 'bg-red-100' : 'bg-green-100'} border-b-1 border-gray-200 h-20 text-sm leading-none text-gray-800 border-b border-gray-100`}>
-<<<<<<< HEAD
-                                      <td className="pl-10"> 
-                                      <img
-                                        src="images/user.png"
-                                        className="w-14 shadow-2xl h-14 rounded-full"
-                                        alt={m.personal.student_id}
-                                        ></img>
-                                      </td>
-                                      <td className="px-10 lg:px-6 xl:px-0">
-=======
                                       <td className="px-10 lg:px-6 xl:px-auto">
->>>>>>> origin/master
                                         <span className="font-bold">
                                             {m.personal.student_id}
                                         </span>
@@ -205,8 +173,6 @@ export default function Fess() {
                                           </span>
                                         </p>
                                       </td>
-<<<<<<< HEAD
-=======
                                       <td>
                                         <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${m.personal.student_id}`}>
                                           <Tooltip
@@ -220,7 +186,6 @@ export default function Fess() {
                                           </Tooltip>
                                         </NavLink>
                                       </td>
->>>>>>> origin/master
                                       <td className="">
                                         <span className="">
                                           <NavLink to={"/receipt/FeesDetail"} state={{
@@ -249,13 +214,6 @@ export default function Fess() {
                 </div>
               ) 
               : (
-<<<<<<< HEAD
-                <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
-                  <IoMdInformationCircle className="text-xl text-red-600" />
-
-                  <h1 className="text-red-800">No Student Found </h1>
-                </div>
-=======
                 showNotFound != -1 
                 ?
                   <div className="bg-red-200 font-bold justify-center items-center p-2 rounded mx-3 flex space-x-2">
@@ -265,7 +223,6 @@ export default function Fess() {
                   </div>
                 :
                   null
->>>>>>> origin/master
               )
             )
         }

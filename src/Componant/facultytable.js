@@ -34,11 +34,7 @@ const Facultytable = () => {
       })
   }, [])
 
-<<<<<<< HEAD
   // console.log(facultyData, "facultydata")
-=======
-  console.log(facultyData, "facultydata")
->>>>>>> origin/master
 
 
   // -------------------------------
@@ -82,11 +78,7 @@ const Facultytable = () => {
             />
             <div ref={componentRef} className='p-5 pt-3 pb-0'>
               <table className="w-full text-sm text-center bg-class5-50 rounded-xl ">
-<<<<<<< HEAD
-                <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
-=======
                 <thead className="text-xs text-gray-700 uppercase">
->>>>>>> origin/master
                   <tr className="text-white text-base">
                     <th scope="col" className="py-4 px-6 text-center">
                       Serial No
@@ -105,17 +97,10 @@ const Facultytable = () => {
                     </th>
                   </tr>
                 </thead>
-<<<<<<< HEAD
-                {currentItems.length > 0 ? (
-                  <tbody className="bg-white border items-center ">
-
-                    {
-=======
                 <tbody className="bg-white border items-center ">
                 {currentItems.length > 0 ? (
 
                     
->>>>>>> origin/master
                       currentItems.map((item, key) => {
                         return (
                           <tr className=" border-b"  >
@@ -149,17 +134,6 @@ const Facultytable = () => {
                             </td>
                           </tr>
                         )
-<<<<<<< HEAD
-                      })}
-                  </tbody>
-                ) : (
-                  <div className="bg-red-200 font-bold flex justify-center items-center p-2 rounded  space-x-2">
-                    <IoMdInformationCircle className="text-xl text-red-600" />
-
-                    <h1 className="text-red-800">Staffs Not Founde</h1>
-                  </div>
-                )}
-=======
                       })
                       ) : (
                         <tr className="">
@@ -173,7 +147,6 @@ const Facultytable = () => {
                 </tr>
                 )}
                 </tbody>
->>>>>>> origin/master
               </table>
             </div>
 

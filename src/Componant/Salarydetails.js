@@ -2,11 +2,7 @@ import React from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-<<<<<<< HEAD
 import { Facultyreciept, Update_faculty_reciept, getAdminpinVerification } from "../hooks/usePost"
-=======
-import { Facultyreciept, Update_faculty_reciept } from "../hooks/usePost"
->>>>>>> origin/master
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from './Loader';
@@ -15,17 +11,9 @@ import Loader from './Loader';
 
 
 export default function Salarydetails() {
-<<<<<<< HEAD
     const Toaster = () => { toast.success('Salary_Reciept updated') }
     const errtoast = () => { toast.error("Invalid UserID / Password") }
     const params = useParams();
-=======
-    // -----------------------
-    // ----- API WORKS -------
-    // -----------------------
-    const params = useParams();
-
->>>>>>> origin/master
     const [isloading, setloading] = React.useState(true)
     const [faculty, setfaculty] = React.useState();
     const [salary, setsalary] = React.useState();
@@ -37,7 +25,6 @@ export default function Salarydetails() {
     const [chaque_no, setchaqueno] = React.useState('');
     const [upi_no, setupino] = React.useState('');
     const [payment, setPayment] = React.useState("");
-<<<<<<< HEAD
     const [amount, setamount] = React.useState(false);
     const [paymenterror, setpaymenterror] = React.useState(false);
     const [upierror, setupierror] = React.useState(false);
@@ -56,9 +43,6 @@ export default function Salarydetails() {
     //   // --------------------------------
     //   // --------  API WORK -------------
     //   // -------------------------------
-=======
-
->>>>>>> origin/master
 
     React.useEffect(() => {
         async function fetchfacultdata() {
@@ -72,7 +56,6 @@ export default function Salarydetails() {
             setchaque(() => res.data.data.receipt_details.getdetails.transaction_id.is_by_cheque)
             setchaqueno(() => res.data.data.receipt_details.getdetails.transaction_id.cheque_no)
             setupino(() => res.data.data.receipt_details.getdetails.transaction_id.upi_no)
-<<<<<<< HEAD
             setpin(() => res.data.data.receipt_details.getdetails.admin_id.security_pin)
             setPayment(
                 upi
@@ -83,17 +66,6 @@ export default function Salarydetails() {
                         ?
                         "3"
                         :
-=======
-            setPayment(
-                upi
-                ?
-                    '2'
-                :
-                    chaque
-                    ?
-                        "3"
-                    :
->>>>>>> origin/master
                         "1"
             )
             setloading(false)
@@ -117,10 +89,6 @@ export default function Salarydetails() {
         (today.getMonth() + 1) +
         " / " +
         today.getFullYear();
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
     //   // -------------------------------------
     //   // ------  Without Change Dtae ---------
     //   // -------------------------------------  
@@ -133,30 +101,6 @@ export default function Salarydetails() {
         today.getFullYear();
 
     const location = useLocation
-<<<<<<< HEAD
-=======
-    // ------------------------
-    // ----- All Usestate ------
-    // ------------------------
-    const [amount, setamount] = React.useState(false);
-    const [paymenterror, setpaymenterror] = React.useState(false);
-    const [upierror, setupierror] = React.useState(false);
-    const [chaqueerror, setchaqueerror] = React.useState(false);
-    const [amounterror, setamounterror] = React.useState(false);
-    const [toggle, setToggle] = React.useState(false);
-    const [model, setModel] = React.useState(false);
-    const [pin, setPin] = React.useState("");
-    const [error, setError] = React.useState(false);
-    const [salaryData, setSalaryData] = React.useState({
-        hour: "",
-        amount: "",
-    });
-
-    const admin = {
-        id: 42,
-        name: "Shad rajput ",
-    };
->>>>>>> origin/master
 
     // ------------------------
     // ----- Payment_type ------
@@ -187,11 +131,6 @@ export default function Salarydetails() {
         setchaqueno("")
     }
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/master
     // ------------------------
     // ----- salary_type ------
     // ------------------------
@@ -236,11 +175,6 @@ export default function Salarydetails() {
     // ------------------------
     // ----- Payment_PIN ------
     // ------------------------
-<<<<<<< HEAD
-=======
-    const regtoast = () => { toast.success("Salary Reciept Updated Successfully!!") }
-    const errtoast = () => { toast.error("Something Wrong") }
->>>>>>> origin/master
     const navigate = useNavigate();
     async function handlePINsubmit() {
         const gen_reciept = ({
@@ -259,7 +193,6 @@ export default function Salarydetails() {
             rate_per_hour: salaryData.amount,
 
         });
-<<<<<<< HEAD
         const SPIN = PIN;
         if (pin == SPIN) {
           const res = await Update_faculty_reciept(gen_reciept)
@@ -275,23 +208,6 @@ export default function Salarydetails() {
     
         } else {
           setError(true);
-=======
-        console.log(gen_reciept, "gen_reciept")
-        const SPIN = 1111;
-        if (pin == SPIN) {
-
-            const res = await Update_faculty_reciept(gen_reciept)
-            console.log(res.data.salary_receipt_details.salary_receipt_id, "res")
-            if (res.data.success = true) {
-                const salary_receipt_id = res.data.salary_receipt_details.salary_receipt_id
-                navigate(`/salary/Receipt_teacher/${salary_receipt_id}`,{ state: { prevPath: "update_receipt" } })
-                regtoast()
-            } else {
-                errtoast()
-            }
-        } else {
-            setError(true);
->>>>>>> origin/master
         }
     }
 
@@ -303,10 +219,6 @@ export default function Salarydetails() {
         setToggle(false);
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
     if (isloading) {
         return <Loader />
     }

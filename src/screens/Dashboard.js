@@ -15,64 +15,31 @@ import Loader from '../Componant/Loader';
 import { NasirContext } from "../NasirContext";
 import ReactPaginate from "react-paginate";
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> origin/master
 export default function Dashboard() {
   const componentRef = useRef();
   const [isPrint, setIsPrint] = useState(false);
   const [isloading, setloading] = React.useState(true)
-<<<<<<< HEAD
-  const { section } = React.useContext(NasirContext);
-=======
->>>>>>> origin/master
   const [currentItems, setcurrentItems] = useState([])
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
   const [Serialno, setserialno] = useState(1)
   const itemsPerPage = 6;
-<<<<<<< HEAD
-
-  // ---------------------------------------------------------------
-  // --------------------    API Works       -----------------------
-  // ---------------------------------------------------------------
-=======
   
   const { section, admin } = React.useContext(NasirContext);
->>>>>>> origin/master
 
   const [Student, setstudent] = useState();
   const [PaginationData, setPaginationData] = useState([]);
   const Toaster = () => { toast.success('New Staff Register successfully') }
   const errtoast = () => { toast.error("Something Wrong") }
-<<<<<<< HEAD
-  console.log(section)
-  const response = Alloverstudent(section == "primary" ? 0 : 1)
-
-=======
->>>>>>> origin/master
 
   useEffect(() => {
     async function fetchfacultdata() {
       const res = await Alloverstudent(section);
-<<<<<<< HEAD
-      console.log(section)
-      setstudent(() => res.data)
-      setloading(false);
-    }
-    fetchfacultdata()
-  }, [])
-
-=======
       setloading(false);
       setstudent(() => res.data)
     }
     fetchfacultdata()
   }, [])
->>>>>>> origin/master
   console.log(Student, "student")
 
 
@@ -127,13 +94,8 @@ export default function Dashboard() {
 
           </div>
           <div ref={componentRef} className='p-5 pt-3 pb-0'>
-<<<<<<< HEAD
-            <table className="w-full text-sm text-center bg-class2-50 rounded-xl  " >
-              <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
-=======
             <table className="w-full text-sm text-center rounded-xl overflow-hidden " >
               <thead className="text-xs text-gray-700 bg-class2-50 uppercase">
->>>>>>> origin/master
                 <tr className="text-white text-base">
                   <th scope="col" className="py-7 px-5 text-center ">
                     Serial No
@@ -181,11 +143,7 @@ export default function Dashboard() {
                               <td className="py-7 px-5 text-center ">{item.academics[0].fees[0].pending_amount}</td>
                               <td className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
                                 <div className="flex justify-center space-x-2">
-<<<<<<< HEAD
-                                  <NavLink className="nav-link" to={`ProfileStudent/${item._id}`} >
-=======
                                    <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id}`}>
->>>>>>> origin/master
                                     <Tooltip
                                       content="Show"
                                       placement="bottom-end"

@@ -10,11 +10,8 @@ import Swal from 'sweetalert2'
 import { FaArrowLeft } from "react-icons/fa"
 import { transferClasses } from "../hooks/usePost";
 import { toast } from 'react-toastify';
-<<<<<<< HEAD
-=======
 import { IoIosArrowBack } from 'react-icons/io';
 
->>>>>>> origin/master
 
 
 function Remove() {
@@ -42,29 +39,16 @@ const ChangeYear = () => {
     const [call, setCall] = React.useState(false)
 
     classesData.map((item,index)=>{
-<<<<<<< HEAD
-        return {...item,is_selected:true}
-=======
         return {...item,is_selected:true, is_disabled:true}
->>>>>>> origin/master
     })
 
     useEffect(()=>{
         setClassesNewData(classesData.map((item,index)=>{
-<<<<<<< HEAD
-            return {...item,is_selected:true}
-=======
             return {...item,is_selected:true, is_disabled:true}
->>>>>>> origin/master
          })
         )
     },[])
 
-<<<<<<< HEAD
-    const [isEditable, setEditable] = React.useState(true)
-    const editTable = (e) => {
-        setEditable(!isEditable)
-=======
     const editTable = (e, index) => {
 
         setClassesNewData(
@@ -75,7 +59,6 @@ const ChangeYear = () => {
             }
          })
         )
->>>>>>> origin/master
     }
 
     const navigate = useNavigate();
@@ -126,17 +109,9 @@ const ChangeYear = () => {
                             Transfer Classes
                         </h1>
 
-<<<<<<< HEAD
-                        <div className="btn cursor-pointer ml-5 h-10 w-24 rounded-md bg-white text-left border  overflow-hidden" id="btn" onClick={() => navigate(-1)}>
-                            <div className="icons  h-9 w-40 flex ml-2 items-center " id="icons">
-                                <FaArrowLeft className="text-2xl text-darkblue-500  " />
-                                <span className="ml-3 text-lg text-darkblue-500 font-semibold">Back</span>
-                            </div>
-=======
                         <div className="group h-9 w-20 flex justify-center items-center gap-1 cursor-pointer" id="" onClick={() => navigate(-1)}>
                             <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
                             <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
->>>>>>> origin/master
                         </div>
 
                     </div>
@@ -167,17 +142,10 @@ const ChangeYear = () => {
                                         className=' rounded-md w-16 h-5 text-center bg-white'/>     
                                     </td>
                                     <td scope="row" className="w-20 h-20"> 
-<<<<<<< HEAD
-                                        <input type="text" disabled={isEditable}
-                                        onChange={(e) => handleMyclassName(e.target.value, index) }
-                                        className='rounded-md w-16 h-7 text-center bg-white' defaultValue={item.class_name}  
-                                        style={{border: isEditable?false:'2px solid #f8b26a'}}/>  
-=======
                                         <input type="text" disabled={item.is_disabled}
                                         onChange={(e) => handleMyclassName(e.target.value, index) }
                                         className='rounded-md w-16 h-7 text-center bg-white' defaultValue={item.class_name}  
                                         style={{border: item.is_disabled?false:'2px solid #f8b26a'}}/>  
->>>>>>> origin/master
                                      </td>
                                     <td className="w-28 h-20 space-x-4">
                                         <input type="text" disabled={true}
@@ -187,17 +155,10 @@ const ChangeYear = () => {
                                         className=' rounded-md w-16 h-7 text-center bg-white' defaultValue={item.batch_end_year+1} />
                                     </td>
                                     <td className="w-20 h-20">
-<<<<<<< HEAD
-                                        <select name="" disabled={isEditable} 
-                                        onChange={(e)=> handleMedium(e.target.value, index)} className=' rounded-md w-20 h-7 text-center'
-                                        defaultValue={item.medium} 
-                                        style={{border: isEditable?false:'2px solid #f8b26a'}}>
-=======
                                         <select name="" disabled={item.is_disabled} 
                                         onChange={(e)=> handleMedium(e.target.value, index)} className=' rounded-md w-20 h-7 text-center'
                                         defaultValue={item.medium} 
                                         style={{border: item.is_disabled?false:'2px solid #f8b26a'}}>
->>>>>>> origin/master
                                         
                                             <option value="english"  defaultValue={item.medium == "english" ? true:false}>English</option>
                                             <option value="gujarati" defaultValue={item.medium == "gujarati" ? true:false}>Gujarati</option>
@@ -206,17 +167,10 @@ const ChangeYear = () => {
                                         </select>
                                     </td>
                                     <td className="w-20 h-20">
-<<<<<<< HEAD
-                                        <select name="" disabled={isEditable} 
-                                        className=' rounded-md w-20 h-7 text-center' defaultValue={item.section} 
-                                        onChange={(e)=>{ handleSection(e.target.value, index)}} 
-                                        style={{border: isEditable?false:'2px solid #f8b26a'}}>
-=======
                                         <select name="" disabled={item.is_disabled} 
                                         className=' rounded-md w-20 h-7 text-center' defaultValue={item.section} 
                                         onChange={(e)=>{ handleSection(e.target.value, index)}} 
                                         style={{border: item.is_disabled?false:'2px solid #f8b26a'}}>
->>>>>>> origin/master
                                         
                                             <option value={0} defaultValue={item.is_primary == 0 ? true:false}>Primary</option>
                                             <option value={1} defaultValue={item.is_primary == 1 ? true:false}>Secondary</option>
@@ -224,17 +178,10 @@ const ChangeYear = () => {
                                         </select>
                                     </td>
                                     <td className="w-20 h-20">
-<<<<<<< HEAD
-                                        <select name="" disabled={isEditable} 
-                                        className=' rounded-md w-24 h-7 text-center'  defaultValue={item.stream} 
-                                        onChange={(e)=>{ handleStream(e.target.value, index)}} 
-                                        style={{border: isEditable?false:'2px solid #f8b26a'}}>
-=======
                                         <select name="" disabled={item.is_disabled} 
                                         className=' rounded-md w-24 h-7 text-center'  defaultValue={item.stream} 
                                         onChange={(e)=>{ handleStream(e.target.value, index)}} 
                                         style={{border: item.is_disabled?false:'2px solid #f8b26a'}}>
->>>>>>> origin/master
                                          
                                             <option value="none" defaultValue={item.stream == "none" ? true:false}>None</option>
                                             <option value="commerce" defaultValue={item.stream == "commerce" ? true:false}>Commerce</option>
@@ -244,38 +191,21 @@ const ChangeYear = () => {
                                         </select>
                                     </td>
                                     <td className="w-20 h-20">
-<<<<<<< HEAD
-                                        <input type="text" disabled={isEditable} 
-                                        className=' rounded-md w-16 h-7 text-center bg-white' 
-                                        defaultValue={item.fees} 
-                                        onChange={(e)=>{handleFees(e.target.value, index)}} 
-                                        style={{border: isEditable?false:'2px solid #f8b26a'}}/>
-=======
                                         <input type="text" disabled={item.is_disabled} 
                                         className=' rounded-md w-16 h-7 text-center bg-white' 
                                         defaultValue={item.fees} 
                                         onChange={(e)=>{handleFees(e.target.value, index)}} 
                                         style={{border: item.is_disabled?false:'2px solid #f8b26a'}}/>
->>>>>>> origin/master
                                     </td>
                                     <td className="w-20 h-20 ">
                                         <div className='flex justify-center space-x-2'>
 
-<<<<<<< HEAD
-                                            {isEditable ?
-                                                    <button  value={index} onClick={()=>setEditable(!isEditable)} >
-                                                        Edit
-                                                    </button>
-                                                    :
-                                                    <button  value={index} onClick={editTable} >
-=======
                                             {item.is_disabled ?
                                                     <button  value={index} onClick={(e)=>editTable(e,index)} >
                                                         Edit
                                                     </button>
                                                     :
                                                     <button  value={index} onClick={(e)=>editTable(e, index)} >
->>>>>>> origin/master
                                                         Save
                                                     </button>
                                             }

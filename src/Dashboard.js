@@ -92,11 +92,7 @@ function DashboardMenu() {
             />
             <Route
               exact
-<<<<<<< HEAD
-              path="/myclass/class/Profilestudent"
-=======
               path="/myclass/class/Profilestudent/:student_id"
->>>>>>> origin/master
               element={<Profilestudent />}
             />
             <Route

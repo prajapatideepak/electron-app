@@ -33,7 +33,7 @@ import { NasirContext } from "./NasirContext";
 import AdminList from "./screens/AdminList";
 import CancelAdmission from "./screens/CancelAdmission";
 import Salarydetails from "./Componant/Salarydetails";
-
+   
 function DashboardMenu() {
   const { setAdmin, login } = React.useContext(NasirContext);
   const adminData = useQuery("admin", usegetAdmin);

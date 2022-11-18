@@ -92,22 +92,6 @@ const Updateprofile = () => {
                 </h1>
               </div>
               <div className=" flex flex-col items-center gap-5">
-                <div className="profile_img_div border-2 border-gray-500 shadow-lg">
-                  <img
-                    src={img}
-                    width="100%"
-                    height="100%"
-                    alt="student profile"
-                  />
-                  <div className="profile_img_overlay flex flex-col justify-center items-center">
-                    <input
-                      //disabled={!isEdiable}
-                      type="file"
-                      className="rounded-md w-16"
-                      onChange={onImageChange}
-                    />
-                  </div>
-                </div>
                 <div div className="flex lg:flex-row md:flex-col gap-4 mt-7">
                   <div className="fullname">
                     <label className="block">

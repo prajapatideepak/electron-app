@@ -10,10 +10,7 @@ export const Addadmin = () => {
   const [img, setImg] = useState("/images/user.png");
   const createPost = useCreateAdmin();
 
-  const onImageChange = (e) => {
-    const [file] = e.target.files;
-    setImg(URL.createObjectURL(file));
-  };
+
 
   React.useEffect(() => {
     if (createPost.isSuccess) {
@@ -39,7 +36,6 @@ export const Addadmin = () => {
 
   const handleClick = (e) => {
     reset();
-    // console.log(e.currentTarget);
   };
 
   return (

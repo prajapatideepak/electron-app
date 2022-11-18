@@ -15,6 +15,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getActiveClasses, transferStudent } from "../hooks/usePost";
 import Toaster from '../hooks/showToaster';
 import SweetAlert from '../hooks/sweetAlert';
+<<<<<<< HEAD
+=======
+import { IoIosArrowBack } from 'react-icons/io';
+
+>>>>>>> origin/master
 import {AxiosError} from 'axios';
 
 
@@ -232,6 +237,7 @@ const Transfer = () => {
                 )}
 
             <div className={`bg-slate-100 ${classSelectionModel ? "opacity-20" :  "opacity-100"}`}>
+<<<<<<< HEAD
                 <div className="wrapper py-5 pl-5">
                     <NavLink className="nav-link" to="class">
 
@@ -242,6 +248,13 @@ const Transfer = () => {
                             </div>
                         </div>
                     </NavLink>
+=======
+                <div className="wrapper flex justify-end py-5 pr-10">
+                    <div className="group h-9 w-20 flex justify-center items-center gap-1 cursor-pointer" id="" onClick={() => navigate(-1)}>
+                        <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
+                        <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
+                    </div>
+>>>>>>> origin/master
                 </div>
                 <section className='table h-full w-full  shadow-none'>
 
@@ -254,8 +267,13 @@ const Transfer = () => {
                                 </h1>
                             </div>
 
+<<<<<<< HEAD
                             <table className="w-full text-sm text-center bg-red-500 rounded-xl  ">
                                 <thead className="text-xs text-gray-700 uppercase">
+=======
+                            <table className="w-full text-sm text-center overflow-hidden  rounded-xl  ">
+                                <thead className="text-xs text-gray-700 bg-red-500 uppercase">
+>>>>>>> origin/master
                                     <tr className='text-white text-base'>
                                         <th scope="col" className="w-20 h-20">Roll No</th>
                                         <th scope="col" className="w-20 h-20">Name</th>
@@ -290,8 +308,15 @@ const Transfer = () => {
                                         <td className="w-20 h-20">{item.fees_id.pending_amount}</td>
                                         <td className="w-20 h-20 ">
                                             <div className='flex justify-center space-x-2'>
+<<<<<<< HEAD
                                                 <NavLink className="nav-link" to="Profilestudent">
                                                     <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'><div className="text-xl text-darkblue-500 cursor-pointer" ><AiFillEye /></div></Tooltip>
+=======
+                                                <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}>
+                                                    <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                        <AiFillEye className="text-xl text-darkblue-500" />
+                                                    </Tooltip>
+>>>>>>> origin/master
                                                 </NavLink>
                                                 <Tooltip content="Sent To Eligible Table" placement="bottom-end" className='text-white bg-black rounded p-2'><div href="#" className="text-xl text-darkblue-500 cursor-pointer" onClick={()=> {handleSendToEligibleTable(item._id,index)}}><FaHandPointDown /></div></Tooltip>
                                             </div>
@@ -311,8 +336,13 @@ const Transfer = () => {
                                 Eliglible for Transfer
                             </h1>
 
+<<<<<<< HEAD
                             <table className="w-full text-sm text-center bg-green-500 rounded-xl ">
                                 <thead className="text-xs text-gray-700 uppercase">
+=======
+                            <table className="w-full text-sm text-center overflow-hidden rounded-xl ">
+                                <thead className="text-xs text-gray-700 bg-green-500 uppercase">
+>>>>>>> origin/master
                                     <tr className='text-white text-base'>
                                         <th scope="col" className="w-20 h-20">Roll No</th>
                                         <th scope="col" className="w-20 h-20">Name</th>
@@ -346,9 +376,16 @@ const Transfer = () => {
                                         <td className="w-20 h-20">{item.fees_id.pending_amount}</td>
                                         <td className="w-20 h-20 ">
                                             <div className='flex justify-center space-x-2'>
+<<<<<<< HEAD
                                                 <NavLink className="nav-link" to="Profilestudent">
 
                                                     <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'><div className="text-xl text-darkblue-500 cursor-pointer" ><AiFillEye /></div></Tooltip>
+=======
+                                                <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}>
+                                                    <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                        <AiFillEye className="text-xl text-darkblue-500" />
+                                                    </Tooltip>
+>>>>>>> origin/master
                                                 </NavLink>
                                                 <Tooltip content="Sent To Not Eligible Table" placement="bottom-end" className='text-white bg-black rounded p-2'><div href="#" className="text-xl text-darkblue-500 cursor-pointer" onClick={()=>{handleSendToNotEligibleTable(item._id,index)}}><FaHandPointUp /></div></Tooltip>
                                             </div>

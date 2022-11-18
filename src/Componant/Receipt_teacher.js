@@ -2,18 +2,28 @@ import React, { useRef, useState } from "react";
 import { TbCurrencyRupee } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useParams, useLocation } from "react-router-dom";
+<<<<<<< HEAD
 import { Facultyreciept, getAdminVerification } from "../hooks/usePost"
+=======
+import { Facultyreciept } from "../hooks/usePost"
+>>>>>>> origin/master
 import { NavLink, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdModeEditOutline } from "react-icons/md";
 import ReactToPrint from "react-to-print";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useForm } from "react-hook-form";
+<<<<<<< HEAD
 import { FaUserAlt } from "react-icons/fa";
 import { IoMdLock } from "react-icons/io";
 import Loader from './Loader';
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
+=======
+import { FaBullseye, FaUserAlt } from "react-icons/fa";
+import { IoMdLock } from "react-icons/io";
+import Loader from './Loader';
+>>>>>>> origin/master
 
 
 
@@ -21,8 +31,11 @@ import { AxiosError } from "axios";
 function Receipt_teacher() {
   const receiptBgColor = 'bg-red-600';
   const receiptTextColor = 'text-red-600';
+<<<<<<< HEAD
   const Toaster = () => { toast.success('Authentication Successfull') }
   const errtoast = () => { toast.error("Invalid UserID / Password") }
+=======
+>>>>>>> origin/master
   //   // --------------------------------
   //   // -----   API Works    ----------
   //   // -------------------------------
@@ -33,25 +46,36 @@ function Receipt_teacher() {
   const [feesdetails, setfeesdetails] = React.useState([]);
   const [isloading, setloading] = React.useState(true)
   const [isHourly, setisHourly] = React.useState(0)
+<<<<<<< HEAD
   const navigate = useNavigate();
   const printRef = useRef();
   const [print, setPrint] = useState(false);
   const [feesData, setFeesData] = React.useState({});
   const [pin, setPin] = React.useState("");
   const [error, setError] = React.useState();
+=======
+>>>>>>> origin/master
 
   React.useEffect(() => {
     async function fetchfacultdata() {
       const res = await Facultyreciept(params.id);
       setfacultyhistory(() => res.data.data.receipt_details.getdetails)
+<<<<<<< HEAD
+=======
+      console.log(res, "res")
+>>>>>>> origin/master
       setfeesdetails(() => res.data.data.receipt_details.hourlysalary)
       setisHourly(res.data.data.receipt_details.getdetails.is_hourly)
       setloading(false)
     }
     fetchfacultdata()
   }, [])
+<<<<<<< HEAD
 
   console.log(facultyhistory ,"facultyhistory")
+=======
+  console.log(facultyhistory)
+>>>>>>> origin/master
 
   //   // --------------------------------
   //   // ---------   Date    ----------
@@ -93,6 +117,7 @@ function Receipt_teacher() {
     resetField,
   } = useForm();
 
+<<<<<<< HEAD
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
@@ -112,10 +137,50 @@ function Receipt_teacher() {
       else {
         setError(error.message);
       }
+=======
+  const onSubmit = (data) => {
+    if (data.newpassword !== data.confirmpassword) {
+      document.getElementById("msg").style.display = "flex";
+    } else {
+      document.getElementById("msg").style.display = "none";
+>>>>>>> origin/master
     }
   };
 
 
+<<<<<<< HEAD
+=======
+
+
+  const navigate = useNavigate();
+  const printRef = useRef();
+  const [print, setPrint] = useState(false);
+  const [feesData, setFeesData] = React.useState({});
+  const [pin, setPin] = React.useState("");
+  const [error, setError] = React.useState();
+  function handleBack() { }
+
+  const username = "Nasir";
+  const password = 1234;
+  function handlePINsubmit() {
+    setFeesData({
+      username: "Nasir",
+      password: 1234
+    });
+
+    console.log("Clicked");
+    if (username == username && password == password) {
+      console.log(pin);
+      console.log(params.id)
+      navigate(`/salary/Salarydetails/${params.id}`, feesData);
+    } else {
+      setError(true);
+    }
+  }
+
+  console.log(location?.state?.prevPath)
+
+>>>>>>> origin/master
   if (isloading) {
     return <Loader />
   }
@@ -211,7 +276,11 @@ function Receipt_teacher() {
                           <div className=" flex flex-col items-center gap-5">
                             <div className="flex lg:flex-row md:flex-col gap-4">
                               <div className="btn mt-5 flex justify-center w-60">
+<<<<<<< HEAD
                                 <button
+=======
+                                <button onClick={handlePINsubmit}
+>>>>>>> origin/master
                                   type="submit"
                                   className="bg-blue-900 drop-shadow-2xl hover:bg-white border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-10 w-24 rounded-md tracking-wider"
                                 >

@@ -12,6 +12,10 @@ import Loader from './Loader';
 import { AiFillCloseCircle } from "react-icons/ai";
 import {AxiosError} from 'axios';
 import Validator from '../hooks/validator';
+<<<<<<< HEAD
+=======
+import { useParams } from "react-router-dom";
+>>>>>>> origin/master
 
 const valid = new Validator();
 valid.register({
@@ -31,11 +35,22 @@ valid.register({
     },
     whatsapp_no: {
         required: [true, 'Field is required'],
+<<<<<<< HEAD
         pattern: [/^[0-9]*$/, "Please enter only numbers"]
     },
     alternate_no: {
         required: [false],
         pattern: [/^[0-9]*$/, "Please enter only numbers"]
+=======
+        pattern: [/^[0-9]*$/, "Please enter only numbers"],
+        length: [10, "Number should be of 10 digits"]
+    },
+    alternate_no: {
+        required: [false],
+        pattern: [/^[0-9]*$/, "Please enter only numbers"],
+        length: [10, "Number should be of 10 digits"]
+
+>>>>>>> origin/master
     },
     gender: {
         required: [false]
@@ -75,6 +90,10 @@ valid.register({
 const Profilestudent = () => {
     const navigate = useNavigate();
     const location = useLocation();
+<<<<<<< HEAD
+=======
+    const params = useParams();
+>>>>>>> origin/master
     const form = useRef(null);
     const server = "http://localhost:4000/";
     const defaultImage = "http://localhost:4000/user_default@123.png";
@@ -121,7 +140,11 @@ const Profilestudent = () => {
     const [classNotSelectedError, setClassNotSelectedError] = useState(false);
     const [studDetails, setStudDetails] = useState({}); //Only used to pass data to next page
 
+<<<<<<< HEAD
     const student_id =86;
+=======
+    const student_id = params.student_id;
+>>>>>>> origin/master
     
     let student_details;
     
@@ -592,7 +615,11 @@ const Profilestudent = () => {
                                                             id="male"
                                                             name="gender"
                                                             value="male"
+<<<<<<< HEAD
                                                             checked={studentInputController?.gender?.toLowerCase() == 'male' ? true : false}
+=======
+                                                            checked={studentInputController?.gender?.toLowerCase() == 'male'}
+>>>>>>> origin/master
                                                             disabled={isEnable}
                                                             className="  hover:cursor-pointer"
                                                             
@@ -608,15 +635,23 @@ const Profilestudent = () => {
                                                             id="female"
                                                             name="gender"
                                                             value="female"
+<<<<<<< HEAD
                                                             checked={studentInputController?.gender?.toLowerCase() == 'female' ? true : false}
+=======
+                                                            checked={studentInputController?.gender?.toLowerCase() == 'female'}
+>>>>>>> origin/master
                                                             disabled={isEnable}
                                                             className="   hover:cursor-pointer"
                                                             
                                                             onChange={handleChange}
                                                         />
+<<<<<<< HEAD
 
                                                     </div>
 
+=======
+                                                    </div>
+>>>>>>> origin/master
                                                 </div>
                                             </label>
                                             {valid.errors?.gender != '' ? <small className="text-red-600 mt-3">*{valid.errors?.gender}</small> : null}
@@ -891,6 +926,10 @@ const Profilestudent = () => {
                                                             e.preventDefault();
                                                             setIsEnable(true); 
                                                             setShowUpdateButton(false)
+<<<<<<< HEAD
+=======
+                                                            setState(valid.clearErrors())
+>>>>>>> origin/master
                                                             setStudentInputController((prevData)=>{
                                                                 return { 
                                                                     ...prevData,

@@ -4,7 +4,11 @@ const Help = () => {
 
   return (
     <div>
+<<<<<<< HEAD
         
+=======
+        Help
+>>>>>>> origin/master
     </div>
   )
 }

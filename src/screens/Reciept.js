@@ -15,6 +15,10 @@ import { searchReceipt, getAdminVerification } from '../hooks/usePost';
 import { AxiosError } from "axios";
 import Toaster from '../hooks/showToaster';
 import Loader from "../Componant/Loader";
+<<<<<<< HEAD
+=======
+import { NasirContext } from "../NasirContext";
+>>>>>>> origin/master
 
 const Reciept = () => {
   const location = useLocation();
@@ -43,7 +47,13 @@ const Reciept = () => {
   const onSubmit = async (data, e) => {
     e.preventDefault();
 
+<<<<<<< HEAD
     const admin_id = '6333dbbf40b55a2d76eacc87';
+=======
+    const { admin } = React.useContext(NasirContext);
+
+    const admin_id = admin._id;
+>>>>>>> origin/master
 
     try{
       const admin_details = await getAdminVerification({username: data.Username, password: data.Password});

@@ -12,16 +12,25 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { IoMdInformationCircle } from 'react-icons/io';
 import { Tooltip } from "@material-tailwind/react";
+<<<<<<< HEAD
 import { Link, useParams } from "react-router-dom";
 import { getAllStudentsInClass } from "../hooks/usePost";
 import _ from "lodash";
 
+=======
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
+import { getAllStudentsInClass } from "../hooks/usePost";
+import { IoIosArrowBack } from 'react-icons/io';
+import _ from "lodash";
+import ReactPaginate from "react-paginate";
+>>>>>>> origin/master
 
 const Class = () => {
     //----------------------------
     //----------API Work----------
     //----------------------------
     const params = useParams();
+<<<<<<< HEAD
 
     const [classStudents, setClassStudents] = React.useState([]);
     const [totalStudents, setTotalStudents] = React.useState(0);
@@ -33,6 +42,24 @@ const Class = () => {
     let calculateTotalPendingFees = 0;
     for (let i = 0; i < totalPendingFees.length; i++) {
         calculateTotalPendingFees += totalPendingFees[i].fees_id.pending_amount
+=======
+    const navigate = useNavigate()
+
+    const [classStudents,setClassStudents] = React.useState([]);
+    const [totalStudents,setTotalStudents] = React.useState(0);
+    const [className,setClassName] = React.useState('');
+    const [totalPendingStudents,setTotalPendingStudents] = React.useState(0);
+    const [totalPendingFees,setTotalPendingFees] = React.useState(0);
+    const [paginationData,setPaginationData] = React.useState([]);
+    const [pageCount, setPageCount] = useState(0);
+    const [itemOffset, setItemOffset] = useState(0)
+    const [Serialno , setserialno] = useState(1)
+    const itemsPerPage = 6;
+
+    let calculateTotalPendingFees = 0;
+    for(let i =0;i<totalPendingFees.length;i++){
+        calculateTotalPendingFees+=totalPendingFees[i].fees_id.pending_amount
+>>>>>>> origin/master
     }
 
     const componentRef = useRef();
@@ -50,6 +77,7 @@ const Class = () => {
     // ------------------------------------
     //---------- Pagination Work ----------
     // ------------------------------------
+<<<<<<< HEAD
     const pageSize = 10;
     const pageCount = classStudents ? Math.ceil(classStudents.length / pageSize) : 0;
     const pages = _.range(1, pageCount + 1)
@@ -104,12 +132,76 @@ const Class = () => {
             } else if (e.target.value == 1) {
                 return data.fees_id.pending_amount != 0
             } else {
+=======
+    // const pageSize = 10;
+    // const pageCounts = classStudents? Math.ceil(classStudents.length/pageSize) : 0;
+    // const pages = _.range(1 ,pageCounts+1)
+
+    // const handlePagination = (pageNo) =>{
+    //     setPaginationData(
+    //         classStudents.filter((data,index)=>{
+    //             if(pageNo == 1){
+    //                 if(index+1 >= 1 && index+1 <= pageSize ){
+    //                     return data
+    //                 }
+    //             }
+    //             else if(index+1 > ( (pageNo*pageSize) - pageSize) + 1 && index+1 <= (pageNo * pageSize) ){
+    //                 return data
+    //             }
+    //         })  
+    //     ) 
+    // }
+
+    useEffect(()=>{
+        async function fetchClassStudents(){
+            const res = await getAllStudentsInClass(params.id);
+
+            if(res.success){
+                setClassStudents(()=>res.data.studentDetails)
+                setAllClassStudents(()=>res.data.studentDetails);
+                setTotalStudents(()=> res.data.classDetails.total_student);
+                setClassName(()=> res.data.classDetails.class_name);
+                setTotalPendingStudents(()=>res.data.studentDetails.filter((data)=>{
+                    return  data.fees_id.pending_amount != 0 ;
+                }))
+                setTotalPendingFees(()=>res.data.studentDetails.filter((data)=>{
+                    return data.fees_id.pending_amount !=0;
+                }))
+            }
+          }
+          fetchClassStudents()   
+          
+        // setPaginationData(
+        //     classStudents?.filter((data,index)=>{
+        //         if(index+1 >= 1 && index+1 <= pageSize ){
+        //             return data
+        //         }
+        //     })  
+        // )
+
+    },[])
+
+    useEffect(() => {
+        const endOffset = itemOffset + itemsPerPage;
+        setPaginationData(classStudents.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(classStudents.length / itemsPerPage));
+    }, [itemOffset, itemsPerPage, classStudents])
+
+    const handlePendingPaidUpClick = (e)=>{
+        setPaginationData( () => allClassStudents?.filter((data)=>{
+            if(e.target.value==2){
+                return data.fees_id.pending_amount == 0
+            }else if(e.target.value==1){
+                return data.fees_id.pending_amount != 0
+            }else{
+>>>>>>> origin/master
                 return data
             }
         })
         )
     }
 
+<<<<<<< HEAD
 
     const handleSearchStudents = (e) => {
         setPaginationData(() => allClassStudents?.filter((data) => {
@@ -150,6 +242,34 @@ const Class = () => {
 
 
 
+=======
+      
+    const handleSearchStudents = (e)=>{
+        setPaginationData(()=> allClassStudents?.filter((data)=>{
+
+        let searched_value = e.target.value;
+        const full_name = data.student_id.basic_info_id.full_name?.toLowerCase();
+        let isNameFound = false;
+  
+        if(isNaN(searched_value)){
+          searched_value = searched_value.toLowerCase();
+        }
+
+        if (full_name.indexOf(searched_value) > -1){
+            isNameFound = true;
+        }
+  
+        return data.student_id.student_id == searched_value || isNameFound || data.student_id.contact_info_id.whatsapp_no == searched_value;
+  
+        }))
+    }
+
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * itemsPerPage) % facultyData.length;
+        setserialno(event.selected + 1)
+        setItemOffset(newOffset);
+    };
+>>>>>>> origin/master
 
     return (
         <div className='relative  '>
@@ -176,7 +296,10 @@ const Class = () => {
                                             placeholder="Search Student"
                                         ></input>
                                         <button
+<<<<<<< HEAD
                                             onClick={loadData}
+=======
+>>>>>>> origin/master
                                             className="  py-1 relative right-12 rounded-r-lg shadow-2xl transition duration-200 hover:text-gray-300"
                                         >
                                             <AiOutlineSearch className="text-3xl font-bold hover:scale-125  text-darkblue-500 transition duration-400" />
@@ -246,6 +369,7 @@ const Class = () => {
                     
                       xl:text-left font-bold text-darkblue-50 ">
                         {className}
+<<<<<<< HEAD
                         {/* <span className='text-sm absolute  text-darkblue-500'>st</span> */}
                         {/* <p className='inline-block mx-4 text-darkblue-500'> Stander</p> */}
                     </h1>
@@ -257,10 +381,27 @@ const Class = () => {
                                     <div className="icons  h-12 w-40 flex ml-3 items-center" id="icons">
                                         <FaArrowRight className="text-2xl text-darkblue-500 " />
                                         <span className="ml-3 text-lg text-darkblue-500 font-semibold">Transfer All</span>
+=======
+                    </h1>
+                    <div className="button flex mr-6">
+                        <NavLink className="nav-link mr-10" to={totalStudents > 0 ? "Transfer" : ''} state={{classStudents}}>
+                            <div className="wrapper">
+                                <div className={`btn ${totalStudents > 0 ? 'cursor-pointer' : 'cursor-default'}  h-12 w-40 rounded-full bg-white text-left border  overflow-hidden`} id="btn">
+                                    <div className="icons  h-12 w-40 flex ml-3 items-center" id="icons">
+                                        <FaArrowRight className={`text-2xl ${totalStudents > 0 ?'text-darkblue-500' : 'text-gray-400'} `} />
+                                        <span className={`ml-3 text-lg ${totalStudents > 0 ?'text-darkblue-500' : 'text-gray-400'} font-semibold`}>Transfer All</span>
+>>>>>>> origin/master
                                     </div>
                                 </div>
                             </div>
                         </NavLink>
+<<<<<<< HEAD
+=======
+                        <div className="group h-9 w-20 flex justify-center items-center gap-1 cursor-pointer" id="" onClick={() => navigate(-1)}>
+                            <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
+                            <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
+                        </div>
+>>>>>>> origin/master
 
                     </div>
                 </div>
@@ -279,7 +420,11 @@ const Class = () => {
                         <div id='Student-cards' className=' cursor-pointer h-32 xl:w-52 rounded-lg xl:h-28 bg-class1-50  xl:space-y-3 space-y-2 '>
                             <div className='flex items-center text-center justify-center space-x-5 pt-5 '>
                                 <MdPendingActions className=' text-class1-50 rounded-full xl:text-5xl text-5xl  xl:p-1 p-1 bg-white' />
+<<<<<<< HEAD
                                 <p className='text-white text-4xl'>{totalPendingStudents ? totalPendingStudents?.length : 0}</p>
+=======
+                                <p className='text-white text-4xl'>{ totalPendingStudents?totalPendingStudents?.length:0}</p>
+>>>>>>> origin/master
                             </div>
                             <h1 className='text-white text-xl  '>Pending <span>Students</span></h1>
                         </div>
@@ -322,10 +467,17 @@ const Class = () => {
                             </div>
                         </div>
                         <div ref={componentRef} className='p-5 pt-3 pb-0'>
+<<<<<<< HEAD
                             <table className="w-full text-sm text-center bg-class3-50 rounded-xl shadow-xl ">
                                 <thead className="text-xs text-gray-700 uppercase">
                                     <tr className='text-white text-base'>
                                         <th scope="col" className="w-20 h-20">Roll No</th>
+=======
+                            <table className="w-full text-sm text-center rounded-xl overflow-hidden shadow-xl ">
+                                <thead className="text-xs text-gray-700 bg-class3-50 uppercase">
+                                    <tr className='text-white text-base'>
+                                        <th scope="col" className="w-20 h-20">Student Id</th>
+>>>>>>> origin/master
                                         <th scope="col" className="w-20 h-20">Name</th>
                                         <th scope="col" className="w-20 h-20">Phone</th>
                                         <th scope="col" className="w-20 h-20">Total</th>
@@ -335,6 +487,7 @@ const Class = () => {
                                     </tr>
                                 </thead>
                                 <tbody className='bg-white border items-center '>
+<<<<<<< HEAD
                                     {
                                         paginationData[0] ? paginationData.map((item, index) => {
                                             return (
@@ -377,11 +530,51 @@ const Class = () => {
                                                 </td>
                                             </tr>
                                     }
+=======
+                                {
+                                    paginationData[0] ? paginationData.map((item,index)=>{
+                                        return(
+                                    <tr className=" border-b" key={index}>
+                                        <th className="w-20 h-20 text-gray-500">{item.student_id.student_id}</th>
+                                        <td className="w-20 h-20">{item.student_id.basic_info_id.full_name}</td>
+                                        <td className="w-20 h-20">{item.student_id.contact_info_id.whatsapp_no}</td>
+                                        <td className="w-20 h-20">{item.fees_id.net_fees}</td>
+                                        <td className="w-20 h-20">{item.fees_id.net_fees - item.fees_id.pending_amount}</td>
+                                        <td className="w-20 h-20">{item.fees_id.pending_amount}</td>
+                                        <td className="w-20 h-20 ">
+                                            <div className='flex justify-center space-x-3'>
+                                                <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}>
+                                                    <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                        <AiFillEye className="text-xl text-darkblue-500" />
+                                                    </Tooltip>
+                                                </NavLink>
+
+                                                {/* <Tooltip content="Admission Cansel" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                    <MdDelete className="text-xl text-red-600" onClick={(e) => navigate(`/cancelAdmission/${item.student_id.student_id}`, {state:{item}})} />
+                                                </Tooltip> */}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    )
+                                    })
+                                    :
+                                    <tr className="">
+                                        <td colSpan={7} className="bg-red-200  font-bold p-2 rounded">
+                                            <div className="flex space-x-2 justify-center items-center">
+
+                                            <IoMdInformationCircle className="text-xl text-red-600"/>
+                                            <h1 className="text-red-800">Students not found </h1>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+>>>>>>> origin/master
                                 </tbody>
                             </table>
 
                         </div>
                         <nav aria-label="Page navigation example" className='flex justify-end'>
+<<<<<<< HEAD
                             <ul className="inline-flex items-center -space-x-px ">
                                 <li onClick={(e) => handlePagination(1)}>
                                     <p className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
@@ -406,6 +599,27 @@ const Class = () => {
                                 </li>
                             </ul>
                         </nav>
+=======
+                             <ul className="inline-flex items-center -space-x-px ">
+                                 <li>
+                                     <ReactPaginate
+                                        breakLabel="..."
+                                        nextLabel="next >"
+                                        onPageChange={handlePageClick}
+                                        pageRangeDisplayed={3}
+                                        pageCount={pageCount}
+                                        previousLabel="< previous"
+                                        renderOnZeroPageCount={null}
+                                        containerClassName="pagination"
+                                        pageLinkClassName='page-num'
+                                        previousLinkClassName='page-num'
+                                        nextLinkClassName='page-num'
+                                        activeLinkClassName='active-page'
+                                        />
+                                 </li>
+                             </ul>
+                         </nav>
+>>>>>>> origin/master
                     </div>
                 </div>
             </div>

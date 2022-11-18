@@ -2,7 +2,9 @@ import { useMutation } from "react-query";
 import { getToken } from "../AuthProvider";
 import React from "react";
 import { NasirContext } from "../NasirContext";
-const axios = require("axios");
+import axios from "axios";
+import { ToastContainer , toast  } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const token = getToken("token");
 
@@ -57,8 +59,8 @@ export function useSetDefault() {
   });
 }
 
-export function usegetAdmin() {
-  return axiosInstance.get(`${SERVER}/admin`).then((res) => res.data);
+export async function usegetAdmin() {
+  return await axiosInstance.get(`${SERVER}/admin`).then((res) => res.data);
 }
 
 export function useGetAllAdmin() {
@@ -148,68 +150,64 @@ export async function getActiveClasses() {
   return await axios.get(`${SERVER}/classes/active`);
 }
 
+
+
 //-----------------------------------------------------------------------
 //--------------------------------- STUDENT -----------------------------
 //-----------------------------------------------------------------------
 
-
-export async function registerStudent(data) {
-  return await axios.post(`${SERVER}/students/register`, data,
+export async function registerStudent(data){
+  return await axios.post(`${SERVER}/students/register`, data, 
     {
       headers: {
-        'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data'
       }
     }
   )
 }
 
-export async function getStudentDetails(student_id) {
+export async function getStudentDetails(student_id){
   return axios.get(`${SERVER}/students/details/${student_id}`).then((res) => res)
 }
 
-export async function studentAllAcademicDetails(student_id) {
+export async function studentAllAcademicDetails(student_id){
   return await axios.get(`${SERVER}/fees/all-academics/${student_id}`)
 }
 
-export async function studentFeesHistory(academic_id) {
+export async function studentFeesHistory(academic_id){
   return await axios.get(`${SERVER}/fees/fees-history/${academic_id}`)
 }
 
-export async function updateStudent(student_id, formdata) {
+export async function updateStudent(student_id, formdata){
   return await axios.put(`${SERVER}/students/update/${student_id}`, formdata)
 }
-export async function searchReceipt(fees_receipt_id) {
+export async function searchReceipt(fees_receipt_id){
   return await axios.get(`${SERVER}/receipt/search/${fees_receipt_id}`)
 }
 
-export async function generateStudentReceipt(data) {
+export async function generateStudentReceipt(data){
   return await axios.post(`${SERVER}/receipt/generate/student`, data)
 }
 
-export async function updateStudentReceipt(data) {
+export async function updateStudentReceipt(data){
   return await axios.put(`${SERVER}/receipt/update/student/${data.fees_receipt_id}`, data)
 }
 
-export async function cancelAdmission(student_id) {
+export async function cancelAdmission(student_id){
   return await axios.get(`${SERVER}/students/cancel-admission/${student_id}`)
 }
 
-export async function tranferFees(data) {
+export async function tranferFees(data){
   return await axios.post(`${SERVER}/fees/transfer/`, data)
 }
 
-export async function getAdminVerification(adminData) {
+export async function getAdminVerification(adminData){
   return await axios.post(`${SERVER}/admin/verify`, adminData)
 }
 
-export async function getAdminpinVerification(adminData) {
-  return await axios.post(`${SERVER}/admin/pinverify`, adminData)
-}
-
-export async function transferStudent(data) {
+export async function transferStudent(data){
   return await axios.post(`${SERVER}/students/transfer`, data)
 }
-
 
 
 //-----------------------------------------------------------------------
@@ -222,11 +220,11 @@ export async function transferStudent(data) {
 export async function Addfaculty(addnew) {
   try {
     const response = await axios.post(`${SERVER}/Faculty/register`, addnew)
-    return response
+      return response    
   } catch (error) {
+    toast.error("Error!!")
     console.log(error)
   }
-
 }
 
 // -----------------------------------------------------------------------
@@ -328,7 +326,7 @@ export async function Facultyreciept(id) {
     const res = await axios.get(`${SERVER}/salary/receipt/` + id)
     return res
   } catch (error) {
-    console.log(error, "hsfuh")
+    console.log(error)
   }
 }
 
@@ -353,8 +351,7 @@ export async function Update_faculty_reciept(data) {
 // -----------------------------------------------------------------------
 export const Alloverstudent = async (section) => {
   try {
-    console.log(section, "usepostsection")
-    const { data } = await axios.post(`${SERVER}/students/`, { is_primary: section });
+    const { data } = await axios.post(`${SERVER}/students/`, { is_primary : section });
     return data;
   } catch (error) {
     console.log(error)

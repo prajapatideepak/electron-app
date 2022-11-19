@@ -25,6 +25,7 @@ const Faculty = () => {
   const Toaster = () => { toast.success('New Staff Register successfully') }
   const errtoast = () => { toast.error("Something Wrong") }
   const [img, setImg] = useState(defaultImage);
+  const [call, setcall] = useState(true)
 
 
   // ------------------------------------------------------------------------------------
@@ -60,6 +61,8 @@ const Faculty = () => {
     const response = await Addfaculty(formdata);
     console.log(response, "res")
     if (response.data.success) {
+      setcall(!call)
+      setData(data + 1)
       setIsLoadingOnSubmit(false);
       Toaster()
       handleClick()
@@ -214,7 +217,7 @@ const Faculty = () => {
                               <span className="block text-sm font-medium text-slate-700">
                                 Gender
                               </span>
-                              <div className=" border xl:w-52 2xl:w-60 border-slate-300 mt-1 rounded-md h-10 flex justify-center items-center space-x-5 ">
+                              <div className={` border xl:w-52 2xl:w-60 border-slate-300 mt-1 rounded-md h-10 flex justify-center items-center space-x-5 ${errors.gender && 'border-red-600'}`}>
                                 <div className="male ">
 
                                   <label for="gender" className="m-2">
@@ -341,7 +344,6 @@ const Faculty = () => {
             <div className="flex justify-between  items-center  p-5 pt-0 xl:pt-2 xl:pl-12 space-y-5">
               <h1 className=" text-xl xl:text-3xl text-center xl:text-left text-darkblue-500 font-bold">
                 Staff
-
               </h1>
               <NavLink className="nav-link" to="">
 
@@ -374,21 +376,19 @@ const Faculty = () => {
                   className=" xl:w-2/3 w-1/2 "
                 />
               </div>
-              <div className=' flex items-center p-2 cursor-pointer xl:w-1/3 bg-class5-50 rounded-lg xl:py-5 px-5  '>
+              <div className=' flex items-center p-2 cursor-pointer xl:w-1/3 bg-class7-50  rounded-lg xl:py-5 px-5  '>
                 <div className='flex ml-1'>
                   <div className="bg-white rounded-md p-5 flex justify-center items-center">
-
-                    <FiUsers className=' text-class5-50 text-4xl ' />
+                    <FiUsers className='text-class7-50  text-4xl ' />
                   </div>
                 </div>
                 <div className="ml-10">
                   <p className='text-white text-5xl mb-3'>{data ? data : 0}</p>
-
                   <h1 className='text-white text-lg '>Total <span>Faculty</span></h1>
                 </div>
               </div>
             </div>
-            <Facultytable />
+            <Facultytable call={call} />
           </div>
         </div>
 

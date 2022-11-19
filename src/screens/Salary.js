@@ -20,6 +20,7 @@ export default function Salary() {
   const navigate = useNavigate();
   const [is_hourly, setishourly] = React.useState('0');
   const [isloading, setloading] = React.useState(true)
+  const [isLoadingOnSubmit, setIsLoadingOnSubmit] = React.useState(false);
   const [fee, setFee] = React.useState('');
   const [amount, setamount] = React.useState(false);
   const [payment, setPayment] = React.useState('');
@@ -64,7 +65,7 @@ export default function Salary() {
     async function fetchfacultdata() {
       const res = await usegetAdmin();
       setadmin(() => res.data.staff_id.basic_info_id.full_name)
-      setadmin_username(() => res.data. username)
+      setadmin_username(() => res.data.username)
       setpin(() => res.data.security_pin)
       setloading(false)
     }
@@ -187,14 +188,16 @@ export default function Salary() {
     console.log(gen_reciept)
     const SPIN = PIN;
     if (pin == SPIN) {
+      setIsLoadingOnSubmit(true)
+      setError(false)
       const res = await salarypay(gen_reciept)
-      console.log(res, "res")
       if (res.data.success == true) {
+        setIsLoadingOnSubmit(true)
         const salary_receipt_id = res.data.data.salaryreceipt.salary_receipt_id
-        // navigate(`/salary/Receipt_teacher/${salary_receipt_id}`) 
         navigate(`/salary/Receipt_teacher/${salary_receipt_id}`, { state: { prevPath: "generate_receipt" } });
         regtoast()
       } else {
+        setIsLoadingOnSubmit(false)
         errtoast({
           invalid_pin: res.data.message
         });
@@ -271,11 +274,10 @@ export default function Salary() {
                         placeholder="Enter Security PIN"
                         onChange={(e) => setPin(e.target.value)}
                       />
-                      <button
-                        className="px-4 py-1 bg-darkblue-500 text-white "
-                        onClick={handlePINsubmit}
-                      >
-                        Submit
+                      <button disabled={isLoadingOnSubmit}
+                        className={`px-4 py-1 bg-darkblue-500 text-white ${isLoadingOnSubmit ? 'opacity-40' : 'opacity-100'} `}
+                        onClick={handlePINsubmit} >
+                        {isLoadingOnSubmit ? 'Loading...' : 'SUBMIT'}
                       </button>
                     </div>
                     {error && (

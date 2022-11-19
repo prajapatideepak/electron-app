@@ -14,7 +14,7 @@ import ReactPaginate from "react-paginate";
 import './Pagination.css'
 
 
-const Facultytable = () => {
+const Facultytable = ({call}) => {
   // -------------------------------
   // -------- API WORKS -----------
   // -------------------------------
@@ -32,7 +32,7 @@ const Facultytable = () => {
       .then((res) => {
         setFacultyData(res.staffData);
       })
-  }, [])
+  }, [call])
 
   // console.log(facultyData, "facultydata")
 
@@ -63,7 +63,7 @@ const Facultytable = () => {
           <div className="sm:rounded-lg bg-white p-10 shadow-xl w-full">
             <ReactToPrint
               trigger={() => (
-                <button id='print' className="text-3xl bg-class5-50 rounded-md text-white p-1">
+                <button id='print' className="text-3xl bg-class7-50 rounded-md text-white p-1">
                   <MdLocalPrintshop />
                 </button>
               )}
@@ -77,7 +77,7 @@ const Facultytable = () => {
               onAfterPrint={() => setIsPrint(false)}
             />
             <div ref={componentRef} className='p-5 pt-3 pb-0'>
-              <table className="w-full text-sm text-center bg-class5-50 rounded-xl ">
+              <table className="w-full text-sm text-center bg-class7-50 rounded-xl ">
                 <thead className="text-xs text-gray-700 uppercase">
                   <tr className="text-white text-base">
                     <th scope="col" className="py-4 px-6 text-center">

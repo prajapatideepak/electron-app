@@ -51,7 +51,7 @@ function Receipt_teacher() {
     fetchfacultdata()
   }, [])
 
-  console.log(facultyhistory ,"facultyhistory")
+  console.log(facultyhistory, "facultyhistory")
 
   //   // --------------------------------
   //   // ---------   Date    ----------
@@ -241,14 +241,16 @@ function Receipt_teacher() {
               {
                 location?.state?.prevPath != "generate_receipt" && location?.state?.prevPath != "update_receipt"
                   ?
-                  <div className="group m-6 flex justify-end items-end gap-1 cursor-pointer" id="" onClick={() => navigate(-1)}>
-                    <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
-                    <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
+                  <div className='lable  text-left flex justify-end items-center '>
+                    <div className="group h-9 w-20 flex justify-center items-center gap-1 pt-10 cursor-pointer" id="" onClick={() => navigate(-1)}>
+                      <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
+                      <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
+                    </div>
                   </div>
                   :
                   null
               }
-              <div className="py-5 pt-2" ref={printRef}>
+              <div className="py-5 pt-10" ref={printRef}>
                 <ReceiptMainDiv className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`} ref={printRef} >
                   <div className="p-5">
                     <div className="flex justify-between">

@@ -268,7 +268,7 @@ const Profilestudent = () => {
         formdata.append('photo_name', photo_name);
 
         setIsProcessing(true);
-
+        console.log(formdata)
         try {
             const result = await updateStudent(student_id, formdata);
             setIsProcessing(false);

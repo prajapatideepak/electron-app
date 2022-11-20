@@ -26,7 +26,7 @@ valid.register({
     pattern: [/^[A-Za-z ]+$/, "Please enter only characters"]
   },
   email: {
-    required: [false],
+    required: [false, 'Field is required'],
     pattern: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "Please enter valid email"]
   },
   whatsapp_no: {
@@ -54,6 +54,7 @@ valid.register({
 
 const Profilefaculty = () => {
   const componentRef = useRef();
+  const form = useRef(null);
   const [isEnable, setIsEnable] = useState(true);
   const [isPrint, setIsPrint] = useState(false);
   const [isLoadingOnSubmit, setIsLoadingOnSubmit] = useState(false);
@@ -63,6 +64,7 @@ const Profilefaculty = () => {
   const [Totalpaid, setTotalpaid] = React.useState([]);
   const [isloading, setloading] = React.useState(true)
   const [gender, setgender] = useState("");
+  const [state, setState] = React.useState(true);
   const [photo, setphoto] = useState();
   const [call, setcall] = React.useState(true)
   const server = "http://localhost:4000/";
@@ -130,8 +132,8 @@ const Profilefaculty = () => {
       gender: facul_data.gender ?? facul_data.gender,
       role: facul_data.role ?? facul_data.role,
       address: facul_data.address ?? facul_data.address,
-      joining_date: facul_data.joining_date ?? facul_data.joining_date,       
-  }
+      joining_date: facul_data.joining_date ?? facul_data.joining_date,
+    }
   }
   // -----------------------------
   // ------ form_details --------
@@ -155,7 +157,7 @@ const Profilefaculty = () => {
         }
         return navigate(-1);
       }
-     
+
     }
     facultdata()
   }, [call])
@@ -240,11 +242,17 @@ const Profilefaculty = () => {
   }
   const onSubmit = async (data) => {
     Object.assign(data, { faculty_id: params.id })
-    setIsLoadingOnSubmit(true);
-    console.log(data,"data")
-    const res = await Update_faculty(data)
-    if (res.data.success == true) {
 
+    const formdata = new FormData(form.current);
+    const http = img.split(':')
+    let photo_name = '';
+    if (http[0] == 'http') {
+      photo_name = img.split("/")[3]
+    }
+    formdata.append('photo_name', photo_name);
+    setIsLoadingOnSubmit(true);
+    const res = await Update_faculty(params.id, formdata)
+    if (res.data.success == true) {
       setIsLoadingOnSubmit(false);
       Toaster()
       setcall(!call)
@@ -285,7 +293,8 @@ const Profilefaculty = () => {
       </div>
       <section className=" p-10 pt-3 ">
         <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10  space-y-5 w-full">
-          <form className="flex justify-center items-center " onSubmit={handleSubmit(onSubmit)}>
+          <form ref={form} className="flex justify-center items-center "
+            onSubmit={(e) => setState(valid.handleSubmit(e, onSubmit))} >
             <div className=" w-full grid grid-cols-1 rounded-lg  truncate  pb-5 pt-10 ">
               <div className=" flex flex-col items-center gap-4">
                 <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
@@ -326,7 +335,8 @@ const Profilefaculty = () => {
                         defaultValue={facultyInputController.full_name}
                         placeholder="First Name, Middle Name, Last Name"
                         name="full_name"
-                        className="w-60 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none"
+                        className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md 
+                        text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.full_name != '' && 'border-red-600'}`}
                         onChange={handleChange}
                       />
                       {valid.errors?.full_name != '' ? <small className="text-red-600 mt-3">*{valid.errors?.full_name}</small> : null}
@@ -343,7 +353,10 @@ const Profilefaculty = () => {
                         placeholder="Enter Your Email"
                         name="email"
                         defaultValue={facultyInputController.email}
-                        className="w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none"
+                        className={`w-60 mt-1 block w-full px-3 py-2 bg-white border 
+                         border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none
+                         ${valid.errors?.email != '' && 'border-red-600'}
+                         `}
                         onChange={handleChange}
                       />
                       {valid.errors?.email != '' ? <small className="text-red-600 mt-3">*{valid.errors?.email}</small> : null}
@@ -360,7 +373,10 @@ const Profilefaculty = () => {
                         placeholder="Enter Your WhatsApp No"
                         name="whatsapp_no"
                         defaultValue={facultyInputController.whatsapp_no}
-                        className="w-60 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none"
+                        className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+                         placeholder-slate-400 outline-none 
+                         ${valid.errors?.whatsapp_no != '' && 'border-red-600'}
+                         `}
                         onChange={handleChange}
                       />
                       {valid.errors?.whatsapp_no != '' ? <small className="text-red-600 mt-3">*{valid.errors?.whatsapp_no}</small> : null}
@@ -434,70 +450,78 @@ const Profilefaculty = () => {
                         disabled={isEnable}
                         defaultValue={facultyInputController.role}
                         placeholder="Enter Your Role"
-                         name="role"
-                        className="w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none"
+                        name="role"
+                        className={`w-60 mt-1 block w-full px-3 py-2 bg-white border 
+                         border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none
+                          ${valid.errors?.role != '' && 'border-red-600'}`}
                         onChange={handleChange}
                       />
-                    {valid.errors?.role != '' ? <small className="text-red-600 mt-3">*{valid.errors?.role}</small> : null}
+                      {valid.errors?.role != '' ? <small className="text-red-600 mt-3">*{valid.errors?.role}</small> : null}
                     </label>
                   </div>
                 </div>
-                <div className="flex lg:flex-row md:flex-col gap-4">
-                  <div className="address">
-                    <label className="block">
-                      <span className="block text-sm font-medium text-slate-700">
-                        Address
-                      </span>
-                      <input
-                        type="text"
-                        disabled={isEnable}
-                        placeholder="Enter Your Address"
-                        defaultValue={facultyInputController.address}
-                        name="address"
-                        className='w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none'
-                        onChange={handleChange}
-                      />
-                      {valid.errors?.address != '' ? <small className="text-red-600 mt-3">*{valid.errors?.address}</small> : null}
-                    </label>
+                <div className=" flex">
+                  <div className="flex lg:flex-row md:flex-col gap-4 ">
+                    <div className="address">
+                      <label className="block">
+                        <span className="block text-sm font-medium text-slate-700">
+                          Address
+                        </span>
+                        <input
+                          type="text"
+                          disabled={isEnable}
+                          placeholder="Enter Your Address"
+                          defaultValue={facultyInputController.address}
+                          name="address"
+                          className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2
+                           border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none
+                            ${valid.errors?.address != '' && 'border-red-600'}`}
+                          onChange={handleChange}
+                        />
+                        {valid.errors?.address != '' ? <small className="text-red-600 mt-3">*{valid.errors?.address}</small> : null}
+                      </label>
+                    </div>
+                    <div className="joining_date">
+                      <label className="block">
+                        <span className="block text-sm font-medium text-slate-700">
+                          Date Of Joining :
+                        </span>
+                        <input
+                          type="date"
+                          disabled={isEnable}
+                          defaultValue={facultyInputController.joining_date}
+                          name="joining_date"
+                          className="w-60 hover:cursor-pointer mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none"
+                          onChange={handleChange}
+                        />
+                        {valid.errors?.joining_date != '' ? <small className="text-red-600 mt-3">*{valid.errors?.joining_date}</small> : null}
+                      </label>
+                    </div>
                   </div>
-                  <div className="joining_date">
-                    <label className="block">
-                      <span className="block text-sm font-medium text-slate-700">
-                        Date Of Joining :
-                      </span>
-                      <input
-                        type="date"
-                        disabled={isEnable}
-                        defaultValue={facultyInputController.joining_date}
-                        name="joining_date"
-                        className="w-60 hover:cursor-pointer mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none"
-                        onChange={handleChange}
-                      />
-                      {valid.errors?.joining_date != '' ? <small className="text-red-600 mt-3">*{valid.errors?.joining_date}</small> : null}
-                    </label>
-                  </div>
-                  <div className="btn mt-5 flex justify-center w-60">
-                    {!toggle ? (
-                      <button type="button" onClick={handleedit} className="py-2 px-8 gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center">
-                        <FaUserEdit className="text-xl" />Edit
-                      </button>
-                    ) :
-                      null}
-                    {toggle ? (
-                      <div>
-                        <div className="flex  pl-3 border-secondory-text w-fit  space-x-3 rounded-lg">
-                          <button type="button" onClick={hendlecancel} className="py-2 px-4 gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center">
-                            <FaUserEdit className="text-xl" />Cancel
-                          </button>
-                          <button type="submit" disabled={isLoadingOnSubmit}
-                            className={`py-2 px-3 gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white 
+                  <div>
+                    <div className="btn mt-5 flex justify-center w-60 ml-5">
+                      {!toggle ? (
+                        <button type="button" onClick={handleedit} className="py-2 px-8 gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center">
+                          <FaUserEdit className="text-xl" />Edit
+                        </button>
+                      ) :
+                        null}
+                      {toggle ? (
+                        <div>
+                          <div className="flex  pl-3 border-secondory-text w-fit  space-x-3 rounded-lg">
+                            <button type="button" onClick={hendlecancel} className="py-2 px-4 gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center">
+                              <FaUserEdit className="text-xl" />Cancel
+                            </button>
+                            <button type="submit" disabled={isLoadingOnSubmit}
+                              className={`py-2 px-3 gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white 
                           ${isLoadingOnSubmit ? 'opacity-40' : 'opacity-100'} hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center`}>
-                            <FaUserEdit className="text-xl" />
-                            {isLoadingOnSubmit ? 'Loading...' : 'SUBMIT'}
-                          </button>
+                              <FaUserEdit className="text-xl" />
+                              {isLoadingOnSubmit ? 'Loading...' : 'SUBMIT'}
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ) : null}
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               </div>

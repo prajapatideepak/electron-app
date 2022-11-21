@@ -27,7 +27,7 @@ export default function Dashboard() {
   
   const { section, admin } = React.useContext(NasirContext);
 
-  const [Student, setstudent] = useState();
+  const [Student, setstudent] = useState([]);
   const [PaginationData, setPaginationData] = useState([]);
   const Toaster = () => { toast.success('New Staff Register successfully') }
   const errtoast = () => { toast.error("Something Wrong") }
@@ -40,25 +40,24 @@ export default function Dashboard() {
     }
     fetchfacultdata()
   }, [])
-  console.log(Student, "student")
 
 
   // // -------------------------------
   // // -------- Pagination -----------
   // // -------------------------------
-  // useEffect(() => {
-  //   const endOffset = itemOffset + itemsPerPage;
-  //   setcurrentItems(Student.slice(itemOffset, endOffset));
-  //   setPageCount(Math.ceil(Student.length / itemsPerPage));
-  // }, [itemOffset, itemsPerPage, Student])
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    setcurrentItems(Student.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(Student.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage, Student])
 
-  // const handlePageClick = (event) => {
-  //   const newOffset = (event.selected * itemsPerPage) % Student.length;
-  //   setserialno(event.selected + 1)
-  //   setItemOffset(newOffset);
-  // };
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % Student.length;
+    setserialno(event.selected + 1)
+    setItemOffset(newOffset);
+  };
 
-
+  
   if (isloading) {
     return <Loader />
   }
@@ -123,11 +122,11 @@ export default function Dashboard() {
                   </th>
                 </tr>
               </thead>
+              <tbody className="bg-white border items-center ">
               {Student.length > 0 ?
-                (
-                  <tbody className="bg-white border items-center ">
-                    {
-                      Student.map((item, key) => {
+                
+                    
+                    (Student.map((item, key) => {
                         const Paid_up = [
                           item.academics[0].fees[0].net_fees - item.academics[0].fees[0].pending_amount
                         ]
@@ -161,23 +160,42 @@ export default function Dashboard() {
                           )
 
                         }
-                      })}
-                  </tbody>
-                ) : (
-                  <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
-                    <IoMdInformationCircle className="text-xl text-red-600" />
+                     })
+                    )
+                : (
+                  <tr className="">
+                                        <td colSpan={8} className="bg-red-200  font-bold p-2 rounded">
+                                            <div className="flex space-x-2 justify-center items-center">
 
-                    <h1 className="text-red-800">Student Not avaiable </h1>
-                  </div>
+                                            <IoMdInformationCircle className="text-xl text-red-600"/>
+                                            <h1 className="text-red-800">Students not found </h1>
+                                            </div>
+                                        </td>
+                                    </tr>
                 )}
+                </tbody>
             </table>
           </div>
-          <div className=' flex justify-end items-center ml-32 py-5' >
-            <div className=' py-2'>
-
-
-            </div>
-          </div>
+          <nav aria-label="Page navigation example" className='flex justify-end'>
+                             <ul className="inline-flex items-center -space-x-px ">
+                                 <li>
+                                     <ReactPaginate
+                                        breakLabel="..."
+                                        nextLabel="next >"
+                                        onPageChange={handlePageClick}
+                                        pageRangeDisplayed={3}
+                                        pageCount={pageCount}
+                                        previousLabel="< previous"
+                                        renderOnZeroPageCount={null}
+                                        containerClassName="pagination"
+                                        pageLinkClassName='page-num'
+                                        previousLinkClassName='page-num'
+                                        nextLinkClassName='page-num'
+                                        activeLinkClassName='active-page'
+                                        />
+                                 </li>
+                             </ul>
+                         </nav>
         </div>
       </div>
     </div>

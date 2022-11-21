@@ -93,14 +93,6 @@ const Class = () => {
             }
           }
           fetchClassStudents()   
-          
-        // setPaginationData(
-        //     classStudents?.filter((data,index)=>{
-        //         if(index+1 >= 1 && index+1 <= pageSize ){
-        //             return data
-        //         }
-        //     })  
-        // )
 
     },[])
 
@@ -145,7 +137,7 @@ const Class = () => {
     }
 
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * itemsPerPage) % facultyData.length;
+        const newOffset = (event.selected * itemsPerPage) % classStudents.length;
         setserialno(event.selected + 1)
         setItemOffset(newOffset);
     };
@@ -369,7 +361,7 @@ const Class = () => {
                                             <h1 className="text-red-800">Students not found </h1>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr>           
                                 }
                                 </tbody>
                             </table>

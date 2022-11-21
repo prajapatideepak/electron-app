@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NasirProvider } from "./NasirContext";
+import ErrorBoundary from "./Componant/ErrorBound";
 
 const queryClient = new QueryClient();
 
@@ -26,7 +27,9 @@ root.render(
           draggable
           pauseOnHover
         />
-        <App />
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
         <ToastContainer />
       </NasirProvider>
     </QueryClientProvider>

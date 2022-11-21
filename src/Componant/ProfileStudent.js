@@ -925,7 +925,6 @@ const Profilestudent = () => {
                         </form>
 
                         <div className="overflow-x-auto relative  sm:rounded-lg  p-10  space-y-5 w-full">
-
                             <div className="ml-5 flex items-center text-gray-700">
                                 <h3 className="text-2xl font-medium">Fees Details</h3>
                             </div>
@@ -958,7 +957,7 @@ const Profilestudent = () => {
                                                     <td className="w-20 h-20">{academic.fees_id.pending_amount}</td>
                                                     <td className="w-20 h-20 ">
                                                         <div className='flex justify-center space-x-2'>
-                                                            <NavLink className="nav-link" to= 'Studenthistory' 
+                                                            <NavLink className="nav-link" to= '/myclass/class/Profilestudent/Studenthistory' 
                                                                 state={{
                                                                     is_cancelled: studDetails?.personal.is_cancelled, 
                                                                     student_id: studDetails?.personal.student_id, full_name:studDetails?.personal.basic_info_id.full_name, academic_id: academic._id

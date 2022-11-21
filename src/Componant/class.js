@@ -145,7 +145,7 @@ const Class = () => {
     }
 
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * itemsPerPage) % facultyData.length;
+        const newOffset = (event.selected * itemsPerPage) % classStudents.length;
         setserialno(event.selected + 1)
         setItemOffset(newOffset);
     };

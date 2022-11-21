@@ -47,6 +47,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron-build": "electron-builder -mwl",
+    "package-win" : "electron-packager . Nasir-Sir-And-Classes --overwrite --asar=true --platform=win32 --arch=ia32 --icon=public/favicon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Nasir-Sir-And-Classes\"",
     "electron-dev": "concurrently \"cross-env npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "electron-react": "concurrently \"cross-env npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "electron-pack": "build --em.main=build/electron.js"
@@ -86,6 +87,7 @@
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "electron": "^20.1.0",
+    "electron-packager": "^17.1.1",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
     "postcss": "^8.4.16",

@@ -40,11 +40,10 @@ const Reciept = () => {
   const [error, setError] = React.useState('');
   const [receiptDetails, setReceiptDetails] = React.useState({});
   const [loading, setLoading] = React.useState(true);
+  const { admin } = React.useContext(NasirContext);
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
-
-    const { admin } = React.useContext(NasirContext);
 
     const admin_id = admin._id;
 
@@ -90,7 +89,7 @@ const Reciept = () => {
       else{
         try{
           let receipt_details = await searchReceipt(location.state.fees_receipt_id);
-          
+          console.log(receipt_details)
           receipt_details = receipt_details.data.student_receipts[0]
           setReceiptDetails(()=>{
             let date = new Date(receipt_details?.academics[0].fees[0].fees_receipt[0].date).toLocaleString()
@@ -117,6 +116,7 @@ const Reciept = () => {
               admin: receipt_details?.academics[0].fees[0].fees_receipt[0].admin[0].username
             }
           });
+          setLoading(false);
         }
         catch(err){
           setLoading(false);

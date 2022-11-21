@@ -33,6 +33,7 @@ import { NasirContext } from "./NasirContext";
 import AdminList from "./screens/AdminList";
 import CancelAdmission from './screens/CancelAdmission';
 import Salarydetails from "./Componant/Salarydetails";
+import UpdateStudentReceipt from "./screens/UpdateStudentReceipt";
 
 function DashboardMenu() {
   const { setAdmin, login } = React.useContext(NasirContext);
@@ -122,6 +123,7 @@ function DashboardMenu() {
               element={<FeesDetail />}
             />
             <Route exact path="receipt" element={<ReciptScreen />} />
+            <Route exact path="/receipt/update/student" element={<UpdateStudentReceipt />} />
             <Route exact path="receipt/FeesDetail" element={<FeesDetail />} />
             <Route exact path="report" element={<Report />} />
             <Route exact path="studentregister" element={<Studentregister />} />

@@ -926,7 +926,6 @@ const Profilestudent = () => {
                         </form>
 
                         <div className="overflow-x-auto relative  sm:rounded-lg  p-10  space-y-5 w-full">
-
                             <div className="ml-5 flex items-center text-gray-700">
                                 <h3 className="text-2xl font-medium">Fees Details</h3>
                             </div>
@@ -945,6 +944,7 @@ const Profilestudent = () => {
                                     </thead>
                                     <tbody className='bg-white border items-center '>
                                         {
+<<<<<<< HEAD
                                             academicDetails && academicDetails[0]
                                                 ?
                                                 academicDetails.map((academic, index) => {
@@ -971,6 +971,34 @@ const Profilestudent = () => {
                                                     </tr>
                                                 })
                                                 :
+=======
+                                            academicDetails && academicDetails[0] 
+                                            ?
+                                            academicDetails.map((academic, index) => {
+                                                return <tr key={index} className=" border-b">
+                                                    <td scope="row" className="w-20 h-20">
+                                                        {academic.class_id.batch_start_year}-{academic.class_id.batch_end_year}
+                                                    </td>
+                                                    <td className="w-20 h-20">{academic.class_id.class_name}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.net_fees}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.discount}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.net_fees - academic.fees_id.pending_amount}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.pending_amount}</td>
+                                                    <td className="w-20 h-20 ">
+                                                        <div className='flex justify-center space-x-2'>
+                                                            <NavLink className="nav-link" to= '/myclass/class/Profilestudent/Studenthistory' 
+                                                                state={{
+                                                                    is_cancelled: studDetails?.personal.is_cancelled, 
+                                                                    student_id: studDetails?.personal.student_id, full_name:studDetails?.personal.basic_info_id.full_name, academic_id: academic._id
+                                                                }}>
+                                                                <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl text-darkblue-500"><AiFillEye /></span></Tooltip>
+                                                            </NavLink>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            })  
+                                            :
+>>>>>>> origin/master
                                                 null
                                         }
 

@@ -24,7 +24,7 @@ export default function Cards() {
     useEffect(() => {
         async function fetchfacultdata() {
             const res = await Alloverstudent();
-            setData(() => res.data)
+            setData(() => res.data.length)
             setpending(() => res.data)
             setloading(false);
         }
@@ -39,12 +39,6 @@ export default function Cards() {
         calculatepending += Pending[i].academics[0].fees[0].pending_amount > 0
     }
 
-    
-
-    if (isloading) {
-        return <Loader />
-    }
-
     return (
         <div className="w-2/3  ">
             <div className="right pt-4 p-5 px-20 xl:px-0 xl:flex xl:mr-10 xl:mt-0 xl:space-x-10 space-y-10 xl:space-y-0 justify-start items-center text-center">
@@ -56,7 +50,7 @@ export default function Cards() {
                         </div>
                     </div>
                     <div className="ml-10">
-                        <p className='text-white text-5xl mb-3 text-center '>{data.length}</p>
+                        <p className='text-white text-5xl mb-3 text-center '>{data ? data : 0}</p>
                         <h1 className='text-white  text-lg'>Total <span>Students</span></h1>
 
                     </div>
@@ -69,12 +63,11 @@ export default function Cards() {
                         </div>
                     </div>
                     <div className="ml-10">
-                        <p className='text-white text-5xl mb-3'>{calculatepending}</p>
+                        <p className='text-white text-5xl mb-3'>{calculatepending ? calculatepending : 0}</p>
 
                         <h1 className='text-white text-lg '>Total <span>Pending</span></h1>
                     </div>
                 </div>
-               
             </div>
         </div>
     );

@@ -2,7 +2,7 @@ import React from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Facultyreciept, Update_faculty_reciept } from "../hooks/usePost"
+import { Facultyreciept, Update_faculty_reciept, getAdminpinVerification } from "../hooks/usePost"
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from './Loader';
@@ -11,11 +11,9 @@ import Loader from './Loader';
 
 
 export default function Salarydetails() {
-    // -----------------------
-    // ----- API WORKS -------
-    // -----------------------
+    const Toaster = () => { toast.success('Salary_Reciept updated') }
+    const errtoast = () => { toast.error("Invalid UserID / Password") }
     const params = useParams();
-
     const [isloading, setloading] = React.useState(true)
     const [faculty, setfaculty] = React.useState();
     const [salary, setsalary] = React.useState();
@@ -27,7 +25,24 @@ export default function Salarydetails() {
     const [chaque_no, setchaqueno] = React.useState('');
     const [upi_no, setupino] = React.useState('');
     const [payment, setPayment] = React.useState("");
+    const [amount, setamount] = React.useState(false);
+    const [paymenterror, setpaymenterror] = React.useState(false);
+    const [upierror, setupierror] = React.useState(false);
+    const [chaqueerror, setchaqueerror] = React.useState(false);
+    const [amounterror, setamounterror] = React.useState(false);
+    const [toggle, setToggle] = React.useState(false);
+    const [model, setModel] = React.useState(false);
+    const [pin, setPin] = React.useState("");
+    const [error, setError] = React.useState(false);
+    const [PIN, setpin] = React.useState(false);
+    const [salaryData, setSalaryData] = React.useState({
+        hour: "",
+        amount: "",
+    });
 
+    //   // --------------------------------
+    //   // --------  API WORK -------------
+    //   // -------------------------------
 
     React.useEffect(() => {
         async function fetchfacultdata() {
@@ -41,15 +56,16 @@ export default function Salarydetails() {
             setchaque(() => res.data.data.receipt_details.getdetails.transaction_id.is_by_cheque)
             setchaqueno(() => res.data.data.receipt_details.getdetails.transaction_id.cheque_no)
             setupino(() => res.data.data.receipt_details.getdetails.transaction_id.upi_no)
+            setpin(() => res.data.data.receipt_details.getdetails.admin_id.security_pin)
             setPayment(
                 upi
-                ?
-                    '2'
-                :
-                    chaque
                     ?
-                        "3"
+                    '2'
                     :
+                    chaque
+                        ?
+                        "3"
+                        :
                         "1"
             )
             setloading(false)
@@ -85,27 +101,6 @@ export default function Salarydetails() {
         today.getFullYear();
 
     const location = useLocation
-    // ------------------------
-    // ----- All Usestate ------
-    // ------------------------
-    const [amount, setamount] = React.useState(false);
-    const [paymenterror, setpaymenterror] = React.useState(false);
-    const [upierror, setupierror] = React.useState(false);
-    const [chaqueerror, setchaqueerror] = React.useState(false);
-    const [amounterror, setamounterror] = React.useState(false);
-    const [toggle, setToggle] = React.useState(false);
-    const [model, setModel] = React.useState(false);
-    const [pin, setPin] = React.useState("");
-    const [error, setError] = React.useState(false);
-    const [salaryData, setSalaryData] = React.useState({
-        hour: "",
-        amount: "",
-    });
-
-    const admin = {
-        id: 42,
-        name: "Shad rajput ",
-    };
 
     // ------------------------
     // ----- Payment_type ------
@@ -135,8 +130,6 @@ export default function Salarydetails() {
         setupino("")
         setchaqueno("")
     }
-
-
 
     // ------------------------
     // ----- salary_type ------
@@ -182,8 +175,6 @@ export default function Salarydetails() {
     // ------------------------
     // ----- Payment_PIN ------
     // ------------------------
-    const regtoast = () => { toast.success("Salary Reciept Updated Successfully!!") }
-    const errtoast = () => { toast.error("Something Wrong") }
     const navigate = useNavigate();
     async function handlePINsubmit() {
         const gen_reciept = ({
@@ -202,21 +193,21 @@ export default function Salarydetails() {
             rate_per_hour: salaryData.amount,
 
         });
-        console.log(gen_reciept, "gen_reciept")
-        const SPIN = 1111;
+        const SPIN = PIN;
         if (pin == SPIN) {
-
-            const res = await Update_faculty_reciept(gen_reciept)
-            console.log(res.data.salary_receipt_details.salary_receipt_id, "res")
-            if (res.data.success = true) {
-                const salary_receipt_id = res.data.salary_receipt_details.salary_receipt_id
-                navigate(`/salary/Receipt_teacher/${salary_receipt_id}`,{ state: { prevPath: "update_receipt" } })
-                regtoast()
-            } else {
-                errtoast()
-            }
+          const res = await Update_faculty_reciept(gen_reciept)
+          if (res.data.success == true) {
+            const receipt_id = res.data.salary_receipt_details.salary_receipt_id
+            navigate(`/salary/Receipt_teacher/${receipt_id}`, { state: { prevPath: "update_receipt" } })
+            Toaster()
+          } else {
+            errtoast({
+              invalid_pin: res.data.message
+            });
+          }
+    
         } else {
-            setError(true);
+          setError(true);
         }
     }
 
@@ -227,7 +218,6 @@ export default function Salarydetails() {
         setsalaryamount(salaryData.hour * salaryData.amount);
         setToggle(false);
     }
-
 
     if (isloading) {
         return <Loader />

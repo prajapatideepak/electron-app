@@ -2,16 +2,18 @@ import React, { useRef, useState } from "react";
 import { TbCurrencyRupee } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useParams, useLocation } from "react-router-dom";
-import { Facultyreciept } from "../hooks/usePost"
+import { Facultyreciept, getAdminVerification } from "../hooks/usePost"
 import { NavLink, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdModeEditOutline } from "react-icons/md";
 import ReactToPrint from "react-to-print";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useForm } from "react-hook-form";
-import { FaBullseye, FaUserAlt } from "react-icons/fa";
+import { FaUserAlt } from "react-icons/fa";
 import { IoMdLock } from "react-icons/io";
 import Loader from './Loader';
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 
 
@@ -19,6 +21,8 @@ import Loader from './Loader';
 function Receipt_teacher() {
   const receiptBgColor = 'bg-red-600';
   const receiptTextColor = 'text-red-600';
+  const Toaster = () => { toast.success('Authentication Successfull') }
+  const errtoast = () => { toast.error("Invalid UserID / Password") }
   //   // --------------------------------
   //   // -----   API Works    ----------
   //   // -------------------------------
@@ -29,19 +33,25 @@ function Receipt_teacher() {
   const [feesdetails, setfeesdetails] = React.useState([]);
   const [isloading, setloading] = React.useState(true)
   const [isHourly, setisHourly] = React.useState(0)
+  const navigate = useNavigate();
+  const printRef = useRef();
+  const [print, setPrint] = useState(false);
+  const [feesData, setFeesData] = React.useState({});
+  const [pin, setPin] = React.useState("");
+  const [error, setError] = React.useState();
 
   React.useEffect(() => {
     async function fetchfacultdata() {
       const res = await Facultyreciept(params.id);
       setfacultyhistory(() => res.data.data.receipt_details.getdetails)
-      console.log(res, "res")
       setfeesdetails(() => res.data.data.receipt_details.hourlysalary)
       setisHourly(res.data.data.receipt_details.getdetails.is_hourly)
       setloading(false)
     }
     fetchfacultdata()
   }, [])
-  console.log(facultyhistory)
+
+  console.log(facultyhistory, "facultyhistory")
 
   //   // --------------------------------
   //   // ---------   Date    ----------
@@ -83,44 +93,28 @@ function Receipt_teacher() {
     resetField,
   } = useForm();
 
-  const onSubmit = (data) => {
-    if (data.newpassword !== data.confirmpassword) {
-      document.getElementById("msg").style.display = "flex";
-    } else {
-      document.getElementById("msg").style.display = "none";
+
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
+    try {
+      const admin_details = await getAdminVerification({ username: data.Username, password: data.Password });
+      if (admin_details.data.success) {
+        Toaster()
+        navigate(`/salary/Salarydetails/${params.id}`);
+        return
+      }
+    }
+    catch (error) {
+      errtoast()
+      if (error instanceof AxiosError) {
+        setError(error.response.data.error);
+      }
+      else {
+        setError(error.message);
+      }
     }
   };
 
-
-
-
-  const navigate = useNavigate();
-  const printRef = useRef();
-  const [print, setPrint] = useState(false);
-  const [feesData, setFeesData] = React.useState({});
-  const [pin, setPin] = React.useState("");
-  const [error, setError] = React.useState();
-  function handleBack() { }
-
-  const username = "Nasir";
-  const password = 1234;
-  function handlePINsubmit() {
-    setFeesData({
-      username: "Nasir",
-      password: 1234
-    });
-
-    console.log("Clicked");
-    if (username == username && password == password) {
-      console.log(pin);
-      console.log(params.id)
-      navigate(`/salary/Salarydetails/${params.id}`, feesData);
-    } else {
-      setError(true);
-    }
-  }
-
-  console.log(location?.state?.prevPath)
 
   if (isloading) {
     return <Loader />
@@ -217,7 +211,7 @@ function Receipt_teacher() {
                           <div className=" flex flex-col items-center gap-5">
                             <div className="flex lg:flex-row md:flex-col gap-4">
                               <div className="btn mt-5 flex justify-center w-60">
-                                <button onClick={handlePINsubmit}
+                                <button
                                   type="submit"
                                   className="bg-blue-900 drop-shadow-2xl hover:bg-white border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-10 w-24 rounded-md tracking-wider"
                                 >
@@ -247,14 +241,16 @@ function Receipt_teacher() {
               {
                 location?.state?.prevPath != "generate_receipt" && location?.state?.prevPath != "update_receipt"
                   ?
-                  <div className="group m-6 flex justify-end items-end gap-1 cursor-pointer" id="" onClick={() => navigate(-1)}>
-                    <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
-                    <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
+                  <div className='lable  text-left flex justify-end items-center '>
+                    <div className="group h-9 w-20 flex justify-center items-center gap-1 pt-10 cursor-pointer" id="" onClick={() => navigate(-1)}>
+                      <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
+                      <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
+                    </div>
                   </div>
                   :
                   null
               }
-              <div className="py-5 pt-2" ref={printRef}>
+              <div className="py-5 pt-10" ref={printRef}>
                 <ReceiptMainDiv className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`} ref={printRef} >
                   <div className="p-5">
                     <div className="flex justify-between">

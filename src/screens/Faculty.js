@@ -19,18 +19,18 @@ const Faculty = () => {
   const [isloading, setloading] = React.useState(true)
   const [isPrint, setIsPrint] = useState(false);
   const form = useRef()
-
-
-
+  const [isLoadingOnSubmit, setIsLoadingOnSubmit] = useState(false);
+  const defaultImage = "http://localhost:4000/user_default@123.png"
+  const [data, setData] = useState();
+  const Toaster = () => { toast.success('New Staff Register successfully') }
+  const errtoast = () => { toast.error("Something Wrong") }
+  const [img, setImg] = useState(defaultImage);
+  const [call, setcall] = useState(true)
 
 
   // ------------------------------------------------------------------------------------
   // -------------------------- API Works -----------------------------------------------
   // ------------------------------------------------------------------------------------
-  const [data, setData] = useState();
-  const Toaster = () => { toast.success('New Staff Register successfully') }
-  const errtoast = () => { toast.error("Something Wrong") }
-
   useEffect(() => {
     async function fetchfacultdata() {
       const res = await getAllFaculty();
@@ -40,12 +40,9 @@ const Faculty = () => {
     fetchfacultdata()
   }, [])
 
-  console.log(data)
-
   // ------------------------------------------------------------------------------------
   // -------------------------- FORM VALIDATION -----------------------------------------
   // ------------------------------------------------------------------------------------
-  const [img, setImg] = useState("./images/profile.jpeg");
   const onImageChange = (e) => {
     const [file] = e.target.files;
     setImg(URL.createObjectURL(file));
@@ -57,15 +54,21 @@ const Faculty = () => {
     reset,
     trigger,
     resetField,
-  } = useForm(); 
+  } = useForm();
   const onSubmit = async () => {
     const formdata = new FormData(form.current);
-    const response = await Addfaculty(formdata)
+    setIsLoadingOnSubmit(true);
+    const response = await Addfaculty(formdata);
     console.log(response, "res")
     if (response.data.success) {
+      setcall(!call)
+      setData(data + 1)
+      setIsLoadingOnSubmit(false);
       Toaster()
+      handleClick()
       return setModel(false)
     } else {
+      setIsLoadingOnSubmit(true);
       return errtoast()
     }
 
@@ -105,7 +108,21 @@ const Faculty = () => {
                         <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
                           <img src={img} width="100%" height="100%" alt="student profile" />
                           <div className='profile_img_overlay flex flex-col justify-center items-center'>
-                            <input type='file' name='photo' className="rounded-md w-16" onChange={onImageChange} />
+                            <input type='file' id="file" className="rounded-md w-16" accept=".png, .jpg, .jpeg" onInput={onImageChange} {...register('photo')} />
+
+                            {
+                              img != defaultImage
+                                ?
+                                <button
+                                  className='bg-red-600 px-1 rounded text-white hover:bg-red-400 mt-5 flex items-center justify-center gap-3' onClick={() => {
+                                    setImg(defaultImage);
+                                    document.getElementById('file').value = ''
+                                  }}>
+                                  <span> Remove</span>
+                                </button>
+                                :
+                                null
+                            }
 
                           </div>
                         </div>
@@ -200,7 +217,7 @@ const Faculty = () => {
                               <span className="block text-sm font-medium text-slate-700">
                                 Gender
                               </span>
-                              <div className=" border xl:w-52 2xl:w-60 border-slate-300 mt-1 rounded-md h-10 flex justify-center items-center space-x-5 ">
+                              <div className={` border xl:w-52 2xl:w-60 border-slate-300 mt-1 rounded-md h-10 flex justify-center items-center space-x-5 ${errors.gender && 'border-red-600'}`}>
                                 <div className="male ">
 
                                   <label for="gender" className="m-2">
@@ -295,12 +312,13 @@ const Faculty = () => {
                               Clear
                             </button>
                             <button
-                              type="submit"
-                              className="bg-blue-900 hover:bg-white border-2 flex justify-center items-center  hover:border-blue-900 text-white hover:text-blue-900 font-medium h-11 w-28 rounded-md tracking-wider"
-                            >
+                              type="submit" disabled={isLoadingOnSubmit}
+                              className={` bg-blue-900 hover:bg-white border-2 flex justify-center items-center 
+                              ${isLoadingOnSubmit ? 'opacity-40' : 'opacity-100'}
+                               hover:border-blue-900 text-white hover:text-blue-900 font-medium h-11 w-28 rounded-md tracking-wider`}>
 
 
-                              <h1 className="" >SUBMIT</h1>
+                              {isLoadingOnSubmit ? 'Loading...' : 'SUBMIT'}
                             </button>
                           </div>
                         </div>
@@ -326,7 +344,6 @@ const Faculty = () => {
             <div className="flex justify-between  items-center  p-5 pt-0 xl:pt-2 xl:pl-12 space-y-5">
               <h1 className=" text-xl xl:text-3xl text-center xl:text-left text-darkblue-500 font-bold">
                 Staff
-
               </h1>
               <NavLink className="nav-link" to="">
 
@@ -359,26 +376,19 @@ const Faculty = () => {
                   className=" xl:w-2/3 w-1/2 "
                 />
               </div>
-              <div className="right  flex justify-center">
-                <div
-                  id="faculty-card"
-                  className=" xl:p-5 py-5 space-x-5 w-52 xl:w-72 flex justify-start items-center  rounded-lg  bg-class5-50 drop-shadow-lg   xl:ml-10 "
-                >
-                  <div className="space-y-3">
-                    <div className='flex items-center justify-center bg-white h-14 w-14  rounded-md'>
-                      <FiUsers className="text-4xl text-class5-50" />
-                    </div>
+              <div className=' flex items-center p-2 cursor-pointer xl:w-1/3 bg-class7-50  rounded-lg xl:py-5 px-5  '>
+                <div className='flex ml-1'>
+                  <div className="bg-white rounded-md p-5 flex justify-center items-center">
+                    <FiUsers className='text-class7-50  text-4xl ' />
                   </div>
-                  <div>
-                    <p className=" font-semibold text-white mb-3 text-5xl">{data}</p>
-                    <h1 className="text-gray-200 text-sm xl:text-xl uppercase text-center  ">
-                      Total Staff
-                    </h1>
-                  </div>
+                </div>
+                <div className="ml-10">
+                  <p className='text-white text-5xl mb-3'>{data ? data : 0}</p>
+                  <h1 className='text-white text-lg '>Total <span>Faculty</span></h1>
                 </div>
               </div>
             </div>
-            <Facultytable />
+            <Facultytable call={call} />
           </div>
         </div>
 

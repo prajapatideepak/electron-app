@@ -6,7 +6,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {updateStudentReceipt} from '../hooks/usePost';
 import { AxiosError } from "axios";
 import Toaster from '../hooks/showToaster';
+<<<<<<< HEAD
+=======
 import { NasirContext } from "../NasirContext";
+>>>>>>> origin/master
 
 export default function UpdateStudentReceipt() {
   const location = useLocation();
@@ -28,7 +31,14 @@ export default function UpdateStudentReceipt() {
         upi_no: location.state.receiptDetails.upi_no,
         cheque_no: location.state.receiptDetails.cheque_no
     };
+<<<<<<< HEAD
+    const admin = {
+        id: '632324e55f67f65bf8a5f53a',
+        name: 'sadikali',
+    };
+=======
       const { admin } = React.useContext(NasirContext);
+>>>>>>> origin/master
 
   const [fee, setFee] = React.useState(student?.amount);
   const [discount, setDiscount] = React.useState(student?.discount == 0 ? '' : student?.discount);
@@ -319,7 +329,11 @@ export default function UpdateStudentReceipt() {
             amount: Number(fee) + Number(deduction),
             discount: deduction,
             method: payment,
+<<<<<<< HEAD
+            admin_id: admin.id,
+=======
             admin_id: admin._id,
+>>>>>>> origin/master
             security_pin: pin
         };
         
@@ -418,7 +432,11 @@ export default function UpdateStudentReceipt() {
                         :
                             null
                 }
+<<<<<<< HEAD
+                <h3 className="font-bold">* Admin: <span className="font-medium text-gray-600">{admin.name}</span></h3>
+=======
                 <h3 className="font-bold">* Admin: <span className="font-medium text-gray-600">{admin.username}</span></h3>
+>>>>>>> origin/master
               </div>
 
               <div className="border-2 mx-8 mt-6 h-8 rounded  w-fit flex items-center border-darkblue-500">
@@ -608,7 +626,11 @@ export default function UpdateStudentReceipt() {
 
           <div></div>
           <div className="text-sm flex justify-between items-center uppercase font-bold font-mono tracking-wide mt-4 ">
+<<<<<<< HEAD
+            <h1 className="px-6"> admin : {admin.name}</h1>
+=======
             <h1 className="px-6"> admin : {admin.username}</h1>
+>>>>>>> origin/master
             <button
               className="px-7  mx-7 py-2 text-base tracking-widest
            font-semibold uppercase bg-darkblue-500

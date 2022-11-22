@@ -253,6 +253,7 @@ const Profilestudent = () => {
     };
 
     const onSubmit = async (data) => {
+        console.log(data ,"datas")
         const netFees = studentInputController.total_fees - studentInputController.discount;
 
         Object.assign(data, { net_fees: netFees, photo: data.photo, student_id })
@@ -268,7 +269,6 @@ const Profilestudent = () => {
         formdata.append('photo_name', photo_name);
 
         setIsProcessing(true);
-        console.log(formdata)
         try {
             const result = await updateStudent(student_id, formdata);
             setIsProcessing(false);

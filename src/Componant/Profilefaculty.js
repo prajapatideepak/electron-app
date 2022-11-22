@@ -107,6 +107,7 @@ const Profilefaculty = () => {
     joining_date = `${joining_date.getFullYear()}-${joining_date.getMonth() + 1 < 10 ? "0" + (joining_date.getMonth() + 1) : joining_date.getMonth() + 1}-${joining_date.getDate() < 10 ? "0" + joining_date.getDate() : joining_date.getDate()}`
 
     facul_data = {
+      id : faculty_details._id,
       photo: faculty_details.basic_info_id.photo,
       full_name: faculty_details.basic_info_id.full_name,
       email: faculty_details.contact_info_id.email,
@@ -175,7 +176,6 @@ const Profilefaculty = () => {
     }
     fetchfacultdata()
   }, [])
-
   // -----------------------------
   // ------ Last_paid -----------
   // -----------------------------
@@ -241,7 +241,8 @@ const Profilefaculty = () => {
     });
   }
   const onSubmit = async (data) => {
-    Object.assign(data, { faculty_id: params.id })
+    console.log(data, "data")
+    Object.assign(data, { photo: data.photo, faculty_id: params.id })
 
     const formdata = new FormData(form.current);
     const http = img.split(':')
@@ -251,15 +252,23 @@ const Profilefaculty = () => {
     }
     formdata.append('photo_name', photo_name);
     setIsLoadingOnSubmit(true);
-    const res = await Update_faculty(params.id, formdata)
-    if (res.data.success == true) {
+    try {
+      const res = await Update_faculty(data)
       setIsLoadingOnSubmit(false);
-      Toaster()
-      setcall(!call)
-      setToggle(false);
-    } else {
-      errtoast(res.data.message)
-      setIsLoadingOnSubmit(true);
+      if (res.data.success == true) {
+        Toaster()
+        setcall(!call)
+        setToggle(false);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        Toaster('error', error.response.data.message);
+      }
+      else {
+        Toaster('error', error.message);
+      }
+
+      setIsLoadingOnSubmit(false);
     }
   }
 
@@ -303,8 +312,7 @@ const Profilefaculty = () => {
                     !isEnable
                       ?
                       <div className='profile_img_overlay flex flex-col justify-center items-center'>
-                        <input disabled={toggle ? false : true}
-                          type='file' id="file" name="photo" className="rounded-md w-16" onChange={onImageChange} accept=".png, .jpg, .jpeg" />
+                        <input type='file' id="file" name="photo" className="rounded-md w-16" onChange={onImageChange} accept=".png, .jpg, .jpeg" />
                         {
                           img != defaultImage
                             ?
@@ -532,7 +540,7 @@ const Profilefaculty = () => {
               <h3 className="text-2xl font-medium">Salary Details</h3>
             </div>
             <div ref={componentRef} className='p-5 pt-3 pb-0'>
-              {/* <table className="w-full text-sm text-center bg-class3-50 rounded-xl ">
+              <table className="w-full text-sm text-center bg-class3-50 rounded-xl ">
                 <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
                   <tr className='text-white text-base'>
 
@@ -558,7 +566,7 @@ const Profilefaculty = () => {
                       </td>
                       <td className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
                         <div className='flex justify-center space-x-2'>
-                          <NavLink className="nav-link" to={`/Profilefaculty/Staffhistory/${facultydetails?._id}`}>
+                          <NavLink className="nav-link" to={`/Profilefaculty/Staffhistory/${facultyInputController.id}`}>
                             <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" class="text-xl text-darkblue-500"><AiFillEye /></a></Tooltip>
 
                           </NavLink>
@@ -577,7 +585,7 @@ const Profilefaculty = () => {
                     <h1 className="text-red-800">Reciept Not avaiable </h1>
                   </div>
                 )}
-              </table> */}
+              </table>
             </div>
           </div>
         </div>

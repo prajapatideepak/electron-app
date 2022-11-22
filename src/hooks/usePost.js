@@ -1,5 +1,7 @@
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { getToken } from "../AuthProvider";
+import React from "react";
+import { NasirContext } from "../NasirContext";
 import axios from "axios";
 import { ToastContainer , toast  } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -212,7 +214,6 @@ export async function transferStudent(data){
 //--------------------------------- STAFF -----------------------------
 //-----------------------------------------------------------------------
 
-
 // ------------------------------------------------------------------------
 // ----------------------- Add_Faculty ------------------------------------
 // ------------------------------------------------------------------------
@@ -234,7 +235,7 @@ export const getAllFaculty = async () => {
     const { data } = await axios.get(`${SERVER}/Faculty`);
     return data;
   } catch (error) {
-    throw error("data is not fatched")
+    console.log(error)
   }
 
 }
@@ -242,9 +243,9 @@ export const getAllFaculty = async () => {
 // -----------------------------------------------------------------------
 // -----------------staff_table_one_faculty_details ----------------------
 // -----------------------------------------------------------------------
-export async function Facultydetails (id){
+export async function Facultydetails(id) {
   try {
-    const res = await axios.get(`${SERVER}/faculty//Facultydetails/` + id)
+    const res = await axios.get(`${SERVER}/faculty/Facultydetails/` + id)
     return res
   } catch (error) {
     console.log(error)
@@ -254,7 +255,7 @@ export async function Facultydetails (id){
 // ------------------------------------------------------------------------
 // -----------------------------Update_faculty ----------------------------
 // ------------------------------------------------------------------------
-export async function Update_faculty (data) {
+export async function Update_faculty(data) {
   try {
     const staff_id = data.faculty_id
     delete data.faculty_id
@@ -268,7 +269,7 @@ export async function Update_faculty (data) {
 // ------------------------------------------------------------------------
 // ------------------reciept_table_one_faculty_details --------------------
 // ------------------------------------------------------------------------
-export async function getFaculty (id){
+export async function getFaculty(id) {
   try {
     const res = await axios.get(`${SERVER}/faculty/Profilefaculty/` + id)
     return res
@@ -283,9 +284,8 @@ export async function getFaculty (id){
 export async function salarypay(gen_reciept) {
   try {
     const response = await axios.post(`${SERVER}/salary/create-reciept/`, gen_reciept)
-    console.log(response)
+    console.log(gen_reciept , "hello")
     return response
-
   } catch (error) {
     console.log(error)
   }
@@ -308,7 +308,7 @@ export const recieptdetails = async () => {
 // ------------------------------------------------------------------------
 // ------------------------- Staff_salary_Histery -------------------------
 // ------------------------------------------------------------------------
-export async function Facultyhistory (id) {
+export async function Facultyhistory(id) {
   try {
     const res = await axios.get(`${SERVER}/salary/Staffhistory/` + id)
     return res
@@ -321,7 +321,7 @@ export async function Facultyhistory (id) {
 // ------------------------------------------------------------------------
 // -------------------------- Staff_salary_reciept =-----------------------
 // ------------------------------------------------------------------------
-export async function Facultyreciept (id) {
+export async function Facultyreciept(id) {
   try {
     const res = await axios.get(`${SERVER}/salary/receipt/` + id)
     return res
@@ -335,7 +335,7 @@ export async function Facultyreciept (id) {
 // ------------------------------------------------------------------------
 // ------------------------ Update_faculty_reciept ------------------------
 // ------------------------------------------------------------------------
-export async function Update_faculty_reciept (data) {
+export async function Update_faculty_reciept(data) {
   try {
     const salary_receipt_id = data.salary_receipt_id
     delete data.faculty_id

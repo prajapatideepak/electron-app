@@ -41,10 +41,18 @@ const Reciept = () => {
   const [receiptDetails, setReceiptDetails] = React.useState({});
   const [loading, setLoading] = React.useState(true);
   const { admin } = React.useContext(NasirContext);
+<<<<<<< HEAD
+
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
+
+
+=======
   
   const onSubmit = async (data, e) => {
     e.preventDefault();
 
+>>>>>>> origin/master
     const admin_id = admin._id;
 
     try{

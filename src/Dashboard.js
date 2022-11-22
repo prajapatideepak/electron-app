@@ -73,6 +73,7 @@ function DashboardMenu() {
               element={<Dashboard />}
             />
             <Route exact path="/" element={<Dashboard />} />
+            <Route exact path="/ProfileStudent/:id" element={<Profilestudent />} />
             <Route exact path="myclass" element={<Myclass />} />
             <Route exact path="/myclass/class/:id" element={<Class />} />
             <Route
@@ -92,7 +93,7 @@ function DashboardMenu() {
             />
             <Route
               exact
-              path="/myclass/class/Profilestudent"
+              path="/myclass/class/Profilestudent/:student_id"
               element={<Profilestudent />}
             />
             <Route

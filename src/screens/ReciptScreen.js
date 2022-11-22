@@ -13,6 +13,7 @@ export default function ReciptScreen() {
   const [loading, setLoading] = useState(false);
   const [studentReceipts, setStudentReceipts] = useState([])
   const [staffReceipts, setStaffReceipts] = useState([])
+  const [showNotFound, setShowNotFound] = useState(-1)
 
    const searchAllReceipts = async (e)=>{
     try{
@@ -27,6 +28,7 @@ export default function ReciptScreen() {
 
       setStudentReceipts(res.data.student_receipts)
       setStaffReceipts(res.data.staff_receipts)
+      setShowNotFound(1)
     }
     catch(err){
         setLoading(false);
@@ -48,7 +50,7 @@ export default function ReciptScreen() {
 
         <div className="px-2 py-2 flex mt-7 items-center justify-center">
           <input
-            type="text"
+            type="search"
             className="w-2/3 shadow-xl px-3 py-2 rounded-l-lg outline-none    "
             placeholder="Search Receipt  (BY : ID , Name , Whatsapp Number)"
             value={searchValue}
@@ -266,11 +268,15 @@ export default function ReciptScreen() {
                 </div>
               </div>
             ) : (
-              <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
-                <IoMdInformationCircle className="text-xl text-red-600" />
+              showNotFound != -1 
+                ?
+                  <div className="bg-red-200 font-bold justify-center items-center p-2 rounded mx-3 flex space-x-2">
+                    <IoMdInformationCircle className="text-xl text-red-600" />
 
-                <h1 className="text-red-800">Receipt Not Found</h1>
-              </div>
+                    <h1 className="text-red-800">No Receipt Found </h1>
+                  </div>
+                :
+                  null
             )}
           </div>
       }

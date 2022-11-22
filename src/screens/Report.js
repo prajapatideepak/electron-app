@@ -6,7 +6,7 @@ import { useGetReport } from "../hooks/usePost";
 
 const Report = () => {
   const [reportState, setReportState] = useState("Student");
-
+  
   return (
     <div>
       <div className="print-btn flex justify-end items-center space-x-3 mt-10 pr-5">

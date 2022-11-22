@@ -12,6 +12,7 @@ import Loader from './Loader';
 import { AiFillCloseCircle } from "react-icons/ai";
 import {AxiosError} from 'axios';
 import Validator from '../hooks/validator';
+import { useParams } from "react-router-dom";
 
 const valid = new Validator();
 valid.register({
@@ -31,11 +32,14 @@ valid.register({
     },
     whatsapp_no: {
         required: [true, 'Field is required'],
-        pattern: [/^[0-9]*$/, "Please enter only numbers"]
+        pattern: [/^[0-9]*$/, "Please enter only numbers"],
+        length: [10, "Number should be of 10 digits"]
     },
     alternate_no: {
         required: [false],
-        pattern: [/^[0-9]*$/, "Please enter only numbers"]
+        pattern: [/^[0-9]*$/, "Please enter only numbers"],
+        length: [10, "Number should be of 10 digits"]
+
     },
     gender: {
         required: [false]
@@ -75,6 +79,7 @@ valid.register({
 const Profilestudent = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const params = useParams();
     const form = useRef(null);
     const server = "http://localhost:4000/";
     const defaultImage = "http://localhost:4000/user_default@123.png";
@@ -121,7 +126,7 @@ const Profilestudent = () => {
     const [classNotSelectedError, setClassNotSelectedError] = useState(false);
     const [studDetails, setStudDetails] = useState({}); //Only used to pass data to next page
 
-    const student_id =86;
+    const student_id = params.student_id;
     
     let student_details;
     
@@ -889,6 +894,7 @@ const Profilestudent = () => {
                                                             e.preventDefault();
                                                             setIsEnable(true); 
                                                             setShowUpdateButton(false)
+                                                            setState(valid.clearErrors())
                                                             setStudentInputController((prevData)=>{
                                                                 return { 
                                                                     ...prevData,

@@ -11,7 +11,17 @@ import { useState } from "react";
 const Studenthearder = () => {
   const [data, setData] = useState([]);
   const reportData = useQuery("reports", useGetReport);
+  const [currentData, setCurrentData] = useState([]);
+  const [paginateDate, setPagigation] = useState({
+    totalPage: null,
+    itemPerPage: 5,
+    inSet: null,
+    offSet: null,
+    page: 1,
+  });
   const componentRef = useRef();
+
+  console.log(reportData);
 
   function handleDataFilter(filterDate) {
     const preDate = new Date(`${filterDate},23:59:00`);
@@ -39,6 +49,9 @@ const Studenthearder = () => {
     console.log(reportData.isSuccess);
   }, [reportData.isSuccess]);
 
+  React.useEffect(() => {
+    console.log(data);
+  }, data);
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });

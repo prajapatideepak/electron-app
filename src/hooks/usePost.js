@@ -56,8 +56,8 @@ export function useSetDefault() {
   });
 }
 
-export function usegetAdmin() {
-  return axiosInstance.get(`${SERVER}/admin`).then((res) => res.data);
+export async function usegetAdmin() {
+  return await axiosInstance.get(`${SERVER}/admin`).then((res) => res.data);
 }
 
 export function useGetAllAdmin() {
@@ -345,17 +345,19 @@ export async function Update_faculty_reciept(data) {
 // -----------------------------------------------------------------------
 // ------------------------ All_Over Student------------------------------
 // -----------------------------------------------------------------------
-export const Alloverstudent = async () => {
+export const Alloverstudent = async (section) => {
   try {
-    const { data } = await axios.get(`${SERVER}/students/`);
+    const { data } = await axios.post(`${SERVER}/students/`, {
+      is_primary: section,
+    });
     return data;
   } catch (error) {
-    throw error("data is not fatched");
+    console.log(error);
+    throw new Error("data is not fatched");
   }
 };
 
 // Report API
-
 export function useGetReport() {
   return axiosInstance.get(`${SERVER}/report`).then((res) => res.data);
 }

@@ -13,7 +13,7 @@ export default function Searchbar() {
   const { admin } = React.useContext(NasirContext);
   const { logout, changeSection } = React.useContext(NasirContext);
   const myData = admin;
-  console.log(admin);
+
   const [toggle, SetToggle] = useState(false);
 
   function handleToggle() {
@@ -98,22 +98,29 @@ export default function Searchbar() {
                   </div>
                 </NavLink>
 
-                <NavLink to="/Componant/Addadmin">
-                  <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
-                    <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
-                      <MdOutlinePersonAddAlt className="text-blue-500 text-xl" />
+                {myData?.is_super_admin ? (
+                  <NavLink to="/Componant/Addadmin">
+                    <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
+                      <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
+                        <MdOutlinePersonAddAlt className="text-blue-500 text-xl" />
+                      </div>
+                      <span className="md:text-sm xl:text-base">Add Admin</span>
                     </div>
-                    <span className="md:text-sm xl:text-base">Add Admin</span>
-                  </div>
-                </NavLink>
-                <NavLink to="/Componant/AdminList">
-                  <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
-                    <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
-                      <MdOutlinePersonAddAlt className="text-blue-500 text-xl" />
+                  </NavLink>
+                ) : null}
+
+                {myData?.is_super_admin ? (
+                  <NavLink to="/Componant/AdminList">
+                    <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
+                      <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
+                        <MdOutlinePersonAddAlt className="text-blue-500 text-xl" />
+                      </div>
+                      <span className="md:text-sm xl:text-base">
+                        Admin List
+                      </span>
                     </div>
-                    <span className="md:text-sm xl:text-base">Admin List</span>
-                  </div>
-                </NavLink>
+                  </NavLink>
+                ) : null}
                 <div className="nav-link" onClick={(e) => handleSection()}>
                   <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
                     <div className="bg-blue-200 w-1/6 h-9  flex justify-center items-center rounded-full">

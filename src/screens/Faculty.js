@@ -57,15 +57,13 @@ const Faculty = () => {
     reset,
     trigger,
     resetField,
-  } = useForm();
+  } = useForm(); 
   const onSubmit = async () => {
     const formdata = new FormData(form.current);
-   
     const response = await Addfaculty(formdata)
-    console.log(response,"res")
+    console.log(response, "res")
     if (response.data.success) {
       Toaster()
-      // handleClick()
       return setModel(false)
     } else {
       return errtoast()
@@ -324,8 +322,8 @@ const Faculty = () => {
         )}
 
         <div className={`bg-slate-100 ${model && "opacity-5"}`}>
-          <div className="mt-5 ">
-            <div className="xl:flex xl:justify-between justify-center items-center  p-5 pt-2 xl:pl-12 space-y-5">
+          <div className="xl:mt-5 ">
+            <div className="flex justify-between  items-center  p-5 pt-0 xl:pt-2 xl:pl-12 space-y-5">
               <h1 className=" text-xl xl:text-3xl text-center xl:text-left text-darkblue-500 font-bold">
                 Staff
 
@@ -353,28 +351,30 @@ const Faculty = () => {
                 </div>
               </NavLink>
             </div>
-            <div className="pt-0 xl:flex items-center px-20  ">
-              <div className=" left ">
+            <div className="pt-0 flex items-center justify-between   mx-20 xl:mx-32  ">
+              <div className=" left">
                 <img
                   src="/images/faculty.png"
                   alt=""
-                  className=" w-2/3 "
+                  className=" xl:w-2/3 w-1/2 "
                 />
               </div>
               <div className="right  flex justify-center">
                 <div
                   id="faculty-card"
-                  className=" p-5 flex items-center  rounded-lg  bg-class5-50 drop-shadow-lg space-x-7  ml-10 "
+                  className=" xl:p-5 py-5 space-x-5 w-52 xl:w-72 flex justify-start items-center  rounded-lg  bg-class5-50 drop-shadow-lg   xl:ml-10 "
                 >
                   <div className="space-y-3">
-                    <div className='flex items-center justify-center bg-white h-14 w-14 ml-5 rounded-md'>
+                    <div className='flex items-center justify-center bg-white h-14 w-14  rounded-md'>
                       <FiUsers className="text-4xl text-class5-50" />
                     </div>
-                    <h1 className="text-gray-200 xl:text-xl uppercase text-center  ">
-                      Staff Total
+                  </div>
+                  <div>
+                    <p className=" font-semibold text-white mb-3 text-5xl">{data}</p>
+                    <h1 className="text-gray-200 text-sm xl:text-xl uppercase text-center  ">
+                      Total Staff
                     </h1>
                   </div>
-                  <p className=" font-semibold text-white xl:text-5xl">{data}</p>
                 </div>
               </div>
             </div>

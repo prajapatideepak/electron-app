@@ -23,13 +23,26 @@ export default function Sidebar({ data }) {
         </div>
         <div className="navigation mt-4">
           <ul className="text-center">
-            <div className="mb-3">
+            {/* <div className="mb-3">
             <NavLink className="nav-link" activeclassname="active" to="/">
-              <li className="inline-flex pl-11 items-center py-2 w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
-                <RiDashboardFill className="w-5 h-5 mr-2" />
+              <li className="inline-flex xl:pl-11 mx-5 xl:mx-0 items-center py-2 w-full xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                <RiDashboardFill className="xl:w-5 xl:h-5 xl:mr-2" />
                 <h1 className="text-base hidden xl:block  ">Dashboard</h1>
               </li>
             </NavLink>
+            </div> */}
+
+            <div className="mb-3">
+              <NavLink
+                className="nav-link"
+                activeclassname="active"
+                to="/"
+              >
+                <li className="inline-flex xl:pl-11 mx-5 xl:mx-0 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                  <RiDashboardFill className="xl:w-5 xl:h-5 xl:mr-2" />
+                  <h1 className="text-base hidden  xl:block  ">Dashboard</h1>
+                </li>
+              </NavLink>
             </div>
 
             <div className="mb-3">
@@ -38,8 +51,8 @@ export default function Sidebar({ data }) {
                 activeclassname="active"
                 to="myclass"
               >
-                <li className="inline-flex pl-11 items-center py-2 w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
-                  <FaUsers className="w-5 h-5 mr-2" />
+                <li className="inline-flex xl:pl-11 mx-5 xl:mx-0 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                  <FaUsers className="xl:w-5 xl:h-5 xl:mr-2" />
                   <h1 className="text-base hidden  xl:block  ">My Class</h1>
                 </li>
               </NavLink>
@@ -47,8 +60,8 @@ export default function Sidebar({ data }) {
 
             <div className="mb-3">
               <NavLink className="nav-link" activeclassname="active" to="fee">
-                <li className="inline-flex pl-11 items-center py-2 w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
-                  <BiRupee className="w-5 h-5 mr-2" />
+                <li className="inline-flex xl:pl-11 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                  <BiRupee className="xl:w-5 xl:h-5 xl:mr-2" />
                   <h1 className="text-base hidden  xl:block  ">Fees</h1>
                 </li>
               </NavLink>
@@ -56,8 +69,8 @@ export default function Sidebar({ data }) {
 
             <div className="mb-3">
             <NavLink className="nav-link" activeclassname="active" to="receipt">
-              <li className="inline-flex pl-11 items-center py-2 w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
-                <BsReceipt className="w-5 h-5 mr-2" />
+              <li className="inline-flex xl:pl-11 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                <BsReceipt className="xl:w-5 xl:h-5 xl:mr-2" />
                 <h1 className="text-base hidden  xl:block  "> Reciept</h1>
               </li>
             </NavLink>
@@ -69,8 +82,8 @@ export default function Sidebar({ data }) {
                 activeclassname="active"
                 to="faculty"
               >
-                <li className="inline-flex pl-11 items-center py-2 w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
-                  <GiTeacher className="w-5 h-5 mr-2" />
+                <li className="inline-flex xl:pl-11 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                  <GiTeacher className="xl:w-5 xl:h-5 xl:mr-2" />
                   <h1 className="text-base hidden  xl:block  ">Staff</h1>
                 </li>
               </NavLink>
@@ -82,8 +95,8 @@ export default function Sidebar({ data }) {
                 activeclassname="active"
                 to="report"
               >
-                <li className="inline-flex pl-11 items-center py-2 w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
-                  <FaWpforms className="w-5 h-5 mr-2" />
+                <li className="inline-flex xl:pl-11 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                  <FaWpforms className="xl:w-5 xl:h-5 xl:mr-2" />
                   <h1 className="text-base hidden  xl:block  "> Report</h1>
                 </li>
               </NavLink>
@@ -95,21 +108,14 @@ export default function Sidebar({ data }) {
                 activeclassname="active"
                 to="studentregister"
               >
-                <li className="inline-flex pl-11 items-center py-2 w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
-                  <IoMdPersonAdd className="w-5 h-5 mr-2" />
+                <li className="inline-flex xl:pl-11 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                  <IoMdPersonAdd className="xl:w-5 xl:h-5 xl:mr-2" />
                   <h1 className="text-base hidden  xl:block  ">Student Reg</h1>
                 </li>
               </NavLink>
             </div>
 
-            <div className="mb-3">
-              <NavLink className="nav-link" activeclassname="active" to="help">
-                <li className="inline-flex pl-11 items-center py-2 w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
-                  <IoMdInformationCircle className="w-5 h-5 mr-2" />
-                  <h1 className="text-base hidden  xl:block  "> Help</h1>
-                </li>
-              </NavLink>
-            </div>
+           
           </ul>
         </div>
       </div>

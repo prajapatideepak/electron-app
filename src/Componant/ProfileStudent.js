@@ -194,6 +194,7 @@ const Profilestudent = () => {
         async function studentApi(){
             try{
                 student_details = await getStudentDetails(student_id)
+                console.log(student_details)
                 if(!student_details.data.success){
                     Toaster('error', student_details.data.message)
                    return navigate(-1);

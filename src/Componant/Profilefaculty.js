@@ -163,13 +163,13 @@ const Profilefaculty = () => {
     facultdata()
   }, [call])
 
-
+  const staff_id = params.id
   // -----------------------------------------------------------------------------
   // ------------------------------Table_details----------------------------------
   // -----------------------------------------------------------------------------
   useEffect(() => {
     async function fetchfacultdata() {
-      const res = await Facultyhistory(params.id);
+      const res = await Facultyhistory(staff_id);
       setfacultysalary(() => res.data.staff_History)
       setTotalpaid(() => res.data.staff_History)
       setloading(false)
@@ -242,7 +242,7 @@ const Profilefaculty = () => {
   }
   const onSubmit = async (data) => {
     console.log(data, "data")
-    Object.assign(data, { photo: data.photo, faculty_id: params.id })
+    Object.assign(data, { photo: data.photo, staff_id })
 
     const formdata = new FormData(form.current);
     const http = img.split(':')
@@ -253,7 +253,7 @@ const Profilefaculty = () => {
     formdata.append('photo_name', photo_name);
     setIsLoadingOnSubmit(true);
     try {
-      const res = await Update_faculty(data)
+      const res = await Update_faculty(staff_id, formdata)
       setIsLoadingOnSubmit(false);
       if (res.data.success == true) {
         Toaster()

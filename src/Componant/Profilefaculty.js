@@ -253,7 +253,7 @@ const Profilefaculty = () => {
     formdata.append('photo_name', photo_name);
     setIsLoadingOnSubmit(true);
     try {
-      const res = await Update_faculty(data)
+      const res = await Update_faculty(params.id, formdata)
       setIsLoadingOnSubmit(false);
       if (res.data.success == true) {
         Toaster()
@@ -540,8 +540,8 @@ const Profilefaculty = () => {
               <h3 className="text-2xl font-medium">Salary Details</h3>
             </div>
             <div ref={componentRef} className='p-5 pt-3 pb-0'>
-              <table className="w-full text-sm text-center bg-class3-50 rounded-xl ">
-                <thead className="text-xs text-gray-700 uppercase dark:bg-[#D9D9D9]">
+              <table className="w-full text-sm text-center rounded-xl ">
+                <thead className="text-xs text-gray-700 uppercase bg-class3-50">
                   <tr className='text-white text-base'>
 
                     <th scope="col" className="py-7 px-5 text-center ">Total Paid</th>
@@ -550,8 +550,8 @@ const Profilefaculty = () => {
                     <th scope="col" className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>Action</th>
                   </tr>
                 </thead>
+                <tbody className='bg-white border items-center '>
                 {Totalpaid.length > 0 ? (
-                  <tbody className='bg-white border items-center '>
 
                     <tr className=" border-b">
 
@@ -574,17 +574,18 @@ const Profilefaculty = () => {
                       </td>
                     </tr>
 
-
-
-
-                  </tbody>
                 ) : (
-                  <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
-                    <IoMdInformationCircle className="text-xl text-red-600" />
+                  <tr className="">
+                      <td colSpan={7} className="bg-red-200  font-bold p-2 rounded">
+                          <div className="flex space-x-2 justify-center items-center">
 
-                    <h1 className="text-red-800">Reciept Not avaiable </h1>
-                  </div>
+                          <IoMdInformationCircle className="text-xl text-red-600"/>
+                          <h1 className="text-red-800">Receipt not found </h1>
+                          </div>
+                      </td>
+                  </tr> 
                 )}
+                  </tbody>
               </table>
             </div>
           </div>

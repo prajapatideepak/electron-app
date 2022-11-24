@@ -282,7 +282,6 @@ export async function getFaculty(id) {
 export async function salarypay(gen_reciept) {
   try {
     const response = await axios.post(`${SERVER}/salary/create-reciept/`, gen_reciept)
-    console.log(gen_reciept , "hello")
     return response
   } catch (error) {
     console.log(error)

@@ -241,7 +241,6 @@ const Profilefaculty = () => {
     });
   }
   const onSubmit = async (data) => {
-    console.log(data, "data")
     Object.assign(data, { photo: data.photo, faculty_id: params.id })
 
     const formdata = new FormData(form.current);

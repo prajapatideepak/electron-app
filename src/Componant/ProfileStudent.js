@@ -927,6 +927,7 @@ const Profilestudent = () => {
                         </form>
 
                         <div className="overflow-x-auto relative  sm:rounded-lg  p-10  space-y-5 w-full">
+
                             <div className="ml-5 flex items-center text-gray-700">
                                 <h3 className="text-2xl font-medium">Fees Details</h3>
                             </div>
@@ -973,7 +974,6 @@ const Profilestudent = () => {
                                             :
                                                 null
                                         }
-
                                     </tbody>
                                 </table>
                             </div>

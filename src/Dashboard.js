@@ -42,9 +42,9 @@ function DashboardMenu() {
   useEffect(() => {
     login()
     if (adminData.isSuccess) {
-      setAdmin(adminData.data.data);
+      setAdmin(adminData?.data?.data);
     }
-  }, [])
+  }, [adminData, login, setAdmin])
 
 
   return !adminData.isSuccess ? (

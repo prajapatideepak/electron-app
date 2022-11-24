@@ -194,7 +194,8 @@ const Profilestudent = () => {
         async function studentApi() {
             try {
                 student_details = await getStudentDetails(student_id)
-                if (!student_details.data.success) {
+
+                if(!student_details.data.success){
                     Toaster('error', student_details.data.message)
                     return navigate(-1);
                 }
@@ -945,35 +946,34 @@ const Profilestudent = () => {
                                     </thead>
                                     <tbody className='bg-white border items-center '>
                                         {
-                                            academicDetails && academicDetails[0]
-                                                ?
-                                                academicDetails.map((academic, index) => {
-                                                    return <tr key={index} className=" border-b">
-                                                        <td scope="row" className="w-20 h-20">
-                                                            {academic.class_id.batch_start_year}-{academic.class_id.batch_end_year}
-                                                        </td>
-                                                        <td className="w-20 h-20">{academic.class_id.class_name}</td>
-                                                        <td className="w-20 h-20">{academic.fees_id.net_fees}</td>
-                                                        <td className="w-20 h-20">{academic.fees_id.discount}</td>
-                                                        <td className="w-20 h-20">{academic.fees_id.net_fees - academic.fees_id.pending_amount}</td>
-                                                        <td className="w-20 h-20">{academic.fees_id.pending_amount}</td>
-                                                        <td className="w-20 h-20 ">
-                                                            <div className='flex justify-center space-x-2'>
-                                                                <NavLink className="nav-link" to='/myclass/class/Profilestudent/Studenthistory'
-                                                                    state={{
-                                                                        is_cancelled: studDetails?.personal.is_cancelled,
-                                                                        student_id: studDetails?.personal.student_id, full_name: studDetails?.personal.basic_info_id.full_name, academic_id: academic._id
-                                                                    }}>
-                                                                    <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl text-darkblue-500"><AiFillEye /></span></Tooltip>
-                                                                </NavLink>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                })
-                                                :
+                                            academicDetails && academicDetails[0] 
+                                            ?
+                                            academicDetails.map((academic, index) => {
+                                                return <tr key={index} className=" border-b">
+                                                    <td scope="row" className="w-20 h-20">
+                                                        {academic.class_id.batch_start_year}-{academic.class_id.batch_end_year}
+                                                    </td>
+                                                    <td className="w-20 h-20">{academic.class_id.class_name}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.net_fees}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.discount}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.net_fees - academic.fees_id.pending_amount}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.pending_amount}</td>
+                                                    <td className="w-20 h-20 ">
+                                                        <div className='flex justify-center space-x-2'>
+                                                            <NavLink className="nav-link" to= '/myclass/class/Profilestudent/Studenthistory' 
+                                                                state={{
+                                                                    is_cancelled: studDetails?.personal.is_cancelled, 
+                                                                    student_id: studDetails?.personal.student_id, full_name:studDetails?.personal.basic_info_id.full_name, academic_id: academic._id
+                                                                }}>
+                                                                <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl text-darkblue-500"><AiFillEye /></span></Tooltip>
+                                                            </NavLink>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            })  
+                                            :
                                                 null
                                         }
-
                                     </tbody>
                                 </table>
                             </div>

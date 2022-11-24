@@ -55,6 +55,7 @@ const Faculty = () => {
     trigger,
     resetField,
   } = useForm();
+  
   const onSubmit = async () => {
     const formdata = new FormData(form.current);
     setIsLoadingOnSubmit(true);

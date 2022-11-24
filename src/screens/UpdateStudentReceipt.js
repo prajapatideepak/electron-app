@@ -28,7 +28,7 @@ export default function UpdateStudentReceipt() {
         upi_no: location.state.receiptDetails.upi_no,
         cheque_no: location.state.receiptDetails.cheque_no
     };
-      const { admin } = React.useContext(NasirContext);
+  const { admin } = React.useContext(NasirContext);
 
   const [fee, setFee] = React.useState(student?.amount);
   const [discount, setDiscount] = React.useState(student?.discount == 0 ? '' : student?.discount);

@@ -18,7 +18,7 @@ const StudentAdmissionForm = () => {
                             </div>
                             <div className="middle-content flex">
                                 <div className="logo">
-                                    <img className="h-36" src="../images/logo.png" alt="logo"/>
+                                    <img className="h-36" src="images/logo.png" alt="logo"/>
                                 </div>
                                 <div className="content font-bold mt-11 mx-5">
                                     <p>K.G to 10th, 11th to 12th</p>
@@ -32,7 +32,7 @@ const StudentAdmissionForm = () => {
                         </div>
                         <div className='right-content w-1/5 '>
                             <div className="passPortSize-Photo">
-                                <img className="px-3" src='../images/user.png' alt='Passport-Photo'/>
+                                <img className="px-3" src='images/user.png' alt='Passport-Photo'/>
                             </div>
                         </div>
                     </div>

@@ -155,7 +155,7 @@ const Reciept = () => {
                   <form className="" onSubmit={handleSubmit(onSubmit)}>
                     <div className=" p-5">
                       <div className="title flex justify-center pb-3  ">
-                        <img src="/images/User.png" alt="" className="rounded-full w-1/5 relative drop-shadow-2xl  " />
+                        <img src="images/user.png" alt="" className="rounded-full w-1/5 relative drop-shadow-2xl  " />
                       </div>
                       <div className=" grid grid-cols-1 rounded-lg drop-shadow-md truncate   ">
                         <div className=" flex flex-col items-center gap-5">

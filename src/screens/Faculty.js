@@ -372,7 +372,7 @@ const Faculty = () => {
             <div className="pt-0 flex items-center justify-between   mx-20 xl:mx-32  ">
               <div className=" left">
                 <img
-                  src="/images/faculty.png"
+                  src="images/faculty.png"
                   alt=""
                   className=" xl:w-2/3 w-1/2 "
                 />

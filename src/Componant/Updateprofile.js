@@ -8,7 +8,7 @@ import "../Styles/Studentform.css";
 const Updateprofile = () => {
   const { admin } = React.useContext(NasirContext);
 
-  const [img, setImg] = useState("/images/user.png");
+  const [img, setImg] = useState("images/user.png");
   const [data, setData] = React.useState(admin);
   const [date, setDate] = React.useState("");
   const [basic_info_id, setBasicinfoid] = React.useState({});

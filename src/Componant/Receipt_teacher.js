@@ -147,7 +147,7 @@ function Receipt_teacher() {
 
 
                         <div className="title flex justify-center pb-3  ">
-                          <img src="/images/User.png" alt="" className="rounded-full w-1/5 relative drop-shadow-2xl  " />
+                          <img src="images/user.png" alt="" className="rounded-full w-1/5 relative drop-shadow-2xl  " />
                         </div>
                         <div className=" grid grid-cols-1 rounded-lg drop-shadow-md truncate   ">
                           <div className=" flex flex-col items-center gap-5">
@@ -254,7 +254,7 @@ function Receipt_teacher() {
                 <ReceiptMainDiv className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`} ref={printRef} >
                   <div className="p-5">
                     <div className="flex justify-between">
-                      <img src="/images/logo.png" style={{ maxWidth: '250px' }} alt="" />
+                      <img src="images/logo.png" style={{ maxWidth: '250px' }} alt="" />
                       <div className={`${receiptTextColor} w-48 font-bold`}>
                         <p>E-35, Sumel-8, Safal Market, Nr. Ajit Mill Char Rasta, Rakhial, Ahmedabad.</p>
                         <p className="pt-2">Mobile: 8747382919</p>
@@ -343,7 +343,7 @@ function Receipt_teacher() {
                 {print && <ReceiptMainDiv className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`} >
                   <div className="p-5">
                     <div className="flex justify-between">
-                      <img src="/images/logo.png" style={{ maxWidth: '250px' }} alt="" />
+                      <img src="images/logo.png" style={{ maxWidth: '250px' }} alt="" />
                       <div className={`${receiptTextColor} w-48 font-bold`}>
                         <p>E-35, Sumel-8, Safal Market, Nr. Ajit Mill Char Rasta, Rakhial, Ahmedabad.</p>
                         <p className="pt-2">Mobile: 8747382919</p>

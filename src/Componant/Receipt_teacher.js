@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { TbCurrencyRupee } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useParams, useLocation } from "react-router-dom";
-import { Facultyreciept, getAdminVerification } from "../hooks/usePost"
+import { Facultyreciept, getAdminVerification,usegetAdmin } from "../hooks/usePost"
 import { NavLink, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdModeEditOutline } from "react-icons/md";
@@ -38,6 +38,8 @@ function Receipt_teacher() {
   const [print, setPrint] = useState(false);
   const [feesData, setFeesData] = React.useState({});
   const [pin, setPin] = React.useState("");
+  const [admin, setadmin] = React.useState();
+  const [admin_username, setadmin_username] = React.useState();
   const [error, setError] = React.useState();
 
   React.useEffect(() => {
@@ -51,7 +53,16 @@ function Receipt_teacher() {
     fetchfacultdata()
   }, [])
 
-  console.log(facultyhistory, "facultyhistory")
+  React.useEffect(() => {
+    async function fetchfacultdata() {
+        const res = await usegetAdmin();
+        setadmin(() => res.data.staff_id.basic_info_id.full_name)
+        setadmin_username(() => res.data.username)
+        setloading(false)
+    }
+    fetchfacultdata()
+}, [])
+
 
   //   // --------------------------------
   //   // ---------   Date    ----------
@@ -331,7 +342,7 @@ function Receipt_teacher() {
                     </div>
                     <div className="flex justify-between items-center mt-6">
                       <div className="">
-                        <p className={`${receiptTextColor} font-bold text-sm ml-1 `}>Admin: <span className="text-black">{facultyhistory.admin_id.username}</span></p>
+                        <p className={`${receiptTextColor} font-bold text-sm ml-1 `}>Admin: <span className="text-black">{admin}</span></p>
                       </div>
                       <div>
 

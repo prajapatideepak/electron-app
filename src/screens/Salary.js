@@ -72,8 +72,6 @@ export default function Salary() {
     fetchfacultdata()
   }, [])
 
-  console.log(admin_username)
-
   // --------------------------------
   // ----- Corrent_Date_formate ------
   // -------------------------------
@@ -146,9 +144,6 @@ export default function Salary() {
     if (chaque && chaqueno == "") {
       return setchaqueerror(true)
     }
-
-
-
     if (error > 0) {
       return;
     } else {
@@ -272,7 +267,7 @@ export default function Salary() {
                         type="text"
                         className="p-1 px-3 outline-none "
                         placeholder="Enter Security PIN"
-                        onChange={(e) => setPin(e.target.value)}
+                      onChange={(e) => {setPin(e.target.value); setError(false)}}
                       />
                       <button disabled={isLoadingOnSubmit}
                         className={`px-4 py-1 bg-darkblue-500 text-white ${isLoadingOnSubmit ? 'opacity-40' : 'opacity-100'} `}

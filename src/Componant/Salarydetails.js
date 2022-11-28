@@ -2,7 +2,7 @@ import React from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Facultyreciept, Update_faculty_reciept, getAdminpinVerification } from "../hooks/usePost"
+import { Facultyreciept, Update_faculty_reciept, usegetAdmin } from "../hooks/usePost"
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from './Loader';
@@ -33,6 +33,8 @@ export default function Salarydetails() {
     const [model, setModel] = React.useState(false);
     const [pin, setPin] = React.useState("");
     const [error, setError] = React.useState(false);
+    const [admin, setadmin] = React.useState();
+    const [admin_username, setadmin_username] = React.useState();
     const [PIN, setpin] = React.useState(false);
     const [salaryData, setSalaryData] = React.useState({
         hour: "",
@@ -71,6 +73,19 @@ export default function Salarydetails() {
         }
         fetchfacultdata()
     }, [])
+
+    React.useEffect(() => {
+        async function fetchfacultdata() {
+            const res = await usegetAdmin();
+            setadmin(() => res.data.staff_id.basic_info_id.full_name)
+            setadmin_username(() => res.data.username)
+            setpin(() => res.data.security_pin)
+            setloading(false)
+        }
+        fetchfacultdata()
+    }, [])
+
+
     //   // --------------------------------
     //   // --------  Date ----------------
     //   // -------------------------------
@@ -194,19 +209,19 @@ export default function Salarydetails() {
         });
         const SPIN = PIN;
         if (pin == SPIN) {
-          const res = await Update_faculty_reciept(gen_reciept)
-          if (res.data.success == true) {
-            const receipt_id = res.data.salary_receipt_details.salary_receipt_id
-            navigate(`/salary/Receipt_teacher/${receipt_id}`, { state: { prevPath: "update_receipt" } })
-            Toaster()
-          } else {
-            errtoast({
-              invalid_pin: res.data.message
-            });
-          }
-    
+            const res = await Update_faculty_reciept(gen_reciept)
+            if (res.data.success == true) {
+                const receipt_id = res.data.salary_receipt_details.salary_receipt_id
+                navigate(`/salary/Receipt_teacher/${receipt_id}`, { state: { prevPath: "update_receipt" } })
+                Toaster()
+            } else {
+                errtoast({
+                    invalid_pin: res.data.message
+                });
+            }
+
         } else {
-          setError(true);
+            setError(true);
         }
     }
 
@@ -269,7 +284,7 @@ export default function Salarydetails() {
                                     <div className="px-6 py-3 font-bold text-darkblue-500 ">
                                         <h2>* Paid by :  {payment == 1 ? 'cash' : payment == 2 ? 'UPI' : 'Cheque'}</h2>
                                         {payment != 1 ? <h2>* {payment == 2 ? "UPI NO" : payment == 3 ? "Cheque No" : null} :  {payment == 2 ? upi_no : payment == 3 ? chaque_no : null}</h2> : null}
-                                        <h3 >* Recived by  : <span className="uppercase">{faculty.admin_id.username}</span></h3>
+                                        <h3 >* Recived by  : <span className="uppercase">{admin}</span></h3>
                                     </div>
                                     <div>
 
@@ -278,7 +293,7 @@ export default function Salarydetails() {
                                                 type="text"
                                                 className="p-1 px-3 outline-none "
                                                 placeholder="Enter Security PIN"
-                                                onChange={(e) => setPin(e.target.value)}
+                                                onChange={(e) => {setPin(e.target.value); setError(false)}}
                                             />
                                             <button
                                                 className="px-4 py-1 bg-darkblue-500 text-white "
@@ -493,7 +508,7 @@ export default function Salarydetails() {
                             </div>
                         </div>
                         <div className="text-sm flex justify-between items-center uppercase font-bold font-mono mt-4 ">
-                            <h1 className="px-6"> admin : {faculty.admin_id.username}</h1>
+                            <h1 className="px-6"> admin : {admin}</h1>
                             <button onClick={genreciept}
                                 className="px-7  mx-7 py-2 text-base tracking-widest font-semibold uppercase bg-darkblue-500 text-white 
             transition duration-500 rounded-md hover:shadow-2xl"  >

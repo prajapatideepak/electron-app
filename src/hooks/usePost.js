@@ -255,16 +255,17 @@ export async function Facultydetails(id) {
 // ------------------------------------------------------------------------
 // -----------------------------Update_faculty ----------------------------
 // ------------------------------------------------------------------------
-export async function Update_faculty(staff_id, data) {
+
+export async function Update_faculty(staff_id , formdata) {
   try {
-    const res = await axios.put(`${SERVER}/Faculty/update/${staff_id}`, data)
+    const res = await axios.put(`${SERVER}/Faculty/update/${staff_id}`, formdata)
     return res
   } catch (error) {
     return error
   }
 }
 
-// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------=
 // ------------------reciept_table_one_faculty_details --------------------
 // ------------------------------------------------------------------------
 export async function getFaculty(id) {

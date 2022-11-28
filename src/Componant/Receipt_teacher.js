@@ -277,7 +277,7 @@ function Receipt_teacher() {
                       </div>
                     </div>
                     <div className="mt-5">
-                      <p className={`${receiptTextColor} font-bold italic`}>The sum of Rupees: <span className="text-black"></span>{inWords(facultyhistory.transaction_id.amount)}</p>
+                      <p className={`${receiptTextColor} font-bold italic`}>The sum of Rupees: <span className="text-black">{inWords(facultyhistory.transaction_id.amount)} </span></p>
                     </div>
                     <div className="mt-5">
                       <p className={`${receiptTextColor} font-bold italic`}>

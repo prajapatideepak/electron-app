@@ -22,7 +22,7 @@ export default function Dashboard() {
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
   const [Serialno, setserialno] = useState(1)
-  const itemsPerPage = 2;
+  const itemsPerPage = 6;
   
   const { section, admin } = React.useContext(NasirContext);
 
@@ -73,7 +73,7 @@ export default function Dashboard() {
         </div>
         <div className="w-2/3  ">
             <div className="right pt-4 p-5 px-20 xl:px-0 xl:flex xl:mr-10 xl:mt-0 xl:space-x-10 space-y-10 xl:space-y-0 justify-start items-center text-center">
-                <div id='Student-cards' className=' flex items-center justify-start px-5 p-2 cursor-pointer  xl:w-1/2 rounded-lg xl:py-5 bg-class4-50  '>
+                <div id='Student-cards' className=' flex items-center justify-start px-5 p-2  xl:w-1/2 rounded-lg xl:py-5 bg-class4-50  '>
                     <div className='flex ml-1'>
                         <div className="bg-white rounded-md  flex justify-center items-center p-5">
 
@@ -86,7 +86,7 @@ export default function Dashboard() {
 
                     </div>
                 </div>
-                <div id='Student-cards' className=' flex items-center p-2 cursor-pointer xl:w-1/2 rounded-lg xl:py-5 px-5 bg-class1-50  '>
+                <div id='Student-cards' className=' flex items-center p-2 xl:w-1/2 rounded-lg xl:py-5 px-5 bg-class1-50  '>
                     <div className='flex ml-1'>
                         <div className="bg-white rounded-md p-5 flex justify-center items-center">
 

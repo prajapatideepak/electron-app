@@ -6,11 +6,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { AxiosError } from "axios";
 import Toaster from '../hooks/showToaster';
 import {generateStudentReceipt} from '../hooks/usePost';
+import { NasirContext } from "../NasirContext";
 
 export default function FeesDetail() {
   const location = useLocation();
-
-  const admin_id = '632324e55f67f65bf8a5f53a';
+  const { admin } = React.useContext(NasirContext);
 
   const student = location?.state;
 
@@ -36,11 +36,6 @@ export default function FeesDetail() {
       cheque: '',
       invalid_pin: '' 
   });
-
-  const admin = {
-    id: '632324e55f67f65bf8a5f53a',
-    name: "Sadikali",
-  };
 
   var today = new Date();
   var date =
@@ -298,21 +293,24 @@ export default function FeesDetail() {
   const navigate = useNavigate();
   async function handlePINsubmit() {
     try{
-        setIsSubmitting(true);
-        const feesData = {
-            is_by_cash: toggleCash ? 1 : 0,
-            is_by_cheque: toggleCheque ? 1 : 0,
+      const feesData = {
+        is_by_cash: toggleCash ? 1 : 0,
+        is_by_cheque: toggleCheque ? 1 : 0,
             is_by_upi: toggleUpi ? 1 : 0,
             cheque_no: chequeNo,
             upi_no: upiNo,
             amount: Number(fee) + Number(deduction),
             discount: deduction,
-            admin_id: admin.id,
+            admin_id: admin._id,
             security_pin: pin,
             student_id: student.rollno
-        };
+          };
+        
+        setIsSubmitting(true);
         
         const res = await generateStudentReceipt(feesData)
+
+        setIsSubmitting(false);
 
         if (res.data.success == true) {
             Toaster('success', 'Receipt generated successfully')
@@ -416,7 +414,7 @@ export default function FeesDetail() {
                         :
                             null
                 }
-                <h3 className="font-bold">* Admin: <span className="font-medium text-gray-600">{admin.name}</span></h3>
+                <h3 className="font-bold">* Admin: <span className="font-medium text-gray-600">{admin.username}</span></h3>
               </div>
 
               <div className="border-2 mx-8 mt-6 h-8 rounded  w-fit flex items-center border-darkblue-500">
@@ -428,7 +426,7 @@ export default function FeesDetail() {
                 />
                 <button
                   disabled={isSubmitting}
-                  className="px-4 py-1 bg-darkblue-500 text-white "
+                  className={`px-4 py-1 ${isSubmitting ? 'bg-darkblue-300' : 'bg-darkblue-500'} text-white`}
                   onClick={handlePINsubmit}
                 >
                   {isSubmitting ? 'Loading...' : 'Submit'}
@@ -602,7 +600,7 @@ export default function FeesDetail() {
 
           <div></div>
           <div className="text-sm flex justify-between items-center uppercase font-bold font-mono mt-4 ">
-            <h1 className="px-6"> admin : {admin.name}</h1>
+            <h1 className="px-6"> admin : {admin.username}</h1>
             <button
               className="px-7  mx-7 py-2 text-base tracking-widest
            font-semibold uppercase bg-darkblue-500

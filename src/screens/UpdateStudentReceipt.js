@@ -43,6 +43,7 @@ export default function UpdateStudentReceipt() {
   const [discountAppliedMsg, setDiscountAppliedMsg] = React.useState(student?.discount > 0 ? false : true);
   const [model, setModel] = React.useState(false);
   const [pin, setPin] = React.useState(""); 
+  const [isAuthenticating, setIsAuthenticating] = React.useState(false);
   const [errors, setErrors]  = React.useState({
       amount: '',
       discount: '',
@@ -322,6 +323,8 @@ export default function UpdateStudentReceipt() {
             admin_id: admin._id,
             security_pin: pin
         };
+
+        setIsAuthenticating(true)
         
         const res = await updateStudentReceipt(feesData)
 
@@ -333,9 +336,10 @@ export default function UpdateStudentReceipt() {
                 invalid_pin: res.data.message
             });
         }
-
+        setIsAuthenticating(false)
       }
       catch(err){
+        setIsAuthenticating(false)
           if(err instanceof AxiosError){
             setErrors({
                 invalid_pin: err.response?.data?.message
@@ -429,10 +433,11 @@ export default function UpdateStudentReceipt() {
                   onChange={(e) => setPin(e.target.value)}
                 />
                 <button
-                  className="px-4 py-1 bg-darkblue-500 text-white "
+                  disabled={isAuthenticating}
+                  className={`px-4 py-1 ${isAuthenticating ? 'bg-darkblue-300' : 'bg-darkblue-500'} text-white`}
                   onClick={handlePINsubmit}
                 >
-                  Submit
+                  {isAuthenticating ? 'verifying...' : 'Submit'}
                 </button>
               </div>
 

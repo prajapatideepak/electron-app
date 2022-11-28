@@ -35,6 +35,7 @@ import CancelAdmission from './screens/CancelAdmission';
 import Salarydetails from "./Componant/Salarydetails";
 import UpdateStudentReceipt from "./screens/UpdateStudentReceipt";
 import ErrorBoundary from "./Componant/ErrorBound";
+import StudentAdmissionForm from './Componant/StudentAdmissionForm'
 
 function DashboardMenu() {
   const { setAdmin, login } = React.useContext(NasirContext);
@@ -146,6 +147,7 @@ function DashboardMenu() {
             <Route exact path="/Componant/Addadmin" element={<Addadmin />} />
             <Route exact path="/Componant/AdminList" element={<AdminList />} />
             <Route exact path="/cancelAdmission/:student_id" element={<CancelAdmission />}/>
+            <Route exact path="/printAdmissionForm" element={<StudentAdmissionForm />}/>
             </Routes>
           </ErrorBoundary>
         </div>

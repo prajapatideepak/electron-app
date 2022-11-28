@@ -6,11 +6,10 @@ import { Facultyreciept, Update_faculty_reciept, getAdminpinVerification } from 
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from './Loader';
-
-
-
+import { NasirContext } from "../NasirContext";
 
 export default function Salarydetails() {
+    const { admin } = React.useContext(NasirContext);
     const Toaster = () => { toast.success('Salary_Reciept updated') }
     const errtoast = () => { toast.error("Invalid UserID / Password") }
     const params = useParams();
@@ -180,7 +179,7 @@ export default function Salarydetails() {
         const gen_reciept = ({
             salary_receipt_id: params.id,
             is_hourly: is_hourly,
-            admin: faculty.admin_id.username,
+            admin_id: admin._id,
             name: faculty.staff_id.basic_info_id.full_name,
             is_by_cheque: chaque ? 1 : 0,
             is_by_upi: upi ? 1 : 0,

@@ -227,7 +227,7 @@ export default function ReciptScreen() {
                                               {receipt.salary_receipt_id}
                                             </td>
                                             <td className="px-10 lg:px-6 xl:px-0">
-                                              {data.basic_info.full_name}
+                                              {data.basic_info[0].full_name}
                                             </td>
                                             <td className="px-10 lg:px-6 xl:px-4 ">
                                               <span className="">

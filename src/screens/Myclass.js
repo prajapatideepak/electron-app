@@ -58,10 +58,7 @@ const Myclass = () => {
     setIsHover(false);
   };
 
-  let is_primary = section == "primary" ? 0 : 1
 
-  async function fetchClasses(){
-  let section = "primary";
   let is_primary = section == "primary" ? 0 : 1
 
   async function fetchClasses() {
@@ -69,18 +66,12 @@ const Myclass = () => {
     setClasses(() =>
       res?.data?.filter(
         (data) => {
-          return data.is_active == 1 && data.is_primary == is_primary
+          return data.is_active == 1
         }
       )
     )
 
-    setFetchData(() => 
-      res?.data?.filter(
-        (data)=>{
-          return data.is_primary == is_primary
-        }
-      )
-    )
+    setFetchData(() => res?.data)
   }
 
   useEffect(() => {
@@ -214,7 +205,7 @@ const Myclass = () => {
       {model && (
         <div className="absolute w-full h-full  z-30 ">
           <div className="flex justify-center opacity-100 ">
-            <div className="h-2/3 mx-auto  opacity-100 shadow-2xl rounded mt-10 2xl:mt-24  bg-white w-2/3 z-50">
+            <div className="h-2/3 mx-auto  opacity-100 shadow-2xl rounded mt-10 2xl:mt-24  bg-white w-3/4 z-50">
               <div className="">
                 <div className="flex justify-end ">
                   <button
@@ -267,37 +258,57 @@ const Myclass = () => {
                             <div className="Batch">
                               <label className="block">
                                 <span className="block text-sm font-medium text-slate-700">
-                                  Batch
+                                  Batch (Starting Year)
                                 </span>
                                 <div className=" mt-1 ">
                                   <div className="input flex items-center space-x-4">
-                                    <input
-                                      type="text"
-                                      placeholder="Starting year"
-                                      className={`w-[90px] 2xl:w-28  block  px-3 py-2 bg-white rounded-md text-sm shadow-sm placeholder-slate-400 border border-slate-300 outline-none
+                                    <div className="">
+                                      <input
+                                        type="text"
+                                        placeholder="Starting year"
+                                        className={`w-36 2xl:w-44  block  px-3 py-2 bg-white rounded-md text-sm shadow-sm placeholder-slate-400 border border-slate-300 outline-none
                                        ${errors.batch_start_year &&
-                                        "border-red-600"
-                                        }`}
-                                      {...register("batch_start_year", {
-                                        required: "Starting year",
-                                        pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" },
-                                        minLength: {
-                                          value: 4,
-                                          message: 'Please enter four digits only'
-                                        },
-                                        maxLength: {
-                                          value: 4,
-                                          message: 'Please enter four digits only'
-                                        }
-                                      })}
-                                      onKeyUp={() => {
-                                        trigger("batch_start_year");
-                                      }}
-                                    />
+                                          "border-red-600"
+                                          }`}
+                                        {...register("batch_start_year", {
+                                          required: "Starting year",
+                                          pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" },
+                                          minLength: {
+                                            value: 4,
+                                            message: 'Please enter four digits only'
+                                          },
+                                          maxLength: {
+                                            value: 4,
+                                            message: 'Please enter four digits only'
+                                          }
+                                        })}
+                                        onKeyUp={() => {
+                                          trigger("batch_start_year");
+                                        }}
+                                      />
+                                      {errors.batch_start_year && (
+                                        <small className="text-red-700">
+                                          {errors.batch_start_year.message}
+                                        </small>
+                                      )}
+                                    </div>
+                                    
+                                  </div>
+                                </div>
+                              </label>
+                            </div>
+                            <div className="Batch">
+                              <label className="block">
+                                <span className="block text-sm font-medium text-slate-700">
+                                  Batch (Ending Year)
+                                </span>
+                                <div className=" mt-1 ">
+                                  <div className="input flex items-center space-x-4">
+                                    <div>
                                     <input
                                       type="text"
                                       placeholder="Ending year"
-                                      className={`w-[90px] 2xl:w-28 block  px-3 py-2 bg-white  rounded-md text-sm shadow-sm placeholder-slate-400 border border-slate-300 outline-none
+                                      className={`w-36 2xl:w-44 block  px-3 py-2 bg-white  rounded-md text-sm shadow-sm placeholder-slate-400 border border-slate-300 outline-none
                                        ${errors.batch_end_year && "border-red-600"
                                         }`}
                                       {...register("batch_end_year", {
@@ -316,19 +327,12 @@ const Myclass = () => {
                                         trigger("batch_end_year");
                                       }}
                                     />
-                                  </div>
-                                  <div className="msg flex items-center mt-1 ml-1 ">
-                                    {errors.batch_start_year && (
+                                    {errors.batch_end_year && (
                                       <small className="text-red-700">
-                                        {errors.batch_start_year.message}
+                                        {errors.batch_end_year.message}
                                       </small>
                                     )}
-                                    <div className="ml-14">
-                                      {errors.batch_end_year && (
-                                        <small className="text-red-700">
-                                          {errors.batch_end_year.message}
-                                        </small>
-                                      )}
+
                                     </div>
                                   </div>
                                 </div>

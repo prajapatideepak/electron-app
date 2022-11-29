@@ -1,17 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import "../Styles/Studentform.css";
-import { FaUserEdit } from 'react-icons/fa';
-import axios from 'axios';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
 import {registerStudent, getActiveClasses} from '../hooks/usePost';
 import { useNavigate } from "react-router-dom";
 import Toaster from '../hooks/showToaster'
-import Swal from 'sweetalert2';
-
+import StudentAdmissionForm from "../Componant/StudentAdmissionForm"
 
 const Studentregister = () => {
-    const queryClient = useQueryClient()
     const form = useRef(null);
     const defaultImage = "http://localhost:4000/user_default@123.png"
     
@@ -21,7 +16,6 @@ const Studentregister = () => {
     const [netFees, setNetFees] = useState(0);
     const [classes, setClasses] = useState([]);
     const [isLoadingOnSubmit, setIsLoadingOnSubmit] = useState(false);
-
     const navigate = useNavigate();
     
     const onImageChange = (e) => {
@@ -51,7 +45,7 @@ const Studentregister = () => {
             if(result.data.success){
                 Toaster('success', result.data.message);
                 reset();
-                navigate('/');
+                navigate(`/myclass/class/Profilestudent/${result.data.student_id}`);
                 return;
             }
             else if(result.data.success == false){

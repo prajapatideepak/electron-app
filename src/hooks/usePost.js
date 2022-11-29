@@ -255,6 +255,7 @@ export async function Facultydetails(id) {
 // ------------------------------------------------------------------------
 // -----------------------------Update_faculty ----------------------------
 // ------------------------------------------------------------------------
+
 export async function Update_faculty(staff_id , formdata) {
   try {
     const res = await axios.put(`${SERVER}/Faculty/update/${staff_id}`, formdata)
@@ -282,7 +283,6 @@ export async function getFaculty(id) {
 export async function salarypay(gen_reciept) {
   try {
     const response = await axios.post(`${SERVER}/salary/create-reciept/`, gen_reciept)
-    console.log(gen_reciept , "hello")
     return response
   } catch (error) {
     console.log(error)

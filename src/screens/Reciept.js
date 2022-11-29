@@ -150,15 +150,12 @@ const Reciept = () => {
                   </button>
                 </div>
                 <div className='mt-7'>
-                  <h1 className='text-2xl font-bold text-darkblue-500 px-6 '>Super Admin Authentication</h1>
+                  <h1 className='text-2xl text-center font-bold text-darkblue-500 px-6 '>Super Admin Authentication</h1>
 
                   <form className="" onSubmit={handleSubmit(onSubmit)}>
-                    <div className=" p-5">
-                      <div className="title flex justify-center pb-3  ">
-                        <img src="/images/User.png" alt="" className="rounded-full w-1/5 relative drop-shadow-2xl  " />
-                      </div>
-                      <div className=" grid grid-cols-1 rounded-lg drop-shadow-md truncate   ">
-                        <div className=" flex flex-col items-center gap-5">
+                    <div className="px-5 py-10">
+                      <div className=" grid grid-cols-1 rounded-lg drop-shadow-md truncate">
+                        <div className="flex flex-col items-center gap-5">
                           <div className="Username">
                             <label className="relative block">
                               <span className="absolute flex items-center pl-2 mt-2">
@@ -230,7 +227,7 @@ const Reciept = () => {
                           
                               <button
                                 type="submit"
-                                className="bg-blue-900 drop-shadow-2xl hover:bg-white border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-10 w-24 rounded-md tracking-wider"
+                                className="mt-5 bg-blue-900 drop-shadow-2xl hover:bg-white border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-10 w-24 rounded-md tracking-wider"
                               >
                                 SUBMIT
                               </button>

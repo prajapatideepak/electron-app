@@ -13,8 +13,11 @@ import { AddClass, updateClass, deleteClass, getAllClasses, getAllClassesByYear 
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2'
 import 'react-toastify/dist/ReactToastify.css';
+import { NasirContext } from "../NasirContext";
 
 const Myclass = () => {
+  const { section } = React.useContext(NasirContext);
+
   //----------------------------
   //----------API Work----------
   //----------------------------
@@ -55,7 +58,9 @@ const Myclass = () => {
     setIsHover(false);
   };
 
+  let is_primary = section == "primary" ? 0 : 1
 
+  async function fetchClasses(){
   let section = "primary";
   let is_primary = section == "primary" ? 0 : 1
 
@@ -64,12 +69,18 @@ const Myclass = () => {
     setClasses(() =>
       res?.data?.filter(
         (data) => {
-          return data.is_active == 1
+          return data.is_active == 1 && data.is_primary == is_primary
         }
       )
     )
 
-    setFetchData(() => res?.data)
+    setFetchData(() => 
+      res?.data?.filter(
+        (data)=>{
+          return data.is_primary == is_primary
+        }
+      )
+    )
   }
 
   useEffect(() => {

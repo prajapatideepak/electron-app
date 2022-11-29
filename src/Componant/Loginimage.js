@@ -6,7 +6,7 @@ import Dashboardsection from "../Componant/Dashboardsection";
 function Loginimage() {
   return (
     <div className="hidden lg:flex flex-1 justify-center items-center sm:hidden">
-      <img src="/images/admin_login.jpg" alt="" />
+      <img src="images/admin_login.jpg" alt="" />
     </div>
   );
 }

@@ -15,7 +15,7 @@ export default function Sidebar({ data }) {
       <div className="sidebar h-screen w-20 xl:w-60">
         <div className="sidebar-top flex justify-center mr-8 pt-1 pb-6 ">
           <img
-            src="/images/logo.png"
+            src="images/logo.png"
             alt=""
             className="w-36 cursor-pointer hidden xl:block "
             id="logo"

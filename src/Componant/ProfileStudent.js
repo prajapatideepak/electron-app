@@ -13,6 +13,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { AxiosError } from 'axios';
 import Validator from '../hooks/validator';
 import { useParams } from "react-router-dom";
+import StudentAdmissionForm from "../Componant/StudentAdmissionForm"
 
 const valid = new Validator();
 valid.register({
@@ -130,7 +131,6 @@ const Profilestudent = () => {
     let student_details;
 
     const setStudentDetails = () => {
-        console.log(student_details , "student_details")
         student_details = student_details.data.data.students_detail[0];
         setStudDetails(student_details);
         let dob = new Date(student_details.personal.basic_info_id.dob);
@@ -194,7 +194,7 @@ const Profilestudent = () => {
         async function studentApi() {
             try {
                 student_details = await getStudentDetails(student_id)
-                if (!student_details.data.success) {
+                if(!student_details.data.success){
                     Toaster('error', student_details.data.message)
                     return navigate(-1);
                 }
@@ -253,7 +253,6 @@ const Profilestudent = () => {
     };
 
     const onSubmit = async (data) => {
-        console.log(data ,"datas")
         const netFees = studentInputController.total_fees - studentInputController.discount;
 
         Object.assign(data, { net_fees: netFees, photo: data.photo, student_id })
@@ -368,7 +367,56 @@ const Profilestudent = () => {
                     }
                 }
             })
+    }
 
+    const printAdmissionForm = () => {
+        let dob = new Date(studDetails.personal.basic_info_id.dob);
+        dob = `${dob.getDate() < 10 ? "0" + dob.getDate() : dob.getDate()}-${dob.getMonth() + 1 < 10 ? "0" + (dob.getMonth() + 1) : dob.getMonth() + 1}-${dob.getFullYear()}`
+
+        let admissionDate = new Date(studDetails.personal.admission_date);
+        let academicEndYear = `${admissionDate.getFullYear()+1}`;
+        let academicYear = `${admissionDate.getFullYear()}-${academicEndYear[2]}${academicEndYear[3]}`
+
+        admissionDate = `${admissionDate.getDate() < 10 ? "0" + admissionDate.getDate() : admissionDate.getDate()}-${admissionDate.getMonth() + 1 < 10 ? "0" + (admissionDate.getMonth() + 1) : admissionDate.getMonth() + 1}-${admissionDate.getFullYear()}`
+
+        let photo = 
+            studDetails.personal.basic_info_id.photo == '' || studDetails.personal.basic_info_id.photo == undefined
+            ?
+                defaultImage
+            :
+                server + studDetails.personal.basic_info_id.photo
+            
+
+        navigate(
+            '/printAdmissionForm', 
+            {
+                state:{
+                    studentDetails:{
+                        photo: photo,
+                        fullName: studDetails.personal.basic_info_id.full_name,
+                        motherName: studDetails.personal.mother_name,
+                        fatherOccupation: '',
+                        address: studDetails.personal.contact_info_id.address,
+                        year: academicYear,
+                        class: studDetails.academic.class_id.class_name,
+                        medium: studDetails.academic.class_id.medium,
+                        stream: studDetails.academic.class_id.stream,
+                        formNo: studDetails.personal.student_id,
+                        admissionDate: admissionDate,
+                        gender: studDetails.personal.basic_info_id.gender,
+                        whatsappNo: studDetails.personal.contact_info_id.whatsapp_no,
+                        alternativeNo: studDetails.personal.contact_info_id.alternate_no,
+                        dob: dob,
+                        schoolName: studDetails.academic.school_name,
+                        note: studDetails.personal.note,
+                        reference: studDetails.personal.reference,
+                        totalFees: (studDetails.fees.net_fees + studDetails.fees.discount),
+                        discount: studDetails.fees.discount,
+                        netPayable: studDetails.fees.net_fees,
+                    }
+                }
+            }
+        );
     }
 
     if (isLoadingDetails) {
@@ -450,10 +498,6 @@ const Profilestudent = () => {
                         </div>
                     </div>
                     <div className={`bg-white overflow-x-auto relative  sm:rounded-lg  shadow-xl space-y-5 w-full`}>
-                        {/* <div className="button flex justify-end m-5 pr-20">
-                            
-                        </div> */}
-
                         <form ref={form} className="flex justify-center items-center" onSubmit={(e) => setState(valid.handleSubmit(e, onSubmit))} >
                             <div className="w-11/12 grid grid-cols-2 rounded-lg  truncate bg-white p-5">
                                 <div className="left flex flex-col items-center gap-5">
@@ -855,6 +899,16 @@ const Profilestudent = () => {
                                             border-2 hover:border-darkblue-500 hover:text-darkblue-500`}
                                             onClick={(e) => {
                                                 e.preventDefault()
+                                                printAdmissionForm();
+                                            }} >
+                                            Print
+                                        </button>
+                                        <button className={`border rounded-md w-24 h-11 ml-2 bg-darkblue-500 
+                                            ${!showUpdateButton ? null : "hidden"}
+                                            drop-shadow-lg text-white hover:bg-white 
+                                            border-2 hover:border-darkblue-500 hover:text-darkblue-500`}
+                                            onClick={(e) => {
+                                                e.preventDefault()
                                                 setClassSelectionModel(true);
                                             }} >
                                             Transfer
@@ -945,35 +999,34 @@ const Profilestudent = () => {
                                     </thead>
                                     <tbody className='bg-white border items-center '>
                                         {
-                                            academicDetails && academicDetails[0]
-                                                ?
-                                                academicDetails.map((academic, index) => {
-                                                    return <tr key={index} className=" border-b">
-                                                        <td scope="row" className="w-20 h-20">
-                                                            {academic.class_id.batch_start_year}-{academic.class_id.batch_end_year}
-                                                        </td>
-                                                        <td className="w-20 h-20">{academic.class_id.class_name}</td>
-                                                        <td className="w-20 h-20">{academic.fees_id.net_fees}</td>
-                                                        <td className="w-20 h-20">{academic.fees_id.discount}</td>
-                                                        <td className="w-20 h-20">{academic.fees_id.net_fees - academic.fees_id.pending_amount}</td>
-                                                        <td className="w-20 h-20">{academic.fees_id.pending_amount}</td>
-                                                        <td className="w-20 h-20 ">
-                                                            <div className='flex justify-center space-x-2'>
-                                                                <NavLink className="nav-link" to='/myclass/class/Profilestudent/Studenthistory'
-                                                                    state={{
-                                                                        is_cancelled: studDetails?.personal.is_cancelled,
-                                                                        student_id: studDetails?.personal.student_id, full_name: studDetails?.personal.basic_info_id.full_name, academic_id: academic._id
-                                                                    }}>
-                                                                    <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl text-darkblue-500"><AiFillEye /></span></Tooltip>
-                                                                </NavLink>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                })
-                                                :
+                                            academicDetails && academicDetails[0] 
+                                            ?
+                                            academicDetails.map((academic, index) => {
+                                                return <tr key={index} className=" border-b">
+                                                    <td scope="row" className="w-20 h-20">
+                                                        {academic.class_id.batch_start_year}-{academic.class_id.batch_end_year}
+                                                    </td>
+                                                    <td className="w-20 h-20">{academic.class_id.class_name}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.net_fees}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.discount}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.net_fees - academic.fees_id.pending_amount}</td>
+                                                    <td className="w-20 h-20">{academic.fees_id.pending_amount}</td>
+                                                    <td className="w-20 h-20 ">
+                                                        <div className='flex justify-center space-x-2'>
+                                                            <NavLink className="nav-link" to= '/myclass/class/Profilestudent/Studenthistory' 
+                                                                state={{
+                                                                    is_cancelled: studDetails?.personal.is_cancelled, 
+                                                                    student_id: studDetails?.personal.student_id, full_name:studDetails?.personal.basic_info_id.full_name, academic_id: academic._id
+                                                                }}>
+                                                                <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl text-darkblue-500"><AiFillEye /></span></Tooltip>
+                                                            </NavLink>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            })  
+                                            :
                                                 null
                                         }
-
                                     </tbody>
                                 </table>
                             </div>

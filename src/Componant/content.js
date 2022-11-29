@@ -32,7 +32,7 @@ export default function Main() {
         </div>
         <div className="pt-0 grid grid-cols-2 items-center justify-between">
                 <div className="left  ">
-                    <img src="../images/desk.webp" alt="" className=" " />
+                    <img src="images/desk.webp" alt="" className=" " />
                 </div>
                 <Cards/>
         </div>

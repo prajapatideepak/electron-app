@@ -70,7 +70,7 @@ const Table = () => {
                                     <th scope="row" className="w-20 h-20">
                                         <div className='flex justify-center items-center space-x-2'>
 
-                                            <img className='h-14 w-14 rounded-full' src="../images/user.png" alt="profile" />
+                                            <img className='h-14 w-14 rounded-full' src="images/user.png" alt="profile" />
                                             <div>
                                                 <p className='text-darkblue-500'>Deepak</p>
                                                 <p className='text-gray-500'>01</p>

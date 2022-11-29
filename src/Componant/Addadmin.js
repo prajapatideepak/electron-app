@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import FormData from "form-data";
 
  export const Addadmin = () => {
-  const [img, setImg] = useState("/images/user.png");
+  const [img, setImg] = useState("images/user.png");
   const createPost = useCreateAdmin();
 
   const onImageChange = (e) => {

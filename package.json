@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "public/electron.js",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
@@ -38,16 +39,17 @@
     "sass": "^1.55.0",
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.29",
+    "use-sync-external-store": "^1.2.0",
     "wait-on": "^6.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "electron-packager .",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron-build": "electron-builder -mwl",
-    "package-win" : "electron-packager . Nasir-Sir-And-Classes --overwrite --asar=true --platform=win32 --arch=ia32 --icon=public/favicon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Nasir-Sir-And-Classes\"",
+    "package-win": "electron-packager . Nasir-Sir-And-Classes --overwrite --asar=true --platform=win32 --arch=ia32 --icon=public/favicon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Nasir-Sir-And-Classes\"",
     "electron-dev": "concurrently \"cross-env npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "electron-react": "concurrently \"cross-env npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "electron-pack": "build --em.main=build/electron.js"

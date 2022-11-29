@@ -74,7 +74,7 @@ const Facultyheader = () => {
                                         <td className="text-center">
                                             <div className='flex justify-center items-center space-x-2'>
 
-                                                <img className='h-14 w-14 rounded-full' src="../images/user.png" alt="profile" />
+                                                <img className='h-14 w-14 rounded-full' src="images/user.png" alt="profile" />
                                                
                                             </div>
                                         </td>

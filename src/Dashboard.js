@@ -34,6 +34,8 @@ import AdminList from "./screens/AdminList";
 import CancelAdmission from './screens/CancelAdmission';
 import Salarydetails from "./Componant/Salarydetails";
 import UpdateStudentReceipt from "./screens/UpdateStudentReceipt";
+import ErrorBoundary from "./Componant/ErrorBound";
+import StudentAdmissionForm from './Componant/StudentAdmissionForm'
 
 function DashboardMenu() {
   const { setAdmin, login } = React.useContext(NasirContext);
@@ -42,9 +44,9 @@ function DashboardMenu() {
   useEffect(() => {
     login()
     if (adminData.isSuccess) {
-      setAdmin(adminData.data.data);
+      setAdmin(adminData?.data?.data);
     }
-  }, [])
+  }, [adminData, login, setAdmin])
 
 
   return !adminData.isSuccess ? (
@@ -59,7 +61,8 @@ function DashboardMenu() {
       <div className="w-full">
         {<Searchbar/>}
         <div className="relative" style={{ minHeight: "calc(100% - 70px)" }}>
-          <Routes>
+          <ErrorBoundary>
+            <Routes>
             <Route exact path="/admin-login" element={<AdminLogin />} />
             <Route
               exact 
@@ -144,7 +147,9 @@ function DashboardMenu() {
             <Route exact path="/Componant/Addadmin" element={<Addadmin />} />
             <Route exact path="/Componant/AdminList" element={<AdminList />} />
             <Route exact path="/cancelAdmission/:student_id" element={<CancelAdmission />}/>
-          </Routes>
+            <Route exact path="/printAdmissionForm" element={<StudentAdmissionForm />}/>
+            </Routes>
+          </ErrorBoundary>
         </div>
       </div>
     </div>

@@ -92,14 +92,14 @@ const Studenthistory = () => {
                   </div>
                   <div className={`overflow-x-auto relative ${isPrint ? '' : 'rounded-lg'}`}>
                     <table  className="w-full text-sm text-left  ">
-                      <thead className="text-sm uppercase bg-darkblue-500">
+                      <thead className="text-sm uppercase bg-darkblue-500 ">
                         <tr className='text-white'>
                           <th scope="col" className="py-3 px-6 text-center">Reciept No</th>
                           <th scope="col" className="py-3 px-6 text-center">Amount</th>
                           <th scope="col" className="py-3 px-6 text-center">Discount</th>
                           <th scope="col" className="py-3 px-6 text-center">Date</th>
                           <th scope="col" className="py-3 px-6 text-center">Admin</th>
-                          <th scope="col" className={`py-3 px-6 text-center ${isPrint ? 'hidden' : 'flex'}`}>Action</th>
+                          <th scope="col" className={`py-3 px-6 text-center ${isPrint ? 'hidden' : 'block'}`}>Action</th>
                         </tr>
                       </thead>
                       <tbody>

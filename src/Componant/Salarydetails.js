@@ -7,9 +7,12 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from './Loader';
 import { NasirContext } from "../NasirContext";
+import { IoIosArrowBack } from "react-icons/io";
+
 
 export default function Salarydetails() {
     const { admin } = React.useContext(NasirContext);
+    console.log(admin , "admin")
     const Toaster = () => { toast.success('Salary_Reciept updated') }
     const errtoast = () => { toast.error("Invalid UserID / Password") }
     const params = useParams();
@@ -37,9 +40,9 @@ export default function Salarydetails() {
         amount: "",
     });
 
-      // --------------------------------
-      // --------  API WORK -------------
-      // -------------------------------
+    // --------------------------------
+    // --------  API WORK -------------
+    // -------------------------------
 
     React.useEffect(() => {
         async function fetchfacultdata() {
@@ -223,7 +226,7 @@ export default function Salarydetails() {
     return (
         <>
 
-            <div className="relative bg-student-100 py-6">
+            <div className="relative bg-student-100 ">
                 {model && (
                     <div className="flex justify-center mt-4   bg-white ">
                         <div className="absolute h-2/5 mx-auto  opacity-100 shadow-2xl rounded      bg-white w-2/3 z-50">
@@ -276,7 +279,7 @@ export default function Salarydetails() {
                                                 type="password"
                                                 className="p-1 px-3 outline-none "
                                                 placeholder="Enter Security PIN"
-                                                onChange={(e) => {setPin(e.target.value); setError(false)}}
+                                                onChange={(e) => { setPin(e.target.value); setError(false) }}
                                             />
                                             <button
                                                 className="px-4 py-1 bg-darkblue-500 text-white "
@@ -300,9 +303,16 @@ export default function Salarydetails() {
 
                 <div
                     className={`mt-2 bg-student-100 min-h-screen px-12  py-6 ${model && "opacity-5"} `}>
+                    <div className="flex justify-between items-center">
                     <h1 className="font-bold text-3xl text-darkblue-500 ">
                         Update Salary Receipt
                     </h1>
+                    <div className="group h-9 w-20 flex justify-center items-center gap-1 cursor-pointer" id="" onClick={() => navigate(-1)}>
+                        <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
+                        <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
+                    </div>
+
+                    </div>
                     <div className="bg-white px-1 py-5 mt-9 shadow-2xl rounded-2xl ">
                         <div className="flex pt-4  justify-between  relative">
                             <div className="space-y-2  text-sm ">

@@ -453,15 +453,15 @@ const Myclass = () => {
                               <button
                                 type="button"
                                 onClick={handleClick}
-                                className="bg-blue-900 hover:bg-white text-lg border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-11 w-28 rounded-md tracking-wider"
+                                className="bg-darkblue-500 uppercase  hover:bg-white  border-2 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium h-11 w-28 rounded-md tracking-wider"
                               >
                                 Clear
                               </button>
                               <button
                                 type="submit"
-                                className="bg-blue-900 hover:bg-white border-2 flex justify-center items-center  hover:border-blue-900 text-white hover:text-blue-900 font-medium h-11 w-28 rounded-md tracking-wider"
+                                className="bg-darkblue-500 uppercase  hover:bg-white border-2 flex justify-center items-center  hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium h-11 w-28 rounded-md tracking-wider"
                               >
-                                <h1 className=" text-lg">SUBMIT</h1>
+                                <h1 className="">SUBMIT</h1>
                               </button>
                             </div>
                           </div>

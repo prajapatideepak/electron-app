@@ -308,15 +308,15 @@ const Faculty = () => {
                           <div className="btn mt-5 flex justify-center w-60">
                             <button
                               type="button" onClick={handleClick}
-                              className="bg-blue-900 hover:bg-white border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-11 w-28 rounded-md tracking-wider"
+                              className="bg-darkblue-500 hover:bg-white border-2 hover:border-darkblue-500 uppercase text-white hover:text-darkblue-500 font-medium h-11 w-28 rounded-md tracking-wider"
                             >
                               Clear
                             </button>
                             <button
                               type="submit" disabled={isLoadingOnSubmit}
-                              className={` bg-blue-900 hover:bg-white border-2 flex justify-center items-center 
+                              className={` bg-darkblue-500 hover:bg-white border-2 flex justify-center items-center 
                               ${isLoadingOnSubmit ? 'opacity-40' : 'opacity-100'}
-                               hover:border-blue-900 text-white hover:text-blue-900 font-medium h-11 w-28 rounded-md tracking-wider`}>
+                               hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium uppercase h-11 w-28 rounded-md tracking-wider`}>
 
 
                               {isLoadingOnSubmit ? 'Loading...' : 'SUBMIT'}

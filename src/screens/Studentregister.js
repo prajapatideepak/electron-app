@@ -525,7 +525,7 @@ const Studentregister = () => {
                                 </div>
                             </div>
                             <div className="flex w-full justify-end pr-7 h-20">
-                                <button type="clear" disabled={isLoadingOnSubmit} className="mt-9 px-8 mr-4  border-darkblue-500 hover:bg-darkblue border-2 hover:bg-darkblue-500 text-white hover:text-white font-medium rounded-md tracking-wider flex justify-center items-center" onClick={handleClick}>
+                                <button type="clear" disabled={isLoadingOnSubmit} className="mt-9 px-8 mr-4  border-darkblue-500 hover:bg-darkblue border-2 hover:bg-darkblue-500 text-darkblue-500 hover:text-white font-medium rounded-md tracking-wider flex justify-center items-center" onClick={handleClick}>
                                     CLEAR
                                 </button>
                                 <button type="submit" disabled={isLoadingOnSubmit} className={`mt-9 px-8 ${isLoadingOnSubmit ? 'opacity-40' : 'opacity-100'} bg-darkblue-500 border-2 border-darkblue-500 text-white font-medium rounded-md tracking-wider flex justify-center items-center`}>

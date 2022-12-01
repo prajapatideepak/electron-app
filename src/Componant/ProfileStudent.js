@@ -499,7 +499,7 @@ const Profilestudent = () => {
                     </div>
                     <div className={`bg-white overflow-x-auto relative  sm:rounded-lg  shadow-xl space-y-5 w-full`}>
                         <form ref={form} className="flex justify-center items-center" onSubmit={(e) => setState(valid.handleSubmit(e, onSubmit))} >
-                            <div className="w-11/12 grid grid-cols-2 rounded-lg  truncate bg-white p-10">
+                            <div className="w-11/12 grid grid-cols-2 rounded-lg  truncate bg-white p-5">
                                 <div className="left flex flex-col items-center gap-5">
                                     <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
                                         <img src={img} name="photo_name" width="100%" height="100%" alt="student profile" />
@@ -538,7 +538,7 @@ const Profilestudent = () => {
                                                     placeholder="First Name, Middle Name, Last Name"
                                                     value={studentInputController.full_name}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.full_name != '' && 'border-red-600'}`}
+                                                    className={`2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.full_name != '' && 'border-red-600'}`}
                                                     onChange={handleChange}
                                                 />
                                                 {valid.errors?.full_name != '' ? <small className="text-red-600 mt-3">*{valid.errors?.full_name}</small> : null}
@@ -555,7 +555,7 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Mother Name"
                                                     value={studentInputController.mother_name}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.mother_name != '' && 'border-red-600'}`}
+                                                    className={`2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.mother_name != '' && 'border-red-600'}`}
 
                                                     onChange={(e) => {
                                                         handleChange(e)
@@ -577,7 +577,7 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your WhatsApp No"
                                                     value={studentInputController.whatsapp_no}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.whatsapp_no != '' && 'border-red-600'}`}
+                                                    className={` 2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.whatsapp_no != '' && 'border-red-600'}`}
 
                                                     onChange={(e) => {
                                                         handleChange(e)
@@ -597,7 +597,7 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Mobile No"
                                                     value={studentInputController.alternate_no != '' || studentInputController.alternate_no != '--' ? studentInputController.alternate_no : '--'}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.alternate_no != '' && 'border-red-600'}`}
+                                                    className={` 2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.alternate_no != '' && 'border-red-600'}`}
 
                                                     onChange={(e) => {
                                                         handleChange(e)
@@ -619,13 +619,13 @@ const Profilestudent = () => {
                                                     name="dob"
                                                     disabled={isEnable}
                                                     value={studentInputController.dob}
-                                                    className={`w-60 hover:cursor-pointer mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.dob != '' && 'border-red-600'}`}
+                                                    className={` 2xl:w-60 hover:cursor-pointer mt-1 block w-[185px] px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.dob != '' && 'border-red-600'}`}
 
                                                     onChange={handleChange} />
                                                 {valid.errors?.dob != '' ? <small className="text-red-600 mt-3">*{valid.errors?.dob}</small> : null}
                                             </label>
                                         </div>
-                                        <div className="gender w-60">
+                                        <div className="gender  2xl:w-60 w-[185px]">
                                             <label className="block">
                                                 <span className="block text-sm font-medium text-slate-700">
                                                     Gender
@@ -694,7 +694,7 @@ const Profilestudent = () => {
                                                 <select
                                                     name="class_name"
                                                     disabled={true}
-                                                    className={`w-[155px] hover:cursor-pointer mt-1 block w-full px-3 py-[6px] bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
+                                                    className={`2xl:w-[155px] w-[120px] hover:cursor-pointer mt-1 block  px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
                                                 >
                                                     <option value="">{studentInputController.class_name}</option>
                                                 </select>
@@ -708,7 +708,7 @@ const Profilestudent = () => {
                                                 <select
                                                     name="stream"
                                                     disabled={true}
-                                                    className={`w-[155px] hover:cursor-pointer mt-1 block w-full px-3 py-[6px] bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
+                                                    className={`2xl:w-[155px] w-[120px] hover:cursor-pointer mt-1 block  px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
                                                 >
                                                     <option value="">{studentInputController.stream}</option>
                                                 </select>
@@ -722,7 +722,7 @@ const Profilestudent = () => {
                                                 <select
                                                     name="medium"
                                                     disabled={true}
-                                                    className={`w-[155px] hover:cursor-pointer mt-1 block w-full px-3 py-[6px] bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none `}
+                                                    className={`2xl:w-[155px] w-[120px] hover:cursor-pointer mt-1 block  px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none `}
                                                 >
                                                     <option value="">{studentInputController.medium}</option>
                                                 </select>
@@ -742,7 +742,7 @@ const Profilestudent = () => {
                                                     name="admission_date"
                                                     value={studentInputController.admission_date}
                                                     disabled={isEnable}
-                                                    className={`w-60 hover:cursor-pointer mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.admission_date != '' && 'border-red-600'}`}
+                                                    className={` 2xl:w-60 w-[185px] hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.admission_date != '' && 'border-red-600'}`}
 
                                                     onChange={handleChange}
                                                 />
@@ -760,7 +760,7 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Total Fee"
                                                     disabled={isEnable}
                                                     value={studentInputController.total_fees}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.total_fees != '' && 'border-red-600'}`}
+                                                    className={` 2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.total_fees != '' && 'border-red-600'}`}
 
                                                     onChange={(e) => {
                                                         handleChange(e)
@@ -783,7 +783,7 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Email"
                                                     value={studentInputController.email != '' || studentInputController.email != '--' ? studentInputController.email : "--"}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.email != '' && 'border-red-600'}`}
+                                                    className={` 2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.email != '' && 'border-red-600'}`}
 
                                                     onChange={(e) => {
                                                         handleChange(e)
@@ -803,7 +803,7 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Discount"
                                                     value={studentInputController.discount}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.discount != '' && 'border-red-600'}`}
+                                                    className={` 2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.discount != '' && 'border-red-600'}`}
 
                                                     onChange={(e) => {
                                                         handleChange(e)
@@ -826,7 +826,7 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Refeence"
                                                     value={studentInputController.reference != '' || studentInputController.reference != '--' ? studentInputController.reference : "--"}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.reference != '' && 'border-red-600'} `}
+                                                    className={` 2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.reference != '' && 'border-red-600'} `}
 
                                                     onChange={handleChange}
                                                 />
@@ -844,7 +844,7 @@ const Profilestudent = () => {
                                                     value={studentInputController.net_fees ? studentInputController.net_fees : studentInputController.total_fees - studentInputController.discount}
                                                     placeholder="Enter Your Net Payable"
                                                     disabled={true}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
+                                                    className={` 2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
                                                     onChange={handleChange}
                                                 />
                                             </label>
@@ -863,7 +863,7 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your School Name"
                                                     value={studentInputController.school_name != '' || studentInputController.school_name != '--' ? studentInputController.school_name : "--"}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.school_name != '' && 'border-red-600'}`}
+                                                    className={` 2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.school_name != '' && 'border-red-600'}`}
 
                                                     onChange={handleChange}
                                                 />
@@ -881,7 +881,7 @@ const Profilestudent = () => {
                                                     placeholder="Enter Your Note"
                                                     value={studentInputController.note != '' || studentInputController.note != '--' ? studentInputController.note : "--"}
                                                     disabled={isEnable}
-                                                    className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.note != '' && 'border-red-600'}`}
+                                                    className={` 2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.note != '' && 'border-red-600'}`}
 
                                                     onChange={(e) => {
                                                         handleChange(e)

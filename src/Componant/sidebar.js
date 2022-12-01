@@ -21,7 +21,7 @@ export default function Sidebar({ data }) {
             id="logo"
           />
         </div>
-        <div className="navigation mt-4">
+        <div className="navigation mt-12 xl:mt-0 2xl:mt-4">
           <ul className="text-center">
             {/* <div className="mb-3">
             <NavLink className="nav-link" activeclassname="active" to="/">

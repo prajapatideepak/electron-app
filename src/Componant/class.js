@@ -20,7 +20,7 @@ import Loader from "./Loader";
 import ReactPaginate from "react-paginate";
 
 const Class = () => {
-    
+
     const params = useParams();
     const navigate = useNavigate()
 
@@ -37,16 +37,16 @@ const Class = () => {
     const itemsPerPage = 2;
 
     let calculateTotalPendingFees = 0;
-    for(let i =0;i<totalPendingFees.length;i++){
-        calculateTotalPendingFees+=totalPendingFees[i].fees_id.pending_amount
+    for (let i = 0; i < totalPendingFees.length; i++) {
+        calculateTotalPendingFees += totalPendingFees[i].fees_id.pending_amount
     }
 
     const componentRef = useRef();
 
     const [allClassStudents, setAllClassStudents] = React.useState([])
 
-    useEffect(()=>{
-        async function fetchClassStudents(){
+    useEffect(() => {
+        async function fetchClassStudents() {
             const res = await getAllStudentsInClass(params.id);
             setIsLoading(false);
             if(res.success){
@@ -57,14 +57,14 @@ const Class = () => {
                 setTotalPendingStudents(()=>res.data.studentDetails.filter((data)=>{
                     return  data.fees_id.pending_amount != 0 ;
                 }))
-                setTotalPendingFees(()=>res.data.studentDetails.filter((data)=>{
-                    return data.fees_id.pending_amount !=0;
+                setTotalPendingFees(() => res.data.studentDetails.filter((data) => {
+                    return data.fees_id.pending_amount != 0;
                 }))
             }
-          }
-          fetchClassStudents()   
+        }
+        fetchClassStudents()
 
-    },[])
+    }, [])
 
     useEffect(() => {
         const endOffset = itemOffset + itemsPerPage;
@@ -72,37 +72,37 @@ const Class = () => {
         setPageCount(Math.ceil(classStudents.length / itemsPerPage));
     }, [itemOffset, itemsPerPage, classStudents])
 
-    const handlePendingPaidUpClick = (e)=>{
-        setPaginationData( () => allClassStudents?.filter((data)=>{
-            if(e.target.value==2){
+    const handlePendingPaidUpClick = (e) => {
+        setPaginationData(() => allClassStudents?.filter((data) => {
+            if (e.target.value == 2) {
                 return data.fees_id.pending_amount == 0
-            }else if(e.target.value==1){
+            } else if (e.target.value == 1) {
                 return data.fees_id.pending_amount != 0
-            }else{
+            } else {
                 return data
             }
         })
         )
     }
 
-      
-    const handleSearchStudents = (e)=>{
-        setPaginationData(()=> allClassStudents?.filter((data)=>{
 
-        let searched_value = e.target.value;
-        const full_name = data.student_id.basic_info_id.full_name?.toLowerCase();
-        let isNameFound = false;
-  
-        if(isNaN(searched_value)){
-          searched_value = searched_value.toLowerCase();
-        }
+    const handleSearchStudents = (e) => {
+        setPaginationData(() => allClassStudents?.filter((data) => {
 
-        if (full_name.indexOf(searched_value) > -1){
-            isNameFound = true;
-        }
-  
-        return data.student_id.student_id == searched_value || isNameFound || data.student_id.contact_info_id.whatsapp_no == searched_value;
-  
+            let searched_value = e.target.value;
+            const full_name = data.student_id.basic_info_id.full_name?.toLowerCase();
+            let isNameFound = false;
+
+            if (isNaN(searched_value)) {
+                searched_value = searched_value.toLowerCase();
+            }
+
+            if (full_name.indexOf(searched_value) > -1) {
+                isNameFound = true;
+            }
+
+            return data.student_id.student_id == searched_value || isNameFound || data.student_id.contact_info_id.whatsapp_no == searched_value;
+
         }))
     }
 
@@ -117,20 +117,18 @@ const Class = () => {
 
     return (
         <div className='relative  '>
-            <div className={`bg-slate-100`}>
-                <div className="xl:flex xl:justify-between justify-center items-center pr-5 pt-3 xl:pl-8 space-y-5">
-                    <h1 className=" text-xl xl:text-3xl text-center text-darkblue-5003g Q@ 
-                    
-                      xl:text-left font-bold text-darkblue-50 ">
+            <div className={`bg-slate-100 ${model && "opacity-20"}`}>
+                <div className="flex justify-between  items-center px-5 pt-3  space-y-5">
+                    <h1 className=" text-xl xl:text-3xl  text-darkblue-500 xl:text-left font-bold text-darkblue-50 ">
                         {classDetails.class_name}
                     </h1>
                     <div className="button flex mr-6">
-                        <NavLink className="nav-link mr-10" to={totalStudents > 0 ? "Transfer" : ''} state={{classStudents}}>
+                        <NavLink className="nav-link mr-10" to={totalStudents > 0 ? "Transfer" : ''} state={{ classStudents }}>
                             <div className="wrapper">
                                 <div className={`btn ${totalStudents > 0 ? 'cursor-pointer' : 'cursor-default'}  h-12 w-40 rounded-full bg-white text-left border  overflow-hidden`} id="btn">
                                     <div className="icons  h-12 w-40 flex ml-3 items-center" id="icons">
-                                        <FaArrowRight className={`text-2xl ${totalStudents > 0 ?'text-darkblue-500' : 'text-gray-400'} `} />
-                                        <span className={`ml-3 text-lg ${totalStudents > 0 ?'text-darkblue-500' : 'text-gray-400'} font-semibold`}>Transfer All</span>
+                                        <FaArrowRight className={`text-2xl ${totalStudents > 0 ? 'text-darkblue-500' : 'text-gray-400'} `} />
+                                        <span className={`ml-3 text-lg ${totalStudents > 0 ? 'text-darkblue-500' : 'text-gray-400'} font-semibold`}>Transfer All</span>
                                     </div>
                                 </div>
                             </div>
@@ -142,31 +140,38 @@ const Class = () => {
 
                     </div>
                 </div>
-                <div className="pt-0 xl:flex items-center justify-center  ">
-                    <div className=" xl:mr-36 pl-5 pr-5 xl:pl-0 xl:pr-0">
-                        <img src="images/class1.png" alt="" className="   xl:ml-10 xl:mt-0 " />
+                <div className="pt-0 flex items-center justify-center py-5 ">
+                    <div className="w-1/3">
+                        <img src="images/class1.png" alt="" className="" />
                     </div>
-                    <div className="right pt-4 p-5 xl:flex xl:mr-10 xl:mt-10 xl:space-x-10 space-y-10 xl:space-y-0 justify-center items-center text-center">
-                        <div id='Student-cards' className=' cursor-pointer h-32 xl:w-52 rounded-lg xl:h-28 bg-class4-50  xl:space-y-3 space-y-2 '>
-                            <div className='flex items-center text-center justify-center space-x-5 pt-5 '>
-                                <AiOutlineUser className=' text-class4-50 rounded-full text-5xl xl:p-1 bg-white' />
-                                <p className='text-white text-4xl'>{totalStudents}</p>
+                    <div className="right ml-5 p-5 pt-14 flex  2xl:space-x-10 space-x-5 justify-center items-center text-center">
+                        <div id='Student-cards' className=' cursor-pointer h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class4-50  xl:space-y-3 space-y-2 flex justify-center items-center'>
+                            <div>
+                                <div className='flex items-center text-center justify-center space-x-5  '>
+                                    <AiOutlineUser className=' text-class4-50 rounded-full text-5xl xl:p-1 bg-white' />
+                                    <p className='text-white text-4xl'>{totalStudents}</p>
+                                </div>
+                                <h1 className='text-white text-lg '>Total <span>Students</span></h1>
                             </div>
-                            <h1 className='text-white text-lg '>Total <span>Students</span></h1>
                         </div>
-                        <div id='Student-cards' className=' cursor-pointer h-32 xl:w-52 rounded-lg xl:h-28 bg-class1-50  xl:space-y-3 space-y-2 '>
-                            <div className='flex items-center text-center justify-center space-x-5 pt-5 '>
-                                <MdPendingActions className=' text-class1-50 rounded-full xl:text-5xl text-5xl  xl:p-1 p-1 bg-white' />
-                                <p className='text-white text-4xl'>{ totalPendingStudents?totalPendingStudents?.length:0}</p>
+                        <div id='Student-cards' className=' cursor-pointer h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class1-50  xl:space-y-3 space-y-2 flex justify-center items-center '>
+                            <div>
+                                <div className='flex items-center text-center justify-center space-x-5  '>
+                                    <MdPendingActions className=' text-class1-50 rounded-full xl:text-5xl text-5xl  xl:p-1 p-1 bg-white' />
+                                    <p className='text-white text-4xl'>{totalPendingStudents ? totalPendingStudents?.length : 0}</p>
+                                </div>
+                                <h1 className='text-white text-lg  '>Fees Pending <span>Students</span></h1>
+
                             </div>
-                            <h1 className='text-white text-lg  '>Fees Pending <span>Students</span></h1>
                         </div>
-                        <div id='Student-cards' className=' cursor-pointer h-32 xl:w-52 rounded-lg xl:h-28 bg-class2-50  xl:space-y-3 space-y-2 '>
-                            <div className='flex items-center text-center justify-center space-x-5 pt-5 '>
-                                <FcMoneyTransfer className='text-class2-50 rounded-full text-5xl  xl:p-1 p-2 bg-white' />
-                                <p className='text-white text-4xl'>{calculateTotalPendingFees}</p>
+                        <div id='Student-cards' className=' cursor-pointer h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class2-50  xl:space-y-3 space-y-2 flex justify-center items-center '>
+                            <div>
+                                <div className='flex items-center text-center justify-center space-x-5  '>
+                                    <FcMoneyTransfer className='text-class2-50 rounded-full text-5xl  xl:p-1 p-2 bg-white' />
+                                    <p className='text-white text-4xl'>{calculateTotalPendingFees}</p>
+                                </div>
+                                <h1 className='text-white text-lg '>Total Pending <span>Fees</span></h1>
                             </div>
-                            <h1 className='text-white text-lg '>Total Pending <span>Fees</span></h1>
                         </div>
                     </div>
 
@@ -334,20 +339,20 @@ const Class = () => {
                                             <td colSpan={8} className="bg-red-200  font-bold p-2 rounded">
                                                 <div className="flex space-x-2 justify-center items-center">
 
-                                                <IoMdInformationCircle className="text-xl text-red-600"/>
-                                                <h1 className="text-red-800">Students not found </h1>
-                                                </div>
-                                            </td>
-                                        </tr>           
-                                }
+                                                        <IoMdInformationCircle className="text-xl text-red-600" />
+                                                        <h1 className="text-red-800">Students not found </h1>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                    }
                                 </tbody>
                             </table>
 
                         </div>
                         <nav aria-label="Page navigation example" className='flex justify-end'>
-                             <ul className="inline-flex items-center -space-x-px ">
-                                 <li>
-                                     <ReactPaginate
+                            <ul className="inline-flex items-center -space-x-px ">
+                                <li>
+                                    <ReactPaginate
                                         breakLabel="..."
                                         nextLabel="next >"
                                         onPageChange={handlePageClick}
@@ -360,10 +365,10 @@ const Class = () => {
                                         previousLinkClassName='page-num'
                                         nextLinkClassName='page-num'
                                         activeLinkClassName='active-page'
-                                        />
-                                 </li>
-                             </ul>
-                         </nav>
+                                    />
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>

@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
   const [Serialno, setserialno] = useState(1)
+  
   const itemsPerPage = 2;
   
   const { section, admin } = React.useContext(NasirContext);
@@ -41,9 +42,9 @@ export default function Dashboard() {
   }, [])
 
   let calculatepending = 0;
-    for (let i = 0; i < Student.length; i++) {
-        calculatepending += Student[i].academics[0].fees[0].pending_amount > 0
-    }
+  for (let i = 0; i < Student.length; i++) {
+    calculatepending += Student[i].academics[0].fees[0].pending_amount > 0
+  }
 
   const handleSearchStudents = (e)=>{
       setcurrentItems(()=> Student?.filter((data)=>{
@@ -81,7 +82,7 @@ export default function Dashboard() {
     setItemOffset(newOffset);
   };
 
-  
+
   if (isloading) {
     return <Loader />
   }
@@ -92,35 +93,33 @@ export default function Dashboard() {
         <div className="left pt-0 ">
           <img src="images/desk.webp" alt="" className="" />
         </div>
-        <div className="w-2/3  ">
-            <div className="right pt-4 p-5 px-20 xl:px-0 xl:flex xl:mr-10 xl:mt-0 xl:space-x-10 space-y-10 xl:space-y-0 justify-start items-center text-center">
-                <div id='Student-cards' className=' flex items-center justify-start px-5 p-2  xl:w-1/2 rounded-lg xl:py-5 bg-class4-50  '>
-                    <div className='flex ml-1'>
-                        <div className="bg-white rounded-md  flex justify-center items-center p-5">
+        <div className="w-4/5  ">
+          <div className="right pt-4  xl:px-0 flex xl:mr-10 xl:mt-0 space-x-10 space-y-0 xl:space-y-0 justify-center items-center text-center">
+            <div id='Student-cards' className=' flex items-center justify-between px-5 space-x-5 p-2 py-3  rounded-lg xl:py-5 bg-class4-50  '>
+              <div className='flex ml-1'>
+                <div className="bg-white rounded-md  flex justify-center items-center p-5">
 
-                            <AiOutlineUser className=' text-class4-50 text-4xl ' />
-                        </div>
-                    </div>
-                    <div className="ml-10">
-                        <p className='text-white text-5xl mb-3 text-center '>{Student.length > 0 ? Student.length : 0}</p>
-                        <h1 className='text-white  text-lg'>Total <span>Students</span></h1>
-
-                    </div>
+                  <AiOutlineUser className=' text-class4-50 text-4xl ' />
                 </div>
-                <div id='Student-cards' className=' flex items-center p-2 xl:w-1/2 rounded-lg xl:py-5 px-5 bg-class1-50  '>
-                    <div className='flex ml-1'>
-                        <div className="bg-white rounded-md p-5 flex justify-center items-center">
-
-                            <MdPendingActions className=' text-class1-50 text-4xl ' />
-                        </div>
-                    </div>
-                    <div className="ml-2">
-                        <p className='text-white text-5xl mb-3'>{calculatepending ? calculatepending : 0}</p>
-
-                        <h1 className='text-white text-lg '>Fees Pending <span>Students</span></h1>
-                    </div>
-                </div>
+              </div>
+              <div className="">
+                <p className='text-white text-5xl mb-3 text-center '>{Student.length > 0 ? Student.length : 0}</p>
+                <h1 className='text-white  text-sm'>Total <span>Students</span></h1>
+              </div>
             </div>
+            <div id='Student-cards' className=' flex items-center justify-between px-5 p-2 py-3 rounded-lg xl:py-5 bg-class1-50  '>
+              <div className='flex ml-1'>
+                <div className="bg-white rounded-md  flex justify-center items-center p-5">
+                    <MdPendingActions className=' text-class1-50 text-4xl ' />
+                </div>
+              </div>
+              <div className="ml-2">
+                  <p className='text-white text-5xl mb-3'>{calculatepending ? calculatepending : 0}</p>
+
+                  <h1 className='text-white text-lg '>Fees Pending <span>Students</span></h1>
+              </div>
+             </div>
+          </div>
         </div>
       </div>
       <div className="flex justify-center items-center p-10 pt-0">
@@ -293,52 +292,91 @@ export default function Dashboard() {
                                   </td>
                             </tr>
                           )
-    
-                            }
-                        })
-                    }              
-                { 
-                  isStudentNotFound 
-                  ?
+
+                        }
+                      })
+                    )
+                    :
+                    currentItems.map((item, key) => {
+                      if (item?.academics[0]?.class[0] != undefined) {
+                        isStudentNotFound = false
+                      }
+                      const Paid_up = [
+                        item.academics[0].fees[0].net_fees - item.academics[0].fees[0].pending_amount
+                      ]
+                      if (item.academics[0].fees[0].pending_amount > 0 && item.academics[0].class[0] != undefined) {
+                        return (
+                          <tr key={key} className="border-b" >
+                            <td className="py-7 px-5 text-center ">{item.student_id}</td>
+                            <td className="py-7 px-5 text-center ">{item.basic_info[0].full_name}</td>
+                            <td className="py-7 px-5 text-center ">{item.academics[0].class[0].class_name}</td>
+                            <td className="py-7 px-5 text-center ">{item.contact_info[0].whatsapp_no}</td>
+                            <td className="py-7 px-5 text-center ">{item.academics[0].fees[0].net_fees}</td>
+                            <td className="py-7 px-5 text-center ">{Paid_up}</td>
+                            <td className="py-7 px-5 text-center ">{item.academics[0].fees[0].pending_amount}</td>
+                            <td className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
+                              <div className="flex justify-center space-x-2">
+                                <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id}`}>
+                                  <Tooltip
+                                    content="Show"
+                                    placement="bottom-end"
+                                    className="text-white bg-black rounded p-2"
+                                  >
+                                    <span className="text-xl text-darkblue-500">
+                                      <AiFillEye />
+                                    </span>
+                                  </Tooltip>
+                                </NavLink>
+
+                              </div>
+                            </td>
+                          </tr>
+                        )
+
+                      }
+                    })
+                }
+                {
+                  isStudentNotFound
+                    ?
                     <tr className="">
                       <td colSpan={9} className="bg-red-200  font-bold p-2 rounded">
                           <div className="flex space-x-2 justify-center items-center">
-
-                          <IoMdInformationCircle className="text-xl text-red-600"/>
+                          <IoMdInformationCircle className="text-xl text-red-600" />
                           <h1 className="text-red-800">Students not found </h1>
-                          </div>
+                        </div>
                       </td>
                     </tr>
-                  :
+                    :
                     null
                 }
-                </tbody>
+              </tbody>
             </table>
           </div>
-          { 
+          {
             !isStudentNotFound
-            ?
+              ?
               <nav aria-label="Page navigation example" className='flex justify-end'>
                 <ul className="inline-flex items-center -space-x-px ">
-                    <li>
-                        <ReactPaginate
-                          breakLabel="..."
-                          nextLabel="next >"
-                          onPageChange={handlePageClick}
-                          pageRangeDisplayed={3}
-                          pageCount={pageCount}
-                          previousLabel="< previous"
-                          renderOnZeroPageCount={null}
-                          containerClassName="pagination"
-                          pageLinkClassName='page-num'
-                          previousLinkClassName='page-num'
-                          nextLinkClassName='page-num'
-                          activeLinkClassName='active-page'
-                          />
-                    </li>
+                  <li>
+                    <ReactPaginate
+                      breakLabel="..."
+                      nextLabel="next >"
+                      onPageChange={handlePageClick}
+                      pageRangeDisplayed={3}
+                      pageCount={pageCount}
+                      previousLabel="< previous"
+                      renderOnZeroPageCount={null}
+                      containerClassName="pagination"
+                      pageLinkClassName='page-num'
+                      previousLinkClassName='page-num'
+                      nextLinkClassName='page-num'
+                      activeLinkClassName='active-page'
+                    />
+                  </li>
                 </ul>
               </nav>
-            :
+              :
               null
           }
         </div>

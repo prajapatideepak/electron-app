@@ -171,7 +171,7 @@ const Studentregister = () => {
                                             type="text"
                                             name="full_name"
                                             placeholder="First Name, Middle Name, Last Name"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.full_name && 'border-red-600'}`}
+                                            className={`w-full 2xl:w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.full_name && 'border-red-600'}`}
                                             {...register("full_name", { required: "Fullname is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                                             onKeyUp={() => {
                                                 trigger('full_name')
@@ -189,7 +189,7 @@ const Studentregister = () => {
                                             type="text"
                                             name="mother_name"
                                             placeholder="Enter Your Mother Name"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.mother_name && 'border-red-600'}`}
+                                            className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.mother_name && 'border-red-600'}`}
                                             {...register("mother_name", { required: "Mothername is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                                             onKeyUp={() => {
                                                 trigger('mother_name')
@@ -209,7 +209,7 @@ const Studentregister = () => {
                                             type="text"
                                             name="whatsapp_no"
                                             placeholder="Enter Your WhatsApp No"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.whatsapp_no && 'border-red-600'}`}
+                                            className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.whatsapp_no && 'border-red-600'}`}
                                             {...register("whatsapp_no", { required: "Whatsapp no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida whatsapp no" } })}
                                             onKeyUp={() => {
                                                 trigger('whatsapp_no')
@@ -227,7 +227,7 @@ const Studentregister = () => {
                                             type="text"
                                             name="alternate_no"
                                             placeholder="Enter Your Mobile No"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.alternate_no && 'border-red-600'}`}
+                                            className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.alternate_no && 'border-red-600'}`}
                                             {...register("alternate_no", { required: "Mobile no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida mobile no" } })}
                                             onKeyUp={() => {
                                                 trigger('alternate_no')
@@ -246,18 +246,18 @@ const Studentregister = () => {
                                         <input
                                             type="date"
                                             name="dob"
-                                            className={`xl:w-52 2xl:w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.dob && 'border-red-600'}`}
+                                            className={`w-[185px] 2xl:w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.dob && 'border-red-600'}`}
                                             {...register("dob", { required: "Date of birth is required" })}
                                         />
                                         {errors.dob && (<small className="text-red-700">{errors.dob.message}</small>)}
                                     </label>
                                 </div>
-                                <div className="gender ">
+                                <div className="gender 2xl:w-60 w-[185px] ">
                                     <label className="block">
                                         <span className="block text-sm font-medium text-slate-700">
                                             Gender
                                         </span>
-                                        <div className={`xl:w-52 2xl:w-60 border border-slate-300 mt-1 rounded-md h-10 flex justify-center items-center space-x-5 ${errors.gender && 'border-red-600'} `}>
+                                        <div className={` border border-slate-300 mt-1 rounded-md h-10 flex justify-center items-center space-x-5 ${errors.gender && 'border-red-600'} `}>
                                             <div className="male ">
 
                                                 <label htmlFor="gender" className="m-2">
@@ -294,7 +294,7 @@ const Studentregister = () => {
                             </div>
                             <div className="flex flex-1 w-full px-6">
                                 <div className="Addresss w-full">
-                                    <label className="block flex flex-col">
+                                    <label className=" flex flex-col">
                                         <span className="block text-sm font-medium text-slate-700">
                                             Address *
                                         </span>
@@ -320,7 +320,7 @@ const Studentregister = () => {
                                         <select
                                             name="class"
                                             id=""
-                                            className={` xl:w-32 2xl:w-36 hover:cursor-pointer mt-1 block  px-3 py-[6px] bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.class_name && 'border-red-600'}`}
+                                            className={` 2xl:w-[142px] w-[110px] hover:cursor-pointer mt-1 block  px-3 py-[6px] bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.class_name && 'border-red-600'}`}
                                             {...register("class_name", { required: "Class required" })}
                                             onChange={handleClassChange}
                                         >
@@ -352,7 +352,7 @@ const Studentregister = () => {
                                             placeholder="--"
                                             value={stream}
                                             disabled={true}
-                                            className={`xl:w-32 2xl:w-36 mt-1 block px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none `}
+                                            className={`2xl:w-[142px] w-[110px] mt-1 block px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none `}
                                             {...register("stream")}
                                         />
                                     </label>
@@ -369,7 +369,7 @@ const Studentregister = () => {
                                             placeholder="--"
                                             disabled={true}
                                             value={medium}
-                                            className={`xl:w-32 2xl:w-36 mt-1 block  px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
+                                            className={`2xl:w-[142px] w-[110px] mt-1 block  px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
                                             {...register("medium")}
                                         />
                                             
@@ -386,7 +386,7 @@ const Studentregister = () => {
                                         <input
                                             type="date"
                                             name="admission_date"
-                                            className={`xl:w-52 2xl:w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.admission_date && 'border-red-600'}`}
+                                            className={`2xl:w-60 w-[185px] hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.admission_date && 'border-red-600'}`}
                                             {...register("admission_date", { required: "Admission date is required" })}
                                         />
                                         {errors.admission_date && (<small className="text-red-700">{errors.admission_date.message}</small>)}
@@ -401,7 +401,7 @@ const Studentregister = () => {
                                             type="text" id='totalfee'
                                             name="total_fees"
                                             placeholder="Enter Your Total Fee"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.total_fees && 'border-red-600'}`}
+                                            className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.total_fees && 'border-red-600'}`}
                                             {...register("total_fees", { required: "Total Fee is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" } })}
                                             onKeyUp={() => {
                                                 trigger('total_fees')
@@ -422,7 +422,7 @@ const Studentregister = () => {
                                             type="text"
                                             name="email"
                                             placeholder="Enter Your Email"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.email && 'border-red-600'}`}
+                                            className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.email && 'border-red-600'}`}
                                             {...register("email", { pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "Please enter valid email" } })}
                                             onKeyUp={() => {
                                                 trigger('email')
@@ -440,7 +440,7 @@ const Studentregister = () => {
                                             type="text" id='discount'
                                             name="discount"
                                             placeholder="Enter Your Discount"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.discount && 'border-red-600'}`}
+                                            className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.discount && 'border-red-600'}`}
                                             {...register("discount", { required: false, pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" } })}
                                             onKeyUp={() => {
                                                 trigger('discount')
@@ -461,7 +461,7 @@ const Studentregister = () => {
                                             type="text"
                                             name="reference"
                                             placeholder="Enter Your Refeence"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.reference && 'border-red-600'} `}
+                                            className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.reference && 'border-red-600'} `}
                                             {...register("reference", { pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                                             onKeyUp={() => {
                                                 trigger('reference')
@@ -479,7 +479,7 @@ const Studentregister = () => {
                                             type="text"
                                             name="net_fees"
                                             value={netFees}
-                                            className={`wxl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
+                                            className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
                                             {...register("net_fees")}
                                         />
                                     </label>
@@ -496,7 +496,7 @@ const Studentregister = () => {
                                         <input
                                             type="text"
                                             placeholder="Enter Your School Name"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.school_name && 'border-red-600'}`}
+                                            className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.school_name && 'border-red-600'}`}
                                             {...register("school_name", { pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                                             onKeyUp={() => {
                                                 trigger('school_name')
@@ -514,7 +514,7 @@ const Studentregister = () => {
                                             type="text"
                                             name="note"
                                             placeholder="Enter Your Note"
-                                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.note && 'border-red-600'}`}
+                                            className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.note && 'border-red-600'}`}
                                             {...register("note", { pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                                             onKeyUp={() => {
                                                 trigger('note')
@@ -525,7 +525,7 @@ const Studentregister = () => {
                                 </div>
                             </div>
                             <div className="flex w-full justify-end pr-7 h-20">
-                                <button type="clear" disabled={isLoadingOnSubmit} className="mt-9 px-8 mr-4 text-darkblue-500 border-darkblue-500 hover:bg-darkblue border-2 hover:bg-darkblue-500 text-white hover:text-white font-medium rounded-md tracking-wider flex justify-center items-center" onClick={handleClick}>
+                                <button type="clear" disabled={isLoadingOnSubmit} className="mt-9 px-8 mr-4  border-darkblue-500 hover:bg-darkblue border-2 hover:bg-darkblue-500 text-darkblue-500 hover:text-white font-medium rounded-md tracking-wider flex justify-center items-center" onClick={handleClick}>
                                     CLEAR
                                 </button>
                                 <button type="submit" disabled={isLoadingOnSubmit} className={`mt-9 px-8 ${isLoadingOnSubmit ? 'opacity-40' : 'opacity-100'} bg-darkblue-500 border-2 border-darkblue-500 text-white font-medium rounded-md tracking-wider flex justify-center items-center`}>

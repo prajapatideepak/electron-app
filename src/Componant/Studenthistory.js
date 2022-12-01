@@ -101,7 +101,7 @@ const Studenthistory = () => {
                           <th scope="col" className="py-3 px-6 text-center">Discount</th>
                           <th scope="col" className="py-3 px-6 text-center">Date</th>
                           <th scope="col" className="py-3 px-6 text-center">Admin</th>
-                          <th scope="col" className={`py-3 px-6 text-center ${isPrint ? 'hidden' : 'flex'}`}>Action</th>
+                          <th scope="col" className={`py-3 px-6 text-center ${isPrint ? 'hidden' : 'block'}`}>Action</th>
                         </tr>
                       </thead>
                       <tbody>

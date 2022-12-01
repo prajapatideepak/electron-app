@@ -25,6 +25,7 @@ const Faculty = () => {
   const Toaster = () => { toast.success('New Staff Register successfully') }
   const errtoast = () => { toast.error("Something Wrong") }
   const [img, setImg] = useState(defaultImage);
+  const [facultyDetails, setFacultyDetails] = useState([])
   const [call, setcall] = useState(true)
 
 
@@ -34,6 +35,7 @@ const Faculty = () => {
   useEffect(() => {
     async function fetchfacultdata() {
       const res = await getAllFaculty();
+      setFacultyDetails(res.staffData)
       setData(() => res.staffData.length)
       setloading(false);
     }
@@ -60,7 +62,7 @@ const Faculty = () => {
     const formdata = new FormData(form.current);
     setIsLoadingOnSubmit(true);
     const response = await Addfaculty(formdata);
-    console.log(response, "res")
+
     if (response.data.success) {
       setcall(!call)
       setData(data + 1)
@@ -389,7 +391,7 @@ const Faculty = () => {
                 </div>
               </div>
             </div>
-            <Facultytable call={call} />
+            <Facultytable call={call} allFaculty={facultyDetails} />
           </div>
         </div>
 

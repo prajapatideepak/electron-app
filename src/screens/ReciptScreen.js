@@ -6,6 +6,7 @@ import {searchReceipt} from '../hooks/usePost';
 import Loader from '../Componant/Loader'; 
 import Toaster from '../hooks/showToaster';
 import {AxiosError} from 'axios';
+import { Tooltip } from "@material-tailwind/react";
 
 export default function ReciptScreen() {
     
@@ -52,7 +53,7 @@ export default function ReciptScreen() {
           <input
             type="search"
             className="w-2/3 shadow-xl px-3 py-2 rounded-l-lg outline-none    "
-            placeholder="Search Receipt  (BY : ID , Name , Whatsapp Number)"
+            placeholder="Search Receipt  (BY : Receipt ID, Rollno , Name , Whatsapp Number)"
             value={searchValue}
             onChange={(e)=>{setSearchValue(e.target.value)}}
           />
@@ -154,11 +155,17 @@ export default function ReciptScreen() {
                                                 <span>{receipt.admin[0].username}</span>
                                               </td>
                                               <td className="px-5  ">
-                                                <span>
                                                   <NavLink className="nav-link" to="/receipt/receipt" state={{is_cancelled: data.is_cancelled,isStaff: false, fees_receipt_id: receipt.fees_receipt_id}}>
-                                                    <AiFillEye className="text-xl cursor-pointer" />
+                                                    <Tooltip
+                                                      content="Show Receipt"
+                                                      placement="bottom-end"
+                                                      className="text-white bg-black rounded p-2"
+                                                    >
+                                                        <span>
+                                                          <AiFillEye className="text-xl cursor-pointer" />
+                                                        </span>
+                                                    </Tooltip>
                                                   </NavLink>
-                                                </span>
                                               </td>
                                             </tr>
                                           )

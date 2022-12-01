@@ -12,29 +12,27 @@ import { getAllFaculty, getFaculty } from "../hooks/usePost";
 import _ from "lodash"
 import ReactPaginate from "react-paginate";
 import './Pagination.css'
+import Loader from './Loader';
 
-
-const Facultytable = ({call}) => {
+const Facultytable = ({call, allFaculty}) => {
   // -------------------------------
   // -------- API WORKS -----------
   // -------------------------------
   const componentRef = useRef();
   const [isPrint, setIsPrint] = useState(false);
-  const [facultyData, setFacultyData] = useState([])
+  const [facultyData, setFacultyData] = useState(allFaculty)
   const [currentItems, setcurrentItems] = useState([])
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
   const [Serialno , setserialno] = useState(1)
   const itemsPerPage = 6;
 
-  useEffect(() => {
-    getAllFaculty()
-      .then((res) => {
-        setFacultyData(res.staffData);
-      })
-  }, [call])
-
-  // console.log(facultyData, "facultydata")
+  // useEffect(() => {
+  //   getAllFaculty()
+  //     .then((res) => {
+  //       setFacultyData(res.staffData);
+  //     })
+  // }, [call])
 
 
   // -------------------------------
@@ -61,67 +59,78 @@ const Facultytable = ({call}) => {
       <section className="table h-full w-full mt-10 shadow-none">
         <div className="flex justify-center items-center p-10 pt-0 py-5">
           <div className="sm:rounded-lg bg-white p-10 shadow-xl w-full">
-            <ReactToPrint
-              trigger={() => (
-                <button id='print' className="text-3xl bg-class7-50 rounded-md text-white p-1">
-                  <MdLocalPrintshop />
-                </button>
-              )}
-              content={() => componentRef.current}
-              onBeforeGetContent={(e) => {
-                return new Promise((resolve) => {
-                  setIsPrint(true);
-                  resolve();
-                });
-              }}
-              onAfterPrint={() => setIsPrint(false)}
-            />
+            <Tooltip
+              content="Print"
+              placement="bottom-end"
+              className="text-white bg-black rounded p-2"
+            >
+              <span>
+                <ReactToPrint
+                  trigger={() => (
+                    <button id='print' className="text-3xl bg-class7-50 rounded-md text-white p-1">
+                      <MdLocalPrintshop />
+                    </button>
+                  )}
+                  content={() => componentRef.current}
+                  onBeforeGetContent={(e) => {
+                    return new Promise((resolve) => {
+                      setIsPrint(true);
+                      resolve();
+                    });
+                  }}
+                  onAfterPrint={() => setIsPrint(false)}
+                />
+              </span>
+            </Tooltip>
             <div ref={componentRef} className='p-5 pt-3 pb-0'>
               <table className="w-full text-sm text-center bg-class7-50 rounded-xl ">
                 <thead className="text-xs text-gray-700 uppercase">
                   <tr className="text-white text-base">
-                    <th scope="col" className="py-4 px-6 text-center">
+                    <th scope="col" className="py-4">
                       Serial No
                     </th>
-                    <th scope="col" className="py-4 px-6 text-center">
+                    <th scope="col" className="py-4 px-6">
                       Name
                     </th>
-                    <th scope="col" className="py-4 px-6 text-center">
+                    <th scope="col" className="py-4 px-6">
                       Phone
                     </th>
-                    <th scope="col" className="py-4 px-6 text-center">
+                    <th scope="col" className="py-4 px-6">
                       Role
                     </th>
-                    <th scope="col" className={`py-4 px-6 text-center ${isPrint ? "hidden" : "block"}`}>
+                    <th scope="col" className={`py-4 px-6 ${isPrint ? "hidden" : ""}`}>
+                      Profile
+                    </th>
+                    <th scope="col" className={`py-4 px-6 ${isPrint ? "hidden" : ""}`}>
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white border items-center ">
+                <tbody className="bg-white border">
                 {currentItems.length > 0 ? (
-
-                    
                       currentItems.map((item, key) => {
                         return (
-                          <tr className=" border-b"  >
-                            <td className="py-8 px-6 text-center">{(key + 1) + (6 * Serialno - 6)}</td>
-                            <td className="py-8 px-6 text-center">{item.basic_info_id.full_name}</td>
-                            <td className="py-8 px-6 text-center">{item.contact_info_id.whatsapp_no}</td>
-                            <td className="py-8 px-6 text-center">{item.role}</td>
-                            <td className={`py-8 px-6 text-center ${isPrint ? "hidden" : "block"}`}>
-                              <div className="flex justify-center items-center space-x-2">
+                          <tr className="border-b"  >
+                            <td className="py-5 px-6">{(key + 1) + (6 * Serialno - 6)}</td>
+                            <td className="py-5 px-6">{item.basic_info_id.full_name}</td>
+                            <td className="py-5 px-6">{item.contact_info_id.whatsapp_no}</td>
+                            <td className="py-5 px-6">{item.role}</td>
+                            <td className={`py-5 px-6 ${isPrint ? "hidden" : ""}`}>
+                              <div className="flex justify-center items-center">
                                 <NavLink to={`Profilefaculty/${item._id}`} >
-                                  <Tooltip content="Show" placement="bottom-end" className="text-white bg-black rounded p-2" >
-
+                                  <Tooltip content="Show Profile" placement="bottom-end" className="text-white bg-black rounded p-2" >
                                     <span className="text-xl text-darkblue-500">
                                       <AiFillEye className="cursor-pointer" />
                                     </span>
                                   </Tooltip>
                                 </NavLink>
+                              </div>
+                            </td>
+                            <td className={`py-5 px-5 ${isPrint ? "hidden" : ""}`}>
+                              <div className="flex justify-center items-center">
                                 <NavLink to={`/salary/${item._id}`}>
-
                                   <Tooltip
-                                    content="Pay"
+                                    content="Pay Salary"
                                     placement="bottom-end"
                                     className="text-white bg-black rounded p-2"
                                   >
@@ -137,7 +146,7 @@ const Facultytable = ({call}) => {
                       })
                       ) : (
                         <tr className="">
-                    <td colSpan={7} className="bg-red-200  font-bold p-2 rounded">
+                    <td colSpan={6} className="bg-red-200  font-bold p-2 rounded">
                         <div className="flex space-x-2 justify-center items-center">
 
                         <IoMdInformationCircle className="text-xl text-red-600"/>

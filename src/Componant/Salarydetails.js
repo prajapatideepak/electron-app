@@ -471,7 +471,7 @@ export default function Salarydetails() {
                                                 <h1> </h1>
                                                 <input
                                                     type="text"
-                                                    placeholder="Enter Chaque Number"
+                                                    placeholder="Enter Cheque Number"
                                                     className=" placeholder-black p-1 active:outline-none"
                                                     name="cheque_no"
                                                     defaultValue={chaque_no ? chaque_no : ""}

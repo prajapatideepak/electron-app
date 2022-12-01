@@ -985,16 +985,16 @@ const Profilestudent = () => {
                                 <h3 className="text-2xl font-medium">Fees Details</h3>
                             </div>
                             <div className='p-5 pt-2 pb-0'>
-                                <table className="w-full text-sm text-center bg-class3-50 rounded-xl shadow-xl ">
+                                <table className="w-full text-sm text-center bg-class3-50 rounded-xl overflow-hidden ">
                                     <thead className="text-xs text-gray-700 uppercase">
                                         <tr className='text-white text-base'>
-                                            <th scope="col" className="w-20 h-20">Batch</th>
-                                            <th scope="col" className="w-20 h-20">Class</th>
-                                            <th scope="col" className="w-20 h-20">Net Fees</th>
-                                            <th scope="col" className="w-20 h-20">Discount</th>
-                                            <th scope="col" className="w-20 h-20">Paidup</th>
-                                            <th scope="col" className="w-20 h-20">Pending</th>
-                                            <th scope="col" className="w-20 h-20">Action</th>
+                                            <th scope="col" className="px-6 py-4">Batch</th>
+                                            <th scope="col" className="px-6 py-4">Class</th>
+                                            <th scope="col" className="px-6 py-4">Net Fees</th>
+                                            <th scope="col" className="px-6 py-4">Discount</th>
+                                            <th scope="col" className="px-6 py-4">Paidup</th>
+                                            <th scope="col" className="px-6 py-4">Pending</th>
+                                            <th scope="col" className="px-6 py-4">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody className='bg-white border items-center '>
@@ -1003,22 +1003,22 @@ const Profilestudent = () => {
                                             ?
                                             academicDetails.map((academic, index) => {
                                                 return <tr key={index} className=" border-b">
-                                                    <td scope="row" className="w-20 h-20">
+                                                    <td scope="row" className="px-6 py-5">
                                                         {academic.class_id.batch_start_year}-{academic.class_id.batch_end_year}
                                                     </td>
-                                                    <td className="w-20 h-20">{academic.class_id.class_name}</td>
-                                                    <td className="w-20 h-20">{academic.fees_id.net_fees}</td>
-                                                    <td className="w-20 h-20">{academic.fees_id.discount}</td>
-                                                    <td className="w-20 h-20">{academic.fees_id.net_fees - academic.fees_id.pending_amount}</td>
-                                                    <td className="w-20 h-20">{academic.fees_id.pending_amount}</td>
-                                                    <td className="w-20 h-20 ">
+                                                    <td className="px-6 py-5">{academic.class_id.class_name}</td>
+                                                    <td className="px-6 py-5">{academic.fees_id.net_fees}</td>
+                                                    <td className="px-6 py-5">{academic.fees_id.discount}</td>
+                                                    <td className="px-6 py-5">{academic.fees_id.net_fees - academic.fees_id.pending_amount}</td>
+                                                    <td className="px-6 py-5">{academic.fees_id.pending_amount}</td>
+                                                    <td className="px-6 py-5 ">
                                                         <div className='flex justify-center space-x-2'>
                                                             <NavLink className="nav-link" to= '/myclass/class/Profilestudent/Studenthistory' 
                                                                 state={{
                                                                     is_cancelled: studDetails?.personal.is_cancelled, 
                                                                     student_id: studDetails?.personal.student_id, full_name:studDetails?.personal.basic_info_id.full_name, academic_id: academic._id
                                                                 }}>
-                                                                <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl text-darkblue-500"><AiFillEye /></span></Tooltip>
+                                                                <Tooltip content="Show History" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl text-darkblue-500"><AiFillEye /></span></Tooltip>
                                                             </NavLink>
                                                         </div>
                                                     </td>

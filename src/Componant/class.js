@@ -12,10 +12,11 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { IoMdInformationCircle } from 'react-icons/io';
 import { Tooltip } from "@material-tailwind/react";
-import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { getAllStudentsInClass } from "../hooks/usePost";
 import { IoIosArrowBack } from 'react-icons/io';
 import _ from "lodash";
+import Loader from "./Loader";
 import ReactPaginate from "react-paginate";
 
 const Class = () => {
@@ -25,14 +26,15 @@ const Class = () => {
 
     const [classStudents,setClassStudents] = React.useState([]);
     const [totalStudents,setTotalStudents] = React.useState(0);
-    const [className,setClassName] = React.useState('');
+    const [classDetails,setClassDetails] = React.useState('');
     const [totalPendingStudents,setTotalPendingStudents] = React.useState(0);
     const [totalPendingFees,setTotalPendingFees] = React.useState(0);
     const [paginationData,setPaginationData] = React.useState([]);
     const [pageCount, setPageCount] = useState(0);
     const [itemOffset, setItemOffset] = useState(0)
     const [isPrint, setIsPrint] = useState(false);
-    const itemsPerPage = 6;
+    const [isLoading, setIsLoading] = useState(true)
+    const itemsPerPage = 2;
 
     let calculateTotalPendingFees = 0;
     for(let i =0;i<totalPendingFees.length;i++){
@@ -41,19 +43,17 @@ const Class = () => {
 
     const componentRef = useRef();
 
-    const [model, setModel] = React.useState(false);
-
     const [allClassStudents, setAllClassStudents] = React.useState([])
 
     useEffect(()=>{
         async function fetchClassStudents(){
             const res = await getAllStudentsInClass(params.id);
-
+            setIsLoading(false);
             if(res.success){
                 setClassStudents(()=>res.data.studentDetails)
                 setAllClassStudents(()=>res.data.studentDetails);
                 setTotalStudents(()=> res.data.classDetails.total_student);
-                setClassName(()=> res.data.classDetails.class_name);
+                setClassDetails(()=> res.data.classDetails);
                 setTotalPendingStudents(()=>res.data.studentDetails.filter((data)=>{
                     return  data.fees_id.pending_amount != 0 ;
                 }))
@@ -111,14 +111,18 @@ const Class = () => {
         setItemOffset(newOffset);
     };
 
+    if(isLoading){
+        return <Loader/>
+    }
+
     return (
         <div className='relative  '>
-            <div className={`bg-slate-100 ${model && "opacity-20"}`}>
+            <div className={`bg-slate-100`}>
                 <div className="xl:flex xl:justify-between justify-center items-center pr-5 pt-3 xl:pl-8 space-y-5">
                     <h1 className=" text-xl xl:text-3xl text-center text-darkblue-5003g Q@ 
                     
                       xl:text-left font-bold text-darkblue-50 ">
-                        {className}
+                        {classDetails.class_name}
                     </h1>
                     <div className="button flex mr-6">
                         <NavLink className="nav-link mr-10" to={totalStudents > 0 ? "Transfer" : ''} state={{classStudents}}>
@@ -148,21 +152,21 @@ const Class = () => {
                                 <AiOutlineUser className=' text-class4-50 rounded-full text-5xl xl:p-1 bg-white' />
                                 <p className='text-white text-4xl'>{totalStudents}</p>
                             </div>
-                            <h1 className='text-white text-xl '>Total <span>Students</span></h1>
+                            <h1 className='text-white text-lg '>Total <span>Students</span></h1>
                         </div>
                         <div id='Student-cards' className=' cursor-pointer h-32 xl:w-52 rounded-lg xl:h-28 bg-class1-50  xl:space-y-3 space-y-2 '>
                             <div className='flex items-center text-center justify-center space-x-5 pt-5 '>
                                 <MdPendingActions className=' text-class1-50 rounded-full xl:text-5xl text-5xl  xl:p-1 p-1 bg-white' />
                                 <p className='text-white text-4xl'>{ totalPendingStudents?totalPendingStudents?.length:0}</p>
                             </div>
-                            <h1 className='text-white text-xl  '>Pending <span>Students</span></h1>
+                            <h1 className='text-white text-lg  '>Fees Pending <span>Students</span></h1>
                         </div>
                         <div id='Student-cards' className=' cursor-pointer h-32 xl:w-52 rounded-lg xl:h-28 bg-class2-50  xl:space-y-3 space-y-2 '>
                             <div className='flex items-center text-center justify-center space-x-5 pt-5 '>
                                 <FcMoneyTransfer className='text-class2-50 rounded-full text-5xl  xl:p-1 p-2 bg-white' />
                                 <p className='text-white text-4xl'>{calculateTotalPendingFees}</p>
                             </div>
-                            <h1 className='text-white text-xl '>Pending <span>Fees</span></h1>
+                            <h1 className='text-white text-lg '>Total Pending <span>Fees</span></h1>
                         </div>
                     </div>
 
@@ -192,36 +196,46 @@ const Class = () => {
                                         <option value={2}>Paidup</option>
                                     </select>
                                 </button>
-                                
-                                <ReactToPrint
-                                    trigger={() => (
-                                        <Link to="#" id='print' className="text-3xl bg-[#f8b26a] rounded-md text-white  w-10 h-8 flex justify-center  "><MdLocalPrintshop /></Link>
-                                    )}
-                                    content={() => componentRef.current}
-                                    onBeforeGetContent={() => {
-                                        return new Promise((resolve) => {
-                                        setIsPrint(true);
-                                        resolve();
-                                        });
-                                    }}
-                                    onAfterPrint={() => setIsPrint(false)}
-                                />
+                                <Tooltip
+                                content="Print"
+                                placement="bottom-end"
+                                className="text-white bg-black rounded p-2"
+                                >
+                                    <span>
+                                        <ReactToPrint
+                                            trigger={() => (
+                                                <Link to="#" id='print' className="text-3xl bg-[#f8b26a] rounded-md text-white  w-10 h-8 flex justify-center  "><MdLocalPrintshop /></Link>
+                                            )}
+                                            content={() => componentRef.current}
+                                            onBeforeGetContent={() => {
+                                                return new Promise((resolve) => {
+                                                setIsPrint(true);
+                                                resolve();
+                                                });
+                                            }}
+                                            onAfterPrint={() => setIsPrint(false)}
+                                        />
+                                    </span>
+                                </Tooltip>
                             </div>
                         </div>
                         <div ref={componentRef} className='p-5 pt-3 pb-0'>
                             <table className="w-full text-sm text-center rounded-xl overflow-hidden shadow-xl ">
                                 <thead className="text-xs text-gray-700 bg-class3-50 uppercase">
                                     <tr className='text-white text-base'>
-                                        <th scope="col" className="w-20 h-20">Student Id</th>
-                                        <th scope="col" className="w-20 h-20">Name</th>
-                                        <th scope="col" className="w-20 h-20">Phone</th>
-                                        <th scope="col" className="w-20 h-20">Total</th>
-                                        <th scope="col" className="w-20 h-20">Paidup</th>
-                                        <th scope="col" className="w-20 h-20">Pending</th>
+                                        <th scope="col" className="pl-3 py-4">Student Id</th>
+                                        <th scope="col" className="px-6 py-4">Name</th>
+                                        <th scope="col" className="px-6 py-4">Phone</th>
+                                        <th scope="col" className="px-6 py-4">Total</th>
+                                        <th scope="col" className="px-6 py-4">Paidup</th>
+                                        <th scope="col" className="px-6 py-4">Pending</th>
                                         {
                                             !isPrint
                                             ?
-                                                <th scope="col" className="w-20 h-20">Action</th>
+                                                <>
+                                                    <th scope="col" className="px-6 py-4">Profile</th>
+                                                    <th scope="col" className="px-6 py-4">Action</th>
+                                                </>
                                             :
                                                 null
                                         }
@@ -236,26 +250,25 @@ const Class = () => {
                                             allClassStudents.map((item,index)=>{
                                                 return(
                                             <tr className=" border-b" key={index}>
-                                                <th className="w-20 h-20 text-gray-500">{item.student_id.student_id}</th>
-                                                <td className="w-20 h-20">{item.student_id.basic_info_id.full_name}</td>
-                                                <td className="w-20 h-20">{item.student_id.contact_info_id.whatsapp_no}</td>
-                                                <td className="w-20 h-20">{item.fees_id.net_fees}</td>
-                                                <td className="w-20 h-20">{item.fees_id.net_fees - item.fees_id.pending_amount}</td>
-                                                <td className="w-20 h-20">{item.fees_id.pending_amount}</td>
+                                                <th className=" py-5 text-gray-500">{item.student_id.student_id}</th>
+                                                <td className="px-6 py-5">{item.student_id.basic_info_id.full_name}</td>
+                                                <td className="px-6 py-5">{item.student_id.contact_info_id.whatsapp_no}</td>
+                                                <td className="px-6 py-5">{item.fees_id.net_fees}</td>
+                                                <td className="px-6 py-5">{item.fees_id.net_fees - item.fees_id.pending_amount}</td>
+                                                <td className="px-6 py-5">{item.fees_id.pending_amount}</td>
                                                 {
                                                     !isPrint
                                                     ?
-                                                        <td className="w-20 h-20 ">
+                                                        <td className="px-6 py-5 ">
                                                             <div className='flex justify-center space-x-3'>
                                                                 <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}>
-                                                                    <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                                    <Tooltip content="Show Profile" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                                        <span>
+
                                                                         <AiFillEye className="text-xl text-darkblue-500" />
+                                                                        </span>
                                                                     </Tooltip>
                                                                 </NavLink>
-
-                                                                {/* <Tooltip content="Admission Cansel" placement="bottom-end" className='text-white bg-black rounded p-2'>
-                                                                    <MdDelete className="text-xl text-red-600" onClick={(e) => navigate(`/cancelAdmission/${item.student_id.student_id}`, {state:{item}})} />
-                                                                </Tooltip> */}
                                                             </div>
                                                         </td>
                                                     :
@@ -265,31 +278,51 @@ const Class = () => {
                                             )
                                             })
                                         :
-                                            paginationData.map((item,index)=>{
+                                                paginationData.map((item,index)=>{
                                                 return(
                                             <tr className=" border-b" key={index}>
-                                                <th className="w-20 h-20 text-gray-500">{item.student_id.student_id}</th>
-                                                <td className="w-20 h-20">{item.student_id.basic_info_id.full_name}</td>
-                                                <td className="w-20 h-20">{item.student_id.contact_info_id.whatsapp_no}</td>
-                                                <td className="w-20 h-20">{item.fees_id.net_fees}</td>
-                                                <td className="w-20 h-20">{item.fees_id.net_fees - item.fees_id.pending_amount}</td>
-                                                <td className="w-20 h-20">{item.fees_id.pending_amount}</td>
+                                                <th className="px-6 py-5 text-gray-500">{item.student_id.student_id}</th>
+                                                <td className="px-6 py-5">{item.student_id.basic_info_id.full_name}</td>
+                                                <td className="px-6 py-5">{item.student_id.contact_info_id.whatsapp_no}</td>
+                                                <td className="px-6 py-5">{item.fees_id.net_fees}</td>
+                                                <td className="px-6 py-5">{item.fees_id.net_fees - item.fees_id.pending_amount}</td>
+                                                <td className="px-6 py-5">{item.fees_id.pending_amount}</td>
                                                 {
                                                     !isPrint
                                                     ?
-                                                        <td className="w-20 h-20 ">
-                                                            <div className='flex justify-center space-x-3'>
-                                                                <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}>
-                                                                    <Tooltip content="Show Details" placement="bottom-end" className='text-white bg-black rounded p-2'>
-                                                                        <AiFillEye className="text-xl text-darkblue-500" />
-                                                                    </Tooltip>
-                                                                </NavLink>
+                                                        <>
+                                                            <td className="px-6 py-5 ">
+                                                                <div className='flex justify-center space-x-3'>
+                                                                    <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}>
+                                                                        <Tooltip content="Show Profile" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                                            <span>
+                                                                                <AiFillEye className="text-xl text-darkblue-500" />
+                                                                            </span>
+                                                                        </Tooltip>
+                                                                    </NavLink>
 
-                                                                {/* <Tooltip content="Admission Cansel" placement="bottom-end" className='text-white bg-black rounded p-2'>
-                                                                    <MdDelete className="text-xl text-red-600" onClick={(e) => navigate(`/cancelAdmission/${item.student_id.student_id}`, {state:{item}})} />
-                                                                </Tooltip> */}
-                                                            </div>
-                                                        </td>
+                                                                    {/* <Tooltip content="Admission Cansel" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                                        <MdDelete className="text-xl text-red-600" onClick={(e) => navigate(`/cancelAdmission/${item.student_id.student_id}`, {state:{item}})} />
+                                                                    </Tooltip> */}
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-5 ">
+                                                                <div className='flex justify-center space-x-3'>
+                                                                    <NavLink to={"/receipt/FeesDetail"} state={{
+                                                                        rollno: item.student_id.student_id,
+                                                                        full_name: item.student_id.basic_info_id.full_name,
+                                                                        class_name: classDetails.class_name,
+                                                                        medium: classDetails.medium,
+                                                                        stream: classDetails.stream,
+                                                                        batch: `${classDetails.batch_start_year}-${classDetails.batch_end_year}`
+                                                                    }} >
+                                                                        <button className={`${item.fees_id.pending_amount <= 0 ? 'disabled:opacity-40' : 'bg-darkblue-500 hover:bg-blue-900'} bg-darkblue-500 rounded-lg  duration-200 transition text-white px-5 font-semibold py-1`} disabled={item.fees_id.pending_amount <= 0 ? true : false}>
+                                                                        Pay
+                                                                        </button>
+                                                                    </NavLink>
+                                                                </div>
+                                                            </td>
+                                                        </>
                                                     :
                                                         null
                                                 }
@@ -298,7 +331,7 @@ const Class = () => {
                                             })
                                     :
                                         <tr className="">
-                                            <td colSpan={7} className="bg-red-200  font-bold p-2 rounded">
+                                            <td colSpan={8} className="bg-red-200  font-bold p-2 rounded">
                                                 <div className="flex space-x-2 justify-center items-center">
 
                                                 <IoMdInformationCircle className="text-xl text-red-600"/>

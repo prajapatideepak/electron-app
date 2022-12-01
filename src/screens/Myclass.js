@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2'
 import 'react-toastify/dist/ReactToastify.css';
 import { NasirContext } from "../NasirContext";
+import Loader from '../Componant/Loader';
 
 const Myclass = () => {
   const { section } = React.useContext(NasirContext);
@@ -41,6 +42,7 @@ const Myclass = () => {
   const headingBgColor = ["#f3797e", "#3b82f6", "#2f667e", "#9a4947", "#e08aff", "#f24822", "#14b8a6", "#7e1b1f", "#ca8a04"]
   const [isHover, setIsHover] = React.useState(false);
   const [isCurrentYearSelected, setIsCurrentYearSelected] = React.useState(true)
+  const [isLoading, setIsLoading] = React.useState(true)
 
   const handleMouseEnterEdit = () => {
     setIsHover(true);
@@ -61,34 +63,39 @@ const Myclass = () => {
 
   let is_primary = section == "primary" ? 0 : 1
 
-  async function fetchClasses() {
-    const res = await getAllClasses();
-    setClasses(() =>
-      res?.data?.filter(
-        (data) => {
-          return data.is_active == 1
-        }
-      )
-    )
-
-    setFetchData(() => res?.data)
+  async function fetchClassesByYear(){
+    const res = await getAllClassesByYear();
+    setIsLoading(false)
+    setClassesByYear(res.data.sort((a, b)=> (a._id.batch_start_year < b._id.batch_start_year) ? 1 :(a._id.batch_start_year > b._id.batch_start_year) ? -1 : 0))
+    
   }
 
-  useEffect(() => {
-
-    fetchClasses()
-
-    async function fetchClassesByYear() {
-      const res = await getAllClassesByYear();
-      setClassesByYear(res.data.sort((a, b) => (a._id.batch_start_year < b._id.batch_start_year) ? 1 : (a._id.batch_start_year > b._id.batch_start_year) ? -1 : 0))
-
+  
+  useEffect(()=>{
+    async function fetchClasses(){
+      const res = await getAllClasses();
+      fetchClassesByYear();
+      setClasses(()=>
+        res?.data?.filter(
+          (data)=>{
+            return data.is_active == 1 && data.is_primary == is_primary
+          }
+        )
+      )
+  
+      setFetchData(()=>
+        res?.data?.filter(
+          (data)=>{
+            return data.is_primary == is_primary
+          }
+        )
+      )
     }
-    fetchClassesByYear();
-
-
-  }, [call])
-
-  const handleYearChange = (e) => {
+    fetchClasses();    
+    
+  },[call])
+  
+  const handleYearChange = (e)=>{
     setSelectYear(e.target.value)
     let flag = 0;
     classesByYear.map((value, index) => {
@@ -198,6 +205,10 @@ const Myclass = () => {
     resetField("fees");
     resetField("stream");
   };
+
+  if (isLoading) {
+    return <Loader />
+  }
 
   return (
     <div className="relative p-5">

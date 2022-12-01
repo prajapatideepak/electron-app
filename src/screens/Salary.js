@@ -338,7 +338,7 @@ export default function Salary() {
                         <h1> </h1>
                         <input
                           type="text"
-                          placeholder="Enter Total hour"
+                          placeholder="Enter Total hours"
                           className=" placeholder-black p-1 outline-none border-2 m-1"
                           value={salaryData.hour}
                           onChange={(e) =>
@@ -348,7 +348,7 @@ export default function Salary() {
 
                         <input
                           type="text"
-                          placeholder="Enter Rate "
+                          placeholder="Enter Rate"
                           className=" placeholder-black outline-none p-1 border-2 m-1"
                           value={salaryData.amount}
                           onChange={(e) =>
@@ -455,7 +455,7 @@ export default function Salary() {
                         <h1> </h1>
                         <input
                           type="text"
-                          placeholder="Enter Chaque Number"
+                          placeholder="Enter Cheque Number"
                           className=" placeholder-black p-1 active:outline-none"
                           name="cheque_no"
                           value={chaqueno}

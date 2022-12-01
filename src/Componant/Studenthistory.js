@@ -66,33 +66,35 @@ const Studenthistory = () => {
             ?
               <>
                 <div className='btn flex justify-start'>
-                  <ReactToPrint
-                    trigger={() => (
-                          // <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'>
-                      <button id='print' className="text-3xl bg-darkblue-500 rounded-md text-white p-1">
-                            <MdLocalPrintshop />
-                        </button>
-                          // </Tooltip>
-                    )}
-                    content={() => componentRef.current}
-                    onBeforeGetContent={(e) => {
-                      return new Promise((resolve) => {
-                        setIsPrint(true);
-                        resolve();
-                      });
-                    }}
-                    onAfterPrint={() => setIsPrint(false)}
-                    />
+                  <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                    <span>
+                      <ReactToPrint
+                        trigger={() => (
+                          <button id='print' className="text-3xl bg-darkblue-500 rounded-md text-white p-1">
+                                <MdLocalPrintshop />
+                            </button>
+                        )}
+                        content={() => componentRef.current}
+                        onBeforeGetContent={(e) => {
+                          return new Promise((resolve) => {
+                            setIsPrint(true);
+                            resolve();
+                          });
+                        }}
+                        onAfterPrint={() => setIsPrint(false)}
+                        />
+                    </span>
+                  </Tooltip>
                   
                 </div>
                 <div ref={componentRef} className='p-5 pt-2 pb-0'>
-                  <div className={`${isPrint ? 'flex' : 'hidden'} justify-between items-center py-2 bg-gray-200`}>
+                  <div className={`${isPrint ? 'flex' : 'hidden'} justify-between items-center py-2 bg-gray-100`}>
                     <h3 className="text-lg mx-4 font-medium">Name: {location.state.full_name}</h3> 
                     <h3 className="text-lg mx-4 font-medium">Roll No: {location.state.student_id}</h3> 
                   </div>
                   <div className={`overflow-x-auto relative ${isPrint ? '' : 'rounded-lg'}`}>
-                    <table  className="w-full text-sm text-left  ">
-                      <thead className="text-sm uppercase bg-darkblue-500 ">
+                    <table  className="w-full text-sm text-left ">
+                      <thead className="text-sm uppercase bg-darkblue-500">
                         <tr className='text-white'>
                           <th scope="col" className="py-3 px-6 text-center">Reciept No</th>
                           <th scope="col" className="py-3 px-6 text-center">Amount</th>
@@ -126,7 +128,7 @@ const Studenthistory = () => {
                                         fees_receipt_id: 
                                         receipt.fees_receipt_id
                                     }}>
-                                      <Tooltip content="Show" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl bg-white text-darkblue-500"><AiFillEye /></span></Tooltip>
+                                      <Tooltip content="Show Receipt" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl bg-white text-darkblue-500"><AiFillEye /></span></Tooltip>
                                     </NavLink>
                                   </div>
                                 </td>

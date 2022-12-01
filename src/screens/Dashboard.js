@@ -295,46 +295,6 @@ export default function Dashboard() {
                         }
                       })
                     }
-                    {/* :
-                    {currentItems.map((item, key) => {
-                      if (item?.academics[0]?.class[0] != undefined) {
-                        isStudentNotFound = false
-                      }
-                      const Paid_up = [
-                        item.academics[0].fees[0].net_fees - item.academics[0].fees[0].pending_amount
-                      ]
-                      if (item.academics[0].fees[0].pending_amount > 0 && item.academics[0].class[0] != undefined) {
-                        return (
-                          <tr key={key} className="border-b" >
-                            <td className="py-7 px-5 text-center ">{item.student_id}</td>
-                            <td className="py-7 px-5 text-center ">{item.basic_info[0].full_name}</td>
-                            <td className="py-7 px-5 text-center ">{item.academics[0].class[0].class_name}</td>
-                            <td className="py-7 px-5 text-center ">{item.contact_info[0].whatsapp_no}</td>
-                            <td className="py-7 px-5 text-center ">{item.academics[0].fees[0].net_fees}</td>
-                            <td className="py-7 px-5 text-center ">{Paid_up}</td>
-                            <td className="py-7 px-5 text-center ">{item.academics[0].fees[0].pending_amount}</td>
-                            <td className={`py-7 px-5 text-center  ${isPrint ? "hidden" : "block"}`}>
-                              <div className="flex justify-center space-x-2">
-                                <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id}`}>
-                                  <Tooltip
-                                    content="Show"
-                                    placement="bottom-end"
-                                    className="text-white bg-black rounded p-2"
-                                  >
-                                    <span className="text-xl text-darkblue-500">
-                                      <AiFillEye />
-                                    </span>
-                                  </Tooltip>
-                                </NavLink>
-
-                              </div>
-                            </td>
-                          </tr>
-                        )
-
-                      }
-                    })
-                } */}
                 {
                   isStudentNotFound
                     ?

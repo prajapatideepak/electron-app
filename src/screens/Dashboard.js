@@ -295,7 +295,7 @@ export default function Dashboard() {
                         }
                       })
                     }
-                    :
+                    {/* :
                     {currentItems.map((item, key) => {
                       if (item?.academics[0]?.class[0] != undefined) {
                         isStudentNotFound = false
@@ -334,7 +334,7 @@ export default function Dashboard() {
 
                       }
                     })
-                }
+                } */}
                 {
                   isStudentNotFound
                     ?

@@ -117,7 +117,7 @@ const Class = () => {
 
     return (
         <div className='relative  '>
-            <div className={`bg-slate-100 ${model && "opacity-20"}`}>
+            <div className={`bg-slate-100 `}>
                 <div className="flex justify-between  items-center px-5 pt-3  space-y-5">
                     <h1 className=" text-xl xl:text-3xl  text-darkblue-500 xl:text-left font-bold text-darkblue-50 ">
                         {classDetails.class_name}

@@ -91,8 +91,8 @@ const Myclass = () => {
         )
       )
     }
-    fetchClasses();    
     
+    fetchClasses();    
   },[call])
   
   const handleYearChange = (e)=>{
@@ -176,7 +176,7 @@ const Myclass = () => {
     const response = await AddClass(data);
     if (response) {
       // setCall(()=>!call)
-      fetchClasses()
+      // fetchClasses()
       setModel(false);
       reset();
       return notify()

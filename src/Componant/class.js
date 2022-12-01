@@ -18,18 +18,20 @@ import { IoIosArrowBack } from 'react-icons/io';
 import _ from "lodash";
 import Loader from "./Loader";
 import ReactPaginate from "react-paginate";
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
 
 const Class = () => {
 
     const params = useParams();
     const navigate = useNavigate()
 
-    const [classStudents,setClassStudents] = React.useState([]);
-    const [totalStudents,setTotalStudents] = React.useState(0);
-    const [classDetails,setClassDetails] = React.useState('');
-    const [totalPendingStudents,setTotalPendingStudents] = React.useState(0);
-    const [totalPendingFees,setTotalPendingFees] = React.useState(0);
-    const [paginationData,setPaginationData] = React.useState([]);
+    const [classStudents, setClassStudents] = React.useState([]);
+    const [totalStudents, setTotalStudents] = React.useState(0);
+    const [classDetails, setClassDetails] = React.useState('');
+    const [totalPendingStudents, setTotalPendingStudents] = React.useState(0);
+    const [totalPendingFees, setTotalPendingFees] = React.useState(0);
+    const [paginationData, setPaginationData] = React.useState([]);
     const [pageCount, setPageCount] = useState(0);
     const [itemOffset, setItemOffset] = useState(0)
     const [isPrint, setIsPrint] = useState(false);
@@ -49,13 +51,13 @@ const Class = () => {
         async function fetchClassStudents() {
             const res = await getAllStudentsInClass(params.id);
             setIsLoading(false);
-            if(res.success){
-                setClassStudents(()=>res.data.studentDetails)
-                setAllClassStudents(()=>res.data.studentDetails);
-                setTotalStudents(()=> res.data.classDetails.total_student);
-                setClassDetails(()=> res.data.classDetails);
-                setTotalPendingStudents(()=>res.data.studentDetails.filter((data)=>{
-                    return  data.fees_id.pending_amount != 0 ;
+            if (res.success) {
+                setClassStudents(() => res.data.studentDetails)
+                setAllClassStudents(() => res.data.studentDetails);
+                setTotalStudents(() => res.data.classDetails.total_student);
+                setClassDetails(() => res.data.classDetails);
+                setTotalPendingStudents(() => res.data.studentDetails.filter((data) => {
+                    return data.fees_id.pending_amount != 0;
                 }))
                 setTotalPendingFees(() => res.data.studentDetails.filter((data) => {
                     return data.fees_id.pending_amount != 0;
@@ -111,8 +113,8 @@ const Class = () => {
         setItemOffset(newOffset);
     };
 
-    if(isLoading){
-        return <Loader/>
+    if (isLoading) {
+        return <Loader />
     }
 
     return (
@@ -177,7 +179,7 @@ const Class = () => {
 
                 </div>
                 <div className='flex justify-center items-center p-10 pt-5'>
-                    <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-5 shadow-xl space-y-5 w-full">
+                    <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-5 shadow-xl  w-full">
                         <div className="print-btn flex items-center justify-between space-x-3">
                             <div className=" flex  items-center justify-center ml-6">
                                 <input
@@ -202,9 +204,9 @@ const Class = () => {
                                     </select>
                                 </button>
                                 <Tooltip
-                                content="Print"
-                                placement="bottom-end"
-                                className="text-white bg-black rounded p-2"
+                                    content="Print"
+                                    placement="bottom-end"
+                                    className="text-white bg-black rounded p-2"
                                 >
                                     <span>
                                         <ReactToPrint
@@ -214,8 +216,8 @@ const Class = () => {
                                             content={() => componentRef.current}
                                             onBeforeGetContent={() => {
                                                 return new Promise((resolve) => {
-                                                setIsPrint(true);
-                                                resolve();
+                                                    setIsPrint(true);
+                                                    resolve();
                                                 });
                                             }}
                                             onAfterPrint={() => setIsPrint(false)}
@@ -224,130 +226,143 @@ const Class = () => {
                                 </Tooltip>
                             </div>
                         </div>
-                        <div ref={componentRef} className='p-5 pt-3 pb-0'>
-                            <table className="w-full text-sm text-center rounded-xl overflow-hidden shadow-xl ">
-                                <thead className="text-xs text-gray-700 bg-class3-50 uppercase">
-                                    <tr className='text-white text-base'>
-                                        <th scope="col" className="pl-3 py-4">Student Id</th>
-                                        <th scope="col" className="px-6 py-4">Name</th>
-                                        <th scope="col" className="px-6 py-4">Phone</th>
-                                        <th scope="col" className="px-6 py-4">Total</th>
-                                        <th scope="col" className="px-6 py-4">Paidup</th>
-                                        <th scope="col" className="px-6 py-4">Pending</th>
-                                        {
-                                            !isPrint
-                                            ?
-                                                <>
-                                                    <th scope="col" className="px-6 py-4">Profile</th>
-                                                    <th scope="col" className="px-6 py-4">Action</th>
-                                                </>
-                                            :
-                                                null
-                                        }
-                                    </tr>
-                                </thead>
-                                <tbody className='bg-white border items-center '>
-                                {
-                                    paginationData[0] 
-                                    ?
-                                        isPrint
-                                        ?
-                                            allClassStudents.map((item,index)=>{
-                                                return(
-                                            <tr className=" border-b" key={index}>
-                                                <th className=" py-5 text-gray-500">{item.student_id.student_id}</th>
-                                                <td className="px-6 py-5">{item.student_id.basic_info_id.full_name}</td>
-                                                <td className="px-6 py-5">{item.student_id.contact_info_id.whatsapp_no}</td>
-                                                <td className="px-6 py-5">{item.fees_id.net_fees}</td>
-                                                <td className="px-6 py-5">{item.fees_id.net_fees - item.fees_id.pending_amount}</td>
-                                                <td className="px-6 py-5">{item.fees_id.pending_amount}</td>
-                                                {
-                                                    !isPrint
+                        <div className='py-10 px-5 space-y-2'>
+                            <div className='flex justify-end items-end'>
+                                <ReactHTMLTableToExcel
+                                    id="test-table-xls-button"
+                                    onClick={() => setIsPrint(true)}
+                                    className="download-table-xls-button text-white bg-darkblue-500 font-semibold shadow-2xl  py-1 px-3 rounded-lg text-sm"
+                                    table="table-to-xls"
+                                    filename="tablexls"
+                                    sheet="tablexls"
+                                    buttonText="Export"
+                                />
+                            </div>
+                            <div ref={componentRef} className=''>
+                                <table className="w-full text-sm text-center rounded-xl overflow-hidden shadow-xl " id="table-to-xls">
+                                    <thead className="text-xs text-gray-700 bg-class3-50 uppercase">
+                                        <tr className='text-white text-base'>
+                                            <th scope="col" className="pl-3 py-4">Student Id</th>
+                                            <th scope="col" className="px-6 py-4">Name</th>
+                                            <th scope="col" className="px-6 py-4">Phone</th>
+                                            <th scope="col" className="px-6 py-4">Total</th>
+                                            <th scope="col" className="px-6 py-4">Paidup</th>
+                                            <th scope="col" className="px-6 py-4">Pending</th>
+                                            {
+                                                !isPrint
                                                     ?
-                                                        <td className="px-6 py-5 ">
-                                                            <div className='flex justify-center space-x-3'>
-                                                                <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}>
-                                                                    <Tooltip content="Show Profile" placement="bottom-end" className='text-white bg-black rounded p-2'>
-                                                                        <span>
-
-                                                                        <AiFillEye className="text-xl text-darkblue-500" />
-                                                                        </span>
-                                                                    </Tooltip>
-                                                                </NavLink>
-                                                            </div>
-                                                        </td>
+                                                    <>
+                                                        <th scope="col" className="px-6 py-4">Profile</th>
+                                                        <th scope="col" className="px-6 py-4">Action</th>
+                                                    </>
                                                     :
-                                                        null
-                                                }
-                                            </tr>
-                                            )
-                                            })
-                                        :
-                                                paginationData.map((item,index)=>{
-                                                return(
-                                            <tr className=" border-b" key={index}>
-                                                <th className="px-6 py-5 text-gray-500">{item.student_id.student_id}</th>
-                                                <td className="px-6 py-5">{item.student_id.basic_info_id.full_name}</td>
-                                                <td className="px-6 py-5">{item.student_id.contact_info_id.whatsapp_no}</td>
-                                                <td className="px-6 py-5">{item.fees_id.net_fees}</td>
-                                                <td className="px-6 py-5">{item.fees_id.net_fees - item.fees_id.pending_amount}</td>
-                                                <td className="px-6 py-5">{item.fees_id.pending_amount}</td>
-                                                {
-                                                    !isPrint
+                                                    null
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody className='bg-white border items-center '>
+                                        {
+                                            paginationData[0]
+                                                ?
+                                                isPrint
                                                     ?
-                                                        <>
-                                                            <td className="px-6 py-5 ">
-                                                                <div className='flex justify-center space-x-3'>
-                                                                    <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}>
-                                                                        <Tooltip content="Show Profile" placement="bottom-end" className='text-white bg-black rounded p-2'>
-                                                                            <span>
-                                                                                <AiFillEye className="text-xl text-darkblue-500" />
-                                                                            </span>
-                                                                        </Tooltip>
-                                                                    </NavLink>
+                                                    allClassStudents.map((item, index) => {
+                                                        return (
+                                                            <tr className=" border-b" key={index}>
+                                                                <th className=" py-5 text-gray-500">{item.student_id.student_id}</th>
+                                                                <td className="px-6 py-5">{item.student_id.basic_info_id.full_name}</td>
+                                                                <td className="px-6 py-5">{item.student_id.contact_info_id.whatsapp_no}</td>
+                                                                <td className="px-6 py-5">{item.fees_id.net_fees}</td>
+                                                                <td className="px-6 py-5">{item.fees_id.net_fees - item.fees_id.pending_amount}</td>
+                                                                <td className="px-6 py-5">{item.fees_id.pending_amount}</td>
+                                                                {
+                                                                    !isPrint
+                                                                        ?
+                                                                        <td className="px-6 py-5 ">
+                                                                            <div className='flex justify-center space-x-3'>
+                                                                                <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}>
+                                                                                    <Tooltip content="Show Profile" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                                                        <span>
 
-                                                                    {/* <Tooltip content="Admission Cansel" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                                                            <AiFillEye className="text-xl text-darkblue-500" />
+                                                                                        </span>
+                                                                                    </Tooltip>
+                                                                                </NavLink>
+                                                                            </div>
+                                                                        </td>
+                                                                        :
+                                                                        null
+                                                                }
+                                                            </tr>
+                                                        )
+                                                    })
+                                                    :
+                                                    paginationData.map((item, index) => {
+                                                        return (
+                                                            <tr className=" border-b" key={index}>
+                                                                <th className="px-6 py-5 text-gray-500">{item.student_id.student_id}</th>
+                                                                <td className="px-6 py-5">{item.student_id.basic_info_id.full_name}</td>
+                                                                <td className="px-6 py-5">{item.student_id.contact_info_id.whatsapp_no}</td>
+                                                                <td className="px-6 py-5">{item.fees_id.net_fees}</td>
+                                                                <td className="px-6 py-5">{item.fees_id.net_fees - item.fees_id.pending_amount}</td>
+                                                                <td className="px-6 py-5">{item.fees_id.pending_amount}</td>
+                                                                {
+                                                                    !isPrint
+                                                                        ?
+                                                                        <>
+                                                                            <td className="px-6 py-5 ">
+                                                                                <div className='flex justify-center space-x-3'>
+                                                                                    <NavLink className="nav-link" to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}>
+                                                                                        <Tooltip content="Show Profile" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                                                            <span>
+                                                                                                <AiFillEye className="text-xl text-darkblue-500" />
+                                                                                            </span>
+                                                                                        </Tooltip>
+                                                                                    </NavLink>
+
+                                                                                    {/* <Tooltip content="Admission Cansel" placement="bottom-end" className='text-white bg-black rounded p-2'>
                                                                         <MdDelete className="text-xl text-red-600" onClick={(e) => navigate(`/cancelAdmission/${item.student_id.student_id}`, {state:{item}})} />
                                                                     </Tooltip> */}
-                                                                </div>
-                                                            </td>
-                                                            <td className="px-6 py-5 ">
-                                                                <div className='flex justify-center space-x-3'>
-                                                                    <NavLink to={"/receipt/FeesDetail"} state={{
-                                                                        rollno: item.student_id.student_id,
-                                                                        full_name: item.student_id.basic_info_id.full_name,
-                                                                        class_name: classDetails.class_name,
-                                                                        medium: classDetails.medium,
-                                                                        stream: classDetails.stream,
-                                                                        batch: `${classDetails.batch_start_year}-${classDetails.batch_end_year}`
-                                                                    }} >
-                                                                        <button className={`${item.fees_id.pending_amount <= 0 ? 'disabled:opacity-40' : 'bg-darkblue-500 hover:bg-blue-900'} bg-darkblue-500 rounded-lg  duration-200 transition text-white px-5 font-semibold py-1`} disabled={item.fees_id.pending_amount <= 0 ? true : false}>
-                                                                        Pay
-                                                                        </button>
-                                                                    </NavLink>
-                                                                </div>
-                                                            </td>
-                                                        </>
-                                                    :
-                                                        null
-                                                }
-                                            </tr>
-                                            )
-                                            })
-                                    :
-                                        <tr className="">
-                                            <td colSpan={8} className="bg-red-200  font-bold p-2 rounded">
-                                                <div className="flex space-x-2 justify-center items-center">
+                                                                                </div>
+                                                                            </td>
+                                                                            <td className="px-6 py-5 ">
+                                                                                <div className='flex justify-center space-x-3'>
+                                                                                    <NavLink to={"/receipt/FeesDetail"} state={{
+                                                                                        rollno: item.student_id.student_id,
+                                                                                        full_name: item.student_id.basic_info_id.full_name,
+                                                                                        class_name: classDetails.class_name,
+                                                                                        medium: classDetails.medium,
+                                                                                        stream: classDetails.stream,
+                                                                                        batch: `${classDetails.batch_start_year}-${classDetails.batch_end_year}`
+                                                                                    }} >
+                                                                                        <button className={`${item.fees_id.pending_amount <= 0 ? 'disabled:opacity-40' : 'bg-darkblue-500 hover:bg-blue-900'} bg-darkblue-500 rounded-lg  duration-200 transition text-white px-5 font-semibold py-1`} disabled={item.fees_id.pending_amount <= 0 ? true : false}>
+                                                                                            Pay
+                                                                                        </button>
+                                                                                    </NavLink>
+                                                                                </div>
+                                                                            </td>
+                                                                        </>
+                                                                        :
+                                                                        null
+                                                                }
+                                                            </tr>
+                                                        )
+                                                    })
+                                                :
+                                                <tr className="">
+                                                    <td colSpan={8} className="bg-red-200  font-bold p-2 rounded">
+                                                        <div className="flex space-x-2 justify-center items-center">
 
-                                                        <IoMdInformationCircle className="text-xl text-red-600" />
-                                                        <h1 className="text-red-800">Students not found </h1>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                                            <IoMdInformationCircle className="text-xl text-red-600" />
+                                                            <h1 className="text-red-800">Students not found </h1>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                        }
+                                    </tbody>
+                                </table>
 
+                            </div>
                         </div>
                         <nav aria-label="Page navigation example" className='flex justify-end'>
                             <ul className="inline-flex items-center -space-x-px ">

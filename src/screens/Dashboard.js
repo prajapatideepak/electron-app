@@ -82,7 +82,6 @@ export default function Dashboard() {
     setItemOffset(newOffset);
   };
 
-
   if (isloading) {
     return <Loader />
   }
@@ -295,9 +294,9 @@ export default function Dashboard() {
 
                         }
                       })
-                    )
+                    }
                     :
-                    currentItems.map((item, key) => {
+                    {currentItems.map((item, key) => {
                       if (item?.academics[0]?.class[0] != undefined) {
                         isStudentNotFound = false
                       }

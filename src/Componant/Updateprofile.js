@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useUpdateAdmin } from "../hooks/usePost";
@@ -8,18 +8,24 @@ import "../Styles/Studentform.css";
 const Updateprofile = () => {
   const { admin } = React.useContext(NasirContext);
 
-  const [img, setImg] = useState("/images/user.png");
   const [data, setData] = React.useState(admin);
   const [date, setDate] = React.useState("");
   const [basic_info_id, setBasicinfoid] = React.useState({});
   const [contact_info_id, setContactinfoid] = React.useState({});
   const [isEdiable, setEditable] = React.useState(false);
 
+  const { changeSection } = React.useContext(NasirContext);
   const updateAdmin = useUpdateAdmin();
+
+  function handleSection() {
+    localStorage.removeItem("section");
+    changeSection();
+  }
 
   React.useEffect(() => {
     if (updateAdmin.isSuccess) {
       toast.success("Updated Data");
+      handleSection();
     }
     if (updateAdmin.isError) {
       toast.error(updateAdmin.error.response.data.error);
@@ -38,11 +44,6 @@ const Updateprofile = () => {
       );
     }
   }, [admin]);
-
-  const onImageChange = (e) => {
-    const [file] = e.target.files;
-    setImg(URL.createObjectURL(file));
-  };
 
   const {
     register,
@@ -112,16 +113,6 @@ const Updateprofile = () => {
                         className={`w-72 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                           errors.fullname && "border-red-600"
                         }`}
-                        // // {...register("fullname", {
-                        // //   required: "Fullname is required",
-                        // //   pattern: {
-                        // //     value: /^[A-Za-z ]+$/,
-                        // //     message: "Please enter only characters",
-                        // //   },
-                        // // })}
-                        // onKeyUp={() => {
-                        //   trigger("fullname");
-                        // }}
                       />
                       {errors.fullname && (
                         <small className="text-red-700">
@@ -150,24 +141,7 @@ const Updateprofile = () => {
                         className={`w-72 mt-1 block px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                           errors.email && "border-red-600"
                         }`}
-                        // {...register("email", {
-                        //   required: "Email is required",
-                        //   pattern: {
-                        //     value:
-                        //       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                        //     message: "Please enter valid email",
-                        //   },
-                        // })}
-                        // onKeyUp={() => {
-                        //   trigger("email");
-                        // }}
                       />
-                      {errors.email && (
-                        <small className="text-red-700">
-                          {" "}
-                          {errors.email.message}{" "}
-                        </small>
-                      )}
                     </label>
                   </div>
                 </div>
@@ -191,27 +165,7 @@ const Updateprofile = () => {
                         className={`w-72 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                           errors.whatsappno && "border-red-600"
                         }`}
-                        // {...register("whatsappno", {
-                        //   required: "Whatsapp no is required",
-                        //   pattern: {
-                        //     value: /^[0-9]*$/,
-                        //     message: "Please enter only numbers",
-                        //   },
-                        //   minLength: {
-                        //     value: 10,
-                        //     message: "Please enter valida whatsapp no",
-                        //   },
-                        // })}
-                        // onKeyUp={() => {
-                        //   trigger("whatsappno");
-                        // }}
                       />
-                      {errors.whatsappno && (
-                        <small className="text-red-700">
-                          {" "}
-                          {errors.whatsappno.message}{" "}
-                        </small>
-                      )}
                     </label>
                   </div>
                   <div className="mobileno">
@@ -233,27 +187,7 @@ const Updateprofile = () => {
                         className={`w-72 mt-1 block px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                           errors.mobileno && "border-red-600"
                         }`}
-                        // {...register("mobileno", {
-                        //   required: "Mobile no is required",
-                        //   pattern: {
-                        //     value: /^[0-9]*$/,
-                        //     message: "Please enter only numbers",
-                        //   },
-                        //   minLength: {
-                        //     value: 10,
-                        //     message: "Please enter valida mobile no",
-                        //   },
-                        // })}
-                        // onKeyUp={() => {
-                        //   trigger("mobileno");
-                        // }}
                       />
-                      {errors.mobileno && (
-                        <small className="text-red-700">
-                          {" "}
-                          {errors.mobileno.message}{" "}
-                        </small>
-                      )}
                     </label>
                   </div>
                 </div>
@@ -265,7 +199,7 @@ const Updateprofile = () => {
                       </span>
                       <input
                         // disabled={!isEdiable}
-                        type="text"
+                        type="password"
                         value={data?.security_pin}
                         onChange={(e) =>
                           setData({ ...data, security_pin: e.target.value })
@@ -274,23 +208,7 @@ const Updateprofile = () => {
                         className={`w-72 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                           errors.security_security_pin && "border-red-600"
                         }`}
-                        // {...register("security_security_pin", {
-                        //   required: "security_security_pin is required",
-                        //   pattern: {
-                        //     value: /^[A-Za-z1-9 ]+$/,
-                        //     message: "Please enter only characters",
-                        //   },
-                        // })}
-                        // onKeyUp={() => {
-                        //   trigger("security_security_pin");
-                        // }}
                       />
-                      {errors.security_security_pin && (
-                        <small className="text-red-700">
-                          {" "}
-                          {errors.security_security_pin.message}{" "}
-                        </small>
-                      )}
                     </label>
                   </div>
                   <div className="address">
@@ -313,23 +231,7 @@ const Updateprofile = () => {
                         className={`w-72 mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                           errors.address && "border-red-600"
                         }`}
-                        // {...register("address", {
-                        //   required: "Address is required",
-                        //   pattern: {
-                        //     value: /^[A-Za-z ]+$/,
-                        //     message: "Please enter only characters",
-                        //   },
-                        // })}
-                        // onKeyUp={() => {
-                        //   trigger("address");
-                        // }}
                       />
-                      {errors.address && (
-                        <small className="text-red-700">
-                          {" "}
-                          {errors.address.message}{" "}
-                        </small>
-                      )}
                     </label>
                   </div>
                 </div>
@@ -346,16 +248,7 @@ const Updateprofile = () => {
                         className={`w-72 hover:cursor-pointer mt-1 block w-full px-3 py-2 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                           errors.dateofbirth && "border-red-600"
                         }`}
-                        {...register("dateofbirth", {
-                          required: "Date of birth is required",
-                        })}
                       />
-                      {errors.dateofbirth && (
-                        <small className="text-red-700">
-                          {" "}
-                          {errors.dateofbirth.message}{" "}
-                        </small>
-                      )}
                     </label>
                   </div>
                   <div className="btn mt-5 flex justify-between w-72">
@@ -369,7 +262,6 @@ const Updateprofile = () => {
                     {isEdiable ? (
                       <button
                         type="button"
-                        // onClick={(e) => setEditable(!isEdiable)}
                         onClick={(e) => setEditable(true)}
                         className="bg-blue-900 hover:bg-white border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-11 w-28 rounded-md tracking-wider"
                       >

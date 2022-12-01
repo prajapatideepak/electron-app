@@ -5,21 +5,30 @@ import { AiFillEye } from "react-icons/ai";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
 import { useQuery } from "react-query";
-import { useGetReport } from "../hooks/usePost";
+import { useGetMonthlyReport, useGetReport } from "../hooks/usePost";
 import { useState } from "react";
 
 const Studenthearder = () => {
   const [data, setData] = useState([]);
   const reportData = useQuery("reports", useGetReport);
-  const [currentData, setCurrentData] = useState([]);
-  const [paginateDate, setPagigation] = useState({
-    totalPage: null,
-    itemPerPage: 5,
-    inSet: null,
-    offSet: null,
-    page: 1,
-  });
   const componentRef = useRef();
+  const studentChartData = useQuery("StudentChartData", useGetMonthlyReport);
+  const [series, setSeries] = useState([]);
+
+  // React.useEffect(() => {
+  //   if (studentChartData.isSuccess) {
+  //     let ProprtyName = Object.keys(studentChartData.data);
+  //     let newData = Object.values(studentChartData.data);
+  //     // setSeries(() => {
+  //     let data = Object.values(newData[0]).map((m) => m.Month);
+  //     // });
+
+  //     setSeries(data);
+  //     // setSeries(newData[0].map((m) => m.Month));
+  //   }
+  // }, [studentChartData.isSuccess]);
+
+  // console.log(series);
 
   console.log(reportData);
 
@@ -47,6 +56,7 @@ const Studenthearder = () => {
   React.useEffect(() => {
     setData(reportData?.data?.data);
     console.log(reportData.isSuccess);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reportData.isSuccess]);
 
   React.useEffect(() => {

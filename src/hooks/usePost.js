@@ -361,3 +361,11 @@ export const Alloverstudent = async (section) => {
 export function useGetReport() {
   return axiosInstance.get(`${SERVER}/report`).then((res) => res.data);
 }
+
+export function useGetSalaryReport() {
+  return axiosInstance.get(`${SERVER}/report/salary`).then((res) => res.data);
+}
+
+export function useGetMonthlyReport() {
+  return axiosInstance.get(`${SERVER}/report/month`).then((res) => res.data);
+}

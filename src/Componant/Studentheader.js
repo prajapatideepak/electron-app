@@ -7,6 +7,7 @@ import { NavLink } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useGetMonthlyReport, useGetReport } from "../hooks/usePost";
 import { useState } from "react";
+import StudentChart from "./StudentChart";
 
 const Studenthearder = () => {
   const [data, setData] = useState([]);
@@ -59,14 +60,14 @@ const Studenthearder = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reportData.isSuccess]);
 
-  React.useEffect(() => {
-    console.log(data);
-  }, data);
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
   return (
     <div>
+      <div>
+        <StudentChart />
+      </div>
       <div className="flex justify-center items-center p-10 pt-10">
         <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
           <div>

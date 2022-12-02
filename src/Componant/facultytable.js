@@ -3,17 +3,16 @@ import ReactToPrint from 'react-to-print';
 import { GiWallet } from "react-icons/gi";
 import { AiFillEye } from "react-icons/ai";
 import { MdLocalPrintshop } from "react-icons/md";
-import { AiOutlineLeft } from "react-icons/ai";
-import { AiOutlineRight } from "react-icons/ai";
 import { IoMdInformationCircle } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-import { getAllFaculty, getFaculty } from "../hooks/usePost";
+import { Exportallfaculty } from "../hooks/usePost";
 import _ from "lodash"
 import ReactPaginate from "react-paginate";
 import './Pagination.css'
 import Loader from './Loader';
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import { toast } from "react-toastify";
+
 
 
 const Facultytable = ({ call, allFaculty }) => {
@@ -28,14 +27,8 @@ const Facultytable = ({ call, allFaculty }) => {
   const [itemOffset, setItemOffset] = useState(0)
   const [Serialno, setserialno] = useState(1)
   const itemsPerPage = 6;
-
-  // useEffect(() => {
-  //   getAllFaculty()
-  //     .then((res) => {
-  //       setFacultyData(res.staffData);
-  //     })
-  // }, [call])
-
+  const Toaster = () => { toast.success('All Staff Export To Excel') }
+  const errtoast = () => { toast.error("Something Wrong") }
 
   // -------------------------------
   // -------- Pagination -----------
@@ -51,6 +44,15 @@ const Facultytable = ({ call, allFaculty }) => {
     setserialno(event.selected + 1)
     setItemOffset(newOffset);
   };
+
+  const ExportAllfaculty = () => {
+    const res = Exportallfaculty()
+    if (res) {
+        Toaster()
+    } else {
+        errtoast()
+    }
+  }
 
   const temp = () => {
     setIsPrint(true)
@@ -94,7 +96,7 @@ const Facultytable = ({ call, allFaculty }) => {
                 placement="bottom-end"
                 className="text-white bg-black rounded p-2"
               >
-                <button
+                <button onClick={ExportAllfaculty}
                   className='text-white bg-class7-50 font-semibold shadow-2xl  py-[7px] px-3 rounded-lg text-sm'>
                   Export
                 </button>

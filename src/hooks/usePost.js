@@ -264,6 +264,19 @@ export const getAllFaculty = async () => {
 }
 
 // -----------------------------------------------------------------------
+// ------------------------All_Faculty -----------------------------------
+// -----------------------------------------------------------------------
+export const Exportallfaculty = async () => {
+  try {
+    const { data } = await axios.get(`${SERVER}/Faculty/Exportallfaculty`);
+    return data;
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+// -----------------------------------------------------------------------
 // -----------------staff_table_one_faculty_details ----------------------
 // -----------------------------------------------------------------------
 export async function Facultydetails(id) {

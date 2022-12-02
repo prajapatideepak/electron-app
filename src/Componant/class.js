@@ -12,7 +12,7 @@ import { MdLocalPrintshop } from 'react-icons/md';
 import { IoMdInformationCircle } from 'react-icons/io';
 import { Tooltip } from "@material-tailwind/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { getAllStudentsInClass, ExportAllStudentsInClass } from "../hooks/usePost";
+import { getAllStudentsInClass, ExportAllStudentsInClass , ExportAllPendingStudentsInClass } from "../hooks/usePost";
 import { IoIosArrowBack } from 'react-icons/io';
 import _ from "lodash";
 import Loader from "./Loader";
@@ -38,6 +38,7 @@ const Class = () => {
     const itemsPerPage = 2;
     const Toaster = () => { toast.success('All Student Export To Excel') }
     const errtoast = () => { toast.error("Something Wrong") }
+    const ToasterPending = () => { toast.success('Fees Pending Student Export To Excel') }
 
     let calculateTotalPendingFees = 0;
     for (let i = 0; i < totalPendingFees.length; i++) {
@@ -114,8 +115,23 @@ const Class = () => {
         setItemOffset(newOffset);
     };
 
+    const Exportstudent = () => {
+        const res = ExportAllStudentsInClass(params.id)
+        if (res) {
+            Toaster()
+        } else {
+            errtoast()
+        }
+    }
 
-
+    const Exportpendingstudent = () => {
+        const res = ExportAllPendingStudentsInClass(params.id)
+        if (res) {
+            ToasterPending()
+        } else {
+            errtoast()
+        }
+    }
 
 
     if (isLoading) {
@@ -161,7 +177,7 @@ const Class = () => {
                                 <h1 className='text-white text-lg '>Total <span>Students</span></h1>
                             </div>
                         </div>
-                        <div id='Student-cards' className=' cursor-pointer h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class1-50  xl:space-y-3 space-y-2 flex justify-center items-center '>
+                        <div id='Student-cards' onClick={Exportpendingstudent} className=' cursor-pointer h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class1-50  xl:space-y-3 space-y-2 flex justify-center items-center '>
                             <div>
                                 <div className='flex items-center text-center justify-center space-x-5  '>
                                     <MdPendingActions className=' text-class1-50 rounded-full xl:text-5xl text-5xl  xl:p-1 p-1 bg-white' />
@@ -234,7 +250,7 @@ const Class = () => {
                                     placement="bottom-end"
                                     className="text-white bg-black rounded p-2"
                                 >
-                                    <button 
+                                    <button onClick={Exportstudent}
                                         className='text-blue-500 bg-blue-200 font-semibold shadow-2xl  py-[7px] px-3 rounded-lg text-sm'>
                                         Export
                                     </button>

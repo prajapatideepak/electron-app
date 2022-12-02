@@ -150,6 +150,29 @@ export async function getActiveClasses() {
   return await axios.get(`${SERVER}/classes/active`);
 }
 
+export async function ExportAllStudentsInClass(classID) {
+  try {
+    const { data } = await axios.get(
+      `${SERVER}/classes/exportStudentInClass/` + classID
+    );
+    return data;
+  } catch (error) {
+    throw Error("data is not fatched");
+  }
+}
+
+export async function ExportAllPendingStudentsInClass(classID) {
+  try {
+    const { data } = await axios.get(
+      `${SERVER}/classes/exportPendingStudentInClass/` + classID
+    );
+    return data;
+  } catch (error) {
+    throw Error("data is not fatched");
+  }
+}
+
+
 
 
 //-----------------------------------------------------------------------

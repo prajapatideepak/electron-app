@@ -38,7 +38,7 @@ export default function Sidebar({ data }) {
                 activeclassname="active"
                 to="/"
               >
-                <li className="inline-flex xl:pl-11 mx-5 xl:mx-0 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                <li className="inline-flex xl:pl-11 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
                   <RiDashboardFill className="xl:w-5 xl:h-5 xl:mr-2" />
                   <h1 className="text-base hidden  xl:block  ">Dashboard</h1>
                 </li>
@@ -51,7 +51,7 @@ export default function Sidebar({ data }) {
                 activeclassname="active"
                 to="myclass"
               >
-                <li className="inline-flex xl:pl-11 mx-5 xl:mx-0 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                <li className="inline-flex xl:pl-11 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
                   <FaUsers className="xl:w-5 xl:h-5 xl:mr-2" />
                   <h1 className="text-base hidden  xl:block  ">My Class</h1>
                 </li>

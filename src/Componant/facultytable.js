@@ -14,7 +14,7 @@ import ReactPaginate from "react-paginate";
 import './Pagination.css'
 import Loader from './Loader';
 
-const Facultytable = ({call, allFaculty}) => {
+const Facultytable = ({allFaculty}) => {
   // -------------------------------
   // -------- API WORKS -----------
   // -------------------------------
@@ -26,14 +26,6 @@ const Facultytable = ({call, allFaculty}) => {
   const [itemOffset, setItemOffset] = useState(0)
   const [Serialno , setserialno] = useState(1)
   const itemsPerPage = 6;
-
-  // useEffect(() => {
-  //   getAllFaculty()
-  //     .then((res) => {
-  //       setFacultyData(res.staffData);
-  //     })
-  // }, [call])
-
 
   // -------------------------------
   // -------- Pagination -----------
@@ -107,11 +99,14 @@ const Facultytable = ({call, allFaculty}) => {
                   </tr>
                 </thead>
                 <tbody className="bg-white border">
-                {currentItems.length > 0 ? (
-                      currentItems.map((item, key) => {
+                {currentItems.length > 0 
+                  ? 
+                    isPrint
+                    ?
+                      allFaculty.map((item, key) => {
                         return (
                           <tr className="border-b"  >
-                            <td className="py-5 px-6">{(key + 1) + (6 * Serialno - 6)}</td>
+                            <th className="py-5 px-6">{(key + 1) + (itemsPerPage * Serialno - itemsPerPage)}</th>
                             <td className="py-5 px-6">{item.basic_info_id.full_name}</td>
                             <td className="py-5 px-6">{item.contact_info_id.whatsapp_no}</td>
                             <td className="py-5 px-6">{item.role}</td>
@@ -144,42 +139,85 @@ const Facultytable = ({call, allFaculty}) => {
                           </tr>
                         )
                       })
-                      ) : (
-                        <tr className="">
-                    <td colSpan={6} className="bg-red-200  font-bold p-2 rounded">
-                        <div className="flex space-x-2 justify-center items-center">
-
-                        <IoMdInformationCircle className="text-xl text-red-600"/>
-                        <h1 className="text-red-800">Faculty not found </h1>
-                        </div>
-                    </td>
-                </tr>
-                )}
+                    :
+                      (
+                        currentItems.map((item, key) => {
+                          return (
+                            <tr className="border-b"  >
+                              <th className="py-5 px-6">{(key + 1) + (itemsPerPage * Serialno - itemsPerPage)}</th>
+                              <td className="py-5 px-6">{item.basic_info_id.full_name}</td>
+                              <td className="py-5 px-6">{item.contact_info_id.whatsapp_no}</td>
+                              <td className="py-5 px-6">{item.role}</td>
+                              <td className={`py-5 px-6 ${isPrint ? "hidden" : ""}`}>
+                                <div className="flex justify-center items-center">
+                                  <NavLink to={`Profilefaculty/${item._id}`} >
+                                    <Tooltip content="Show Profile" placement="bottom-end" className="text-white bg-black rounded p-2" >
+                                      <span className="text-xl text-darkblue-500">
+                                        <AiFillEye className="cursor-pointer" />
+                                      </span>
+                                    </Tooltip>
+                                  </NavLink>
+                                </div>
+                              </td>
+                              <td className={`py-5 px-5 ${isPrint ? "hidden" : ""}`}>
+                                <div className="flex justify-center items-center">
+                                  <NavLink to={`/salary/${item._id}`}>
+                                    <Tooltip
+                                      content="Pay Salary"
+                                      placement="bottom-end"
+                                      className="text-white bg-black rounded p-2"
+                                    >
+                                      <span className="text-xl pb-1  text-green-500">
+                                        <GiWallet className="cursor-pointer" />
+                                      </span>
+                                    </Tooltip>
+                                  </NavLink>
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                        })
+                      ) 
+                  : 
+                    (
+                      <tr className="">
+                        <td colSpan={6} className="bg-red-200  font-bold p-2 rounded">
+                          <div className="flex space-x-2 justify-center items-center">
+                            <IoMdInformationCircle className="text-xl text-red-600"/>
+                            <h1 className="text-red-800">Faculty not found </h1>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                }
                 </tbody>
               </table>
             </div>
+            {
+              currentItems.length > 0 
+              ?
+                <div className=' flex justify-end items-center ml-32 py-5' >
+                  <div className=' py-2'>
+                    <ReactPaginate
+                      breakLabel="..."
+                      nextLabel="next >"
+                      onPageChange={handlePageClick}
+                      pageRangeDisplayed={3}
+                      pageCount={pageCount}
+                      previousLabel="< previous"
+                      renderOnZeroPageCount={null}
+                      containerClassName="pagination"
+                      pageLinkClassName='page-num'
+                      previousLinkClassName='page-num'
+                      nextLinkClassName='page-num'
+                      activeLinkClassName='active-page'
+                    />
 
-            <div className=' flex justify-end items-center ml-32 py-5' >
-              <div className=' py-2'>
-                <ReactPaginate
-                  breakLabel="..."
-                  nextLabel="next >"
-                  onPageChange={handlePageClick}
-                  pageRangeDisplayed={3}
-                  pageCount={pageCount}
-                  previousLabel="< previous"
-                  renderOnZeroPageCount={null}
-                  containerClassName="pagination"
-                  pageLinkClassName='page-num'
-                  previousLinkClassName='page-num'
-                  nextLinkClassName='page-num'
-                  activeLinkClassName='active-page'
-                />
-
-              </div>
-            </div>
-          
-
+                  </div>
+                </div>
+              :
+                null
+            }
           </div>
 
         </div>

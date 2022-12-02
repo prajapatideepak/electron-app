@@ -34,6 +34,8 @@ const Class = () => {
     const [itemOffset, setItemOffset] = useState(0)
     const [isPrint, setIsPrint] = useState(false);
     const [isLoading, setIsLoading] = useState(true)
+    const [Serialno , setserialno] = useState(1)
+    const [searchValue, setSearchValue] = useState('');
     const itemsPerPage = 2;
 
     let calculateTotalPendingFees = 0;
@@ -87,6 +89,7 @@ const Class = () => {
 
 
     const handleSearchStudents = (e) => {
+        setSearchValue(e.target.value);
         setPaginationData(() => allClassStudents?.filter((data) => {
 
             let searched_value = e.target.value;
@@ -107,6 +110,7 @@ const Class = () => {
     }
 
     const handlePageClick = (event) => {
+        setserialno(event.selected + 1)
         const newOffset = (event.selected * itemsPerPage) % classStudents.length;
         setItemOffset(newOffset);
     };
@@ -119,7 +123,7 @@ const Class = () => {
         <div className='relative  '>
             <div className={`bg-slate-100 `}>
                 <div className="flex justify-between  items-center px-5 pt-3  space-y-5">
-                    <h1 className=" text-xl xl:text-3xl  text-darkblue-500 xl:text-left font-bold text-darkblue-50 ">
+                    <h1 className="ml-5 text-xl xl:text-3xl  text-darkblue-500 xl:text-left font-bold text-darkblue-50 ">
                         {classDetails.class_name}
                     </h1>
                     <div className="button flex mr-6">
@@ -225,9 +229,10 @@ const Class = () => {
                             </div>
                         </div>
                         <div ref={componentRef} className='p-5 pt-3 pb-0'>
-                            <table className="w-full text-sm text-center rounded-xl overflow-hidden shadow-xl ">
+                            <table className="w-full text-sm text-center rounded-xl overflow-hidden">
                                 <thead className="text-xs text-gray-700 bg-class3-50 uppercase">
                                     <tr className='text-white text-base'>
+                                        <th scope="col" className="pl-3 py-4">Serial No</th>
                                         <th scope="col" className="pl-3 py-4">Student Id</th>
                                         <th scope="col" className="px-6 py-4">Name</th>
                                         <th scope="col" className="px-6 py-4">Phone</th>
@@ -248,14 +253,15 @@ const Class = () => {
                                 </thead>
                                 <tbody className='bg-white border items-center '>
                                 {
-                                    paginationData[0] 
+                                    paginationData.length > 0 
                                     ?
                                         isPrint
                                         ?
                                             allClassStudents.map((item,index)=>{
                                                 return(
                                             <tr className=" border-b" key={index}>
-                                                <th className=" py-5 text-gray-500">{item.student_id.student_id}</th>
+                                                <th className="py-5 px-6">{(index + 1) + (itemsPerPage * Serialno - itemsPerPage)}</th>
+                                                <td className=" py-5 text-gray-500">{item.student_id.student_id}</td>
                                                 <td className="px-6 py-5">{item.student_id.basic_info_id.full_name}</td>
                                                 <td className="px-6 py-5">{item.student_id.contact_info_id.whatsapp_no}</td>
                                                 <td className="px-6 py-5">{item.fees_id.net_fees}</td>
@@ -286,7 +292,8 @@ const Class = () => {
                                                 paginationData.map((item,index)=>{
                                                 return(
                                             <tr className=" border-b" key={index}>
-                                                <th className="px-6 py-5 text-gray-500">{item.student_id.student_id}</th>
+                                                <th className="py-5 px-6">{(index + 1) + (itemsPerPage * Serialno - itemsPerPage)}</th>
+                                                <td className="px-6 py-5 text-gray-500">{item.student_id.student_id}</td>
                                                 <td className="px-6 py-5">{item.student_id.basic_info_id.full_name}</td>
                                                 <td className="px-6 py-5">{item.student_id.contact_info_id.whatsapp_no}</td>
                                                 <td className="px-6 py-5">{item.fees_id.net_fees}</td>
@@ -336,7 +343,7 @@ const Class = () => {
                                             })
                                     :
                                         <tr className="">
-                                            <td colSpan={8} className="bg-red-200  font-bold p-2 rounded">
+                                            <td colSpan={9} className="bg-red-200  font-bold p-2 rounded">
                                                 <div className="flex space-x-2 justify-center items-center">
 
                                                         <IoMdInformationCircle className="text-xl text-red-600" />
@@ -349,26 +356,32 @@ const Class = () => {
                             </table>
 
                         </div>
-                        <nav aria-label="Page navigation example" className='flex justify-end'>
-                            <ul className="inline-flex items-center -space-x-px ">
-                                <li>
-                                    <ReactPaginate
-                                        breakLabel="..."
-                                        nextLabel="next >"
-                                        onPageChange={handlePageClick}
-                                        pageRangeDisplayed={3}
-                                        pageCount={pageCount}
-                                        previousLabel="< previous"
-                                        renderOnZeroPageCount={null}
-                                        containerClassName="pagination"
-                                        pageLinkClassName='page-num'
-                                        previousLinkClassName='page-num'
-                                        nextLinkClassName='page-num'
-                                        activeLinkClassName='active-page'
-                                    />
-                                </li>
-                            </ul>
-                        </nav>
+                        {
+                            paginationData.length > 0 && searchValue == ''
+                            ?
+                                <nav aria-label="Page navigation example" className='flex justify-end'>
+                                    <ul className="inline-flex items-center -space-x-px ">
+                                        <li>
+                                            <ReactPaginate
+                                                breakLabel="..."
+                                                nextLabel="next >"
+                                                onPageChange={handlePageClick}
+                                                pageRangeDisplayed={3}
+                                                pageCount={pageCount}
+                                                previousLabel="< previous"
+                                                renderOnZeroPageCount={null}
+                                                containerClassName="pagination"
+                                                pageLinkClassName='page-num'
+                                                previousLinkClassName='page-num'
+                                                nextLinkClassName='page-num'
+                                                activeLinkClassName='active-page'
+                                            />
+                                        </li>
+                                    </ul>
+                                </nav>
+                            :
+                                null
+                        }
                     </div>
                 </div>
             </div>

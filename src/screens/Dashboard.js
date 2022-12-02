@@ -23,14 +23,13 @@ export default function Dashboard() {
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
   const [Serialno, setserialno] = useState(1)
-  
-  const itemsPerPage = 2;
-  
+  const itemsPerPage = 2;  
   const { section, admin } = React.useContext(NasirContext);
-
   const [Student, setstudent] = useState([]);
-  const [PaginationData, setPaginationData] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+
   let isStudentNotFound = true
+  let count = 0;
 
   useEffect(() => {
     async function fetchfacultdata() {
@@ -47,22 +46,21 @@ export default function Dashboard() {
   }
 
   const handleSearchStudents = (e)=>{
+      setSearchValue(e.target.value);
       setcurrentItems(()=> Student?.filter((data)=>{
+        let searched_value = e.target.value;
+        const full_name = data.basic_info[0].full_name?.toLowerCase();
+        let isNameFound = false;
 
-      let searched_value = e.target.value;
-      const full_name = data.basic_info[0].full_name?.toLowerCase();
-      let isNameFound = false;
+        if(isNaN(searched_value)){
+          searched_value = searched_value.toLowerCase();
+        }
 
-      if(isNaN(searched_value)){
-        searched_value = searched_value.toLowerCase();
-      }
+        if (full_name.indexOf(searched_value) > -1){
+            isNameFound = true;
+        }
 
-      if (full_name.indexOf(searched_value) > -1){
-          isNameFound = true;
-      }
-
-      return data.student_id == searched_value || isNameFound || data.contact_info[0].whatsapp_no == searched_value;
-
+        return data.student_id == searched_value || isNameFound || data.contact_info[0].whatsapp_no == searched_value;
       }))
   }
 
@@ -166,6 +164,9 @@ export default function Dashboard() {
               <thead className="text-xs text-gray-700 bg-class2-50 uppercase">
                 <tr className="text-white text-base">
                   <th scope="col" className="py-4 px-6 text-center ">
+                    Serial No
+                  </th>
+                  <th scope="col" className="py-4 px-6 text-center ">
                     Student ID
                   </th>
                   <th scope="col" className="py-4 px-6 text-center ">
@@ -204,15 +205,17 @@ export default function Dashboard() {
                       ?
                         (
                           Student.map((item, key) => {
-                          if(item?.academics[0]?.class[0] != undefined){
-                            isStudentNotFound = false
-                          }
+                            if(item?.academics[0]?.class[0] != undefined){
+                              isStudentNotFound = false
+                            }
                           const Paid_up = [
                             item.academics[0].fees[0].net_fees - item.academics[0].fees[0].pending_amount
                           ]
                           if (item.academics[0].fees[0].pending_amount > 0 && item.academics[0].class[0] != undefined) {
+                            count++;
                             return ( 
                               <tr key={key} className="border-b" >
+                                <th className="py-5 px-6">{count + (itemsPerPage * Serialno - itemsPerPage)}</th>
                                 <td className="py-5 px-6 text-center ">{item.student_id}</td>
                                 <td className="py-5 px-6 text-center ">{item.basic_info[0].full_name}</td>
                                 <td className="py-5 px-6 text-center ">{item.academics[0].class[0].class_name}</td>
@@ -245,12 +248,17 @@ export default function Dashboard() {
                             if(item?.academics[0]?.class[0] != undefined){
                               isStudentNotFound = false
                             }
+                            
                             const Paid_up = [
                               item.academics[0].fees[0].net_fees - item.academics[0].fees[0].pending_amount
                             ]
+                            
                             if (item.academics[0].fees[0].pending_amount > 0 && item.academics[0].class[0] != undefined) {
+
+                              count++;
                               return ( 
                                 <tr key={key} className="border-b" >
+                                  <th className="py-5 px-6">{count + (itemsPerPage * Serialno - itemsPerPage)}</th>
                                   <td className="py-5 px-6 text-center ">{item.student_id}</td>
                                   <td className="py-5 px-6 text-center ">{item.basic_info[0].full_name}</td>
                                   <td className="py-5 px-6 text-center ">{item.academics[0].class[0].class_name}</td>
@@ -299,7 +307,7 @@ export default function Dashboard() {
                   isStudentNotFound
                     ?
                     <tr className="">
-                      <td colSpan={9} className="bg-red-200  font-bold p-2 rounded">
+                      <td colSpan={10} className="bg-red-200  font-bold p-2 rounded">
                           <div className="flex space-x-2 justify-center items-center">
                           <IoMdInformationCircle className="text-xl text-red-600" />
                           <h1 className="text-red-800">Students not found </h1>
@@ -313,7 +321,7 @@ export default function Dashboard() {
             </table>
           </div>
           {
-            !isStudentNotFound
+            !isStudentNotFound && searchValue == ''
               ?
               <nav aria-label="Page navigation example" className='flex justify-end'>
                 <ul className="inline-flex items-center -space-x-px ">

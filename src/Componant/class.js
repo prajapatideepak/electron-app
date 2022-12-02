@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import ReactToPrint from 'react-to-print';
 import { FaArrowRight } from "react-icons/fa"
-import { AiFillCloseCircle } from "react-icons/ai"
 import { AiOutlineUser } from "react-icons/ai"
 import { MdPendingActions } from "react-icons/md"
 import { FcMoneyTransfer } from "react-icons/fc"
@@ -36,6 +35,7 @@ const Class = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [Serialno , setserialno] = useState(1)
     const [searchValue, setSearchValue] = useState('');
+    const [selectedPage, setSelectedPage] = useState(0);
     const itemsPerPage = 2;
 
     let calculateTotalPendingFees = 0;
@@ -75,7 +75,7 @@ const Class = () => {
     }, [itemOffset, itemsPerPage, classStudents])
 
     const handlePendingPaidUpClick = (e) => {
-        setPaginationData(() => allClassStudents?.filter((data) => {
+        const filteredStudents = allClassStudents?.filter((data) => {
             if (e.target.value == 2) {
                 return data.fees_id.pending_amount == 0
             } else if (e.target.value == 1) {
@@ -84,7 +84,11 @@ const Class = () => {
                 return data
             }
         })
-        )
+        setserialno(1)
+        setSelectedPage(0)
+        setClassStudents(filteredStudents)
+        const newOffset = (filteredStudents.length * itemsPerPage) % filteredStudents.length;
+        setItemOffset(newOffset);
     }
 
 
@@ -111,6 +115,7 @@ const Class = () => {
 
     const handlePageClick = (event) => {
         setserialno(event.selected + 1)
+        setSelectedPage(event.selected)
         const newOffset = (event.selected * itemsPerPage) % classStudents.length;
         setItemOffset(newOffset);
     };
@@ -229,7 +234,7 @@ const Class = () => {
                             </div>
                         </div>
                         <div ref={componentRef} className='p-5 pt-3 pb-0'>
-                            <table className="w-full text-sm text-center rounded-xl overflow-hidden">
+                            <table className="w-full text-sm text-center rounded-xl overflow-hidden" id="table-to-xls">
                                 <thead className="text-xs text-gray-700 bg-class3-50 uppercase">
                                     <tr className='text-white text-base'>
                                         <th scope="col" className="pl-3 py-4">Serial No</th>
@@ -367,6 +372,7 @@ const Class = () => {
                                                 nextLabel="next >"
                                                 onPageChange={handlePageClick}
                                                 pageRangeDisplayed={3}
+                                                forcePage={selectedPage}
                                                 pageCount={pageCount}
                                                 previousLabel="< previous"
                                                 renderOnZeroPageCount={null}

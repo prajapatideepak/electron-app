@@ -1,9 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import ReactToPrint from 'react-to-print';
-import { useReactToPrint } from 'react-to-print';
 import { AiFillEye } from "react-icons/ai";
 import { IoMdInformationCircle } from "react-icons/io";
-import { AiOutlineRight } from "react-icons/ai";
 import { MdLocalPrintshop } from "react-icons/md";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
@@ -101,7 +99,7 @@ export default function Dashboard() {
               </div>
               <div className="">
                 <p className='text-white text-5xl mb-3 text-center '>{Student.length > 0 ? Student.length : 0}</p>
-                <h1 className='text-white  text-sm'>Total <span>Students</span></h1>
+                <h1 className='text-white  text-lg'>Total <span>Students</span></h1>
               </div>
             </div>
             <div id='Student-cards' className=' flex items-center justify-between px-5 p-2 py-3 rounded-lg xl:py-5 bg-class1-50  '>
@@ -330,7 +328,7 @@ export default function Dashboard() {
                       breakLabel="..."
                       nextLabel="next >"
                       onPageChange={handlePageClick}
-                      pageRangeDisplayed={3}
+                      pageRangeDisplayed={4}
                       pageCount={pageCount}
                       previousLabel="< previous"
                       renderOnZeroPageCount={null}

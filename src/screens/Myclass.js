@@ -92,8 +92,7 @@ const Myclass = () => {
   }
   
   useEffect(()=>{
-    fetchClasses();    
-    
+    fetchClasses();      
   },[call])
   
   const handleYearChange = (e)=>{

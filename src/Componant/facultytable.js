@@ -3,16 +3,13 @@ import ReactToPrint from 'react-to-print';
 import { GiWallet } from "react-icons/gi";
 import { AiFillEye } from "react-icons/ai";
 import { MdLocalPrintshop } from "react-icons/md";
-import { AiOutlineLeft } from "react-icons/ai";
-import { AiOutlineRight } from "react-icons/ai";
 import { IoMdInformationCircle } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-import { getAllFaculty, getFaculty } from "../hooks/usePost";
 import _ from "lodash"
 import ReactPaginate from "react-paginate";
 import './Pagination.css'
-import Loader from './Loader';
+
 
 const Facultytable = ({allFaculty}) => {
   // -------------------------------
@@ -41,10 +38,6 @@ const Facultytable = ({allFaculty}) => {
     setserialno(event.selected + 1)
     setItemOffset(newOffset);
   };
-
-
-
-
 
   return (
     <>
@@ -75,7 +68,7 @@ const Facultytable = ({allFaculty}) => {
               </span>
             </Tooltip>
             <div ref={componentRef} className='p-5 pt-3 pb-0'>
-              <table className="w-full text-sm text-center bg-class7-50 rounded-xl ">
+              <table className="w-full text-sm text-center bg-class7-50 rounded-xl " id="table-to-xls">
                 <thead className="text-xs text-gray-700 uppercase">
                   <tr className="text-white text-base">
                     <th scope="col" className="py-4">

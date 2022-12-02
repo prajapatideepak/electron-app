@@ -13,7 +13,7 @@ function Receipt_student({receiptDetails}) {
     >
       <div className="p-5">
         <div className="flex justify-between">
-          <img src="/images/logo.png" style={{ maxWidth: "250px" }} alt="" />
+          <img src="images/logo.png" style={{ maxWidth: "250px" }} alt="" />
           <div className={`${receiptTextColor} w-48 font-bold`}>
             <p>
               E-35, Sumel-8, Safal Market, Nr. Ajit Mill Char Rasta, Rakhial,

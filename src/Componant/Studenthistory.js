@@ -14,8 +14,12 @@ const Studenthistory = () => {
 
   const navigate = useNavigate();
   const componentRef = useRef();
-  const Toaster = () => { Toaster.success('New Staff Register successfully') }
-  const errtoast = () => { Toaster.error("Something Wrong") }
+  const Toaster = () => {
+    Toaster.success("New Staff Register successfully");
+  };
+  const errtoast = () => {
+    Toaster.error("Something Wrong");
+  };
 
   const [isLoadingDetails, setIsLoadingDetails] = useState(true);
   const [feesReceipts, setFeesReceipts] = useState([]);
@@ -68,32 +72,38 @@ const Studenthistory = () => {
           {feesReceipts && feesReceipts[0] ? (
             <>
               <div className="btn flex justify-start">
-                <ReactToPrint
-                  trigger={() => (
-                    // <Tooltip content="Print" placement="bottom-end" className='text-white bg-black rounded p-2'>
-                    <button
-                      id="print"
-                      className="text-3xl bg-darkblue-500 rounded-md text-white p-1"
-                    >
-                      <MdLocalPrintshop />
-                    </button>
-                    // </Tooltip>
-                  )}
-                  content={() => componentRef.current}
-                  onBeforeGetContent={(e) => {
-                    return new Promise((resolve) => {
-                      setIsPrint(true);
-                      resolve();
-                    });
-                  }}
-                  onAfterPrint={() => setIsPrint(false)}
-                />
+                <Tooltip
+                  content="Print"
+                  placement="bottom-end"
+                  className="text-white bg-black rounded p-2"
+                >
+                  <span>
+                    <ReactToPrint
+                      trigger={() => (
+                        <button
+                          id="print"
+                          className="text-3xl bg-darkblue-500 rounded-md text-white p-1"
+                        >
+                          <MdLocalPrintshop />
+                        </button>
+                      )}
+                      content={() => componentRef.current}
+                      onBeforeGetContent={(e) => {
+                        return new Promise((resolve) => {
+                          setIsPrint(true);
+                          resolve();
+                        });
+                      }}
+                      onAfterPrint={() => setIsPrint(false)}
+                    />
+                  </span>
+                </Tooltip>
               </div>
               <div ref={componentRef} className="p-5 pt-2 pb-0">
                 <div
                   className={`${
                     isPrint ? "flex" : "hidden"
-                  } justify-between items-center py-2 bg-gray-200`}
+                  } justify-between items-center py-2 bg-gray-100`}
                 >
                   <h3 className="text-lg mx-4 font-medium">
                     Name: {location.state.full_name}
@@ -107,7 +117,7 @@ const Studenthistory = () => {
                     isPrint ? "" : "rounded-lg"
                   }`}
                 >
-                  <table className="w-full text-sm text-left  ">
+                  <table className="w-full text-sm text-left ">
                     <thead className="text-sm uppercase bg-darkblue-500">
                       <tr className="text-white">
                         <th scope="col" className="py-3 px-6 text-center">
@@ -128,7 +138,7 @@ const Studenthistory = () => {
                         <th
                           scope="col"
                           className={`py-3 px-6 text-center ${
-                            isPrint ? "hidden" : "flex"
+                            isPrint ? "hidden" : "block"
                           }`}
                         >
                           Action
@@ -174,7 +184,7 @@ const Studenthistory = () => {
                                   }}
                                 >
                                   <Tooltip
-                                    content="Show"
+                                    content="Show Receipt"
                                     placement="bottom-end"
                                     className="text-white bg-black rounded p-2"
                                   >

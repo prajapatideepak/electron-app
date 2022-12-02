@@ -19,33 +19,32 @@ const Faculty = () => {
   const [isloading, setloading] = React.useState(true)
   const [isPrint, setIsPrint] = useState(false);
   const form = useRef()
-
-
-
+  const [isLoadingOnSubmit, setIsLoadingOnSubmit] = useState(false);
+  const defaultImage = "http://localhost:4000/user_default@123.png"
+  const [data, setData] = useState();
+  const Toaster = () => { toast.success('New Staff Register successfully') }
+  const errtoast = () => { toast.error("Something Wrong") }
+  const [img, setImg] = useState(defaultImage);
+  const [facultyDetails, setFacultyDetails] = useState([])
+  const [call, setcall] = useState(true)
 
 
   // ------------------------------------------------------------------------------------
   // -------------------------- API Works -----------------------------------------------
   // ------------------------------------------------------------------------------------
-  const [data, setData] = useState();
-  const Toaster = () => { toast.success('New Staff Register successfully') }
-  const errtoast = () => { toast.error("Something Wrong") }
-
   useEffect(() => {
     async function fetchfacultdata() {
       const res = await getAllFaculty();
+      setFacultyDetails(res.staffData)
       setData(() => res.staffData.length)
       setloading(false);
     }
     fetchfacultdata()
   }, [])
 
-  console.log(data)
-
   // ------------------------------------------------------------------------------------
   // -------------------------- FORM VALIDATION -----------------------------------------
   // ------------------------------------------------------------------------------------
-  const [img, setImg] = useState("./images/profile.jpeg");
   const onImageChange = (e) => {
     const [file] = e.target.files;
     setImg(URL.createObjectURL(file));
@@ -57,15 +56,22 @@ const Faculty = () => {
     reset,
     trigger,
     resetField,
-  } = useForm(); 
+  } = useForm();
+  
   const onSubmit = async () => {
     const formdata = new FormData(form.current);
-    const response = await Addfaculty(formdata)
-    console.log(response, "res")
+    setIsLoadingOnSubmit(true);
+    const response = await Addfaculty(formdata);
+
     if (response.data.success) {
+      setcall(!call)
+      setData(data + 1)
+      setIsLoadingOnSubmit(false);
       Toaster()
+      handleClick()
       return setModel(false)
     } else {
+      setIsLoadingOnSubmit(true);
       return errtoast()
     }
 
@@ -105,7 +111,21 @@ const Faculty = () => {
                         <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
                           <img src={img} width="100%" height="100%" alt="student profile" />
                           <div className='profile_img_overlay flex flex-col justify-center items-center'>
-                            <input type='file' name='photo' className="rounded-md w-16" onChange={onImageChange} />
+                            <input type='file' id="file" className="rounded-md w-16" accept=".png, .jpg, .jpeg" onInput={onImageChange} {...register('photo')} />
+
+                            {
+                              img != defaultImage
+                                ?
+                                <button
+                                  className='bg-red-600 px-1 rounded text-white hover:bg-red-400 mt-5 flex items-center justify-center gap-3' onClick={() => {
+                                    setImg(defaultImage);
+                                    document.getElementById('file').value = ''
+                                  }}>
+                                  <span> Remove</span>
+                                </button>
+                                :
+                                null
+                            }
 
                           </div>
                         </div>
@@ -118,7 +138,7 @@ const Faculty = () => {
                               <input
                                 type="text"
                                 placeholder="First Name, Middle Name, Last Name"
-                                className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.full_name && 'border-red-600'}`}
+                                className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.full_name && 'border-red-600'}`}
                                 {...register("full_name", { required: "Fullname is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                                 onKeyUp={() => {
                                   trigger('full_name')
@@ -135,7 +155,7 @@ const Faculty = () => {
                               <input
                                 type="text"
                                 placeholder="Enter Your Email"
-                                className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.email && 'border-red-600'}`}
+                                className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.email && 'border-red-600'}`}
                                 {...register("email", { required: "Email is required", pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "Please enter valid email" } })}
                                 onKeyUp={() => {
                                   trigger('email')
@@ -152,7 +172,7 @@ const Faculty = () => {
                               <input
                                 type="text"
                                 placeholder="Enter Your WhatsApp No"
-                                className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.whatsapp_no && 'border-red-600'}`}
+                                className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.whatsapp_no && 'border-red-600'}`}
                                 {...register("whatsapp_no", { required: "Whatsapp no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida whatsapp no" } })}
                                 onKeyUp={() => {
                                   trigger('whatsappno')
@@ -172,7 +192,7 @@ const Faculty = () => {
                               <input
                                 type="text"
                                 placeholder="Enter Your Mobile No"
-                                className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.mobileno && 'border-red-600'}`}
+                                className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.mobileno && 'border-red-600'}`}
                                 {...register("mobileno", { required: "Mobile no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida mobile no" } })}
                                 onKeyUp={() => {
                                   trigger('mobileno')
@@ -188,19 +208,19 @@ const Faculty = () => {
                               </span>
                               <input
                                 type="date"
-                                className={`xl:w-52 2xl:w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.dob && 'border-red-600'}`}
+                                className={`2xl:w-60 w-[185px] hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.dob && 'border-red-600'}`}
                                 {...register("dob", { required: "Date of birth is required" })}
                               />
 
                               {errors.dob && (<small className="text-red-700">{errors.dob.message}</small>)}
                             </label>
                           </div>
-                          <div className="gender ">
+                          <div className="gender 2xl:w-60 w-[185px] ">
                             <label className="block">
                               <span className="block text-sm font-medium text-slate-700">
                                 Gender
                               </span>
-                              <div className=" border xl:w-52 2xl:w-60 border-slate-300 mt-1 rounded-md h-10 flex justify-center items-center space-x-5 ">
+                              <div className={` border w-full 2xl:w-60 border-slate-300 mt-1 rounded-md h-10 flex justify-center items-center space-x-5 ${errors.gender && 'border-red-600'}`}>
                                 <div className="male ">
 
                                   <label for="gender" className="m-2">
@@ -244,7 +264,7 @@ const Faculty = () => {
                               <input
                                 type="text"
                                 placeholder="Enter Your Role"
-                                className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.role && 'border-red-600'}`}
+                                className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.role && 'border-red-600'}`}
                                 {...register("role", { required: "Role is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                                 onKeyUp={() => {
                                   trigger('role')
@@ -261,7 +281,7 @@ const Faculty = () => {
                               <input
                                 type="text"
                                 placeholder="Enter Your Address"
-                                className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.address && 'border-red-600'}`}
+                                className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.address && 'border-red-600'}`}
                                 {...register("address", { required: "Address is required", pattern: { value: /^[A-Za-z ]+$/, message: "Please enter only characters" } })}
                                 onKeyUp={() => {
                                   trigger('address')
@@ -277,7 +297,7 @@ const Faculty = () => {
                               </span>
                               <input
                                 type="date"
-                                className={`xl:w-52 2xl:w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.joining_date && 'border-red-600'}`}
+                                className={`2xl:w-60 w-[185px] hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.joining_date && 'border-red-600'}`}
                                 {...register("joining_date", { required: "Date of joining is required" })}
                               />
 
@@ -290,17 +310,18 @@ const Faculty = () => {
                           <div className="btn mt-5 flex justify-center w-60">
                             <button
                               type="button" onClick={handleClick}
-                              className="bg-blue-900 hover:bg-white border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-11 w-28 rounded-md tracking-wider"
+                              className="bg-darkblue-500 hover:bg-white border-2 hover:border-darkblue-500 uppercase text-white hover:text-darkblue-500 font-medium h-11 w-28 rounded-md tracking-wider"
                             >
                               Clear
                             </button>
                             <button
-                              type="submit"
-                              className="bg-blue-900 hover:bg-white border-2 flex justify-center items-center  hover:border-blue-900 text-white hover:text-blue-900 font-medium h-11 w-28 rounded-md tracking-wider"
-                            >
+                              type="submit" disabled={isLoadingOnSubmit}
+                              className={` bg-darkblue-500 hover:bg-white border-2 flex justify-center items-center 
+                              ${isLoadingOnSubmit ? 'opacity-40' : 'opacity-100'}
+                               hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium uppercase h-11 w-28 rounded-md tracking-wider`}>
 
 
-                              <h1 className="" >SUBMIT</h1>
+                              {isLoadingOnSubmit ? 'Loading...' : 'SUBMIT'}
                             </button>
                           </div>
                         </div>
@@ -326,7 +347,6 @@ const Faculty = () => {
             <div className="flex justify-between  items-center  p-5 pt-0 xl:pt-2 xl:pl-12 space-y-5">
               <h1 className=" text-xl xl:text-3xl text-center xl:text-left text-darkblue-500 font-bold">
                 Staff
-
               </h1>
               <NavLink className="nav-link" to="">
 
@@ -354,31 +374,24 @@ const Faculty = () => {
             <div className="pt-0 flex items-center justify-between   mx-20 xl:mx-32  ">
               <div className=" left">
                 <img
-                  src="/images/faculty.png"
+                  src="images/faculty.png"
                   alt=""
                   className=" xl:w-2/3 w-1/2 "
                 />
               </div>
-              <div className="right  flex justify-center">
-                <div
-                  id="faculty-card"
-                  className=" xl:p-5 py-5 space-x-5 w-52 xl:w-72 flex justify-start items-center  rounded-lg  bg-class5-50 drop-shadow-lg   xl:ml-10 "
-                >
-                  <div className="space-y-3">
-                    <div className='flex items-center justify-center bg-white h-14 w-14  rounded-md'>
-                      <FiUsers className="text-4xl text-class5-50" />
-                    </div>
+              <div className=' flex items-center p-2 cursor-pointer xl:w-1/3 bg-class7-50  rounded-lg xl:py-5 px-5  '>
+                <div className='flex ml-1'>
+                  <div className="bg-white rounded-md p-5 flex justify-center items-center">
+                    <FiUsers className='text-class7-50  text-4xl ' />
                   </div>
-                  <div>
-                    <p className=" font-semibold text-white mb-3 text-5xl">{data}</p>
-                    <h1 className="text-gray-200 text-sm xl:text-xl uppercase text-center  ">
-                      Total Staff
-                    </h1>
-                  </div>
+                </div>
+                <div className="ml-10">
+                  <p className='text-white text-5xl mb-3'>{data ? data : 0}</p>
+                  <h1 className='text-white text-lg '>Total <span>Faculty</span></h1>
                 </div>
               </div>
             </div>
-            <Facultytable />
+            <Facultytable call={call} allFaculty={facultyDetails} />
           </div>
         </div>
 

@@ -2,20 +2,20 @@ import React from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FaRupeeSign } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Facultyreciept, Update_faculty_reciept } from "../hooks/usePost"
+import { Facultyreciept, Update_faculty_reciept, usegetAdmin } from "../hooks/usePost"
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from './Loader';
-
-
+import { NasirContext } from "../NasirContext";
+import { IoIosArrowBack } from "react-icons/io";
 
 
 export default function Salarydetails() {
-    // -----------------------
-    // ----- API WORKS -------
-    // -----------------------
+    const { admin } = React.useContext(NasirContext);
+    console.log(admin , "admin")
+    const Toaster = () => { toast.success('Salary_Reciept updated') }
+    const errtoast = () => { toast.error("Invalid UserID / Password") }
     const params = useParams();
-
     const [isloading, setloading] = React.useState(true)
     const [faculty, setfaculty] = React.useState();
     const [salary, setsalary] = React.useState();
@@ -27,7 +27,22 @@ export default function Salarydetails() {
     const [chaque_no, setchaqueno] = React.useState('');
     const [upi_no, setupino] = React.useState('');
     const [payment, setPayment] = React.useState("");
+    const [amount, setamount] = React.useState(false);
+    const [upierror, setupierror] = React.useState(false);
+    const [chaqueerror, setchaqueerror] = React.useState(false);
+    const [amounterror, setamounterror] = React.useState(false);
+    const [toggle, setToggle] = React.useState(false);
+    const [model, setModel] = React.useState(false);
+    const [pin, setPin] = React.useState("");
+    const [error, setError] = React.useState(false);
+    const [salaryData, setSalaryData] = React.useState({
+        hour: "",
+        amount: "",
+    });
 
+    // --------------------------------
+    // --------  API WORK -------------
+    // -------------------------------
 
     React.useEffect(() => {
         async function fetchfacultdata() {
@@ -43,19 +58,21 @@ export default function Salarydetails() {
             setupino(() => res.data.data.receipt_details.getdetails.transaction_id.upi_no)
             setPayment(
                 upi
-                ?
-                    '2'
-                :
-                    chaque
                     ?
-                        "3"
+                    '2'
                     :
+                    chaque
+                        ?
+                        "3"
+                        :
                         "1"
             )
             setloading(false)
         }
         fetchfacultdata()
     }, [])
+
+
     //   // --------------------------------
     //   // --------  Date ----------------
     //   // -------------------------------
@@ -85,27 +102,6 @@ export default function Salarydetails() {
         today.getFullYear();
 
     const location = useLocation
-    // ------------------------
-    // ----- All Usestate ------
-    // ------------------------
-    const [amount, setamount] = React.useState(false);
-    const [paymenterror, setpaymenterror] = React.useState(false);
-    const [upierror, setupierror] = React.useState(false);
-    const [chaqueerror, setchaqueerror] = React.useState(false);
-    const [amounterror, setamounterror] = React.useState(false);
-    const [toggle, setToggle] = React.useState(false);
-    const [model, setModel] = React.useState(false);
-    const [pin, setPin] = React.useState("");
-    const [error, setError] = React.useState(false);
-    const [salaryData, setSalaryData] = React.useState({
-        hour: "",
-        amount: "",
-    });
-
-    const admin = {
-        id: 42,
-        name: "Shad rajput ",
-    };
 
     // ------------------------
     // ----- Payment_type ------
@@ -135,8 +131,6 @@ export default function Salarydetails() {
         setupino("")
         setchaqueno("")
     }
-
-
 
     // ------------------------
     // ----- salary_type ------
@@ -182,14 +176,12 @@ export default function Salarydetails() {
     // ------------------------
     // ----- Payment_PIN ------
     // ------------------------
-    const regtoast = () => { toast.success("Salary Reciept Updated Successfully!!") }
-    const errtoast = () => { toast.error("Something Wrong") }
     const navigate = useNavigate();
     async function handlePINsubmit() {
         const gen_reciept = ({
             salary_receipt_id: params.id,
             is_hourly: is_hourly,
-            admin: faculty.admin_id.username,
+            admin_id: admin._id,
             name: faculty.staff_id.basic_info_id.full_name,
             is_by_cheque: chaque ? 1 : 0,
             is_by_upi: upi ? 1 : 0,
@@ -202,19 +194,18 @@ export default function Salarydetails() {
             rate_per_hour: salaryData.amount,
 
         });
-        console.log(gen_reciept, "gen_reciept")
-        const SPIN = 1111;
-        if (pin == SPIN) {
-
+        if (pin == admin.security_pin) {
             const res = await Update_faculty_reciept(gen_reciept)
-            console.log(res.data.salary_receipt_details.salary_receipt_id, "res")
-            if (res.data.success = true) {
-                const salary_receipt_id = res.data.salary_receipt_details.salary_receipt_id
-                navigate(`/salary/Receipt_teacher/${salary_receipt_id}`,{ state: { prevPath: "update_receipt" } })
-                regtoast()
+            if (res.data.success == true) {
+                const receipt_id = res.data.salary_receipt_details.salary_receipt_id
+                navigate(`/salary/Receipt_teacher/${receipt_id}`, { state: { prevPath: "update_receipt" } })
+                Toaster()
             } else {
-                errtoast()
+                errtoast({
+                    invalid_pin: res.data.message
+                });
             }
+
         } else {
             setError(true);
         }
@@ -228,7 +219,6 @@ export default function Salarydetails() {
         setToggle(false);
     }
 
-
     if (isloading) {
         return <Loader />
     }
@@ -236,7 +226,7 @@ export default function Salarydetails() {
     return (
         <>
 
-            <div className="relative bg-student-100 py-6">
+            <div className="relative bg-student-100 ">
                 {model && (
                     <div className="flex justify-center mt-4   bg-white ">
                         <div className="absolute h-2/5 mx-auto  opacity-100 shadow-2xl rounded      bg-white w-2/3 z-50">
@@ -280,16 +270,16 @@ export default function Salarydetails() {
                                     <div className="px-6 py-3 font-bold text-darkblue-500 ">
                                         <h2>* Paid by :  {payment == 1 ? 'cash' : payment == 2 ? 'UPI' : 'Cheque'}</h2>
                                         {payment != 1 ? <h2>* {payment == 2 ? "UPI NO" : payment == 3 ? "Cheque No" : null} :  {payment == 2 ? upi_no : payment == 3 ? chaque_no : null}</h2> : null}
-                                        <h3 >* Recived by  : <span className="uppercase">{faculty.admin_id.username}</span></h3>
+                                        <h3 >* Recived by  : <span className="uppercase">{admin.username}</span></h3>
                                     </div>
                                     <div>
 
                                         <div className="border-2 mx-8 mt-6  w-fit flex items-center border-secondory-text">
                                             <input
-                                                type="text"
+                                                type="password"
                                                 className="p-1 px-3 outline-none "
                                                 placeholder="Enter Security PIN"
-                                                onChange={(e) => setPin(e.target.value)}
+                                                onChange={(e) => { setPin(e.target.value); setError(false) }}
                                             />
                                             <button
                                                 className="px-4 py-1 bg-darkblue-500 text-white "
@@ -313,15 +303,22 @@ export default function Salarydetails() {
 
                 <div
                     className={`mt-2 bg-student-100 min-h-screen px-12  py-6 ${model && "opacity-5"} `}>
+                    <div className="flex justify-between items-center">
                     <h1 className="font-bold text-3xl text-darkblue-500 ">
-                        Generate Salary Reciept
+                        Update Salary Receipt
                     </h1>
+                    <div className="group h-9 w-20 flex justify-center items-center gap-1 cursor-pointer" id="" onClick={() => navigate(-1)}>
+                        <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
+                        <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
+                    </div>
+
+                    </div>
                     <div className="bg-white px-1 py-5 mt-9 shadow-2xl rounded-2xl ">
                         <div className="flex pt-4  justify-between  relative">
                             <div className="space-y-2  text-sm ">
                                 <h1 className="bg-darkblue-500 text-blue-50 px-8 flex justify-center text-sm ">
                                     {" "}
-                                    Reciept No : {faculty.salary_receipt_id}
+                                    Receipt No : {faculty.salary_receipt_id}
                                 </h1>
                             </div>
                             <div className="p-6 pt-0 font-serif flex items-center space-x-2">
@@ -484,7 +481,7 @@ export default function Salarydetails() {
                                                 <h1> </h1>
                                                 <input
                                                     type="text"
-                                                    placeholder="Enter Chaque Number"
+                                                    placeholder="Enter Cheque Number"
                                                     className=" placeholder-black p-1 active:outline-none"
                                                     name="cheque_no"
                                                     defaultValue={chaque_no ? chaque_no : ""}
@@ -504,11 +501,11 @@ export default function Salarydetails() {
                             </div>
                         </div>
                         <div className="text-sm flex justify-between items-center uppercase font-bold font-mono mt-4 ">
-                            <h1 className="px-6"> admin : {faculty.admin_id.username}</h1>
+                            <h1 className="px-6"> admin : {admin.username}</h1>
                             <button onClick={genreciept}
                                 className="px-7  mx-7 py-2 text-base tracking-widest font-semibold uppercase bg-darkblue-500 text-white 
             transition duration-500 rounded-md hover:shadow-2xl"  >
-                                Genrate
+                                UPDATE
                             </button>
                         </div>
                     </div>

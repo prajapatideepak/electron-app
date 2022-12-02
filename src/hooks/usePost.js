@@ -1,5 +1,7 @@
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { getToken } from "../AuthProvider";
+import React from "react";
+import { NasirContext } from "../NasirContext";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -231,7 +233,7 @@ export const getAllFaculty = async () => {
     const { data } = await axios.get(`${SERVER}/Faculty`);
     return data;
   } catch (error) {
-    throw error("data is not fatched");
+    console.log(error)
   }
 };
 
@@ -240,8 +242,8 @@ export const getAllFaculty = async () => {
 // -----------------------------------------------------------------------
 export async function Facultydetails(id) {
   try {
-    const res = await axios.get(`${SERVER}/faculty//Facultydetails/` + id);
-    return res;
+    const res = await axios.get(`${SERVER}/faculty/Facultydetails/` + id)
+    return res
   } catch (error) {
     console.log(error);
   }
@@ -250,18 +252,17 @@ export async function Facultydetails(id) {
 // ------------------------------------------------------------------------
 // -----------------------------Update_faculty ----------------------------
 // ------------------------------------------------------------------------
-export async function Update_faculty(data) {
+
+export async function Update_faculty(staff_id , formdata) {
   try {
-    const staff_id = data.faculty_id;
-    delete data.faculty_id;
-    const res = await axios.put(`${SERVER}/Faculty/update/${staff_id}`, data);
-    return res;
+    const res = await axios.put(`${SERVER}/Faculty/update/${staff_id}`, formdata)
+    return res
   } catch (error) {
     return error;
   }
 }
 
-// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------=
 // ------------------reciept_table_one_faculty_details --------------------
 // ------------------------------------------------------------------------
 export async function getFaculty(id) {
@@ -278,12 +279,8 @@ export async function getFaculty(id) {
 // ------------------------------------------------------------------------
 export async function salarypay(gen_reciept) {
   try {
-    const response = await axios.post(
-      `${SERVER}/salary/create-reciept/`,
-      gen_reciept
-    );
-    console.log(response);
-    return response;
+    const response = await axios.post(`${SERVER}/salary/create-reciept/`, gen_reciept)
+    return response
   } catch (error) {
     console.log(error);
   }

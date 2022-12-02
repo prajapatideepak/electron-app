@@ -2,23 +2,26 @@ import React, { useRef, useState } from "react";
 import { TbCurrencyRupee } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useParams, useLocation } from "react-router-dom";
-import { Facultyreciept } from "../hooks/usePost"
+import { Facultyreciept, getAdminVerification,usegetAdmin } from "../hooks/usePost"
 import { NavLink, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdModeEditOutline } from "react-icons/md";
 import ReactToPrint from "react-to-print";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useForm } from "react-hook-form";
-import { FaBullseye, FaUserAlt } from "react-icons/fa";
+import { FaUserAlt } from "react-icons/fa";
 import { IoMdLock } from "react-icons/io";
 import Loader from './Loader';
-
-
-
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { NasirContext } from "../NasirContext"
 
 function Receipt_teacher() {
+  const { admin } = React.useContext(NasirContext);
   const receiptBgColor = 'bg-red-600';
   const receiptTextColor = 'text-red-600';
+  const Toaster = () => { toast.success('Authentication Successfull') }
+  const errtoast = () => { toast.error("Invalid UserID / Password") }
   //   // --------------------------------
   //   // -----   API Works    ----------
   //   // -------------------------------
@@ -29,23 +32,27 @@ function Receipt_teacher() {
   const [feesdetails, setfeesdetails] = React.useState([]);
   const [isloading, setloading] = React.useState(true)
   const [isHourly, setisHourly] = React.useState(0)
+  const navigate = useNavigate();
+  const printRef = useRef();
+  const [print, setPrint] = useState(false);
+  const [feesData, setFeesData] = React.useState({});
+  const [pin, setPin] = React.useState("");
+  const [error, setError] = React.useState('');
 
   React.useEffect(() => {
     async function fetchfacultdata() {
       const res = await Facultyreciept(params.id);
       setfacultyhistory(() => res.data.data.receipt_details.getdetails)
-      console.log(res, "res")
       setfeesdetails(() => res.data.data.receipt_details.hourlysalary)
       setisHourly(res.data.data.receipt_details.getdetails.is_hourly)
       setloading(false)
     }
     fetchfacultdata()
   }, [])
-  console.log(facultyhistory)
 
-  //   // --------------------------------
-  //   // ---------   Date    ----------
-  //   // -------------------------------
+  // --------------------------------
+  // ---------   Date    ----------
+  // -------------------------------
   var today = new Date(facultyhistory?.date);
   var date =
     today.getDate() +
@@ -83,44 +90,28 @@ function Receipt_teacher() {
     resetField,
   } = useForm();
 
-  const onSubmit = (data) => {
-    if (data.newpassword !== data.confirmpassword) {
-      document.getElementById("msg").style.display = "flex";
-    } else {
-      document.getElementById("msg").style.display = "none";
+
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
+    try {
+      const admin_details = await getAdminVerification({ username: data.Username, password: data.Password });
+      if (admin_details.data.success) {
+        Toaster()
+        navigate(`/salary/Salarydetails/${params.id}`);
+        return
+      }
+    }
+    catch (error) {
+      console.log(error.message)
+      if (error instanceof AxiosError) {
+        setError(error.response.data.error);
+      }
+      else {
+        setError(error.message);
+      }
     }
   };
 
-
-
-
-  const navigate = useNavigate();
-  const printRef = useRef();
-  const [print, setPrint] = useState(false);
-  const [feesData, setFeesData] = React.useState({});
-  const [pin, setPin] = React.useState("");
-  const [error, setError] = React.useState();
-  function handleBack() { }
-
-  const username = "Nasir";
-  const password = 1234;
-  function handlePINsubmit() {
-    setFeesData({
-      username: "Nasir",
-      password: 1234
-    });
-
-    console.log("Clicked");
-    if (username == username && password == password) {
-      console.log(pin);
-      console.log(params.id)
-      navigate(`/salary/Salarydetails/${params.id}`, feesData);
-    } else {
-      setError(true);
-    }
-  }
-
-  console.log(location?.state?.prevPath)
 
   if (isloading) {
     return <Loader />
@@ -143,19 +134,14 @@ function Receipt_teacher() {
 
                   </div>
                   <div className='mt-7'>
-                    <h1 className='text-2xl font-bold text-darkblue-500 px-6 '>Authentication</h1>
+                    <h1 className='text-2xl text-center font-bold text-darkblue-500 px-6 '>Super Admin Authentication</h1>
 
                     <form
                       className=""
                       onSubmit={handleSubmit(onSubmit)}
                     >
-                      <div className=" p-5">
-
-
-                        <div className="title flex justify-center pb-3  ">
-                          <img src="/images/User.png" alt="" className="rounded-full w-1/5 relative drop-shadow-2xl  " />
-                        </div>
-                        <div className=" grid grid-cols-1 rounded-lg drop-shadow-md truncate   ">
+                      <div className="px-5 py-10">
+                        <div className="grid grid-cols-1 rounded-lg drop-shadow-md truncate">
                           <div className=" flex flex-col items-center gap-5">
                             <div className="Username">
                               <label className="relative block">
@@ -192,7 +178,7 @@ function Receipt_teacher() {
                                   <IoMdLock className="h-5 w-5 fill-slate-500" />
                                 </span>
                                 <input
-                                  type="text"
+                                  type="password"
                                   id="Password"
                                   placeholder="Enter Password"
                                   onChange={(e) => setPin(e.target.value)}
@@ -217,14 +203,21 @@ function Receipt_teacher() {
                           <div className=" flex flex-col items-center gap-5">
                             <div className="flex lg:flex-row md:flex-col gap-4">
                               <div className="btn mt-5 flex justify-center w-60">
-                                <button onClick={handlePINsubmit}
+                                <button
                                   type="submit"
-                                  className="bg-blue-900 drop-shadow-2xl hover:bg-white border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-10 w-24 rounded-md tracking-wider"
+                                  className="mt-5 bg-blue-900 drop-shadow-2xl hover:bg-white border-2 hover:border-blue-900 text-white hover:text-blue-900 font-medium h-10 w-24 rounded-md tracking-wider"
                                 >
                                   SUBMIT
                                 </button>
                               </div>
                             </div>
+                            {
+                              error != '' && error != undefined
+                              ?
+                                <p className="text-red-700">{error}</p>
+                              :
+                                null
+                            } 
                           </div>
                         </div>
                       </div>
@@ -239,26 +232,31 @@ function Receipt_teacher() {
             </div>
           </div>
 
-
         )}
         <div className={`bg-slate-100 ${model && "opacity-20"}`} >
-          <div className=" px-6">
+          <div className="px-6">
             <div>
-              {
-                location?.state?.prevPath != "generate_receipt" && location?.state?.prevPath != "update_receipt"
-                  ?
-                  <div className="group m-6 flex justify-end items-end gap-1 cursor-pointer" id="" onClick={() => navigate(-1)}>
-                    <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
-                    <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
-                  </div>
-                  :
-                  null
-              }
-              <div className="py-5 pt-2" ref={printRef}>
+              <div className="flex justify-between">
+                <h2 className=" font-bold text-darkblue-500 text-3xl pt-10">Receipt</h2>
+
+                {
+                  location?.state?.prevPath != "generate_receipt" && location?.state?.prevPath != "update_receipt"
+                    ?
+                    <div className='lable  text-left flex justify-end items-center '>
+                      <div className="group h-9 w-20 flex justify-center items-center gap-1 pt-10 cursor-pointer" id="" onClick={() => navigate(-1)}>
+                        <IoIosArrowBack className="text-2xl font-bold group-hover:text-blue-700 text-darkblue-500 mt-[3px]" />
+                        <span className=" text-xl text-darkblue-500 font-semibold group-hover:text-blue-700">Back</span>
+                      </div>
+                    </div>
+                    :
+                    null
+                }
+              </div>
+              <div className="py-5 pt-10" ref={printRef}>
                 <ReceiptMainDiv className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`} ref={printRef} >
                   <div className="p-5">
                     <div className="flex justify-between">
-                      <img src="/images/logo.png" style={{ maxWidth: '250px' }} alt="" />
+                      <img src="images/logo.png" style={{ maxWidth: '250px' }} alt="" />
                       <div className={`${receiptTextColor} w-48 font-bold`}>
                         <p>E-35, Sumel-8, Safal Market, Nr. Ajit Mill Char Rasta, Rakhial, Ahmedabad.</p>
                         <p className="pt-2">Mobile: 8747382919</p>
@@ -274,35 +272,35 @@ function Receipt_teacher() {
                     </div>
                     <div className="flex justify-between items-center mt-5">
                       <div className="">
-                        <p className={`${receiptTextColor} font-bold italic`}>Name: <span className="text-black">{facultyhistory.staff_id.basic_info_id.full_name}</span></p>
+                        <p className={`${receiptTextColor} font-bold italic`}>Name: <span className="text-black">{facultyhistory?.staff_id?.basic_info_id.full_name}</span></p>
                       </div>
                       <div>
                         <p className={`${receiptTextColor} font-bold italic`}>Date: <span className="text-black">{date}</span></p>
                       </div>
                     </div>
                     <div className="mt-5">
-                      <p className={`${receiptTextColor} font-bold italic`}>The sum of Rupees: <span className="text-black"></span>{inWords(facultyhistory.transaction_id.amount)}</p>
+                      <p className={`${receiptTextColor} font-bold italic`}>The sum of Rupees: <span className="text-black">{inWords(facultyhistory?.transaction_id?.amount)} </span></p>
                     </div>
                     <div className="mt-5">
                       <p className={`${receiptTextColor} font-bold italic`}>
                         By {
-                          facultyhistory.transaction_id?.is_by_upi
+                          facultyhistory?.transaction_id?.is_by_upi
                             ?
                             'UPI'
                             :
-                            facultyhistory.transaction_id?.is_by_cheque
+                            facultyhistory?.transaction_id?.is_by_cheque
                               ?
                               "Cheque"
                               :
                               null
                         }: <span className="text-black">{
-                          facultyhistory.transaction_id?.is_by_upi
+                          facultyhistory?.transaction_id?.is_by_upi
                             ?
-                            facultyhistory.transaction_id?.upi_no
+                            facultyhistory?.transaction_id?.upi_no
                             :
-                            facultyhistory.transaction_id?.is_by_cheque
+                            facultyhistory?.transaction_id?.is_by_cheque
                               ?
-                              facultyhistory.transaction_id?.cheque_no
+                              facultyhistory?.transaction_id?.cheque_no
                               :
                               'CASH'
 
@@ -312,10 +310,10 @@ function Receipt_teacher() {
                     {isHourly ?
                       <div className="flex">
                         <div className={`flex justify-center items-center w-36 h-8 ${receiptBgColor} mt-5 mr-5 rounded-md`}>
-                          <p className="text-white">Per Lecture: {feesdetails.rate_per_hour}</p>
+                          <p className="text-white">Per Lecture: {feesdetails?.rate_per_hour}</p>
                         </div>
                         <div className={`flex justify-center items-center w-36 h-8 ${receiptBgColor} mt-5 mr-5 rounded-md`}>
-                          <p className="text-white">Total Lectures: {feesdetails.total_hours}</p>
+                          <p className="text-white">Total Lectures: {feesdetails?.total_hours}</p>
                         </div>
                       </div>
                       : null}
@@ -328,14 +326,14 @@ function Receipt_teacher() {
                             </div>
                           </div>
                           <div className="border-2 border-red-600 rounded-full ml-2">
-                            <input type="text" className="w-48 h-10 border-2 p-2 pl-14 border-red-600 rounded-full text-2xl font-bold" disabled value={facultyhistory.transaction_id.amount} style={{ margin: '1px' }} />
+                            <input type="text" className="w-48 h-10 border-2 p-2 pl-14 border-red-600 rounded-full text-2xl font-bold" disabled value={facultyhistory?.transaction_id?.amount} style={{ margin: '1px' }} />
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="flex justify-between items-center mt-6">
                       <div className="">
-                        <p className={`${receiptTextColor} font-bold text-sm ml-1 `}>Admin: <span className="text-black">{facultyhistory.admin_id.username}</span></p>
+                        <p className={`${receiptTextColor} font-bold text-sm ml-1 `}>Admin: <span className="text-black">{admin.username}</span></p>
                       </div>
                       <div>
 
@@ -347,7 +345,7 @@ function Receipt_teacher() {
                 {print && <ReceiptMainDiv className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`} >
                   <div className="p-5">
                     <div className="flex justify-between">
-                      <img src="/images/logo.png" style={{ maxWidth: '250px' }} alt="" />
+                      <img src="images/logo.png" style={{ maxWidth: '250px' }} alt="" />
                       <div className={`${receiptTextColor} w-48 font-bold`}>
                         <p>E-35, Sumel-8, Safal Market, Nr. Ajit Mill Char Rasta, Rakhial, Ahmedabad.</p>
                         <p className="pt-2">Mobile: 8747382919</p>
@@ -358,28 +356,28 @@ function Receipt_teacher() {
                         <p className="text-sm text-white py-1 px-2 ">TEACHER RECEIPT</p>
                       </div>
                       <div>
-                        <p className={`${receiptTextColor} font-bold`}>Receipt No: <span className="text-black">{facultyhistory.salary_receipt_id}</span></p>
+                        <p className={`${receiptTextColor} font-bold`}>Receipt No: <span className="text-black">{facultyhistory?.salary_receipt_id}</span></p>
                       </div>
                     </div>
                     <div className="flex justify-between items-center mt-5">
                       <div className="">
-                        <p className={`${receiptTextColor} font-bold italic`}>Name: <span className="text-black">{facultyhistory.staff_id.basic_info_id.full_name}</span></p>
+                        <p className={`${receiptTextColor} font-bold italic`}>Name: <span className="text-black">{facultyhistory?.staff_id?.basic_info_id?.full_name}</span></p>
                       </div>
                       <div>
                         <p className={`${receiptTextColor} font-bold italic`}>Date: <span className="text-black">{date}</span></p>
                       </div>
                     </div>
                     <div className="mt-5">
-                      <p className={`${receiptTextColor} font-bold italic`}>The sum of Rupees: <span className="text-black"></span>{inWords(facultyhistory.transaction_id.amount)}</p>
+                      <p className={`${receiptTextColor} font-bold italic`}>The sum of Rupees: <span className="text-black"></span>{inWords(facultyhistory?.transaction_id?.amount)}</p>
                     </div>
                     <div className="mt-5">
                       <p className={`${receiptTextColor} font-bold italic`}>
                         By {
-                          facultyhistory.transaction_id?.is_by_upi
+                          facultyhistory?.transaction_id?.is_by_upi
                             ?
                             'UPI'
                             :
-                            facultyhistory.transaction_id?.is_by_cheque
+                            facultyhistory?.transaction_id?.is_by_cheque
                               ?
                               "Cheque"
                               :
@@ -418,14 +416,14 @@ function Receipt_teacher() {
                             </div>
                           </div>
                           <div className="border-2 border-red-600 rounded-full ml-2">
-                            <input type="text" className="w-48 h-10 border-2 p-2 pl-14 border-red-600 rounded-full text-2xl font-bold" disabled value={facultyhistory.transaction_id.amount} style={{ margin: '1px' }} />
+                            <input type="text" className="w-48 h-10 border-2 p-2 pl-14 border-red-600 rounded-full text-2xl font-bold" disabled value={facultyhistory.transaction_id?.amount} style={{ margin: '1px' }} />
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="flex justify-between items-center mt-6">
                       <div className="">
-                        <p className={`${receiptTextColor} font-bold text-sm ml-1 `}>Admin: <span className="text-black">{facultyhistory.admin_id.username}</span></p>
+                        <p className={`${receiptTextColor} font-bold text-sm ml-1 `}>Admin: <span className="text-black">{facultyhistory.admin_id?.username}</span></p>
                       </div>
                       <div>
 

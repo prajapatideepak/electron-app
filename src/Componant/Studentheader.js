@@ -72,7 +72,7 @@ const Studenthearder = () => {
         <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
           <div>
             <p className="text-base md:text-lg lg:text-xl font-bold leading-tight text-gray-800">
-              Student Transection List
+              Transaction List
             </p>
           </div>
           <div className="print-btn flex items-center space-x-3">

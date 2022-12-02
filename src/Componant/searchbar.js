@@ -48,7 +48,7 @@ export default function Searchbar() {
             <div className="profile">
               <img
                 className="rounded-full w-10 mx-auto"
-                src="/images/user.png"
+                src="images/user.png"
                 width="7%"
                 height="7%"
                 alt="profile"

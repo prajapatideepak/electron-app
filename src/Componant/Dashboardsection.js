@@ -18,7 +18,7 @@ const Dashboardsection = () => {
       <section className="h-full w-full flex justify-center items-center ">
         <div className="flex w-full h-screen overflow-hidden ">
           <div className="hidden lg:flex flex-1 justify-center items-center sm:hidden">
-            <img src="../images/20943993.jpg" alt="" />
+            <img src="images/20943993.jpg" alt="" />
           </div>
 
           <div className="flex flex-1 flex-col justify-center items-center bg-[#E9EFFD]">

@@ -13,11 +13,11 @@ export default function Sidebar({ data }) {
   return (
     <div className="h-full bg-white sticky left-0 top-0">
       <div className="sidebar h-screen w-20 xl:w-60">
-        <div className="sidebar-top flex justify-center mr-8 pt-1 pb-6 ">
+        <div className="sidebar-top flex justify-center xl:mr-8 pt-3 xl:pt-1 lg:pb-1 xl:pb-6 ">
           <img
             src="images/logo.png"
             alt=""
-            className="w-36 cursor-pointer hidden xl:block "
+            className="w-24 lg:w-32 xl:w-36 cursor-pointer"
             id="logo"
           />
         </div>

@@ -59,7 +59,6 @@ const Profilefaculty = () => {
   const [isPrint, setIsPrint] = useState(false);
   const [isLoadingOnSubmit, setIsLoadingOnSubmit] = useState(false);
   const params = useParams();
-  // const [facultydetails, setfacultydetails] = React.useState();
   const [facultysalary, setfacultysalary] = React.useState([]);
   const [Totalpaid, setTotalpaid] = React.useState([]);
   const [isloading, setloading] = React.useState(true)

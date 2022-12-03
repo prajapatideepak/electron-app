@@ -179,28 +179,31 @@ const Facultytable = ({ call, allFaculty }) => {
                 </tbody>
               </table>
             </div>
+            {
+              currentItems.length > 0 
+              ?
+                <div className=' flex justify-end items-center ml-32 py-5' >
+                  <div className=' py-2'>
+                    <ReactPaginate
+                      breakLabel="..."
+                      nextLabel="next >"
+                      onPageChange={handlePageClick}
+                      pageRangeDisplayed={3}
+                      pageCount={pageCount}
+                      previousLabel="< previous"
+                      renderOnZeroPageCount={null}
+                      containerClassName="pagination"
+                      pageLinkClassName='page-num'
+                      previousLinkClassName='page-num'
+                      nextLinkClassName='page-num'
+                      activeLinkClassName='active-page'
+                    />
 
-            <div className=' flex justify-end items-center ml-32 py-5' >
-              <div className=' py-2'>
-                <ReactPaginate
-                  breakLabel="..."
-                  nextLabel="next >"
-                  onPageChange={handlePageClick}
-                  pageRangeDisplayed={3}
-                  pageCount={pageCount}
-                  previousLabel="< previous"
-                  renderOnZeroPageCount={null}
-                  containerClassName="pagination"
-                  pageLinkClassName='page-num'
-                  previousLinkClassName='page-num'
-                  nextLinkClassName='page-num'
-                  activeLinkClassName='active-page'
-                />
-
-              </div>
-            </div>
-
-
+                  </div>
+                </div>
+              :
+                null
+            }
           </div>
 
         </div>

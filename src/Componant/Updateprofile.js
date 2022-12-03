@@ -125,7 +125,6 @@ const Updateprofile = () => {
         else {
           Toaster('error', err.message);
         }
-        return navigate(-1);
       }
     }
     admindata()

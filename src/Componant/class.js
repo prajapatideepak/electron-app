@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import ReactToPrint from 'react-to-print';
 import { FaArrowRight } from "react-icons/fa"
+import { AiFillCloseCircle } from "react-icons/ai"
 import { AiOutlineUser } from "react-icons/ai"
 import { MdPendingActions } from "react-icons/md"
 import { FcMoneyTransfer } from "react-icons/fc"
@@ -12,13 +13,12 @@ import { MdLocalPrintshop } from 'react-icons/md';
 import { IoMdInformationCircle } from 'react-icons/io';
 import { Tooltip } from "@material-tailwind/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { getAllStudentsInClass, ExportAllStudentsInClass , ExportAllPendingStudentsInClass } from "../hooks/usePost";
+import { getAllStudentsInClass, ExportAllStudentsInClass, ExportAllPendingStudentsInClass } from "../hooks/usePost";
 import { IoIosArrowBack } from 'react-icons/io';
 import _ from "lodash";
 import Loader from "./Loader";
-
-import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
+import ReactPaginate from "react-paginate";
 
 
 const Class = () => {
@@ -36,6 +36,8 @@ const Class = () => {
     const [itemOffset, setItemOffset] = useState(0)
     const [isPrint, setIsPrint] = useState(false);
     const [isLoading, setIsLoading] = useState(true)
+    const [Serialno, setserialno] = useState(1)
+    const [selectedPage, setSelectedPage] = useState(0);
     const itemsPerPage = 2;
     const Toaster = () => { toast.success('All Student Export To Excel') }
     const errtoast = () => { toast.error("Something Wrong") }
@@ -78,7 +80,7 @@ const Class = () => {
     }, [itemOffset, itemsPerPage, classStudents])
 
     const handlePendingPaidUpClick = (e) => {
-        setPaginationData(() => allClassStudents?.filter((data) => {
+        const filteredStudents = allClassStudents?.filter((data) => {
             if (e.target.value == 2) {
                 return data.fees_id.pending_amount == 0
             } else if (e.target.value == 1) {
@@ -87,12 +89,15 @@ const Class = () => {
                 return data
             }
         })
-        )
+        setserialno(1)
+        setSelectedPage(0)
+        setClassStudents(filteredStudents)
+        const newOffset = (filteredStudents.length * itemsPerPage) % filteredStudents.length;
+        setItemOffset(newOffset);
     }
 
-
     const handleSearchStudents = (e) => {
-        setPaginationData(() => allClassStudents?.filter((data) => {
+        setClassStudents(() => allClassStudents?.filter((data) => {
 
             let searched_value = e.target.value;
             const full_name = data.student_id.basic_info_id.full_name?.toLowerCase();
@@ -112,18 +117,11 @@ const Class = () => {
     }
 
     const handlePageClick = (event) => {
+        setserialno(event.selected + 1)
+        setSelectedPage(event.selected)
         const newOffset = (event.selected * itemsPerPage) % classStudents.length;
         setItemOffset(newOffset);
     };
-
-    const Exportstudent = () => {
-        const res = ExportAllStudentsInClass(params.id)
-        if (res) {
-            Toaster()
-        } else {
-            errtoast()
-        }
-    }
 
     const Exportpendingstudent = () => {
         const res = ExportAllPendingStudentsInClass(params.id)
@@ -134,6 +132,14 @@ const Class = () => {
         }
     }
 
+    const Exportstudent = () => {
+        const res = ExportAllStudentsInClass(params.id)
+        if (res) {
+            Toaster()
+        } else {
+            errtoast()
+        }
+    }
 
     if (isLoading) {
         return <Loader />
@@ -143,7 +149,7 @@ const Class = () => {
         <div className='relative  '>
             <div className={`bg-slate-100 `}>
                 <div className="flex justify-between  items-center px-5 pt-3  space-y-5">
-                    <h1 className=" text-xl xl:text-3xl  text-darkblue-500 xl:text-left font-bold text-darkblue-50 ">
+                    <h1 className="ml-5 text-xl xl:text-3xl  text-darkblue-500 xl:text-left font-bold text-darkblue-50 ">
                         {classDetails.class_name}
                     </h1>
                     <div className="button flex mr-6">
@@ -201,7 +207,7 @@ const Class = () => {
 
                 </div>
                 <div className='flex justify-center items-center p-10 pt-5'>
-                    <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-5 shadow-xl  w-full space-y-10">
+                    <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-5 shadow-xl  w-full space-y-5">
                         <div className="print-btn flex items-center justify-between space-x-3">
                             <div className=" flex  items-center justify-center ml-6">
                                 <input
@@ -259,7 +265,6 @@ const Class = () => {
 
                             </div>
                         </div>
-
 
                         <div ref={componentRef} className=''>
                             <table className="w-full text-sm text-center rounded-xl overflow-hidden shadow-xl " id="table-to-xls">

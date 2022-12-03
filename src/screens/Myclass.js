@@ -40,24 +40,25 @@ const Myclass = () => {
   const [edit_class_id, setEdit_class_id] = React.useState();
   const bgColors = ["#ffd6d6", "#bfdbfe", "#c1d1d8", "#ffedd5", "#f4d5ff", "#fbc8bd", "#ccfbf1", "#d8bbbc", "#fef9c3"]
   const headingBgColor = ["#f3797e", "#3b82f6", "#2f667e", "#9a4947", "#e08aff", "#f24822", "#14b8a6", "#7e1b1f", "#ca8a04"]
-  const [isHover, setIsHover] = React.useState(false);
+  const [isHoverEdit, setIsHoverEdit] = React.useState(false);
+  const [isHoverDelete, setIsHoverDelete] = React.useState(false);
   const [isCurrentYearSelected, setIsCurrentYearSelected] = React.useState(true)
   const [isLoading, setIsLoading] = React.useState(true)
 
   const handleMouseEnterEdit = () => {
-    setIsHover(true);
+    setIsHoverEdit(true);
   };
 
   const handleMouseLeaveEdit = () => {
-    setIsHover(false);
+    setIsHoverEdit(false);
   };
 
   const handleMouseEnterDelete = () => {
-    setIsHover(true);
+    setIsHoverDelete(true);
   };
 
   const handleMouseLeaveDelete = () => {
-    setIsHover(false);
+    setIsHoverDelete(false);
   };
 
 
@@ -70,29 +71,28 @@ const Myclass = () => {
     
   }
 
+  async function fetchClasses(){
+    const res = await getAllClasses();
+    fetchClassesByYear();
+    setClasses(()=>
+      res?.data?.filter(
+        (data)=>{
+          return data.is_active == 1 && data.is_primary == is_primary
+        }
+      )
+    )
+
+    setFetchData(()=>
+      res?.data?.filter(
+        (data)=>{
+          return data.is_primary == is_primary
+        }
+      )
+    )
+  }
   
   useEffect(()=>{
-    async function fetchClasses(){
-      const res = await getAllClasses();
-      fetchClassesByYear();
-      setClasses(()=>
-        res?.data?.filter(
-          (data)=>{
-            return data.is_active == 1 && data.is_primary == is_primary
-          }
-        )
-      )
-  
-      setFetchData(()=>
-        res?.data?.filter(
-          (data)=>{
-            return data.is_primary == is_primary
-          }
-        )
-      )
-    }
-    
-    fetchClasses();    
+    fetchClasses();      
   },[call])
   
   const handleYearChange = (e)=>{
@@ -175,8 +175,7 @@ const Myclass = () => {
   const onSubmit = async (data) => {
     const response = await AddClass(data);
     if (response) {
-      // setCall(()=>!call)
-      // fetchClasses()
+      fetchClasses()
       setModel(false);
       reset();
       return notify()
@@ -889,38 +888,38 @@ const Myclass = () => {
                 return (
                   <li className="rounded-md h-28 xl:w-72  xl:h-44 p-3 pt-2 cursor-pointer" key={index}>
                     <div className="class_card drop-shadow-lg rounded-lg p-2 pr-0 h-40" style={{ backgroundColor: bgColors[index % bgColors.length] }}>
-                      <div className=" h-6  flex justify-end it ems-center space-x-2 mr-2 "
+                      <div className=" h-6  flex justify-end items-center space-x-2 mr-2 "
                       >
                         {
                           isCurrentYearSelected
                             ?
-                            <>
-                              <div className=" edit_delete_btns hidden px-1 py-1 rounded-md"
-                                style={{
-                                  color: isHover ? "#fff" : headingBgColor[index % headingBgColor.length],
-                                  backgroundColor: isHover ? headingBgColor[index % headingBgColor.length] : "#fff"
-                                }}
-                                onMouseEnter={handleMouseEnterEdit}
-                                onMouseLeave={handleMouseLeaveEdit}>
-                                <MdModeEdit
-                                  className=""
+                              <>
+                                <div className="edit_delete_btns px-1 py-1 rounded-md"
+                                  style={{
+                                    color: isHoverEdit ? "#fff" : headingBgColor[index % headingBgColor.length],
+                                    backgroundColor: isHoverEdit ? headingBgColor[index % headingBgColor.length] : "#fff"
+                                  }}
+                                  onMouseEnter={handleMouseEnterEdit}
+                                  onMouseLeave={handleMouseLeaveEdit}
                                   onClick={() => handleEditClass(item._id)}
-                                />
-                              </div>
+                                >
+                                  <MdModeEdit />
+                                </div>
 
-                              <div className=" edit_delete_btns hidden px-1 py-1 rounded-md"
-                                style={{
-                                  color: isHover ? "#fff" : headingBgColor[index % headingBgColor.length],
-                                  backgroundColor: isHover ? headingBgColor[index % headingBgColor.length] : "#fff"
-                                }}
-                                onMouseEnter={handleMouseEnterDelete}
-                                onMouseLeave={handleMouseLeaveDelete}
-                              >
-                                <MdDelete onClick={() => handleDeleteClass(item._id)} />
-                              </div>
-                            </>
+                                <div className="edit_delete_btns px-1 py-1 rounded-md"
+                                  style={{
+                                    color: isHoverDelete ? "#fff" : headingBgColor[index % headingBgColor.length],
+                                    backgroundColor: isHoverDelete ? headingBgColor[index % headingBgColor.length] : "#fff"
+                                  }}
+                                  onMouseEnter={handleMouseEnterDelete}
+                                  onMouseLeave={handleMouseLeaveDelete}
+                                  onClick={() => handleDeleteClass(item._id)}
+                                >
+                                  <MdDelete />
+                                </div>
+                              </>
                             :
-                            null
+                              null
                         }
                       </div>
                       <NavLink

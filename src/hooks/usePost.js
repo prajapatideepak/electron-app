@@ -121,7 +121,7 @@ export async function getAllStudentsInClass(classID) {
     );
     return data;
   } catch (error) {
-    throw Error("data is not fatched");
+    throw Error("data is not fatched  ");
   }
 }
 

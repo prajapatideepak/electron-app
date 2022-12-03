@@ -382,7 +382,7 @@ const Profilestudent = () => {
         let photo = 
             studDetails.personal.basic_info_id.photo == '' || studDetails.personal.basic_info_id.photo == undefined
             ?
-                defaultImage
+                ''
             :
                 server + studDetails.personal.basic_info_id.photo
             

@@ -98,7 +98,7 @@ const Facultytable = ({allFaculty}) => {
                     ?
                       allFaculty.map((item, key) => {
                         return (
-                          <tr className="border-b"  >
+                          <tr key={key} className="border-b"  >
                             <th className="py-5 px-6">{(key + 1) + (itemsPerPage * Serialno - itemsPerPage)}</th>
                             <td className="py-5 px-6">{item.basic_info_id.full_name}</td>
                             <td className="py-5 px-6">{item.contact_info_id.whatsapp_no}</td>
@@ -136,7 +136,7 @@ const Facultytable = ({allFaculty}) => {
                       (
                         currentItems.map((item, key) => {
                           return (
-                            <tr className="border-b"  >
+                            <tr key={key} className="border-b"  >
                               <th className="py-5 px-6">{(key + 1) + (itemsPerPage * Serialno - itemsPerPage)}</th>
                               <td className="py-5 px-6">{item.basic_info_id.full_name}</td>
                               <td className="py-5 px-6">{item.contact_info_id.whatsapp_no}</td>

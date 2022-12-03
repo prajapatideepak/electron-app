@@ -21,31 +21,36 @@ export default function Dashboard() {
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
   const [Serialno, setserialno] = useState(1)
-  const itemsPerPage = 2;  
   const { section, admin } = React.useContext(NasirContext);
   const [Student, setstudent] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
-
-  let isStudentNotFound = true
-  let count = 0;
+  const [allStudent, setAllStudent] = useState([]);
+  const [isStudentNotFound, setIsStudentNotFound] = useState(true);
+  const itemsPerPage = 2;  
 
   useEffect(() => {
-    async function fetchfacultdata() {
+    async function fetchFeesPendingData() {
       const res = await Alloverstudent(section);
-      setstudent(() => res.data)
+      const StudentsWithPendingFees = res.data?.filter((student)=>{
+        return student.academics[0].fees[0].pending_amount > 0 && student.academics[0].class[0] != undefined
+      })
+
+      if(StudentsWithPendingFees.length > 0){
+        setIsStudentNotFound(false)
+      }
+      setstudent(StudentsWithPendingFees)
+      setAllStudent(StudentsWithPendingFees)
       setloading(false);
     }
-    fetchfacultdata()
+    fetchFeesPendingData()
   }, [])
 
   let calculatepending = 0;
   for (let i = 0; i < Student.length; i++) {
-    calculatepending += Student[i].academics[0].fees[0].pending_amount > 0
+    calculatepending += Student[i].academics[0].fees[0].pending_amount
   }
 
   const handleSearchStudents = (e)=>{
-      setSearchValue(e.target.value);
-      setcurrentItems(()=> Student?.filter((data)=>{
+      setstudent(()=> allStudent?.filter((data)=>{
         let searched_value = e.target.value;
         const full_name = data.basic_info[0].full_name?.toLowerCase();
         let isNameFound = false;
@@ -69,7 +74,7 @@ export default function Dashboard() {
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
     setcurrentItems(Student.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(calculatepending / itemsPerPage));
+    setPageCount(Math.ceil(Student.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, Student])
 
   const handlePageClick = (event) => {
@@ -203,17 +208,11 @@ export default function Dashboard() {
                       ?
                         (
                           Student.map((item, key) => {
-                            if(item?.academics[0]?.class[0] != undefined){
-                              isStudentNotFound = false
-                            }
-                          const Paid_up = [
-                            item.academics[0].fees[0].net_fees - item.academics[0].fees[0].pending_amount
-                          ]
-                          if (item.academics[0].fees[0].pending_amount > 0 && item.academics[0].class[0] != undefined) {
-                            count++;
+                          const Paid_up = item.academics[0].fees[0].net_fees - item.academics[0].fees[0].pending_amount
+                          
                             return ( 
                               <tr key={key} className="border-b" >
-                                <th className="py-5 px-6">{count + (itemsPerPage * Serialno - itemsPerPage)}</th>
+                                <th className="py-5 px-6">{(key + 1) + (itemsPerPage * Serialno - itemsPerPage)}</th>
                                 <td className="py-5 px-6 text-center ">{item.student_id}</td>
                                 <td className="py-5 px-6 text-center ">{item.basic_info[0].full_name}</td>
                                 <td className="py-5 px-6 text-center ">{item.academics[0].class[0].class_name}</td>
@@ -238,25 +237,15 @@ export default function Dashboard() {
                                 </td>
                               </tr>
                             )
-                          }
                           })
                         )
                       :
-                        currentItems.map((item, key) => {
-                            if(item?.academics[0]?.class[0] != undefined){
-                              isStudentNotFound = false
-                            }
-                            
-                            const Paid_up = [
-                              item.academics[0].fees[0].net_fees - item.academics[0].fees[0].pending_amount
-                            ]
-                            
-                            if (item.academics[0].fees[0].pending_amount > 0 && item.academics[0].class[0] != undefined) {
+                        currentItems.map((item, key) => {                          
+                            const Paid_up = item.academics[0].fees[0].net_fees - item.academics[0].fees[0].pending_amount
 
-                              count++;
                               return ( 
                                 <tr key={key} className="border-b" >
-                                  <th className="py-5 px-6">{count + (itemsPerPage * Serialno - itemsPerPage)}</th>
+                                  <th className="py-5 px-6">{(key + 1) + (itemsPerPage * Serialno - itemsPerPage)}</th>
                                   <td className="py-5 px-6 text-center ">{item.student_id}</td>
                                   <td className="py-5 px-6 text-center ">{item.basic_info[0].full_name}</td>
                                   <td className="py-5 px-6 text-center ">{item.academics[0].class[0].class_name}</td>
@@ -297,8 +286,6 @@ export default function Dashboard() {
                                   </td>
                             </tr>
                           )
-
-                        }
                       })
                     }
                 {
@@ -319,7 +306,7 @@ export default function Dashboard() {
             </table>
           </div>
           {
-            !isStudentNotFound && searchValue == ''
+            !isStudentNotFound
               ?
               <nav aria-label="Page navigation example" className='flex justify-end'>
                 <ul className="inline-flex items-center -space-x-px ">

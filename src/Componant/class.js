@@ -34,7 +34,6 @@ const Class = () => {
     const [isPrint, setIsPrint] = useState(false);
     const [isLoading, setIsLoading] = useState(true)
     const [Serialno , setserialno] = useState(1)
-    const [searchValue, setSearchValue] = useState('');
     const [selectedPage, setSelectedPage] = useState(0);
     const itemsPerPage = 2;
 
@@ -93,8 +92,7 @@ const Class = () => {
 
 
     const handleSearchStudents = (e) => {
-        setSearchValue(e.target.value);
-        setPaginationData(() => allClassStudents?.filter((data) => {
+        setClassStudents(() => allClassStudents?.filter((data) => {
 
             let searched_value = e.target.value;
             const full_name = data.student_id.basic_info_id.full_name?.toLowerCase();
@@ -362,7 +360,7 @@ const Class = () => {
 
                         </div>
                         {
-                            paginationData.length > 0 && searchValue == ''
+                            paginationData.length > 0
                             ?
                                 <nav aria-label="Page navigation example" className='flex justify-end'>
                                     <ul className="inline-flex items-center -space-x-px ">

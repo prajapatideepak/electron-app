@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React from "react";
 import Chart from "react-apexcharts";
 import { useQuery } from "react-query";
 import { months } from "../hooks/Constant";
@@ -12,8 +13,6 @@ function StudentChart(props) {
   const [year, setYear] = React.useState([""]);
   const [noOfTransaction, setNoofNtransactiob] = React.useState([]);
   const [state, setState] = React.useState({
-    // series: props.series,
-    // labels: ["A", "B", "C", "D", "E"],
     options: {
       chart: {
         id: "basic-bar",
@@ -39,23 +38,28 @@ function StudentChart(props) {
       let data = Object.values(newData[ProprtyName.length - 1]).map(
         (m) => m.value
       );
-      let noOfTransction = Object.values(newData[ProprtyName.length - 1]).map(
+      let noOfT = Object.values(newData[ProprtyName.length - 1]).map(
         (m) => m.noOfTransaction
       );
 
-      console.log(noOfTransction);
+      setNoofNtransactiob(noOfT);
+
       updateState(data);
       setYear(ProprtyName);
     }
   }, [studentChartData.isSuccess]);
 
-  console.log(year);
+  console.log(noOfTransaction);
 
   function handleYearChange(e) {
     let newData = Object.values(studentChartData.data);
 
     let data = Object.values(newData[e.target.value]).map((m) => m.value);
+    let transactionData = Object.values(newData[e.target.value]).map(
+      (m) => m.noOfTransaction
+    );
     updateState(data);
+    setNoofNtransactiob(transactionData);
   }
 
   function updateState(newData) {
@@ -78,9 +82,9 @@ function StudentChart(props) {
   }
 
   return (
-    <div className="px-10">
+    <div className="px-10 ">
       {studentChartData.isSuccess ? (
-        <div>
+        <div className="flex justify-around">
           <div className="donut w-2/5 shadow-xl rounded-lg bg-white p-2 ">
             <div className="flex justify-between  p-2 space-x-3">
               <div>
@@ -116,6 +120,27 @@ function StudentChart(props) {
               key={type}
               // width="480"
             />
+          </div>
+          <div className="bg-gray-50 m-2 shadow-xl rounded-lg ">
+            <h1 className="mx-4 my-1 font-semibold"> Fees Calendar</h1>
+            <div className="grid grid-cols-4 px-5 py-3  gap-5 ">
+              {noOfTransaction?.map((data, i) => {
+                return (
+                  <div className="rounded-xl shadow-2xl bg-white ">
+                    <h1 className=" text-sm py-1 font-semibold bg-green-300 rounded-t-xl text-center">
+                      {months[i]}
+                    </h1>
+                    <span className="text-xs m-2 ">Transaction : {data}</span>
+                    <h2 className=" text-xs m-2">
+                      Total:
+                      <span className=" font-bold">
+                        {state.series[0].data[i]}
+                      </span>
+                    </h2>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       ) : (

@@ -121,7 +121,7 @@ export async function getAllStudentsInClass(classID) {
     );
     return data;
   } catch (error) {
-    throw Error("data is not fatched");
+    throw Error("data is not fatched  ");
   }
 }
 
@@ -149,6 +149,29 @@ export async function transferClasses(addnew) {
 export async function getActiveClasses() {
   return await axios.get(`${SERVER}/classes/active`);
 }
+
+export async function ExportAllStudentsInClass(classID) {
+  try {
+    const { data } = await axios.get(
+      `${SERVER}/classes/exportStudentInClass/` + classID
+    );
+    return data;
+  } catch (error) {
+    throw Error("data is not fatched");
+  }
+}
+
+export async function ExportAllPendingStudentsInClass(classID) {
+  try {
+    const { data } = await axios.get(
+      `${SERVER}/classes/exportPendingStudentInClass/` + classID
+    );
+    return data;
+  } catch (error) {
+    throw Error("data is not fatched");
+  }
+}
+
 
 
 
@@ -233,6 +256,19 @@ export async function Addfaculty(addnew) {
 export const getAllFaculty = async () => {
   try {
     const { data } = await axios.get(`${SERVER}/Faculty`);
+    return data;
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+// -----------------------------------------------------------------------
+// ------------------------All_Faculty -----------------------------------
+// -----------------------------------------------------------------------
+export const Exportallfaculty = async () => {
+  try {
+    const { data } = await axios.get(`${SERVER}/Faculty/Exportallfaculty`);
     return data;
   } catch (error) {
     console.log(error)

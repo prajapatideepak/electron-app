@@ -67,7 +67,7 @@ const Myclass = () => {
   async function fetchClassesByYear(){
     const res = await getAllClassesByYear();
     setIsLoading(false)
-    setClassesByYear(res.data.sort((a, b)=> (a._id.batch_start_year < b._id.batch_start_year) ? 1 :(a._id.batch_start_year > b._id.batch_start_year) ? -1 : 0))
+    setClassesByYear(res.data?.sort((a, b)=> (a._id.batch_start_year < b._id.batch_start_year) ? 1 :(a._id.batch_start_year > b._id.batch_start_year) ? -1 : 0))
     
   }
 
@@ -122,7 +122,7 @@ const Myclass = () => {
   const handleMediumChange = (e) => {
     setMedium(e.target.value)
     setClasses(() =>
-      fetchData.filter((data) => {
+      fetchData?.filter((data) => {
         return data.batch_start_year == selectYear && (stream != "" ? data.stream == stream : true) && (e.target.value != "" ? data.medium == e.target.value : true)
       })
     )
@@ -131,7 +131,7 @@ const Myclass = () => {
   const handleStreamChange = (e) => {
     setStream(e.target.value)
     setClasses(() =>
-      fetchData.filter((data) => {
+      fetchData?.filter((data) => {
         return data.batch_start_year == selectYear && (e.target.value != "" ? data.stream == e.target.value : true) && (medium != "" ? data.medium == medium : true)
       })
     )
@@ -861,30 +861,35 @@ const Myclass = () => {
                     </div>
                   </div>
                 </Tooltip>
-
-                <button
-                  className="btn cursor-pointer  h-11 w-40 rounded-full bg-white text-left border  overflow-hidden"
-                  id="btn" disabled={classes?.length > 0 ? false : true}
-                >
-                  <NavLink className="nav-link" to="class/ChangeYear" state={{ classes }}>
-                    <div
-                      className="icons  h-11 w-40 flex ml-3 items-center "
-                      id="icons"
-                    >
-                      <FaArrowRight className="text-xl text-darkblue-500  " />
-                      <span className="ml-3 text-lg text-darkblue-500 font-semibold">
-                        Change Year
-                      </span>
-                    </div>
-                  </NavLink>
-                </button>
+                  {
+                    classes && classes?.length > 0 
+                    ?
+                      <button
+                        className="btn cursor-pointer  h-11 w-40 rounded-full bg-white text-left border  overflow-hidden"
+                        id="btn"
+                      >
+                        <NavLink className="nav-link" to="class/ChangeYear" state={{ classes }}>
+                          <div
+                            className="icons  h-11 w-40 flex ml-3 items-center "
+                            id="icons"
+                          >
+                            <FaArrowRight className="text-xl text-darkblue-500  " />
+                            <span className="ml-3 text-lg text-darkblue-500 font-semibold">
+                              Change Year
+                            </span>
+                          </div>
+                        </NavLink>
+                      </button>
+                    :
+                      null
+                  } 
               </div>
             </div>
           </div>
 
           <div className="mt-5 h-1/5 rounded-lg bg-white pt-5 pb-10 flex justify-center items-center">
             <ul className="justify-between grid grid-custom gap-10 p-10 pb-0 pt-0">
-              {classes[0] ? classes?.map((item, index) => {
+              {classes?.length > 0 ? classes?.map((item, index) => {
                 return (
                   <li className="rounded-md h-28 xl:w-72  xl:h-44 p-3 pt-2 cursor-pointer" key={index}>
                     <div className="class_card drop-shadow-lg rounded-lg p-2 pr-0 h-40" style={{ backgroundColor: bgColors[index % bgColors.length] }}>

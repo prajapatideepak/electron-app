@@ -1,5 +1,4 @@
 import React from "react";
-
 import Dashboardsection from "./Componant/Dashboardsection";
 import DashboardMenu from "./Dashboard";
 import { Route, Routes } from "react-router-dom";

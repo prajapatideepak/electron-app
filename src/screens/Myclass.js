@@ -887,7 +887,7 @@ const Myclass = () => {
             </div>
           </div>
 
-          <div className="mt-5 h-1/5 rounded-lg bg-white pt-5 pb-10 flex justify-center items-center">
+          <div className={`mt-5 h-1/5 rounded-lg bg-white pt-5 ${classes?.length > 0 ? 'pb-10' : 'pb-5'} flex justify-center items-center`}>
             <ul className="justify-between grid grid-custom gap-10 p-10 pb-0 pt-0">
               {classes?.length > 0 ? classes?.map((item, index) => {
                 return (
@@ -957,7 +957,7 @@ const Myclass = () => {
                 );
               })
                 :
-                <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
+                <div className="bg-red-200 font-bold flex justify-center items-center p-2 rounded mx-3 space-x-2">
                   <IoMdInformationCircle className="text-xl text-red-600" />
                   <h1 className="text-red-800">Classes not found </h1>
                 </div>

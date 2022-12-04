@@ -292,13 +292,13 @@ const Studentregister = () => {
                                     {errors.gender && (<small className="text-red-700">{errors.gender.message}</small>)}
                                 </div>
                             </div>
-                            <div className="flex flex-1 w-full px-6">
-                                <div className="Addresss w-full">
+                            <div className="flex flex-1 2xl:w-full px-6">
+                                <div className="Addresss 2xl:w-full xl:w-96 lg:w-96">
                                     <label className=" flex flex-col">
                                         <span className="block text-sm font-medium text-slate-700">
                                             Address *
                                         </span>
-                                        <textarea name="address" className={`mt-1 rounded-md px-3 py-2 outline-none border  border-slate-300 text-sm shadow-sm placeholder-slate-400 ${errors.address && 'border-red-600'}`} {...register("address", { required: "Address is required" })} placeholder="Enter Address" id="" cols="71" rows="2"></textarea>
+                                        <textarea name="address" className={`2xl:w-full xl:w-96 lg:w-96 mt-1 rounded-md px-3 py-2 outline-none border  border-slate-300 text-sm shadow-sm placeholder-slate-400 ${errors.address && 'border-red-600'}`} {...register("address", { required: "Address is required" })} placeholder="Enter Address" id="" ></textarea>
                                         {/* <input
                                             type="text"
                                             
@@ -524,7 +524,7 @@ const Studentregister = () => {
                                     </label>
                                 </div>
                             </div>
-                            <div className="flex w-full justify-end pr-7 h-20">
+                            <div className="flex 2xl:w-full xl:w-96 lg:w-96 justify-end 2xl:pr-7 h-20">
                                 <button type="clear" disabled={isLoadingOnSubmit} className="mt-9 px-8 mr-4  border-darkblue-500 hover:bg-darkblue border-2 hover:bg-darkblue-500 text-darkblue-500 hover:text-white font-medium rounded-md tracking-wider flex justify-center items-center" onClick={handleClick}>
                                     CLEAR
                                 </button>

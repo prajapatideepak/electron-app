@@ -66,34 +66,35 @@ const Myclass = () => {
     "#7e1b1f",
     "#ca8a04",
   ];
-  const [isHover, setIsHover] = React.useState(false);
+  const [isHoverEdit, setIsHoverEdit] = React.useState(false);
+  const [isHoverDelete, setIsHoverDelete] = React.useState(false);
   const [isCurrentYearSelected, setIsCurrentYearSelected] =
     React.useState(true);
   const [isLoading, setIsLoading] = React.useState(true);
 
   const handleMouseEnterEdit = () => {
-    setIsHover(true);
+    setIsHoverEdit(true);
   };
 
   const handleMouseLeaveEdit = () => {
-    setIsHover(false);
+    setIsHoverEdit(false);
   };
 
   const handleMouseEnterDelete = () => {
-    setIsHover(true);
+    setIsHoverDelete(true);
   };
 
   const handleMouseLeaveDelete = () => {
-    setIsHover(false);
+    setIsHoverDelete(false);
   };
 
-  let is_primary = section === "primary" ? 0 : 1;
+  let is_primary = section == "primary" ? 0 : 1;
 
   async function fetchClassesByYear() {
     const res = await getAllClassesByYear();
     setIsLoading(false);
     setClassesByYear(
-      res?.data?.sort((a, b) =>
+      res.data?.sort((a, b) =>
         a._id.batch_start_year < b._id.batch_start_year
           ? 1
           : a._id.batch_start_year > b._id.batch_start_year
@@ -103,23 +104,23 @@ const Myclass = () => {
     );
   }
 
+  async function fetchClasses() {
+    const res = await getAllClasses();
+    fetchClassesByYear();
+    setClasses(() =>
+      res?.data?.filter((data) => {
+        return data.is_active == 1 && data.is_primary == is_primary;
+      })
+    );
+
+    setFetchData(() =>
+      res?.data?.filter((data) => {
+        return data.is_primary == is_primary;
+      })
+    );
+  }
+
   useEffect(() => {
-    async function fetchClasses() {
-      const res = await getAllClasses();
-      fetchClassesByYear();
-      setClasses(() =>
-        res?.data?.filter((data) => {
-          return data.is_active == 1 && data.is_primary == is_primary;
-        })
-      );
-
-      setFetchData(() =>
-        res?.data?.filter((data) => {
-          return data.is_primary == is_primary;
-        })
-      );
-    }
-
     fetchClasses();
   }, [call]);
 
@@ -153,7 +154,7 @@ const Myclass = () => {
   const handleMediumChange = (e) => {
     setMedium(e.target.value);
     setClasses(() =>
-      fetchData.filter((data) => {
+      fetchData?.filter((data) => {
         return (
           data.batch_start_year == selectYear &&
           (stream != "" ? data.stream == stream : true) &&
@@ -166,7 +167,7 @@ const Myclass = () => {
   const handleStreamChange = (e) => {
     setStream(e.target.value);
     setClasses(() =>
-      fetchData.filter((data) => {
+      fetchData?.filter((data) => {
         return (
           data.batch_start_year == selectYear &&
           (e.target.value != "" ? data.stream == e.target.value : true) &&
@@ -213,8 +214,7 @@ const Myclass = () => {
   const onSubmit = async (data) => {
     const response = await AddClass(data);
     if (response) {
-      // setCall(()=>!call)
-      // fetchClasses()
+      fetchClasses();
       setModel(false);
       reset();
       return notify();
@@ -1024,35 +1024,39 @@ const Myclass = () => {
                     </div>
                   </div>
                 </Tooltip>
-
-                <button
-                  className="btn cursor-pointer  h-11 w-40 rounded-full bg-white text-left border  overflow-hidden"
-                  id="btn"
-                  disabled={classes?.length > 0 ? false : true}
-                >
-                  <NavLink
-                    className="nav-link"
-                    to="class/ChangeYear"
-                    state={{ classes }}
+                {classes && classes?.length > 0 ? (
+                  <button
+                    className="btn cursor-pointer  h-11 w-40 rounded-full bg-white text-left border  overflow-hidden"
+                    id="btn"
                   >
-                    <div
-                      className="icons  h-11 w-40 flex ml-3 items-center "
-                      id="icons"
+                    <NavLink
+                      className="nav-link"
+                      to="class/ChangeYear"
+                      state={{ classes }}
                     >
-                      <FaArrowRight className="text-xl text-darkblue-500  " />
-                      <span className="ml-3 text-lg text-darkblue-500 font-semibold">
-                        Change Year
-                      </span>
-                    </div>
-                  </NavLink>
-                </button>
+                      <div
+                        className="icons  h-11 w-40 flex ml-3 items-center "
+                        id="icons"
+                      >
+                        <FaArrowRight className="text-xl text-darkblue-500  " />
+                        <span className="ml-3 text-lg text-darkblue-500 font-semibold">
+                          Change Year
+                        </span>
+                      </div>
+                    </NavLink>
+                  </button>
+                ) : null}
               </div>
             </div>
           </div>
 
-          <div className="mt-5 h-1/5 rounded-lg bg-white pt-5 pb-10 flex justify-center items-center">
+          <div
+            className={`mt-5 h-1/5 rounded-lg bg-white pt-5 ${
+              classes?.length > 0 ? "pb-10" : "pb-5"
+            } flex justify-center items-center`}
+          >
             <ul className="justify-between grid grid-custom gap-10 p-10 pb-0 pt-0">
-              {classes[0] ? (
+              {classes?.length > 0 ? (
                 classes?.map((item, index) => {
                   return (
                     <li
@@ -1065,18 +1069,18 @@ const Myclass = () => {
                           backgroundColor: bgColors[index % bgColors.length],
                         }}
                       >
-                        <div className=" h-6  flex justify-end it ems-center space-x-2 mr-2 ">
+                        <div className=" h-6  flex justify-end items-center space-x-2 mr-2 ">
                           {isCurrentYearSelected ? (
                             <>
                               <div
-                                className=" edit_delete_btns hidden px-1 py-1 rounded-md"
+                                className="edit_delete_btns px-1 py-1 rounded-md"
                                 style={{
-                                  color: isHover
+                                  color: isHoverEdit
                                     ? "#fff"
                                     : headingBgColor[
                                         index % headingBgColor.length
                                       ],
-                                  backgroundColor: isHover
+                                  backgroundColor: isHoverEdit
                                     ? headingBgColor[
                                         index % headingBgColor.length
                                       ]
@@ -1084,22 +1088,20 @@ const Myclass = () => {
                                 }}
                                 onMouseEnter={handleMouseEnterEdit}
                                 onMouseLeave={handleMouseLeaveEdit}
+                                onClick={() => handleEditClass(item._id)}
                               >
-                                <MdModeEdit
-                                  className=""
-                                  onClick={() => handleEditClass(item._id)}
-                                />
+                                <MdModeEdit />
                               </div>
 
                               <div
-                                className=" edit_delete_btns hidden px-1 py-1 rounded-md"
+                                className="edit_delete_btns px-1 py-1 rounded-md"
                                 style={{
-                                  color: isHover
+                                  color: isHoverDelete
                                     ? "#fff"
                                     : headingBgColor[
                                         index % headingBgColor.length
                                       ],
-                                  backgroundColor: isHover
+                                  backgroundColor: isHoverDelete
                                     ? headingBgColor[
                                         index % headingBgColor.length
                                       ]
@@ -1107,10 +1109,9 @@ const Myclass = () => {
                                 }}
                                 onMouseEnter={handleMouseEnterDelete}
                                 onMouseLeave={handleMouseLeaveDelete}
+                                onClick={() => handleDeleteClass(item._id)}
                               >
-                                <MdDelete
-                                  onClick={() => handleDeleteClass(item._id)}
-                                />
+                                <MdDelete />
                               </div>
                             </>
                           ) : null}
@@ -1161,7 +1162,7 @@ const Myclass = () => {
                   );
                 })
               ) : (
-                <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
+                <div className="bg-red-200 font-bold flex justify-center items-center p-2 rounded mx-3 space-x-2">
                   <IoMdInformationCircle className="text-xl text-red-600" />
                   <h1 className="text-red-800">Classes not found </h1>
                 </div>

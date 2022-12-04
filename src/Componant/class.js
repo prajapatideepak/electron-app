@@ -13,12 +13,16 @@ import { MdLocalPrintshop } from "react-icons/md";
 import { IoMdInformationCircle } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { getAllStudentsInClass } from "../hooks/usePost";
+import {
+  getAllStudentsInClass,
+  ExportAllStudentsInClass,
+  ExportAllPendingStudentsInClass,
+} from "../hooks/usePost";
 import { IoIosArrowBack } from "react-icons/io";
 import _ from "lodash";
 import Loader from "./Loader";
+import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 const Class = () => {
   const params = useParams();
@@ -34,7 +38,18 @@ const Class = () => {
   const [itemOffset, setItemOffset] = useState(0);
   const [isPrint, setIsPrint] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [Serialno, setserialno] = useState(1);
+  const [selectedPage, setSelectedPage] = useState(0);
   const itemsPerPage = 2;
+  const Toaster = () => {
+    toast.success("All Student Export To Excel");
+  };
+  const errtoast = () => {
+    toast.error("Something Wrong");
+  };
+  const ToasterPending = () => {
+    toast.success("Fees Pending Student Exported To Excel");
+  };
 
   let calculateTotalPendingFees = 0;
   for (let i = 0; i < totalPendingFees.length; i++) {
@@ -76,21 +91,25 @@ const Class = () => {
   }, [itemOffset, itemsPerPage, classStudents]);
 
   const handlePendingPaidUpClick = (e) => {
-    setPaginationData(() =>
-      allClassStudents?.filter((data) => {
-        if (e.target.value == 2) {
-          return data.fees_id.pending_amount == 0;
-        } else if (e.target.value == 1) {
-          return data.fees_id.pending_amount != 0;
-        } else {
-          return data;
-        }
-      })
-    );
+    const filteredStudents = allClassStudents?.filter((data) => {
+      if (e.target.value == 2) {
+        return data.fees_id.pending_amount == 0;
+      } else if (e.target.value == 1) {
+        return data.fees_id.pending_amount != 0;
+      } else {
+        return data;
+      }
+    });
+    setserialno(1);
+    setSelectedPage(0);
+    setClassStudents(filteredStudents);
+    const newOffset =
+      (filteredStudents.length * itemsPerPage) % filteredStudents.length;
+    setItemOffset(newOffset);
   };
 
   const handleSearchStudents = (e) => {
-    setPaginationData(() =>
+    setClassStudents(() =>
       allClassStudents?.filter((data) => {
         let searched_value = e.target.value;
         const full_name =
@@ -115,8 +134,28 @@ const Class = () => {
   };
 
   const handlePageClick = (event) => {
+    setserialno(event.selected + 1);
+    setSelectedPage(event.selected);
     const newOffset = (event.selected * itemsPerPage) % classStudents.length;
     setItemOffset(newOffset);
+  };
+
+  const Exportpendingstudent = () => {
+    const res = ExportAllPendingStudentsInClass(params.id);
+    if (res) {
+      ToasterPending();
+    } else {
+      errtoast();
+    }
+  };
+
+  const Exportstudent = () => {
+    const res = ExportAllStudentsInClass(params.id);
+    if (res) {
+      Toaster();
+    } else {
+      errtoast();
+    }
   };
 
   if (isLoading) {
@@ -127,7 +166,7 @@ const Class = () => {
     <div className="relative  ">
       <div className={`bg-slate-100 `}>
         <div className="flex justify-between  items-center px-5 pt-3  space-y-5">
-          <h1 className=" text-xl xl:text-3xl  text-darkblue-500 xl:text-left font-bold text-darkblue-50 ">
+          <h1 className="ml-5 text-xl xl:text-3xl  text-darkblue-500 xl:text-left font-bold text-darkblue-50 ">
             {classDetails.class_name}
           </h1>
           <div className="button flex mr-6">
@@ -200,6 +239,7 @@ const Class = () => {
             </div>
             <div
               id="Student-cards"
+              onClick={Exportpendingstudent}
               className=" cursor-pointer h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class1-50  xl:space-y-3 space-y-2 flex justify-center items-center "
             >
               <div>
@@ -233,7 +273,7 @@ const Class = () => {
           </div>
         </div>
         <div className="flex justify-center items-center p-10 pt-5">
-          <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-5 shadow-xl  w-full">
+          <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-5 shadow-xl  w-full space-y-5">
             <div className="print-btn flex items-center justify-between space-x-3">
               <div className=" flex  items-center justify-center ml-6">
                 <input
@@ -289,83 +329,144 @@ const Class = () => {
                     />
                   </span>
                 </Tooltip>
+                <Tooltip
+                  content="Export To Excel"
+                  placement="bottom-end"
+                  className="text-white bg-black rounded p-2"
+                >
+                  <button
+                    onClick={Exportstudent}
+                    className="text-blue-500 bg-blue-200 font-semibold shadow-2xl  py-[7px] px-3 rounded-lg text-sm"
+                  >
+                    Export
+                  </button>
+                </Tooltip>
               </div>
             </div>
-            <div className="py-10 px-5 space-y-2">
-              <div className="flex justify-end items-end">
-                <ReactHTMLTableToExcel
-                  id="test-table-xls-button"
-                  onClick={() => setIsPrint(true)}
-                  className="download-table-xls-button text-white bg-darkblue-500 font-semibold shadow-2xl  py-1 px-3 rounded-lg text-sm"
-                  table="table-to-xls"
-                  filename="tablexls"
-                  sheet="tablexls"
-                  buttonText="Export"
-                />
-              </div>
-              <div ref={componentRef} className="">
-                <table
-                  className="w-full text-sm text-center rounded-xl overflow-hidden shadow-xl "
-                  id="table-to-xls"
-                >
-                  <thead className="text-xs text-gray-700 bg-class3-50 uppercase">
-                    <tr className="text-white text-base">
-                      <th scope="col" className="pl-3 py-4">
-                        Student Id
-                      </th>
-                      <th scope="col" className="px-6 py-4">
-                        Name
-                      </th>
-                      <th scope="col" className="px-6 py-4">
-                        Phone
-                      </th>
-                      <th scope="col" className="px-6 py-4">
-                        Total
-                      </th>
-                      <th scope="col" className="px-6 py-4">
-                        Paidup
-                      </th>
-                      <th scope="col" className="px-6 py-4">
-                        Pending
-                      </th>
-                      {!isPrint ? (
-                        <>
-                          <th scope="col" className="px-6 py-4">
-                            Profile
-                          </th>
-                          <th scope="col" className="px-6 py-4">
-                            Action
-                          </th>
-                        </>
-                      ) : null}
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white border items-center ">
-                    {paginationData[0] ? (
-                      isPrint ? (
-                        allClassStudents.map((item, index) => {
-                          return (
-                            <tr className=" border-b" key={index}>
-                              <th className=" py-5 text-gray-500">
-                                {item.student_id.student_id}
-                              </th>
-                              <td className="px-6 py-5">
-                                {item.student_id.basic_info_id.full_name}
+
+            <div ref={componentRef} className="p-5 pt-3 pb-0">
+              <table
+                className="w-full text-sm text-center rounded-xl overflow-hidden"
+                id="table-to-xls"
+              >
+                <thead className="text-xs text-gray-700 bg-class3-50 uppercase">
+                  <tr className="text-white text-base">
+                    <th scope="col" className="pl-3 py-4">
+                      Serial No
+                    </th>
+                    <th scope="col" className="pl-3 py-4">
+                      Student Id
+                    </th>
+                    <th scope="col" className="px-6 py-4">
+                      Name
+                    </th>
+                    <th scope="col" className="px-6 py-4">
+                      Phone
+                    </th>
+                    <th scope="col" className="px-6 py-4">
+                      Total
+                    </th>
+                    <th scope="col" className="px-6 py-4">
+                      Paidup
+                    </th>
+                    <th scope="col" className="px-6 py-4">
+                      Pending
+                    </th>
+                    {!isPrint ? (
+                      <>
+                        <th scope="col" className="px-6 py-4">
+                          Profile
+                        </th>
+                        <th scope="col" className="px-6 py-4">
+                          Action
+                        </th>
+                      </>
+                    ) : null}
+                  </tr>
+                </thead>
+                <tbody className="bg-white border items-center ">
+                  {paginationData.length > 0 ? (
+                    isPrint ? (
+                      allClassStudents.map((item, index) => {
+                        return (
+                          <tr className=" border-b" key={index}>
+                            <th className="py-5 px-6">
+                              {index +
+                                1 +
+                                (itemsPerPage * Serialno - itemsPerPage)}
+                            </th>
+                            <td className=" py-5 text-gray-500">
+                              {item.student_id.student_id}
+                            </td>
+                            <td className="px-6 py-5">
+                              {item.student_id.basic_info_id.full_name}
+                            </td>
+                            <td className="px-6 py-5">
+                              {item.student_id.contact_info_id.whatsapp_no}
+                            </td>
+                            <td className="px-6 py-5">
+                              {item.fees_id.net_fees}
+                            </td>
+                            <td className="px-6 py-5">
+                              {item.fees_id.net_fees -
+                                item.fees_id.pending_amount}
+                            </td>
+                            <td className="px-6 py-5">
+                              {item.fees_id.pending_amount}
+                            </td>
+                            {!isPrint ? (
+                              <td className="px-6 py-5 ">
+                                <div className="flex justify-center space-x-3">
+                                  <NavLink
+                                    className="nav-link"
+                                    to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}
+                                  >
+                                    <Tooltip
+                                      content="Show Profile"
+                                      placement="bottom-end"
+                                      className="text-white bg-black rounded p-2"
+                                    >
+                                      <span>
+                                        <AiFillEye className="text-xl text-darkblue-500" />
+                                      </span>
+                                    </Tooltip>
+                                  </NavLink>
+                                </div>
                               </td>
-                              <td className="px-6 py-5">
-                                {item.student_id.contact_info_id.whatsapp_no}
-                              </td>
-                              <td className="px-6 py-5">
-                                {item.fees_id.net_fees}
-                              </td>
-                              <td className="px-6 py-5">
-                                {item.fees_id.net_fees -
-                                  item.fees_id.pending_amount}
-                              </td>
-                              <td className="px-6 py-5">
-                                {item.fees_id.pending_amount}
-                              </td>
-                              {!isPrint ? (
+                            ) : null}
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      paginationData.map((item, index) => {
+                        return (
+                          <tr className=" border-b" key={index}>
+                            <th className="py-5 px-6">
+                              {index +
+                                1 +
+                                (itemsPerPage * Serialno - itemsPerPage)}
+                            </th>
+                            <td className="px-6 py-5 text-gray-500">
+                              {item.student_id.student_id}
+                            </td>
+                            <td className="px-6 py-5">
+                              {item.student_id.basic_info_id.full_name}
+                            </td>
+                            <td className="px-6 py-5">
+                              {item.student_id.contact_info_id.whatsapp_no}
+                            </td>
+                            <td className="px-6 py-5">
+                              {item.fees_id.net_fees}
+                            </td>
+                            <td className="px-6 py-5">
+                              {item.fees_id.net_fees -
+                                item.fees_id.pending_amount}
+                            </td>
+                            <td className="px-6 py-5">
+                              {item.fees_id.pending_amount}
+                            </td>
+                            {!isPrint ? (
+                              <>
                                 <td className="px-6 py-5 ">
                                   <div className="flex justify-center space-x-3">
                                     <NavLink
@@ -382,139 +483,93 @@ const Class = () => {
                                         </span>
                                       </Tooltip>
                                     </NavLink>
-                                  </div>
-                                </td>
-                              ) : null}
-                            </tr>
-                          );
-                        })
-                      ) : (
-                        paginationData.map((item, index) => {
-                          return (
-                            <tr className=" border-b" key={index}>
-                              <th className="px-6 py-5 text-gray-500">
-                                {item.student_id.student_id}
-                              </th>
-                              <td className="px-6 py-5">
-                                {item.student_id.basic_info_id.full_name}
-                              </td>
-                              <td className="px-6 py-5">
-                                {item.student_id.contact_info_id.whatsapp_no}
-                              </td>
-                              <td className="px-6 py-5">
-                                {item.fees_id.net_fees}
-                              </td>
-                              <td className="px-6 py-5">
-                                {item.fees_id.net_fees -
-                                  item.fees_id.pending_amount}
-                              </td>
-                              <td className="px-6 py-5">
-                                {item.fees_id.pending_amount}
-                              </td>
-                              {!isPrint ? (
-                                <>
-                                  <td className="px-6 py-5 ">
-                                    <div className="flex justify-center space-x-3">
-                                      <NavLink
-                                        className="nav-link"
-                                        to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}
-                                      >
-                                        <Tooltip
-                                          content="Show Profile"
-                                          placement="bottom-end"
-                                          className="text-white bg-black rounded p-2"
-                                        >
-                                          <span>
-                                            <AiFillEye className="text-xl text-darkblue-500" />
-                                          </span>
-                                        </Tooltip>
-                                      </NavLink>
 
-                                      {/* <Tooltip content="Admission Cansel" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                    {/* <Tooltip content="Admission Cansel" placement="bottom-end" className='text-white bg-black rounded p-2'>
                                                                         <MdDelete className="text-xl text-red-600" onClick={(e) => navigate(`/cancelAdmission/${item.student_id.student_id}`, {state:{item}})} />
                                                                     </Tooltip> */}
-                                    </div>
-                                  </td>
-                                  <td className="px-6 py-5 ">
-                                    <div className="flex justify-center space-x-3">
-                                      <NavLink
-                                        to={"/receipt/FeesDetail"}
-                                        state={{
-                                          rollno: item.student_id.student_id,
-                                          full_name:
-                                            item.student_id.basic_info_id
-                                              .full_name,
-                                          class_name: classDetails.class_name,
-                                          medium: classDetails.medium,
-                                          stream: classDetails.stream,
-                                          batch: `${classDetails.batch_start_year}-${classDetails.batch_end_year}`,
-                                        }}
+                                  </div>
+                                </td>
+                                <td className="px-6 py-5 ">
+                                  <div className="flex justify-center space-x-3">
+                                    <NavLink
+                                      to={"/receipt/FeesDetail"}
+                                      state={{
+                                        rollno: item.student_id.student_id,
+                                        full_name:
+                                          item.student_id.basic_info_id
+                                            .full_name,
+                                        class_name: classDetails.class_name,
+                                        medium: classDetails.medium,
+                                        stream: classDetails.stream,
+                                        batch: `${classDetails.batch_start_year}-${classDetails.batch_end_year}`,
+                                      }}
+                                    >
+                                      <button
+                                        className={`${
+                                          item.fees_id.pending_amount <= 0
+                                            ? "disabled:opacity-40"
+                                            : "bg-darkblue-500 hover:bg-blue-900"
+                                        } bg-darkblue-500 rounded-lg  duration-200 transition text-white px-5 font-semibold py-1`}
+                                        disabled={
+                                          item.fees_id.pending_amount <= 0
+                                            ? true
+                                            : false
+                                        }
                                       >
-                                        <button
-                                          className={`${
-                                            item.fees_id.pending_amount <= 0
-                                              ? "disabled:opacity-40"
-                                              : "bg-darkblue-500 hover:bg-blue-900"
-                                          } bg-darkblue-500 rounded-lg  duration-200 transition text-white px-5 font-semibold py-1`}
-                                          disabled={
-                                            item.fees_id.pending_amount <= 0
-                                              ? true
-                                              : false
-                                          }
-                                        >
-                                          Pay
-                                        </button>
-                                      </NavLink>
-                                    </div>
-                                  </td>
-                                </>
-                              ) : null}
-                            </tr>
-                          );
-                        })
-                      )
-                    ) : (
-                      <tr className="">
-                        <td
-                          colSpan={8}
-                          className="bg-red-200  font-bold p-2 rounded"
-                        >
-                          <div className="flex space-x-2 justify-center items-center">
-                            <IoMdInformationCircle className="text-xl text-red-600" />
-                            <h1 className="text-red-800">
-                              Students not found{" "}
-                            </h1>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
+                                        Pay
+                                      </button>
+                                    </NavLink>
+                                  </div>
+                                </td>
+                              </>
+                            ) : null}
+                          </tr>
+                        );
+                      })
+                    )
+                  ) : (
+                    <tr className="">
+                      <td
+                        colSpan={9}
+                        className="bg-red-200  font-bold p-2 rounded"
+                      >
+                        <div className="flex space-x-2 justify-center items-center">
+                          <IoMdInformationCircle className="text-xl text-red-600" />
+                          <h1 className="text-red-800">Students not found </h1>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
-            <nav
-              aria-label="Page navigation example"
-              className="flex justify-end"
-            >
-              <ul className="inline-flex items-center -space-x-px ">
-                <li>
-                  <ReactPaginate
-                    breakLabel="..."
-                    nextLabel="next >"
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={3}
-                    pageCount={pageCount}
-                    previousLabel="< previous"
-                    renderOnZeroPageCount={null}
-                    containerClassName="pagination"
-                    pageLinkClassName="page-num"
-                    previousLinkClassName="page-num"
-                    nextLinkClassName="page-num"
-                    activeLinkClassName="active-page"
-                  />
-                </li>
-              </ul>
-            </nav>
+
+            {paginationData.length > 0 ? (
+              <nav
+                aria-label="Page navigation example"
+                className="flex justify-end"
+              >
+                <ul className="inline-flex items-center -space-x-px ">
+                  <li>
+                    <ReactPaginate
+                      breakLabel="..."
+                      nextLabel="next >"
+                      onPageChange={handlePageClick}
+                      pageRangeDisplayed={3}
+                      forcePage={selectedPage}
+                      pageCount={pageCount}
+                      previousLabel="< previous"
+                      renderOnZeroPageCount={null}
+                      containerClassName="pagination"
+                      pageLinkClassName="page-num"
+                      previousLinkClassName="page-num"
+                      nextLinkClassName="page-num"
+                      activeLinkClassName="active-page"
+                    />
+                  </li>
+                </ul>
+              </nav>
+            ) : null}
           </div>
         </div>
       </div>

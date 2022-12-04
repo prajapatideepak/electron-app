@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlinePersonAddAlt } from "react-icons/md";
+import { MdPeopleOutline } from "react-icons/md";
 import { MdPublishedWithChanges } from "react-icons/md";
 import { VscKey } from "react-icons/vsc";
 import { NavLink } from "react-router-dom";
@@ -10,7 +11,7 @@ import { NasirContext } from "../NasirContext";
 import { handleLogout } from "../AuthProvider";
 
 export default function Searchbar() {
-  const { admin } = React.useContext(NasirContext);
+  const { admin, section } = React.useContext(NasirContext);
   const { logout, changeSection } = React.useContext(NasirContext);
   const myData = admin;
 
@@ -29,22 +30,21 @@ export default function Searchbar() {
     localStorage.removeItem("section");
     changeSection();
   }
+
   return (
-    <div
-      onClick={handleToggle}
-      className="w-full z-[100] sticky top-0 bg-white h-[70px] flex flex-row items-center justify-between shadow-[0_10px_10px_-15px_rgba(0,0,0,0.3)]"
+    <div className="w-full z-[100] sticky top-0 bg-white h-[70px] flex flex-row items-center justify-between shadow-[0_10px_10px_-15px_rgba(0,0,0,0.3)]"
     >
       <div className="left pl-5 w-1/4">
         {/* This sectione empty for searchbar */}
       </div>
-      <div className="right">
+      <div className="right" onClick={handleToggle}>
         <div className="top grid grid-col-2 items-center cursor-pointer justify-right space-x-5 pr-5 static">
           <form
             action=""
             className="flex items-center space-x-2 cursor-pointer"
             id="profile"
           >
-            <div className="profile">
+            <div className="profile"> 
               <img
                 className="rounded-full w-10 mx-auto"
                 src="/images/user.png"
@@ -71,15 +71,15 @@ export default function Searchbar() {
         </div>
         {toggle && (
           <div
-            className={` bottom absolute top-20 right-3 bg-white drop-shadow-xl rounded-xl xl:w-1/4 2xl:w-1/5`}
+            className={` bottom absolute top-20 right-3 bg-white drop-shadow-xl rounded-xl xl:w-1/5 2xl:w-1/5`}
             id="profileTable"
           >
             <div className="">
               <div className="mt-3 mb-3 ">
                 <NavLink to="/Componant/Updateprofile">
-                  <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
-                    <div className="bg-blue-200 w-1/6 h-9 flex justify-center items-center rounded-full">
-                      <FaRegUserCircle className="text-blue-500  text-xl " />
+                  <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-lg ml-4 mr-4 space-x-6 items-center">
+                    <div className="bg-blue-200 p-2.5 flex justify-center items-center rounded-full">
+                      <FaRegUserCircle className="text-blue-500 text-xl " />
                     </div>
                     <span className="md:text-sm xl:text-base">
                       Admin Profile
@@ -87,8 +87,8 @@ export default function Searchbar() {
                   </div>
                 </NavLink>
                 <NavLink className="nav-link" to="/Componant/Changepassword">
-                  <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
-                    <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
+                  <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-lg ml-4 mr-4 space-x-6  items-center">
+                    <div className="bg-blue-200  p-2.5 flex justify-center items-center rounded-full">
                       <VscKey className="text-blue-500 text-xl" />
                     </div>
                     <span className="md:text-sm xl:text-base">
@@ -121,22 +121,25 @@ export default function Searchbar() {
                   </NavLink>
                 ) : null}
                 <div className="nav-link" onClick={(e) => handleSection()}>
-                  <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
-                    <div className="bg-blue-200 w-1/6 h-9  flex justify-center items-center rounded-full">
+                  <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-lg ml-4 mr-4 space-x-6  items-center">
+                    <div className="bg-blue-200 p-2.5  flex justify-center items-center rounded-full">
                       <MdPublishedWithChanges className="text-blue-500 text-xl" />
                     </div>
-                    <span className="md:text-sm xl:text-base">
-                      Change Section
-                    </span>
+                    <div className="flex flex-col">
+                      <span className="md:text-sm xl:text-base">
+                        Change Section
+                      </span>
+                      <span className="text-sm text-gray-400 font-semibold capitalize">{section}</span>
+                    </div>
                   </div>
                 </div>
 
                 <hr></hr>
                 <div
                   onClick={handleLogoutButton}
-                  className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center"
+                  className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-lg ml-4 mr-4 space-x-6  items-center"
                 >
-                  <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
+                  <div className="bg-blue-200  p-2.5 flex justify-center items-center rounded-full">
                     <RiLogoutCircleRLine className="text-blue-500 text-xl" />
                   </div>
                   <span className="md:text-sm xl:text-base">Logout</span>

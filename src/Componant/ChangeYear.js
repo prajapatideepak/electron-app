@@ -38,12 +38,12 @@ const ChangeYear = () => {
     const notify = () => toast.success("Class transfer successfully");
     const [call, setCall] = React.useState(false)
 
-    classesData.map((item,index)=>{
+    classesData?.map((item,index)=>{
         return {...item,is_selected:true, is_disabled:true}
     })
 
     useEffect(()=>{
-        setClassesNewData(classesData.map((item,index)=>{
+        setClassesNewData(classesData?.map((item,index)=>{
             return {...item,is_selected:true, is_disabled:true}
          })
         )
@@ -52,7 +52,7 @@ const ChangeYear = () => {
     const editTable = (e, index) => {
 
         setClassesNewData(
-            classesNewData.map((item, idx)=>{
+            classesNewData?.map((item, idx)=>{
             return {
                 ...item,
                 is_disabled : idx == index ? !item.is_disabled : item.is_disabled
@@ -132,7 +132,7 @@ const ChangeYear = () => {
                             </thead>
                             <tbody className='bg-white border items-center '>
                             {
-                                classesNewData.map((item,index)=>{
+                                classesNewData?.map((item,index)=>{
                                     return(
                                         
                                 <tr className=" border-b" key={index}>

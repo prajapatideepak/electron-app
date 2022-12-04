@@ -17,16 +17,14 @@ const Faculty = () => {
   // ------------------------------------------------------------------------------------
   const [model, setModel] = React.useState(false);
   const [isloading, setloading] = React.useState(true)
-  const [isPrint, setIsPrint] = useState(false);
   const form = useRef()
   const [isLoadingOnSubmit, setIsLoadingOnSubmit] = useState(false);
   const defaultImage = "http://localhost:4000/user_default@123.png"
   const [data, setData] = useState();
-  const Toaster = () => { toast.success('New Staff Register successfully') }
-  const errtoast = () => { toast.error("Something Wrong") }
+  const Toaster = () => { toast.success('New Staff Registered successfully') }
+  const errtoast = () => { toast.error("Something went wrong") }
   const [img, setImg] = useState(defaultImage);
   const [facultyDetails, setFacultyDetails] = useState([])
-  const [call, setcall] = useState(true)
 
 
   // ------------------------------------------------------------------------------------
@@ -64,7 +62,6 @@ const Faculty = () => {
     const response = await Addfaculty(formdata);
 
     if (response.data.success) {
-      setcall(!call)
       setData(data + 1)
       setIsLoadingOnSubmit(false);
       Toaster()
@@ -338,8 +335,6 @@ const Faculty = () => {
               </div>
             </div>
           </div>
-
-
         )}
 
         <div className={`bg-slate-100 ${model && "opacity-5"}`}>
@@ -391,7 +386,7 @@ const Faculty = () => {
                 </div>
               </div>
             </div>
-            <Facultytable call={call} allFaculty={facultyDetails} />
+            <Facultytable allFaculty={facultyDetails} />
           </div>
         </div>
 

@@ -38,7 +38,14 @@ const StudentAdmissionForm = () => {
                             </div>
                             <div className='right-content w-1/5 '>
                                 <div className="passPortSize-Photo">
-                                    <img className="px-3" src={studentDetails.photo} alt='Passport-Photo'/>
+                                    {
+                                        studentDetails.photo != ''
+                                        ?
+                                            <img className="px-3" src={studentDetails.photo} alt='Passport-Photo'/>
+                                        : 
+                                            null
+
+                                    }
                                 </div>
                             </div>
                         </div>

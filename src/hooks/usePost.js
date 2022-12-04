@@ -1,9 +1,7 @@
 import { useMutation } from "react-query";
 import { getToken } from "../AuthProvider";
-import React from "react";
-import { NasirContext } from "../NasirContext";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const token = getToken("token");
@@ -233,7 +231,7 @@ export const getAllFaculty = async () => {
     const { data } = await axios.get(`${SERVER}/Faculty`);
     return data;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
@@ -242,8 +240,8 @@ export const getAllFaculty = async () => {
 // -----------------------------------------------------------------------
 export async function Facultydetails(id) {
   try {
-    const res = await axios.get(`${SERVER}/faculty/Facultydetails/` + id)
-    return res
+    const res = await axios.get(`${SERVER}/faculty/Facultydetails/` + id);
+    return res;
   } catch (error) {
     console.log(error);
   }
@@ -253,10 +251,13 @@ export async function Facultydetails(id) {
 // -----------------------------Update_faculty ----------------------------
 // ------------------------------------------------------------------------
 
-export async function Update_faculty(staff_id , formdata) {
+export async function Update_faculty(staff_id, formdata) {
   try {
-    const res = await axios.put(`${SERVER}/Faculty/update/${staff_id}`, formdata)
-    return res
+    const res = await axios.put(
+      `${SERVER}/Faculty/update/${staff_id}`,
+      formdata
+    );
+    return res;
   } catch (error) {
     return error;
   }
@@ -279,8 +280,11 @@ export async function getFaculty(id) {
 // ------------------------------------------------------------------------
 export async function salarypay(gen_reciept) {
   try {
-    const response = await axios.post(`${SERVER}/salary/create-reciept/`, gen_reciept)
-    return response
+    const response = await axios.post(
+      `${SERVER}/salary/create-reciept/`,
+      gen_reciept
+    );
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -363,6 +367,9 @@ export function useGetSalaryReport() {
   return axiosInstance.get(`${SERVER}/report/salary`).then((res) => res.data);
 }
 
-export function useGetMonthlyReport() {
-  return axiosInstance.get(`${SERVER}/report/month`).then((res) => res.data);
+export function useGetMonthlyReport(sectionRequest) {
+  console.log(sectionRequest.queryKey[1]);
+  return axiosInstance
+    .get(`${SERVER}/report/month/${sectionRequest.queryKey[1]}`)
+    .then((res) => res.data);
 }

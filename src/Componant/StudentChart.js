@@ -4,11 +4,17 @@ import Chart from "react-apexcharts";
 import { useQuery } from "react-query";
 import { months } from "../hooks/Constant";
 import { useGetMonthlyReport } from "../hooks/usePost";
+import { NasirContext } from "../NasirContext";
 import Loader from "./Loader";
 
-function StudentChart(props) {
-  console.log(props.series);
-  const studentChartData = useQuery("StudentChartData", useGetMonthlyReport);
+function StudentChart() {
+  const { section } = React.useContext(NasirContext);
+  const sectionRequest = section === "primary" ? 1 : 0;
+
+  const studentChartData = useQuery(
+    ["studentC", sectionRequest],
+    useGetMonthlyReport
+  );
   const [type, setType] = React.useState("line");
   const [year, setYear] = React.useState([""]);
   const [noOfTransaction, setNoofNtransactiob] = React.useState([]);
@@ -34,7 +40,6 @@ function StudentChart(props) {
       let ProprtyName = Object.keys(studentChartData.data);
       let newData = Object.values(studentChartData.data);
 
-      console.log(studentChartData.data);
       let data = Object.values(newData[ProprtyName.length - 1]).map(
         (m) => m.value
       );
@@ -48,8 +53,6 @@ function StudentChart(props) {
       setYear(ProprtyName);
     }
   }, [studentChartData.isSuccess]);
-
-  console.log(noOfTransaction);
 
   function handleYearChange(e) {
     let newData = Object.values(studentChartData.data);
@@ -106,7 +109,6 @@ function StudentChart(props) {
                     {year[year.length - 1]}
                   </option>
                   {year.map((y, i) => {
-                    console.log(y);
                     return <option value={i}> {y} </option>;
                   })}
                 </select>

@@ -3,14 +3,12 @@ import React from "react";
 import Dashboardsection from "./Componant/Dashboardsection";
 import DashboardMenu from "./Dashboard";
 import { Route, Routes } from "react-router-dom";
-import { getToken } from "./AuthProvider";
 import { NasirContext } from "./NasirContext";
-import AdminLogin from "./screens/AdminLogin"
+import AdminLogin from "./screens/AdminLogin";
 import ErrorBoundary from "./Componant/ErrorBound";
 
 function App() {
   const { token, section } = React.useContext(NasirContext);
-
 
   return (
     <div>

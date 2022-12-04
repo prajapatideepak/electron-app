@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { MdLocalPrintshop } from "react-icons/md";
@@ -8,30 +9,12 @@ import { useQuery } from "react-query";
 import { useGetMonthlyReport, useGetReport } from "../hooks/usePost";
 import { useState } from "react";
 import StudentChart from "./StudentChart";
+import { IoMdInformationCircle } from "react-icons/io";
 
 const Studenthearder = () => {
   const [data, setData] = useState([]);
   const reportData = useQuery("reports", useGetReport);
   const componentRef = useRef();
-  const studentChartData = useQuery("StudentChartData", useGetMonthlyReport);
-  const [series, setSeries] = useState([]);
-
-  // React.useEffect(() => {
-  //   if (studentChartData.isSuccess) {
-  //     let ProprtyName = Object.keys(studentChartData.data);
-  //     let newData = Object.values(studentChartData.data);
-  //     // setSeries(() => {
-  //     let data = Object.values(newData[0]).map((m) => m.Month);
-  //     // });
-
-  //     setSeries(data);
-  //     // setSeries(newData[0].map((m) => m.Month));
-  //   }
-  // }, [studentChartData.isSuccess]);
-
-  // console.log(series);
-
-  console.log(reportData);
 
   function handleDataFilter(filterDate) {
     const preDate = new Date(`${filterDate},23:59:00`);
@@ -56,8 +39,6 @@ const Studenthearder = () => {
 
   React.useEffect(() => {
     setData(reportData?.data?.data);
-    console.log(reportData.isSuccess);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reportData.isSuccess]);
 
   const handlePrint = useReactToPrint({
@@ -66,7 +47,7 @@ const Studenthearder = () => {
   return (
     <div>
       <div>
-        <StudentChart />
+        <StudentChart key="student" />
       </div>
       <div className="flex justify-center items-center p-10 pt-10">
         <div className="overflow-x-auto relative  sm:rounded-lg bg-white p-10 shadow-xl space-y-5 w-full">
@@ -76,27 +57,21 @@ const Studenthearder = () => {
             </p>
           </div>
           <div className="print-btn flex items-center space-x-3">
-            <button
-              id=""
-              className=" flex items-center border bg-white p-2 xl:p-2 xl:py-1 rounded-md  space-x-1 "
-            >
-              <select
-                onChange={(e) => setData(reportData?.data?.data)}
-                name=""
-                id=""
-                className="cursor-pointer text-darkblue-500 text-xs xl:text-lg outline-none"
-              >
-                <option value="Today">Today</option>
-                <option value="Weekly">Last Week</option>
-                <option value="Monthly">Last Month</option>
-              </select>
-            </button>
             <input
               id=""
               type="Date"
               onChange={(e) => handleDate(e)}
               className="outline-none bg-white border rounded-md p-2 cursor-pointer"
             />
+            <button
+              id=""
+              className=" flex items-center border outline-none bg-white py-2 px-4 xl:p-4 xl:py-2 shadow-lg hover:shadow rounded-md  space-x-1 "
+              onClick={(e) => {
+                setData(reportData?.data?.data);
+              }}
+            >
+              Clear Filter
+            </button>
             <Tooltip
               content="Print"
               placement="bottom-end"
@@ -223,6 +198,13 @@ const Studenthearder = () => {
                   )}
                 </tbody>
               </table>
+              {data?.length < 1 ? (
+                <div className="bg-red-200 font-bold justify-center items-center p-2 rounded  flex space-x-2">
+                  <IoMdInformationCircle className="text-xl text-red-600" />
+
+                  <h1 className="text-red-800"> Transaction not Found </h1>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

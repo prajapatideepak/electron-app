@@ -6,7 +6,7 @@ const Report = () => {
   const [reportState, setReportState] = useState("Student");
   return (
     <div>
-      <div className="print-btn flex justify-end items-center pt-5 space-x-3 pr-5">
+      <div className="print-btn flex justify-end items-center pt-2 space-x-3 pr-5">
         <button
           id="reportselect"
           className=" flex items-center border bg-white p-2 xl:p-2 xl:py-1 rounded-md drop-shadow-2xl  space-x-1 "

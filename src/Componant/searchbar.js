@@ -16,14 +16,13 @@ export default function Searchbar() {
 
   const [toggle, SetToggle] = useState(false);
 
-  function handleToggle() {
-    SetToggle(!toggle);
-  }
-
   function handleLogoutButton() {
     handleLogout();
     logout();
     changeSection();
+  }
+  function handleToggle() {
+    SetToggle(!toggle);
   }
 
   function handleSection() {
@@ -48,7 +47,7 @@ export default function Searchbar() {
             <div className="profile">
               <img
                 className="rounded-full w-10 mx-auto"
-                src="images/user.png"
+                src="/images/user.png"
                 width="7%"
                 height="7%"
                 alt="profile"

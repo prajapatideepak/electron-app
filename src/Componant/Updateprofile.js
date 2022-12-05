@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useUpdateAdmin } from "../hooks/usePost";
 import { NasirContext } from "../NasirContext";
 import "../Styles/Studentform.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Validator from "../hooks/validator";
 import { AxiosError } from "axios";
 import { FaUserEdit } from "react-icons/fa";
@@ -55,6 +55,8 @@ const Updateprofile = () => {
   const [contact_info_id, setContactinfoid] = React.useState({});
   const [isEdiable, setEditable] = React.useState(false);
   const updateAdmin = useUpdateAdmin();
+
+  const { changeSection } = React.useContext(NasirContext);
   const navigate = useNavigate();
   const Toaster = () => {
     toast.success("Profile updated successfully");
@@ -173,17 +175,16 @@ const Updateprofile = () => {
     });
   }
 
+  React.useEffect(() => {
+    if (updateAdmin.isSuccess) {
+      toast.success("Profile Updated Successfully");
+      localStorage.removeItem("section");
+      changeSection();
+    }
+  }, [updateAdmin.isSuccess]);
   const onSubmit = async (data) => {
-    delete basic_info_id._id;
-    delete contact_info_id._id;
-    const adminData = {
-      basic_info_id,
-      contact_info_id,
-      username: data.username,
-      security_pin: data.security_pin,
-    };
-
-    updateAdmin.mutate(adminData);
+    console.log("on submit", data);
+    updateAdmin.mutate(data);
     reset();
   };
 
@@ -202,15 +203,6 @@ const Updateprofile = () => {
                 </h1>
               </div>
               <div className=" flex flex-col items-center gap-5">
-                <div className="profile_img_div border-2 border-gray-500 shadow-lg">
-                  <img
-                    src={img}
-                    width="100%"
-                    height="100%"
-                    alt="student profile"
-                    name="photo_name"
-                  />
-                </div>
                 <div div className="flex lg:flex-row md:flex-col gap-4 mt-7">
                   <div className="fullname">
                     <label className="block">

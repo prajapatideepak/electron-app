@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
@@ -7,15 +8,45 @@ import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
 import { useGetSalaryReport } from "../hooks/usePost";
 import { useQuery } from "react-query";
+import { IoMdInformationCircle } from "react-icons/io";
 
 const Facultyheader = () => {
   const salaryReport = useQuery("salary", useGetSalaryReport);
-
-  console.log(salaryReport);
+  const [data, setData] = React.useState([]);
+  console.log(salaryReport?.data?.data);
   const componentRef = useRef();
+
+  function handleDataFilter(filterDate) {
+    const preDate = new Date(`${filterDate},23:59:00`);
+    const previous = preDate.setDate(preDate.getDate() - 1);
+
+    const postDate = new Date(`${filterDate},0:00:00`);
+    const post = postDate.setDate(postDate.getDate() + 1);
+    return [previous, post];
+  }
+
+  function handleDate(e) {
+    const [previous, post] = handleDataFilter(e.target.value);
+
+    const newData = salaryReport.data.data.filter(
+      (recipet) =>
+        new Date(recipet.date).getTime() > previous &&
+        new Date(recipet.date).getTime() < post
+    );
+
+    setData(() => newData);
+  }
+
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+
+  React.useEffect(() => {
+    if (salaryReport.isSuccess) {
+      setData(() => salaryReport.data.data);
+    }
+  }, [salaryReport.isSuccess]);
+  console.log("data", data);
   return (
     <div>
       <div className="flex justify-center items-center p-10 pt-10">
@@ -26,25 +57,21 @@ const Facultyheader = () => {
             </p>
           </div>
           <div className="print-btn flex items-center space-x-3">
-            <button
-              id=""
-              className=" flex items-center border bg-white p-2 xl:p-2 xl:py-1 rounded-md  space-x-1 "
-            >
-              <select
-                name=""
-                id=""
-                className="cursor-pointer text-darkblue-500 text-xs xl:text-lg outline-none"
-              >
-                <option value="Today">Today</option>
-                <option value="Weekly">Last Week</option>
-                <option value="Monthly">Last Month</option>
-              </select>
-            </button>
             <input
               id=""
               type="Date"
+              onChange={(e) => handleDate(e)}
               className="outline-none bg-white border rounded-md p-2 cursor-pointer"
             />
+            <button
+              id=""
+              className=" flex items-center border outline-none bg-white py-2 px-4 xl:p-4 xl:py-2 shadow-lg hover:shadow rounded-md  space-x-1 "
+              onClick={(e) => {
+                setData(salaryReport?.data?.data);
+              }}
+            >
+              Clear Filter
+            </button>
             <Tooltip
               content="Print"
               placement="bottom-end"
@@ -64,7 +91,6 @@ const Facultyheader = () => {
               <table className="w-full whitespace-nowrap">
                 <thead>
                   <tr className="bg-gray-100 h-16 w-full text-sm leading-none font-bold text-darkblue-500">
-                    <th className="font-normal text-center px-6">PROFILE</th>
                     <th className="font-normal text-center px-10 lg:px-6 xl:px-6">
                       ID
                     </th>
@@ -90,81 +116,102 @@ const Facultyheader = () => {
                 </thead>
                 <tbody className="w-full">
                   {salaryReport.isLoading ? (
-                    <tr className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
-                      <td className="text-center">
-                        <div className="flex justify-center items-center space-x-2">
-                          <img
-                            className="h-14 w-14 rounded-full"
-                            src="../images/user.png"
-                            alt="profile"
-                          />
-                        </div>
-                      </td>
-                      <td className=" px-10 text-center font-bold lg:px-6 xl:px-0">
-                        01
-                      </td>
-                      <td className="px-10 text-center lg:px-6 xl:px-0">
-                        shad
-                      </td>
-                      <td className="font-medium px-10 lg:px-6 xl:px-0">
-                        <p className="text-center">Teacher</p>
-                      </td>
-                      <td className="px-10 lg:px-6 xl:px-0">
-                        <p className="text-center">12/5/2022</p>
-                      </td>
-                      <td>
-                        <p className="text-center">
-                          <span className="bg-blue-200 px-4 text-darkblue-500 font-bold rounded">
-                            800
+                    <>
+                      <tr className="h-20 blur-sm text-sm leading-none text-gray-800 border-b border-gray-100">
+                        <td className=" px-10 text-center font-bold lg:px-6 xl:px-0">
+                          01
+                        </td>
+                        <td className="px-10 text-center lg:px-6 xl:px-0">
+                          shad
+                        </td>
+                        <td className="font-medium px-10 lg:px-6 xl:px-0">
+                          <p className="text-center">Teacher</p>
+                        </td>
+                        <td className="px-10 lg:px-6 xl:px-0">
+                          <p className="text-center">12/5/2022</p>
+                        </td>
+                        <td>
+                          <p className="text-center">
+                            <span className="bg-blue-200 px-4 text-darkblue-500 font-bold rounded">
+                              800
+                            </span>
+                          </p>
+                        </td>
+                        <td>
+                          <span className="flex justify-center">Sadik Ali</span>
+                        </td>
+                        <td className="px-5  ">
+                          <span className="flex justify-center">
+                            <NavLink to={"/reciept/recipet"}>
+                              <AiFillEye className="text-xl cursor-pointer" />
+                            </NavLink>
                           </span>
-                        </p>
-                      </td>
-                      <td>
-                        <span className="flex justify-center">Sadik Ali</span>
-                      </td>
-                      <td className="px-5  ">
-                        <span className="flex justify-center">
-                          <NavLink to={"/reciept/recipet"}>
-                            <AiFillEye className="text-xl cursor-pointer" />
-                          </NavLink>
-                        </span>
-                      </td>
-                    </tr>
+                        </td>
+                      </tr>
+                      <tr className="h-20 blur-sm text-sm leading-none text-gray-800 border-b border-gray-100">
+                        <td className=" px-10 text-center font-bold lg:px-6 xl:px-0">
+                          01
+                        </td>
+                        <td className="px-10 text-center lg:px-6 xl:px-0">
+                          shad
+                        </td>
+                        <td className="font-medium px-10 lg:px-6 xl:px-0">
+                          <p className="text-center">Teacher</p>
+                        </td>
+                        <td className="px-10 lg:px-6 xl:px-0">
+                          <p className="text-center">12/5/2022</p>
+                        </td>
+                        <td>
+                          <p className="text-center">
+                            <span className="bg-blue-200 px-4 text-darkblue-500 font-bold rounded">
+                              800
+                            </span>
+                          </p>
+                        </td>
+                        <td>
+                          <span className="flex justify-center">Sadik Ali</span>
+                        </td>
+                        <td className="px-5  ">
+                          <span className="flex justify-center">
+                            <NavLink to={"/reciept/recipet"}>
+                              <AiFillEye className="text-xl cursor-pointer" />
+                            </NavLink>
+                          </span>
+                        </td>
+                      </tr>
+                    </>
                   ) : (
-                    salaryReport?.data?.data.map((report) => {
+                    data.map((report) => {
                       return (
                         <tr className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
-                          <td className="text-center">
-                            <div className="flex justify-center items-center space-x-2">
-                              <img
-                                className="h-14 w-14 rounded-full"
-                                src="../images/user.png"
-                                alt="profile"
-                              />
-                            </div>
-                          </td>
                           <td className=" px-10 text-center font-bold lg:px-6 xl:px-0">
-                            01
+                            {report?.salary_receipt_id}
                           </td>
                           <td className="px-10 text-center lg:px-6 xl:px-0">
-                            shad
+                            {report?.staff[0]?.basic_info[0]?.full_name}
                           </td>
                           <td className="font-medium px-10 lg:px-6 xl:px-0">
-                            <p className="text-center">Teacher</p>
+                            <p className="text-center">
+                              {report?.staff[0].role}
+                            </p>
                           </td>
                           <td className="px-10 lg:px-6 xl:px-0">
-                            <p className="text-center">12/5/2022</p>
+                            <p className="text-center">
+                              {new Date(report.date)
+                                ?.toISOString()
+                                .slice(0, 10)}
+                            </p>
                           </td>
                           <td>
                             <p className="text-center">
                               <span className="bg-blue-200 px-4 text-darkblue-500 font-bold rounded">
-                                800
+                                {report?.transaction[0].amount}
                               </span>
                             </p>
                           </td>
                           <td>
                             <span className="flex justify-center">
-                              Sadik Ali
+                              {report?.admin[0].username}
                             </span>
                           </td>
                           <td className="px-5  ">
@@ -180,6 +227,13 @@ const Facultyheader = () => {
                   )}
                 </tbody>
               </table>
+              {data?.length < 1 ? (
+                <div className="bg-red-200 font-bold justify-center items-center p-2 rounded  flex space-x-2">
+                  <IoMdInformationCircle className="text-xl text-red-600" />
+
+                  <h1 className="text-red-800"> Transaction not Found </h1>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

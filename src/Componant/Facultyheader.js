@@ -9,10 +9,21 @@ import { NavLink } from "react-router-dom";
 import { useGetSalaryReport } from "../hooks/usePost";
 import { useQuery } from "react-query";
 import { IoMdInformationCircle } from "react-icons/io";
+import ReactPaginate from "react-paginate";
+import './Pagination.css'
+import { GiWallet } from "react-icons/gi";
+
 
 const Facultyheader = () => {
   const salaryReport = useQuery("salary", useGetSalaryReport);
   const [data, setData] = React.useState([]);
+  const [itemOffset, setItemOffset] = React.useState(0)
+  const [Serialno, setserialno] = React.useState(1)
+  const [currentItems, setcurrentItems] = React.useState([])
+  const [pageCount, setPageCount] = React.useState(0)
+  const [isPrint, setIsPrint] = React.useState(false);
+  const itemsPerPage = 6;
+
   console.log(salaryReport?.data?.data);
   const componentRef = useRef();
 
@@ -47,6 +58,22 @@ const Facultyheader = () => {
     }
   }, [salaryReport.isSuccess]);
   console.log("data", data);
+
+  // -------------------------------
+  // -------- Pagination -----------
+  // -------------------------------
+  React.useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    setcurrentItems(data.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(data.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage, data])
+  console.log(currentItems , "current")
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % data.length;
+    setserialno(event.selected + 1)
+    setItemOffset(newOffset);
+  };
+
   return (
     <div>
       <div className="flex justify-center items-center p-10 pt-10">
@@ -72,11 +99,11 @@ const Facultyheader = () => {
             >
               Clear Filter
             </button>
+            {currentItems.length > 0 ? 
             <Tooltip
               content="Print"
               placement="bottom-end"
-              className="text-white bg-black rounded p-2"
-            >
+              className="text-white bg-black rounded p-2">
               <a
                 href="#"
                 className="text-3xl bg-blue-200 rounded-md text-darkblue-500  w-10 h-8 flex justify-center  "
@@ -85,6 +112,10 @@ const Facultyheader = () => {
                 <MdLocalPrintshop />
               </a>
             </Tooltip>
+            :
+            null
+
+          }
           </div>
           <div ref={componentRef} className="p-5 pt-3 pb-0">
             <div className="overflow-x-auto">
@@ -115,30 +146,38 @@ const Facultyheader = () => {
                   </tr>
                 </thead>
                 <tbody className="w-full">
-                  {salaryReport.isLoading ? (
-                    <>
-                      <tr className="h-20 blur-sm text-sm leading-none text-gray-800 border-b border-gray-100">
+                  {currentItems.map((report) => {
+                    return (
+                      <tr className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
                         <td className=" px-10 text-center font-bold lg:px-6 xl:px-0">
-                          01
+                          {report?.salary_receipt_id}
                         </td>
                         <td className="px-10 text-center lg:px-6 xl:px-0">
-                          shad
+                          {report?.staff[0]?.basic_info[0]?.full_name}
                         </td>
                         <td className="font-medium px-10 lg:px-6 xl:px-0">
-                          <p className="text-center">Teacher</p>
+                          <p className="text-center">
+                            {report?.staff[0].role}
+                          </p>
                         </td>
                         <td className="px-10 lg:px-6 xl:px-0">
-                          <p className="text-center">12/5/2022</p>
+                          <p className="text-center">
+                            {new Date(report.date)
+                              ?.toISOString()
+                              .slice(0, 10)}
+                          </p>
                         </td>
                         <td>
                           <p className="text-center">
                             <span className="bg-blue-200 px-4 text-darkblue-500 font-bold rounded">
-                              800
+                              {report?.transaction[0].amount}
                             </span>
                           </p>
                         </td>
                         <td>
-                          <span className="flex justify-center">Sadik Ali</span>
+                          <span className="flex justify-center">
+                            {report?.admin[0].username}
+                          </span>
                         </td>
                         <td className="px-5  ">
                           <span className="flex justify-center">
@@ -148,86 +187,13 @@ const Facultyheader = () => {
                           </span>
                         </td>
                       </tr>
-                      <tr className="h-20 blur-sm text-sm leading-none text-gray-800 border-b border-gray-100">
-                        <td className=" px-10 text-center font-bold lg:px-6 xl:px-0">
-                          01
-                        </td>
-                        <td className="px-10 text-center lg:px-6 xl:px-0">
-                          shad
-                        </td>
-                        <td className="font-medium px-10 lg:px-6 xl:px-0">
-                          <p className="text-center">Teacher</p>
-                        </td>
-                        <td className="px-10 lg:px-6 xl:px-0">
-                          <p className="text-center">12/5/2022</p>
-                        </td>
-                        <td>
-                          <p className="text-center">
-                            <span className="bg-blue-200 px-4 text-darkblue-500 font-bold rounded">
-                              800
-                            </span>
-                          </p>
-                        </td>
-                        <td>
-                          <span className="flex justify-center">Sadik Ali</span>
-                        </td>
-                        <td className="px-5  ">
-                          <span className="flex justify-center">
-                            <NavLink to={"/reciept/recipet"}>
-                              <AiFillEye className="text-xl cursor-pointer" />
-                            </NavLink>
-                          </span>
-                        </td>
-                      </tr>
-                    </>
-                  ) : (
-                    data.map((report) => {
-                      return (
-                        <tr className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
-                          <td className=" px-10 text-center font-bold lg:px-6 xl:px-0">
-                            {report?.salary_receipt_id}
-                          </td>
-                          <td className="px-10 text-center lg:px-6 xl:px-0">
-                            {report?.staff[0]?.basic_info[0]?.full_name}
-                          </td>
-                          <td className="font-medium px-10 lg:px-6 xl:px-0">
-                            <p className="text-center">
-                              {report?.staff[0].role}
-                            </p>
-                          </td>
-                          <td className="px-10 lg:px-6 xl:px-0">
-                            <p className="text-center">
-                              {new Date(report.date)
-                                ?.toISOString()
-                                .slice(0, 10)}
-                            </p>
-                          </td>
-                          <td>
-                            <p className="text-center">
-                              <span className="bg-blue-200 px-4 text-darkblue-500 font-bold rounded">
-                                {report?.transaction[0].amount}
-                              </span>
-                            </p>
-                          </td>
-                          <td>
-                            <span className="flex justify-center">
-                              {report?.admin[0].username}
-                            </span>
-                          </td>
-                          <td className="px-5  ">
-                            <span className="flex justify-center">
-                              <NavLink to={"/reciept/recipet"}>
-                                <AiFillEye className="text-xl cursor-pointer" />
-                              </NavLink>
-                            </span>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  )}
+                    );
+                  })
+                  }
                 </tbody>
+
               </table>
-              {data?.length < 1 ? (
+              {currentItems?.length < 1 ? (
                 <div className="bg-red-200 font-bold justify-center items-center p-2 rounded  flex space-x-2">
                   <IoMdInformationCircle className="text-xl text-red-600" />
 
@@ -236,6 +202,30 @@ const Facultyheader = () => {
               ) : null}
             </div>
           </div>
+          {
+            currentItems.length > 0
+              ?
+              <div className="flex justify-end items-end">
+                <div className="py-2">
+                  <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="next >"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={3}
+                    pageCount={pageCount}
+                    previousLabel="< previous"
+                    renderOnZeroPageCount={null}
+                    containerClassName="pagination"
+                    pageLinkClassName='page-num'
+                    previousLinkClassName='page-num'
+                    nextLinkClassName='page-num'
+                    activeLinkClassName='active-page'
+                  />
+                </div>
+              </div>
+              :
+              null
+          }
         </div>
       </div>
     </div>

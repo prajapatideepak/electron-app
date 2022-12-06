@@ -200,7 +200,8 @@ const Updateprofile = () => {
   React.useEffect(() => {
     if (updateAdmin.isSuccess) {
       Toaster("success", "Profile Updated Successfully")
-      navigate('/')
+      localStorage.removeItem("section");
+      changeSection();
     }
   }, [updateAdmin.isSuccess]);
   const onSubmit = async (data) => {

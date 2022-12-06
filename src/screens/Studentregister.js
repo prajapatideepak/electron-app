@@ -330,7 +330,9 @@ const Studentregister = () => {
                                                 ?
                                                     classes.map((item, key) => {
                                                         return (
-                                                            <option key={key} value={item._id}>{item.class_name}</option>
+                                                            <option key={key} value={item._id}>
+                                                                <span>{`${item.class_name} ${item.medium} ${item.stream == 'none' ? '' : item.stream}`}</span>
+                                                            </option>
                                                         )
                                                     })
                                                 :

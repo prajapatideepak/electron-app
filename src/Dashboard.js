@@ -56,8 +56,6 @@ function DashboardMenu() {
     }
   }, [adminData, changeSection, login, logout, setAdmin]);
 
-  console.log(adminData);
-
   return !adminData.isSuccess ? (
     <div className="flex bg-[#f5f7ff]  items-center h-screen justify-center space-x-2 ">
       <div className="w-12 h-12 bg-blue-400 rounded-full animate-bounce"></div>

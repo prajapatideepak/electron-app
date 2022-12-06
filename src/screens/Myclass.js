@@ -36,9 +36,8 @@ const Myclass = () => {
   const [classesByYear, setClassesByYear] = React.useState([]);
   const [fetchData, setFetchData] = React.useState([]);
   const [call, setCall] = React.useState(false);
-
-  // const [selectYear,setSelectYear] = React.useState(new Date().getFullYear());
-  const [selectYear, setSelectYear] = React.useState("Current Year");
+  const [allClasses, setAllClasses] = React.useState([])
+  const [selectYear, setSelectYear] = React.useState(0);
   const [medium, setMedium] = React.useState("");
   const [stream, setStream] = React.useState("");
   const [model, setModel] = React.useState(false);
@@ -93,25 +92,31 @@ const Myclass = () => {
   async function fetchClassesByYear() {
     const res = await getAllClassesByYear();
     setIsLoading(false);
-    setClassesByYear(
-      res.data?.sort((a, b) =>
+    const sortedClasses = res.data?.sort((a, b) =>
         a._id.batch_start_year < b._id.batch_start_year
           ? 1
           : a._id.batch_start_year > b._id.batch_start_year
           ? -1
           : 0
       )
-    );
+    setSelectYear(sortedClasses[0]?._id?.batch_start_year)
+    setClassesByYear(sortedClasses);
   }
 
   async function fetchClasses() {
     const res = await getAllClasses();
-    fetchClassesByYear();
+    await fetchClassesByYear();
     setClasses(() =>
       res?.data?.filter((data) => {
         return data.is_active == 1 && data.is_primary == is_primary;
       })
     );
+
+    setAllClasses(()=>
+      res?.data?.filter((data) => {
+        return data.is_active == 1;
+      })
+    )
 
     setFetchData(() =>
       res?.data?.filter((data) => {
@@ -128,7 +133,7 @@ const Myclass = () => {
     setSelectYear(e.target.value);
     let flag = 0;
     classesByYear.map((value, index) => {
-      if (value == e.target.value && index == 0) {
+      if (value._id.batch_start_year == e.target.value && index == 0) {
         flag = 1;
         return;
       }
@@ -140,6 +145,7 @@ const Myclass = () => {
       setIsCurrentYearSelected(false);
     }
 
+    console.log(isCurrentYearSelected);
     setClasses(() =>
       fetchData.filter((data) => {
         return (
@@ -153,6 +159,7 @@ const Myclass = () => {
 
   const handleMediumChange = (e) => {
     setMedium(e.target.value);
+    // console.log(selectYear)
     setClasses(() =>
       fetchData?.filter((data) => {
         return (
@@ -711,7 +718,7 @@ const Myclass = () => {
                                       >
                                         <option
                                           value="english"
-                                          defaultValue={
+                                          selected={
                                             item.medium == "english"
                                               ? true
                                               : false
@@ -721,7 +728,7 @@ const Myclass = () => {
                                         </option>
                                         <option
                                           value="gujarati"
-                                          defaultValue={
+                                          selected={
                                             item.medium == "gujarati"
                                               ? true
                                               : false
@@ -731,7 +738,7 @@ const Myclass = () => {
                                         </option>
                                         <option
                                           value="hindi"
-                                          defaultValue={
+                                          selected={
                                             item.medium == "hindi"
                                               ? true
                                               : false
@@ -767,7 +774,7 @@ const Myclass = () => {
                                       >
                                         <option
                                           value={0}
-                                          defaultValue={
+                                          selected={
                                             item.is_primary == 0 ? true : false
                                           }
                                         >
@@ -775,7 +782,7 @@ const Myclass = () => {
                                         </option>
                                         <option
                                           value={1}
-                                          defaultValue={
+                                          selected={
                                             item.is_primary == 1 ? true : false
                                           }
                                         >
@@ -807,7 +814,7 @@ const Myclass = () => {
                                       >
                                         <option
                                           value="none"
-                                          defaultValue={
+                                          selected={
                                             item.stream == "none" ? true : false
                                           }
                                         >
@@ -815,7 +822,7 @@ const Myclass = () => {
                                         </option>
                                         <option
                                           value="commerce"
-                                          defaultValue={
+                                          selected={
                                             item.stream == "commerce"
                                               ? true
                                               : false
@@ -825,7 +832,7 @@ const Myclass = () => {
                                         </option>
                                         <option
                                           value="science"
-                                          defaultValue={
+                                          selected={
                                             item.stream == "science"
                                               ? true
                                               : false
@@ -971,7 +978,7 @@ const Myclass = () => {
                     id="medium"
                     value={medium}
                     onChange={handleMediumChange}
-                    className="cursor-pointer text-darkblue-500 text-xs md:text-lg outline-none"
+                    className="cursor-pointer text-darkblue-500 text-base outline-none"
                   >
                     <option value="">Select</option>
                     <option value="english">English</option>
@@ -993,7 +1000,7 @@ const Myclass = () => {
                     id="stream"
                     value={stream}
                     onChange={handleStreamChange}
-                    className="cursor-pointer text-darkblue-500 text-xs md:text-lg outline-none"
+                    className="cursor-pointer text-darkblue-500 text-base outline-none"
                   >
                     <option value="">Select</option>
                     <option value="none">None</option>
@@ -1024,7 +1031,7 @@ const Myclass = () => {
                     </div>
                   </div>
                 </Tooltip>
-                {classes && classes?.length > 0 ? (
+                {allClasses && allClasses?.length > 0 ? (
                   <button
                     className="btn cursor-pointer  h-11 w-40 rounded-full bg-white text-left border  overflow-hidden"
                     id="btn"
@@ -1032,7 +1039,7 @@ const Myclass = () => {
                     <NavLink
                       className="nav-link"
                       to="class/ChangeYear"
-                      state={{ classes }}
+                      state={{ allClasses }}
                     >
                       <div
                         className="icons  h-11 w-40 flex ml-3 items-center "

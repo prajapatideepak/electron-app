@@ -99,7 +99,7 @@ export default function Searchbar() {
                 {myData?.is_super_admin ? (
                   <NavLink to="/Componant/Addadmin">
                     <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
-                      <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
+                      <div className="bg-blue-200  p-2.5 flex justify-center items-center rounded-full">
                         <MdOutlinePersonAddAlt className="text-blue-500 text-xl" />
                       </div>
                       <span className="md:text-sm xl:text-base">Add Admin</span>
@@ -110,7 +110,7 @@ export default function Searchbar() {
                 {myData?.is_super_admin ? (
                   <NavLink to="/Componant/AdminList">
                     <div className="bg-white hover:bg-slate-200 text-gray-800  h-11 my-2 cursor-pointer hover:text-blue-500  flex justify-start px-2 hover:rounded-xl ml-4 mr-4 space-x-6  items-center">
-                      <div className="bg-blue-200  w-1/6 h-9 flex justify-center items-center rounded-full">
+                      <div className="bg-blue-200  p-2.5 flex justify-center items-center rounded-full">
                         <MdOutlinePersonAddAlt className="text-blue-500 text-xl" />
                       </div>
                       <span className="md:text-sm xl:text-base">

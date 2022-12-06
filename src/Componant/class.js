@@ -295,7 +295,7 @@ const Class = () => {
                     onChange={handlePendingPaidUpClick}
                     name=""
                     id=""
-                    className="cursor-pointer text-darkblue-500 text-xs xl:text-lg outline-none"
+                    className="cursor-pointer text-darkblue-500 text-base outline-none"
                   >
                     <option value={0}>All</option>
                     <option value={1}>Pending</option>

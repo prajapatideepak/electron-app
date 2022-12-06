@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Validator from "../hooks/validator";
 import { AxiosError } from "axios";
 import { FaUserEdit } from "react-icons/fa";
+import Toaster from '../hooks/showToaster'
 
 const valid = new Validator();
 valid.register({
@@ -31,7 +32,7 @@ valid.register({
     length: [10, "Number should be of 10 digits"],
   },
   alternative_no: {
-    required: [true, "Field is required"],
+    required: [false],
     pattern: [/^[0-9]*$/, "Please enter only numbers"],
     length: [10, "Number should be of 10 digits"],
   },
@@ -58,9 +59,6 @@ const Updateprofile = () => {
 
   const { changeSection } = React.useContext(NasirContext);
   const navigate = useNavigate();
-  const Toaster = () => {
-    toast.success("Profile updated successfully");
-  };
   const [isloading, setloading] = React.useState(true);
   const server = "http://localhost:4000/";
   const [toggle, setToggle] = React.useState(false);
@@ -83,27 +81,27 @@ const Updateprofile = () => {
 
   let admin_details;
   let admin_data;
-  const setadmindetails = () => {
+  const setadmin = () => {
     admin_details = admin_details;
     setadminDetails(admin_details);
 
-    let dob = new Date(admin_details.staff_id.basic_info_id.dob);
+    let dob = new Date(admin_details?.staff_id?.basic_info_id?.dob);
     dob = `${dob.getFullYear()}-${
       dob.getMonth() + 1 < 10 ? "0" + (dob.getMonth() + 1) : dob.getMonth() + 1
     }-${dob.getDate() < 10 ? "0" + dob.getDate() : dob.getDate()}`;
 
     admin_data = {
-      photo: admin_details.staff_id.basic_info_id.photo,
-      full_name: admin_details.staff_id.basic_info_id.full_name,
-      email: admin_details.staff_id.contact_info_id.email,
-      whatsapp_no: admin_details.staff_id.contact_info_id.whatsapp_no,
-      alternative_no: admin_details.staff_id.contact_info_id.alternative_no,
-      security_pin: admin_details.security_pin,
-      address: admin_details.staff_id.contact_info_id.address,
+      photo: admin_details?.staff_id?.basic_info_id.photo,
+      full_name: admin_details?.staff_id?.basic_info_id.full_name,
+      email: admin_details?.staff_id?.contact_info_id.email,
+      whatsapp_no: admin_details?.staff_id?.contact_info_id.whatsapp_no,
+      alternative_no: admin_details?.staff_id?.contact_info_id.alternative_no,
+      security_pin: admin_details?.security_pin,
+      address: admin_details?.staff_id?.contact_info_id.address,
       dob: dob,
     };
 
-    const photo = admin_details.staff_id.basic_info_id.photo;
+    const photo = admin_details?.staff_id?.basic_info_id.photo;
     setImg(photo != "" ? server + photo : defaultImage);
     setadminInputController(admin_data);
 
@@ -123,7 +121,7 @@ const Updateprofile = () => {
     async function admindata() {
       try {
         admin_details = await admin;
-        setadmindetails();
+        setadmin();
         setloading(false);
       } catch (err) {
         if (err instanceof AxiosError) {
@@ -150,8 +148,25 @@ const Updateprofile = () => {
     setToggle(true);
   }
 
-  function hendlecancel(e) {
+  console.log(admin)
+  function handleCancel(e) {
     e.preventDefault();
+    let dob = new Date(admin?.staff_id?.basic_info_id?.dob);
+    dob = `${dob.getFullYear()}-${
+      dob.getMonth() + 1 < 10 ? "0" + (dob.getMonth() + 1) : dob.getMonth() + 1
+    }-${dob.getDate() < 10 ? "0" + dob.getDate() : dob.getDate()}`;
+
+    setadminInputController (() =>{
+      return{
+        full_name: admin?.staff_id?.basic_info_id.full_name,
+        email: admin?.staff_id?.contact_info_id.email,
+        whatsapp_no: admin?.staff_id?.contact_info_id.whatsapp_no,
+        alternative_no: admin?.staff_id?.contact_info_id.alternative_no,
+        security_pin: admin?.security_pin,
+        address: admin?.staff_id?.contact_info_id.address,
+        dob: dob,
+      }
+    });
     setIsEnable(true);
     setToggle(false);
   }
@@ -177,13 +192,11 @@ const Updateprofile = () => {
 
   React.useEffect(() => {
     if (updateAdmin.isSuccess) {
-      toast.success("Profile Updated Successfully");
-      localStorage.removeItem("section");
-      changeSection();
+      Toaster("success", "Profile Updated Successfully")
+      navigate('/')
     }
   }, [updateAdmin.isSuccess]);
   const onSubmit = async (data) => {
-    console.log("on submit", data);
     updateAdmin.mutate(data);
     reset();
   };
@@ -213,7 +226,7 @@ const Updateprofile = () => {
                         type="text"
                         name="full_name"
                         disabled={isEnable}
-                        defaultValue={adminInputController.full_name}
+                        value={adminInputController.full_name}
                         onChange={handleChange}
                         placeholder="First Name, Middle Name, Last Name"
                         className={`w-72 mt-1 block  px-3 py-2 bg-white border  border-slate-300 
@@ -237,7 +250,7 @@ const Updateprofile = () => {
                         type="text"
                         disabled={isEnable}
                         name="email"
-                        defaultValue={adminInputController.email}
+                        value={adminInputController.email}
                         onChange={handleChange}
                         placeholder="Enter Your Email"
                         className={`w-72 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm 
@@ -264,7 +277,7 @@ const Updateprofile = () => {
                         disabled={isEnable}
                         name="whatsapp_no"
                         placeholder="Enter Your WhatsApp No"
-                        defaultValue={adminInputController.whatsapp_no}
+                        value={adminInputController.whatsapp_no}
                         onChange={handleChange}
                         className={`w-72 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm 
                         shadow-sm placeholder-slate-400 outline-none
@@ -287,7 +300,7 @@ const Updateprofile = () => {
                         type="text"
                         disabled={isEnable}
                         name="alternative_no"
-                        defaultValue={adminInputController.alternative_no}
+                        value={adminInputController.alternative_no}
                         onChange={handleChange}
                         placeholder="Enter Your Mobile No"
                         className={`w-72 mt-1 block px-3 py-2 bg-white border border-slate-300 rounded-md text-sm 
@@ -313,7 +326,7 @@ const Updateprofile = () => {
                         type="text"
                         disabled={isEnable}
                         name="security_pin"
-                        defaultValue={adminInputController.security_pin}
+                        value={adminInputController.security_pin}
                         onChange={handleChange}
                         placeholder="Enter Your Security pin"
                         className={`w-72 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm 
@@ -337,7 +350,7 @@ const Updateprofile = () => {
                       <input
                         type="text"
                         disabled={isEnable}
-                        defaultValue={adminInputController.address}
+                        value={adminInputController.address}
                         onChange={handleChange}
                         name="address"
                         placeholder="Enter Your Address"
@@ -392,7 +405,7 @@ const Updateprofile = () => {
                         <div className="flex  pl-3 border-secondory-text w-fit  space-x-3 rounded-lg">
                           <button
                             type="button"
-                            onClick={hendlecancel}
+                            onClick={handleCancel}
                             className="py-2 px-4 gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center"
                           >
                             <FaUserEdit className="text-xl" />

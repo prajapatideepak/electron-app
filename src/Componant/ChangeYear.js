@@ -13,30 +13,12 @@ import { toast } from 'react-toastify';
 import { IoIosArrowBack } from 'react-icons/io';
 
 
-
-function Remove() {
-  Swal.fire({
-    title: "Are you sure to start new year ?",
-    text: "After starting new year, your current classes will be deleted!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Start New Year",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire("New Year Started!", "", "success");
-    }
-  });
-}
-
 const ChangeYear = () => {
     const location = useLocation();
-    const [classesData,setClassesData] = React.useState(location.state.classes);
+    const [classesData,setClassesData] = React.useState(location.state.allClasses);
     const [classesNewData,setClassesNewData] = React.useState([]);
     
     const notify = () => toast.success("Class transfer successfully");
-    const [call, setCall] = React.useState(false)
 
     classesData?.map((item,index)=>{
         return {...item,is_selected:true, is_disabled:true}
@@ -88,16 +70,31 @@ const ChangeYear = () => {
     }
 
     const onSubmit = async () => {
-        const res = await classesNewData.filter((data)=>{
+        const res = classesNewData.filter((data)=>{
             return data.is_selected == true  
         })
-
-        const response = transferClasses(res);    
-        if(response){
-          setCall(()=>!call)
-          Remove()
-          return notify()
-        } 
+        Swal.fire({
+            title: "Are you sure to start new year ?",
+            text: "After starting new year, your current classes will be deleted!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Start New Year",
+        }).then( async (result) => {
+            if (result.isConfirmed) {
+                const response = await transferClasses(res);    
+                if(response.data.success){
+                    Swal.fire("New Year Started!", "", "success")
+                    .then(() => {
+                        navigate('/');
+                    });
+                }
+                else{
+                    toast.error('Something went wrong')
+                }
+            }
+        });
     }  
 
     return (

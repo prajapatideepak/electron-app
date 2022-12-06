@@ -88,10 +88,11 @@ export default function AdminList() {
                         <span className="">
                           <button
                             onClick={(e) => handleMakeAdmin(m.username)}
-                            className={`rounded-lg hover:scale-105  duration-200 transition px-7 font-bold py-2 ${
+                            className={`rounded-lg px-7 font-bold py-2 w-2/4
+                            ${
                               !m.is_super_admin
-                                ? "bg-green-300 text-green-900"
-                                : "bg-red-300 text-red-800"
+                                ? "bg-green-800 text-white hover:bg-green-500"
+                                : "bg-red-800 text-white hover:bg-red-500"
                             }`}
                           >
                             {m.is_super_admin

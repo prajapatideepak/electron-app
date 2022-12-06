@@ -1,6 +1,5 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   useChangeByAdmin,
@@ -9,7 +8,8 @@ import {
 } from "../hooks/usePost";
 
 export default function AdminList() {
-  const admins = useQuery("admins", useGetAllAdmin);
+  const [click, setclick] = React.useState(false);
+  const admins = useQuery(["admins", click], useGetAllAdmin);
   const changeAdmin = useChangeByAdmin();
   const setDefault = useSetDefault();
 
@@ -23,6 +23,7 @@ export default function AdminList() {
 
   React.useEffect(() => {
     if (changeAdmin.isSuccess) {
+      setclick(!click);
       toast.success("Updated");
     }
     if (changeAdmin.isError) {
@@ -37,6 +38,7 @@ export default function AdminList() {
     if (setDefault.isError) {
       toast.error(setDefault.error.response.data.error);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setDefault.isSuccess, setDefault.isError]);
   return (
     <div className="px-12 py-8">

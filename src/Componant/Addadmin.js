@@ -6,14 +6,11 @@ import { useCreateAdmin } from "../hooks/usePost";
 import { toast } from "react-toastify";
 import FormData from "form-data";
 
- export const Addadmin = () => {
-  const [img, setImg] = useState("images/user.png");
+export const Addadmin = () => {
+  const [img, setImg] = useState("/images/user.png");
   const createPost = useCreateAdmin();
 
-  const onImageChange = (e) => {
-    const [file] = e.target.files;
-    setImg(URL.createObjectURL(file));
-  };
+
 
   React.useEffect(() => {
     if (createPost.isSuccess) {
@@ -39,7 +36,6 @@ import FormData from "form-data";
 
   const handleClick = (e) => {
     reset();
-    // console.log(e.currentTarget);
   };
 
   return (
@@ -59,21 +55,6 @@ import FormData from "form-data";
               >
                 <div className=" w-full grid grid-cols-1 rounded-lg drop-shadow-md truncate bg-white pb-5  ">
                   <div className=" flex flex-col items-center gap-4">
-                    <div className="profile_img_div border-2 border-gray-500 shadow-lg">
-                      <img
-                        src={img}
-                        width="100%"
-                        height="100%"
-                        alt="student profile"
-                      />
-                      <div className="profile_img_overlay flex flex-col justify-center items-center">
-                        <input
-                          type="file"
-                          className="rounded-md w-16"
-                          onChange={onImageChange}
-                        />
-                      </div>
-                    </div>
                     <div className="flex lg:flex-row  gap-4">
                       <div className="username">
                         <label className="block">

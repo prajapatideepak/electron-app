@@ -47,7 +47,7 @@ const Reciept = () => {
 
 
     const admin_id = admin._id;
-
+    
     try{
       const admin_details = await getAdminVerification({username: data.Username, password: data.Password});
       

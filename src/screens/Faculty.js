@@ -382,7 +382,7 @@ const Faculty = () => {
                 </div>
                 <div className="ml-10">
                   <p className='text-white text-5xl mb-3'>{data ? data : 0}</p>
-                  <h1 className='text-white text-lg '>Total <span>Faculty</span></h1>
+                  <h1 className='text-white text-lg '>Total <span>Staff</span></h1>
                 </div>
               </div>
             </div>

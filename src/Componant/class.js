@@ -391,9 +391,7 @@ const Class = () => {
                         return (
                           <tr className=" border-b" key={index}>
                             <th className="py-5 px-6">
-                              {index +
-                                1 +
-                                (itemsPerPage * Serialno - itemsPerPage)}
+                              {index + 1 + (itemsPerPage * Serialno - itemsPerPage)}
                             </th>
                             <td className=" py-5 text-gray-500">
                               {item.student_id.student_id}
@@ -442,9 +440,7 @@ const Class = () => {
                         return (
                           <tr className=" border-b" key={index}>
                             <th className="py-5 px-6">
-                              {index +
-                                1 +
-                                (itemsPerPage * Serialno - itemsPerPage)}
+                              {index + 1 + (itemsPerPage * Serialno - itemsPerPage)}
                             </th>
                             <td className="px-6 py-5 text-gray-500">
                               {item.student_id.student_id}

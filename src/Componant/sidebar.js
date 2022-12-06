@@ -71,7 +71,7 @@ export default function Sidebar({ data }) {
             <NavLink className="nav-link" activeclassname="active" to="receipt">
               <li className="inline-flex xl:pl-11 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
                 <BsReceipt className="xl:w-5 xl:h-5 xl:mr-2" />
-                <h1 className="text-base hidden  xl:block  "> Reciept</h1>
+                <h1 className="text-base hidden  xl:block  "> Receipt</h1>
               </li>
             </NavLink>
             </div>
@@ -110,7 +110,7 @@ export default function Sidebar({ data }) {
               >
                 <li className="inline-flex xl:pl-11 items-center py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
                   <IoMdPersonAdd className="xl:w-5 xl:h-5 xl:mr-2" />
-                  <h1 className="text-base hidden  xl:block  ">Student Reg</h1>
+                  <h1 className="text-base hidden  xl:block  ">Student Reg.</h1>
                 </li>
               </NavLink>
             </div>

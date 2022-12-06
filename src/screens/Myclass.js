@@ -1042,11 +1042,11 @@ const Myclass = () => {
                       state={{ allClasses }}
                     >
                       <div
-                        className="icons  h-11 w-40 flex ml-3 items-center "
+                        className="icons  h-11 w-40 flex ml-3 items-center"
                         id="icons"
                       >
                         <FaArrowRight className="text-xl text-darkblue-500  " />
-                        <span className="ml-3 text-lg text-darkblue-500 font-semibold">
+                        <span className="ml-2 text-lg text-darkblue-500 font-semibold">
                           Change Year
                         </span>
                       </div>

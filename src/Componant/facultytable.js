@@ -10,6 +10,7 @@ import _ from "lodash"
 import ReactPaginate from "react-paginate";
 import './Pagination.css'
 import { Exportallfaculty } from "../hooks/usePost";
+import Toaster from '../hooks/showToaster'
 
 const Facultytable = ({allFaculty}) => {
   // -------------------------------
@@ -39,12 +40,12 @@ const Facultytable = ({allFaculty}) => {
     setItemOffset(newOffset);
   };
 
-  const ExportAllfaculty = () => {
-    const res = Exportallfaculty()
-    if (res) {
-        Toaster()
+  const ExportAllfaculty = async () => {
+    const res = await Exportallfaculty()
+    if (res.success) {
+        Toaster('success', 'Exported successfully. Check your download folder')
     } else {
-        errtoast()
+        Toaster('error', 'Something went wrong')
     }
   }
 
@@ -227,7 +228,6 @@ const Facultytable = ({allFaculty}) => {
                       nextLinkClassName='page-num'
                       activeLinkClassName='active-page'
                     />
-
                   </div>
                 </div>
               :

@@ -257,6 +257,7 @@ const Profilefaculty = () => {
       if (res.data.success == true) {
         Toaster()
         setcall(!call)
+        setIsEnable(true)
         setToggle(false);
       }
     } catch (error) {
@@ -279,6 +280,7 @@ const Profilefaculty = () => {
 
   function hendlecancel(e) {
     e.preventDefault();
+    setState(valid.clearErrors())
     setIsEnable(true);
     setToggle(false);
   }
@@ -339,7 +341,7 @@ const Profilefaculty = () => {
                       <input
                         type="text"
                         disabled={isEnable}
-                        defaultValue={facultyInputController.full_name}
+                        value={facultyInputController.full_name}
                         placeholder="First Name, Middle Name, Last Name"
                         name="full_name"
                         className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md 
@@ -359,7 +361,7 @@ const Profilefaculty = () => {
                         disabled={isEnable}
                         placeholder="Enter Your Email"
                         name="email"
-                        defaultValue={facultyInputController.email}
+                        value={facultyInputController.email}
                         className={`w-60 mt-1 block w-full px-3 py-2 bg-white border 
                          border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none
                          ${valid.errors?.email != '' && 'border-red-600'}
@@ -379,7 +381,7 @@ const Profilefaculty = () => {
                         disabled={isEnable}
                         placeholder="Enter Your WhatsApp No"
                         name="whatsapp_no"
-                        defaultValue={facultyInputController.whatsapp_no}
+                        value={facultyInputController.whatsapp_no}
                         className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm
                          placeholder-slate-400 outline-none 
                          ${valid.errors?.whatsapp_no != '' && 'border-red-600'}
@@ -455,7 +457,7 @@ const Profilefaculty = () => {
                       <input
                         type="text"
                         disabled={isEnable}
-                        defaultValue={facultyInputController.role}
+                        value={facultyInputController.role}
                         placeholder="Enter Your Role"
                         name="role"
                         className={`w-60 mt-1 block w-full px-3 py-2 bg-white border 
@@ -478,7 +480,7 @@ const Profilefaculty = () => {
                           type="text"
                           disabled={isEnable}
                           placeholder="Enter Your Address"
-                          defaultValue={facultyInputController.address}
+                          value={facultyInputController.address}
                           name="address"
                           className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2
                            border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none

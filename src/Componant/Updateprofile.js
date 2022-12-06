@@ -20,7 +20,7 @@ valid.register({
     pattern: [/^[A-Za-z ]+$/, "Please enter only characters"],
   },
   email: {
-    required: [false, "Field is required"],
+    required: [true, "Field is required"],
     pattern: [
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       "Please enter valid email",
@@ -31,7 +31,7 @@ valid.register({
     pattern: [/^[0-9]*$/, "Please enter only numbers"],
     length: [10, "Number should be of 10 digits"],
   },
-  alternative_no: {
+  alternate_no: {
     required: [false],
     pattern: [/^[0-9]*$/, "Please enter only numbers"],
     length: [10, "Number should be of 10 digits"],
@@ -73,7 +73,7 @@ const Updateprofile = () => {
     full_name: "",
     email: "",
     whatsapp_no: "",
-    alternative_no: "",
+    alternate_no: "",
     security_pin: "",
     address: "",
     dob: "",
@@ -95,7 +95,7 @@ const Updateprofile = () => {
       full_name: admin_details?.staff_id?.basic_info_id.full_name,
       email: admin_details?.staff_id?.contact_info_id.email,
       whatsapp_no: admin_details?.staff_id?.contact_info_id.whatsapp_no,
-      alternative_no: admin_details?.staff_id?.contact_info_id.alternative_no,
+      alternate_no: admin_details?.staff_id?.contact_info_id.alternate_no == '' ? '--' : admin_details?.staff_id?.contact_info_id.alternate_no,
       security_pin: admin_details?.security_pin,
       address: admin_details?.staff_id?.contact_info_id.address,
       dob: dob,
@@ -111,7 +111,7 @@ const Updateprofile = () => {
       full_name: admin_data.full_name ?? admin_data.full_name,
       email: admin_data.email ?? admin_data.email,
       whatsapp_no: admin_data.whatsapp_no ?? admin_data.whatsapp_no,
-      alternative_no: admin_data.alternative_no ?? admin_data.alternative_no,
+      alternate_no: admin_data.alternate_no ?? admin_data.alternate_no,
       security_pin: admin_data.security_pin ?? admin_data.security_pin,
       dob: admin_data.dob ?? admin_data.dob,
       address: admin_data.address ?? admin_data.address,
@@ -144,13 +144,20 @@ const Updateprofile = () => {
 
   function handleedit(e) {
     e.preventDefault();
+    console.log(adminInputController.alternate_no)
+    setadminInputController((prevData)=>{
+      return {
+        ...prevData,
+        alternate_no: adminInputController.alternate_no == '--' ? '' : adminInputController.alternate_no
+      }
+    })
     setIsEnable(false);
     setToggle(true);
   }
 
-  console.log(admin)
   function handleCancel(e) {
     e.preventDefault();
+    setState(valid.clearErrors())
     let dob = new Date(admin?.staff_id?.basic_info_id?.dob);
     dob = `${dob.getFullYear()}-${
       dob.getMonth() + 1 < 10 ? "0" + (dob.getMonth() + 1) : dob.getMonth() + 1
@@ -161,7 +168,7 @@ const Updateprofile = () => {
         full_name: admin?.staff_id?.basic_info_id.full_name,
         email: admin?.staff_id?.contact_info_id.email,
         whatsapp_no: admin?.staff_id?.contact_info_id.whatsapp_no,
-        alternative_no: admin?.staff_id?.contact_info_id.alternative_no,
+        alternate_no: admin?.staff_id?.contact_info_id.alternate_no == '' ? '--' : admin?.staff_id?.contact_info_id.alternate_no,
         security_pin: admin?.security_pin,
         address: admin?.staff_id?.contact_info_id.address,
         dob: dob,
@@ -299,18 +306,18 @@ const Updateprofile = () => {
                       <input
                         type="text"
                         disabled={isEnable}
-                        name="alternative_no"
-                        value={adminInputController.alternative_no}
+                        name="alternate_no"
+                        value={adminInputController.alternate_no}
                         onChange={handleChange}
                         placeholder="Enter Your Mobile No"
                         className={`w-72 mt-1 block px-3 py-2 bg-white border border-slate-300 rounded-md text-sm 
                         shadow-sm placeholder-slate-400 outline-none
-                        ${valid.errors.alternative_no != "" && "border-red-600"}
+                        ${valid.errors.alternate_no != "" && "border-red-600"}
                         `}
                       />
-                      {valid.errors?.alternative_no != "" ? (
+                      {valid.errors?.alternate_no != "" ? (
                         <small className="text-red-600 mt-3">
-                          *{valid.errors?.alternative_no}
+                          *{valid.errors?.alternate_no}
                         </small>
                       ) : null}
                     </label>

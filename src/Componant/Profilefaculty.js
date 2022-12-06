@@ -15,7 +15,9 @@ import Validator from '../hooks/validator';
 import { AxiosError } from 'axios';
 
 
-
+// --------------------------------------
+// -------- Validation Library -----------
+// --------------------------------------
 const valid = new Validator();
 valid.register({
   photo: {
@@ -53,6 +55,10 @@ valid.register({
 })
 
 const Profilefaculty = () => {
+
+  // --------------------------------------
+  // -------- UseSatate -------------------
+  // --------------------------------------
   const componentRef = useRef();
   const form = useRef(null);
   const [isEnable, setIsEnable] = useState(true);
@@ -106,7 +112,7 @@ const Profilefaculty = () => {
     joining_date = `${joining_date.getFullYear()}-${joining_date.getMonth() + 1 < 10 ? "0" + (joining_date.getMonth() + 1) : joining_date.getMonth() + 1}-${joining_date.getDate() < 10 ? "0" + joining_date.getDate() : joining_date.getDate()}`
 
     facul_data = {
-      id : faculty_details._id,
+      id: faculty_details._id,
       photo: faculty_details.basic_info_id.photo,
       full_name: faculty_details.basic_info_id.full_name,
       email: faculty_details.contact_info_id.email,
@@ -135,9 +141,11 @@ const Profilefaculty = () => {
       joining_date: facul_data.joining_date ?? facul_data.joining_date,
     }
   }
-  // -----------------------------
-  // ------ form_details --------
-  // -----------------------------
+
+
+  // --------------------------------
+  // ------ form_details API --------
+  // --------------------------------
   useEffect(() => {
     async function facultdata() {
       try {
@@ -205,22 +213,17 @@ const Profilefaculty = () => {
     setImg(URL.createObjectURL(file));
   };
 
+
+  // --------------------------
+  // -------- Form Eror -------
+  // --------------------------
   const {
-    register,
-    handleSubmit,
     formState: { errors },
-    reset,
-    trigger,
-    resetField,
   } = useForm();
 
-  function handlemale(e) {
-    setgender(e.target.value)
-  }
-  function handlefemale(e) {
-    setgender(e.target.value)
-  }
-
+  // --------------------------------
+  // ------  Input Value Fatch ------- 
+  // --------------------------------
   function handleChange(e) {
     e.preventDefault()
 
@@ -239,6 +242,10 @@ const Profilefaculty = () => {
       }
     });
   }
+
+  // --------------------------------
+  // ------  Send Data in API ------- 
+  // --------------------------------
   const onSubmit = async (data) => {
     console.log(data, "data")
     Object.assign(data, { photo: data.photo, staff_id })
@@ -272,13 +279,20 @@ const Profilefaculty = () => {
     }
   }
 
+  // --------------------------------
+  // ------ Form details Edit  ------- 
+  // --------------------------------
   function handleedit(e) {
     e.preventDefault();
     setIsEnable(false)
     setToggle(true);
   }
 
+  // --------------------------------
+  // ------ Form Edit Cancel ------- 
+  // --------------------------------
   function hendlecancel(e) {
+    setFacultyInputController(oldFacultyDetails)
     e.preventDefault();
     setState(valid.clearErrors())
     setIsEnable(true);
@@ -482,7 +496,7 @@ const Profilefaculty = () => {
                           placeholder="Enter Your Address"
                           value={facultyInputController.address}
                           name="address"
-                          className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2
+                          className={`w-60 mt-1 block w-full px-3 py-2 bg-white border 
                            border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none
                             ${valid.errors?.address != '' && 'border-red-600'}`}
                           onChange={handleChange}
@@ -552,7 +566,7 @@ const Profilefaculty = () => {
                   </tr>
                 </thead>
                 <tbody className='bg-white border items-center '>
-                {Totalpaid.length > 0 ? (
+                  {Totalpaid.length > 0 ? (
 
                     <tr className=" border-b">
 
@@ -567,7 +581,7 @@ const Profilefaculty = () => {
                       </td>
                       <td className={`py-5 px-6 text-center  ${isPrint ? "hidden" : "block"}`}>
                         <div className='flex justify-center space-x-2'>
-                          <NavLink className="nav-link" to={`/Profilefaculty/Staffhistory/${facultyInputController.id}`} state={{faculty_name: facultyInputController.full_name}}>
+                          <NavLink className="nav-link" to={`/Profilefaculty/Staffhistory/${facultyInputController.id}`} state={{ faculty_name: facultyInputController.full_name }}>
                             <Tooltip content="Show History" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" class="text-xl text-darkblue-500"><AiFillEye /></a></Tooltip>
 
                           </NavLink>
@@ -575,18 +589,18 @@ const Profilefaculty = () => {
                       </td>
                     </tr>
 
-                ) : (
-                  <tr className="">
+                  ) : (
+                    <tr className="">
                       <td colSpan={7} className="bg-red-200  font-bold p-2 rounded">
-                          <div className="flex space-x-2 justify-center items-center">
+                        <div className="flex space-x-2 justify-center items-center">
 
-                          <IoMdInformationCircle className="text-xl text-red-600"/>
+                          <IoMdInformationCircle className="text-xl text-red-600" />
                           <h1 className="text-red-800">Receipt not found </h1>
-                          </div>
+                        </div>
                       </td>
-                  </tr> 
-                )}
-                  </tbody>
+                    </tr>
+                  )}
+                </tbody>
               </table>
             </div>
           </div>

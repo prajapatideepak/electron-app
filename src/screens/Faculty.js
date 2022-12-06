@@ -27,9 +27,9 @@ const Faculty = () => {
   const [facultyDetails, setFacultyDetails] = useState([])
 
 
-  // ------------------------------------------------------------------------------------
-  // -------------------------- API Works -----------------------------------------------
-  // ------------------------------------------------------------------------------------
+  // ----------------------------------------
+  // -------------- API Works ---------------
+  // ----------------------------------------
   useEffect(() => {
     async function fetchfacultdata() {
       const res = await getAllFaculty();
@@ -40,13 +40,15 @@ const Faculty = () => {
     fetchfacultdata()
   }, [])
 
-  // ------------------------------------------------------------------------------------
-  // -------------------------- FORM VALIDATION -----------------------------------------
-  // ------------------------------------------------------------------------------------
+  // ---------------------------------------
+  // ----------- FORM VALIDATION -----------
+  // ---------------------------------------
   const onImageChange = (e) => {
     const [file] = e.target.files;
     setImg(URL.createObjectURL(file));
   };
+
+
   const {
     register,
     handleSubmit,
@@ -55,7 +57,10 @@ const Faculty = () => {
     trigger,
     resetField,
   } = useForm();
-  
+
+  // ---------------------------------------
+  // -------  Data sent onsubmit   ---------
+  // ---------------------------------------
   const onSubmit = async () => {
     const formdata = new FormData(form.current);
     setIsLoadingOnSubmit(true);
@@ -73,6 +78,11 @@ const Faculty = () => {
     }
 
   }
+
+
+  // ---------------------------------------
+  // ---------Input field blank ------------
+  // ---------------------------------------
   const handleClick = () => {
     resetField("photo"); resetField("full_name"); resetField("email"); resetField("whatsapp_no"); resetField("mobileno"); resetField("dob");
     resetField("joining_date"); resetField("role"); resetField("address"); resetField("gender");

@@ -14,7 +14,7 @@ import Toaster from '../hooks/showToaster'
 
 const Facultytable = ({allFaculty}) => {
   // -------------------------------
-  // -------- API WORKS -----------
+  // -------- All useState -----------
   // -------------------------------
   const componentRef = useRef();
   const [isPrint, setIsPrint] = useState(false);
@@ -32,7 +32,8 @@ const Facultytable = ({allFaculty}) => {
     const endOffset = itemOffset + itemsPerPage;
     setcurrentItems(facultyData.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(facultyData.length / itemsPerPage));
-  }, [itemOffset, itemsPerPage, facultyData])
+  },[itemOffset, itemsPerPage, facultyData])
+  console.log(facultyData , "factchfaculty")
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % facultyData.length;
@@ -40,6 +41,9 @@ const Facultytable = ({allFaculty}) => {
     setItemOffset(newOffset);
   };
 
+  // -----------------------------------------
+  // ------- Export To Excel All Staff --------
+  // ------------------------------------------
   const ExportAllfaculty = async () => {
     const res = await Exportallfaculty()
     if (res.success) {

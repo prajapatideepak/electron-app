@@ -54,13 +54,6 @@ const Facultytable = ({ call, allFaculty }) => {
     }
   }
 
-  const temp = () => {
-    setIsPrint(true)
-  }
-
-
-
-
   return (
     <>
       <section className="table h-full w-full mt-10 shadow-none">

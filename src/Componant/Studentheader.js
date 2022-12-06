@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import { MdLocalPrintshop } from "react-icons/md";
 import { AiFillEye } from "react-icons/ai";
@@ -10,11 +10,19 @@ import { useGetMonthlyReport, useGetReport } from "../hooks/usePost";
 import { useState } from "react";
 import StudentChart from "./StudentChart";
 import { IoMdInformationCircle } from "react-icons/io";
+import ReactPaginate from "react-paginate";
+import './Pagination.css'
 
 const Studenthearder = () => {
   const [data, setData] = useState([]);
   const reportData = useQuery("reports", useGetReport);
   const componentRef = useRef();
+  const [student_data, setstudentdata] = useState(reportData)
+  const [currentItems, setcurrentItems] = useState([])
+  const [pageCount, setPageCount] = useState(0)
+  const [itemOffset, setItemOffset] = useState(0)
+  const [Serialno, setserialno] = useState(1)
+  const itemsPerPage = 6;
 
   function handleDataFilter(filterDate) {
     const preDate = new Date(`${filterDate},23:59:00`);
@@ -40,6 +48,24 @@ const Studenthearder = () => {
   React.useEffect(() => {
     setData(reportData?.data?.data);
   }, [reportData.isSuccess]);
+
+
+  // -------------------------------
+  // -------- Pagination -----------
+  // -------------------------------
+  // useEffect(() => {
+  //   const endOffset = itemOffset + itemsPerPage;
+  //   setcurrentItems(data.slice(itemOffset, endOffset));
+  //   setPageCount(Math.ceil(data.length / itemsPerPage));
+  // }, [itemOffset, itemsPerPage, data])
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % data.length;
+    setserialno(event.selected + 1)
+    setItemOffset(newOffset);
+  };
+
+
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -72,6 +98,7 @@ const Studenthearder = () => {
             >
               Clear Filter
             </button>
+            {currentItems.length > 0 ? 
             <Tooltip
               content="Print"
               placement="bottom-end"
@@ -85,6 +112,9 @@ const Studenthearder = () => {
                 <MdLocalPrintshop />
               </span>
             </Tooltip>
+            : 
+            null
+          }
           </div>
           <div ref={componentRef} className="p-5 pt-3 pb-0">
             <div className="overflow-x-auto">
@@ -116,41 +146,8 @@ const Studenthearder = () => {
                   </tr>
                 </thead>
                 <tbody className="w-full">
-                  {reportData.isLoading ? (
-                    <tr className="h-20 blur-sm text-sm leading-none text-gray-800 border-b border-gray-100">
-                      <td className="pl-8">01/02/2022</td>
-                      <td className=" px-10 font-bold lg:px-6 xl:px-0">01</td>
-                      <td className="px-10 lg:px-6 xl:px-0">shad</td>
-                      <td className="font-medium px-10 lg:px-6 xl:px-0">
-                        <span className="bg-green-200 px-4 text-green-900 font-bold rounded">
-                          720
-                        </span>
-                      </td>
-                      <td className="px-10 lg:px-6 xl:px-0">
-                        <p className="">
-                          <span className="bg-red-200 px-4 text-red-900 font-bold rounded">
-                            80
-                          </span>
-                        </p>
-                      </td>
-                      <td>
-                        <span className="bg-blue-200 px-4 text-darkblue-500 font-bold rounded">
-                          800
-                        </span>
-                      </td>
-                      <td>
-                        <span>Sadik Ali</span>
-                      </td>
-                      <td className="px-5  ">
-                        <span>
-                          <NavLink to={"/reciept/recipet"}>
-                            <AiFillEye className="text-xl cursor-pointer" />
-                          </NavLink>
-                        </span>
-                      </td>
-                    </tr>
-                  ) : (
-                    data?.map((m) => {
+                  {
+                    currentItems?.map((m) => {
                       return (
                         <tr className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
                           <td className="pl-8">
@@ -195,10 +192,10 @@ const Studenthearder = () => {
                         </tr>
                       );
                     })
-                  )}
+                  }
                 </tbody>
               </table>
-              {data?.length < 1 ? (
+              {currentItems?.length < 1 ? (
                 <div className="bg-red-200 font-bold justify-center items-center p-2 rounded  flex space-x-2">
                   <IoMdInformationCircle className="text-xl text-red-600" />
 
@@ -207,6 +204,29 @@ const Studenthearder = () => {
               ) : null}
             </div>
           </div>
+          {
+            currentItems.length > 0
+              ?
+              <div className=' flex justify-end items-center  py-2' >
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel="next >"
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={3}
+                  pageCount={pageCount}
+                  previousLabel="< previous"
+                  renderOnZeroPageCount={null}
+                  containerClassName="pagination"
+                  pageLinkClassName='page-num'
+                  previousLinkClassName='page-num'
+                  nextLinkClassName='page-num'
+                  activeLinkClassName='active-page'
+                />
+
+              </div>
+              :
+              null
+          }
         </div>
       </div>
     </div>

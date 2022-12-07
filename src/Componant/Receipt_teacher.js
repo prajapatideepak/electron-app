@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { TbCurrencyRupee } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useParams, useLocation } from "react-router-dom";
-import { Facultyreciept, getAdminVerification,usegetAdmin } from "../hooks/usePost"
+import { Facultyreciept, getAdminVerification, usegetAdmin } from "../hooks/usePost"
 import { NavLink, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdModeEditOutline } from "react-icons/md";
@@ -213,11 +213,11 @@ function Receipt_teacher() {
                             </div>
                             {
                               error != '' && error != undefined
-                              ?
+                                ?
                                 <p className="text-red-700">{error}</p>
-                              :
+                                :
                                 null
-                            } 
+                            }
                           </div>
                         </div>
                       </div>
@@ -342,7 +342,8 @@ function Receipt_teacher() {
                     </div>
                   </div>
                 </ReceiptMainDiv>
-                {print && <ReceiptMainDiv className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`} >
+                {print && 
+                <ReceiptMainDiv className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`} >
                   <div className="p-5">
                     <div className="flex justify-between">
                       <img src="images/logo.png" style={{ maxWidth: '250px' }} alt="" />
@@ -382,7 +383,9 @@ function Receipt_teacher() {
                               "Cheque"
                               :
                               null
-                        }: <span className="text-black">{
+                        }
+                        :
+                        <span className="text-black">{
                           facultyhistory.transaction_id?.is_by_upi
                             ?
                             facultyhistory.transaction_id?.upi_no
@@ -391,12 +394,12 @@ function Receipt_teacher() {
                               ?
                               facultyhistory.transaction_id?.cheque_no
                               :
-                              ' CASH'
+                              'CASH'
 
                         }</span>
                       </p>
                     </div>
-                    {isHourly &&
+                    {isHourly ?
                       <div className="flex">
                         <div className={`flex justify-center items-center w-36 h-8 ${receiptBgColor} mt-5 mr-5 rounded-md`}>
                           <p className="text-white">Per Lecture: {feesdetails.rate_per_hour}</p>
@@ -405,8 +408,7 @@ function Receipt_teacher() {
                           <p className="text-white">Total Lectures: {feesdetails.total_hours}</p>
                         </div>
                       </div>
-
-                    }
+                      : null}
                     <div className="flex justify-between items-center mt-5">
                       <div className="flex flex-col">
                         <div className=" relative flex justify-center items-center">
@@ -431,7 +433,8 @@ function Receipt_teacher() {
                       </div>
                     </div>
                   </div>
-                </ReceiptMainDiv>}
+                </ReceiptMainDiv>
+                }
               </div>
               <div className="flex justify-center items-center">
                 <button className="flex justify-center items-center my-5 bg-indigo-900 py-1 px-3 rounded-md hover:bg-indigo-800" onClick={(e) => setModel(true)}>

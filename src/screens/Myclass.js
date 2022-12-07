@@ -92,6 +92,9 @@ const Myclass = () => {
   async function fetchClassesByYear() {
     const res = await getAllClassesByYear();
     setIsLoading(false);
+    if(!res.data || res?.data?.length == 0){
+      return;
+    }
     const sortedClasses = res.data?.sort((a, b) =>
         a._id.batch_start_year < b._id.batch_start_year
           ? 1
@@ -145,7 +148,6 @@ const Myclass = () => {
       setIsCurrentYearSelected(false);
     }
 
-    console.log(isCurrentYearSelected);
     setClasses(() =>
       fetchData.filter((data) => {
         return (

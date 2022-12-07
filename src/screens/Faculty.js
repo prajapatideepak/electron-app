@@ -65,14 +65,13 @@ const Faculty = () => {
     const formdata = new FormData(form.current);
     setIsLoadingOnSubmit(true);
     const response = await Addfaculty(formdata);
+    setIsLoadingOnSubmit(false);
     if (response.data.success) {
       setData(data + 1)
-      setIsLoadingOnSubmit(false);
-      Toaster()
+      Toaster();
       handleClick()
       return setModel(false)
     } else {
-      setIsLoadingOnSubmit(true);
       return errtoast()
     }
 
@@ -86,6 +85,7 @@ const Faculty = () => {
     resetField("photo"); resetField("full_name"); resetField("email"); resetField("whatsapp_no"); resetField("alternate_no"); resetField("dob");
     resetField("joining_date"); resetField("role"); resetField("address"); resetField("gender");
     setImg(defaultImage)
+    setIsLoadingOnSubmit(false);
     setModel(false)
   }
   const handleClear = () => {

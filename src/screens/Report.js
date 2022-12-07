@@ -3,7 +3,7 @@ import Facultyheader from "../Componant/Facultyheader";
 import Studentheader from "../Componant/Studentheader";
 
 const Report = () => {
-  const [reportState, setReportState] = useState("Student");
+  const [reportState, setReportState] = useState(() => "Student");
   return (
     <div>
       <div className="print-btn flex justify-end items-center pt-5 space-x-3 pr-10">

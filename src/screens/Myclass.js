@@ -454,8 +454,8 @@ const Myclass = () => {
                                   }}
                                 >
                                   <option value="">Select</option>
-                                  <option value={0}>Primary</option>
-                                  <option value={1}>Secondary</option>
+                                  <option value={1}>Primary</option>
+                                  <option value={0}>Secondary</option>
                                 </select>
                                 {errors.is_primary && (
                                   <small className="text-red-700">

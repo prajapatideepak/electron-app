@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import { MdLocalPrintshop } from "react-icons/md";
 import { AiFillEye } from "react-icons/ai";
@@ -48,7 +48,7 @@ const Studenthearder = () => {
   });
   return (
     <div>
-      <div>
+      <div className="mt-4">
         <StudentChart key="student" />
       </div>
       <div className="flex justify-center items-center p-10 pt-10">
@@ -122,28 +122,28 @@ const Studenthearder = () => {
                 <tbody className="w-full">
                   {reportData.isLoading ? (
                     <tr className="h-20 blur-sm text-sm leading-none text-gray-800 border-b border-gray-100">
-                      <td className="pl-8">01/02/2022</td>
-                      <td className=" px-10 font-bold lg:px-6 xl:px-0">01</td>
-                      <td className="px-10 lg:px-6 xl:px-0">shad</td>
+                      <td className="pl-8">.........</td>
+                      <td className=" px-10 font-bold lg:px-6 xl:px-0">..</td>
+                      <td className="px-10 lg:px-6 xl:px-0">.....</td>
                       <td className="font-medium px-10 lg:px-6 xl:px-0">
                         <span className="bg-green-200 px-4 text-green-900 font-bold rounded">
-                          720
+                          ...
                         </span>
                       </td>
                       <td className="px-10 lg:px-6 xl:px-0">
                         <p className="">
                           <span className="bg-red-200 px-4 text-red-900 font-bold rounded">
-                            80
+                            ..
                           </span>
                         </p>
                       </td>
                       <td>
                         <span className="bg-blue-200 px-4 text-darkblue-500 font-bold rounded">
-                          800
+                          ...
                         </span>
                       </td>
                       <td>
-                        <span>Sadik Ali</span>
+                        <span>.......</span>
                       </td>
                       <td className="px-5  ">
                         <span>
@@ -154,7 +154,7 @@ const Studenthearder = () => {
                       </td>
                     </tr>
                   ) : (
-                    data?.map((m) => {
+                    data?.map((m, key) => {
                       return (
                         <tr className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
                           <td className="pl-8">

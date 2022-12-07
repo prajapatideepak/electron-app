@@ -123,8 +123,8 @@ function StudentChart() {
               // width="480"
             />
           </div>
-          <div className="bg-gray-50 m-2 shadow-xl rounded-lg ">
-            <h1 className="mx-4 my-1 font-semibold"> Fees Calendar</h1>
+          <div className="bg-gray-50 shadow-xl rounded-lg ">
+            <h1 className="mx-4 my-2 font-semibold"> Fees Calendar</h1>
             <div className="grid grid-cols-4 px-5 py-3  gap-5 ">
               {noOfTransaction?.map((data, i) => {
                 return (
@@ -132,10 +132,10 @@ function StudentChart() {
                     <h1 className=" text-sm py-1 font-semibold bg-green-300 rounded-t-xl text-center">
                       {months[i]}
                     </h1>
-                    <span className="text-xs m-2 ">Transaction : {data}</span>
+                    <span className="text-xs m-2 ">Transactions : {data}</span>
                     <h2 className=" text-xs m-2">
-                      Total:
-                      <span className=" font-bold">
+                      Total :
+                      <span className="ml-1 font-bold">
                         {state.series[0].data[i]}
                       </span>
                     </h2>

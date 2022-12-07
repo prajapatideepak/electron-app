@@ -209,7 +209,7 @@ const Facultyheader = () => {
                           <td>
                             <p className="text-center">
                               <span className="bg-blue-200 px-4 text-darkblue-500 font-bold rounded">
-                                {report?.transaction[0].amount}
+                                {report?.transaction[0]?.amount}
                               </span>
                             </p>
                           </td>

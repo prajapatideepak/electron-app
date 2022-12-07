@@ -17,13 +17,10 @@ const Changepassword = () => {
 
   const changePassword = useChangePassword();
 
-  console.log(changePassword);
   const onSubmit = (data) => {
     if (data.newpassword !== data.confirmpassword) {
       document.getElementById("msg").style.display = "flex";
-      console.log(`deepak`, data);
     } else {
-      console.log(data);
       document.getElementById("msg").style.display = "none";
       changePassword.mutate(data);
     }
@@ -47,9 +44,9 @@ const Changepassword = () => {
 
   return (
     <>
-      <section className="flex justify-center items-center absolute pt-10 w-full">
-        <div className="overflow-hidden w-4/5  rounded-md bg-white shadow-lg">
-          <div className=" justify-center px-8 py-12 items-center bg-[#E9EFFD]">
+      <section className="flex justify-center items-center absolute h-full w-full">
+        <div className="overflow-hidden w-3/5  rounded-md bg-white shadow-lg">
+          <div className=" justify-center px-8 py-12 items-center bg-white  ">
             <div className="mb-10">
               <h2 className="text-3xl text-center  text-[#0F0673] font-bold tracking-wider">
                 Change Password
@@ -67,7 +64,7 @@ const Changepassword = () => {
                         <BsFillKeyFill className="h-5 w-5 fill-slate-500" />
                       </span>
                       <input
-                        type="text"
+                        type="password"
                         placeholder="Enter Old Password"
                         className={`w-60 mt-1 block py-2 pl-9 pr-3 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                           errors.oldpassword && "border-red-600"
@@ -95,7 +92,7 @@ const Changepassword = () => {
                         <IoMdUnlock className="h-5 w-5 fill-slate-500" />
                       </span>
                       <input
-                        type="text"
+                        type="password"
                         id="newpassword"
                         placeholder="Enter New Password"
                         className={`w-60 mt-1 block py-2 pl-9 pr-3 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
@@ -124,7 +121,7 @@ const Changepassword = () => {
                         <IoMdLock className="h-5 w-5 fill-slate-500" />
                       </span>
                       <input
-                        type="text"
+                        type="password"
                         id="confirmpassword"
                         placeholder="Enter Confirm Password"
                         className={`w-60 mt-1 block py-2 pl-9 pr-3 bg-white border border-2 border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
@@ -135,11 +132,12 @@ const Changepassword = () => {
                         })}
                         onKeyUp={() => {
                           trigger("confirmpassword");
+                          document.getElementById("msg").style.display = "none";     
                         }}
                       />
                       {errors.confirmpassword && (
                         <small className="text-red-700">
-                          {errors.confirmpassword.message}{" "}
+                          {errors.confirmpassword.message}
                         </small>
                       )}
                       <small className="text-red-700 hidden" id="msg">

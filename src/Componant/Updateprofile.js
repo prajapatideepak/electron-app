@@ -20,7 +20,7 @@ valid.register({
     pattern: [/^[A-Za-z ]+$/, "Please enter only characters"],
   },
   email: {
-    required: [false, "Field is required"],
+    required: [true, "Field is required"],
     pattern: [
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       "Please enter valid email",
@@ -31,7 +31,7 @@ valid.register({
     pattern: [/^[0-9]*$/, "Please enter only numbers"],
     length: [10, "Number should be of 10 digits"],
   },
-  alternative_no: {
+  alternate_no: {
     required: [false],
     pattern: [/^[0-9]*$/, "Please enter only numbers"],
     length: [10, "Number should be of 10 digits"],
@@ -74,7 +74,7 @@ const Updateprofile = () => {
     full_name: "",
     email: "",
     whatsapp_no: "",
-    alternative_no: "",
+    alternate_no: "",
     security_pin: "",
     address: "",
     dob: "",
@@ -96,7 +96,7 @@ const Updateprofile = () => {
       full_name: admin_details?.staff_id?.basic_info_id.full_name,
       email: admin_details?.staff_id?.contact_info_id.email,
       whatsapp_no: admin_details?.staff_id?.contact_info_id.whatsapp_no,
-      alternative_no: admin_details?.staff_id?.contact_info_id.alternative_no,
+      alternate_no: admin_details?.staff_id?.contact_info_id.alternate_no == '' ? '--' : admin_details?.staff_id?.contact_info_id.alternate_no,
       security_pin: admin_details?.security_pin,
       address: admin_details?.staff_id?.contact_info_id.address,
       dob: dob,
@@ -112,7 +112,7 @@ const Updateprofile = () => {
       full_name: admin_data.full_name ?? admin_data.full_name,
       email: admin_data.email ?? admin_data.email,
       whatsapp_no: admin_data.whatsapp_no ?? admin_data.whatsapp_no,
-      alternative_no: admin_data.alternative_no ?? admin_data.alternative_no,
+      alternate_no: admin_data.alternate_no ?? admin_data.alternate_no,
       security_pin: admin_data.security_pin ?? admin_data.security_pin,
       dob: admin_data.dob ?? admin_data.dob,
       address: admin_data.address ?? admin_data.address,
@@ -145,6 +145,13 @@ const Updateprofile = () => {
 
   function handleedit(e) {
     e.preventDefault();
+    console.log(adminInputController.alternate_no)
+    setadminInputController((prevData)=>{
+      return {
+        ...prevData,
+        alternate_no: adminInputController.alternate_no == '--' ? '' : adminInputController.alternate_no
+      }
+    })
     setIsEnable(false);
     setToggle(true);
   }
@@ -152,6 +159,7 @@ const Updateprofile = () => {
   console.log(admin);
   function handleCancel(e) {
     e.preventDefault();
+    setState(valid.clearErrors())
     let dob = new Date(admin?.staff_id?.basic_info_id?.dob);
     dob = `${dob.getFullYear()}-${
       dob.getMonth() + 1 < 10 ? "0" + (dob.getMonth() + 1) : dob.getMonth() + 1
@@ -162,7 +170,7 @@ const Updateprofile = () => {
         full_name: admin?.staff_id?.basic_info_id.full_name,
         email: admin?.staff_id?.contact_info_id.email,
         whatsapp_no: admin?.staff_id?.contact_info_id.whatsapp_no,
-        alternative_no: admin?.staff_id?.contact_info_id.alternative_no,
+        alternate_no: admin?.staff_id?.contact_info_id.alternate_no == '' ? '--' : admin?.staff_id?.contact_info_id.alternate_no,
         security_pin: admin?.security_pin,
         address: admin?.staff_id?.contact_info_id.address,
         dob: dob,
@@ -193,8 +201,9 @@ const Updateprofile = () => {
 
   React.useEffect(() => {
     if (updateAdmin.isSuccess) {
-      Toaster("success", "Profile Updated Successfully");
-      navigate("/");
+      Toaster("success", "Profile Updated Successfully")
+      localStorage.removeItem("section");
+      changeSection();
     }
   }, [updateAdmin.isSuccess]);
   const onSubmit = async (data) => {
@@ -209,7 +218,7 @@ const Updateprofile = () => {
       {admin ? (
         <section className="">
           <form
-            className="flex justify-center items-center "
+            className="flex justify-center items-center absolute w-full h-full"
             onSubmit={(e) => setState(valid.handleSubmit(e, onSubmit))}
           >
             <div className="w-2/3 grid grid-cols-1 rounded-lg drop-shadow-md truncate bg-white p-10 my-10">
@@ -302,18 +311,18 @@ const Updateprofile = () => {
                       <input
                         type="text"
                         disabled={isEnable}
-                        name="alternative_no"
-                        value={adminInputController.alternative_no}
+                        name="alternate_no"
+                        value={adminInputController.alternate_no}
                         onChange={handleChange}
                         placeholder="Enter Your Mobile No"
                         className={`w-72 mt-1 block px-3 py-2 bg-white border border-slate-300 rounded-md text-sm 
                         shadow-sm placeholder-slate-400 outline-none
-                        ${valid.errors.alternative_no != "" && "border-red-600"}
+                        ${valid.errors.alternate_no != "" && "border-red-600"}
                         `}
                       />
-                      {valid.errors?.alternative_no != "" ? (
+                      {valid.errors?.alternate_no != "" ? (
                         <small className="text-red-600 mt-3">
-                          *{valid.errors?.alternative_no}
+                          *{valid.errors?.alternate_no}
                         </small>
                       ) : null}
                     </label>
@@ -393,12 +402,12 @@ const Updateprofile = () => {
                       )}
                     </label>
                   </div>
-                  <div className="btn mt-5 flex justify-center w-72">
+                  <div className="btn mt-5 flex justify-end w-72">
                     {!toggle ? (
                       <button
                         type="button"
                         onClick={handleedit}
-                        className="py-2 px-8 gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center"
+                        className="py-2 px-8 w-full gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center"
                       >
                         <FaUserEdit className="text-xl" />
                         Edit

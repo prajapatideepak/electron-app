@@ -6,29 +6,39 @@ import { MdLocalPrintshop } from "react-icons/md";
 import { IoMdInformationCircle } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-import { Exportallfaculty } from "../hooks/usePost";
 import _ from "lodash"
 import ReactPaginate from "react-paginate";
 import './Pagination.css'
-import Loader from './Loader';
-import { toast } from "react-toastify";
+import { Exportallfaculty , getAllFaculty } from "../hooks/usePost";
+import Toaster from '../hooks/showToaster'
 
-
-
-const Facultytable = ({ call, allFaculty }) => {
+const Facultytable = () => {
   // -------------------------------
-  // -------- API WORKS -----------
+  // -------- All useState -----------
   // -------------------------------
   const componentRef = useRef();
   const [isPrint, setIsPrint] = useState(false);
-  const [facultyData, setFacultyData] = useState(allFaculty)
+  const [facultyData, setFacultyData] = useState([])
   const [currentItems, setcurrentItems] = useState([])
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
   const [Serialno, setserialno] = useState(1)
+  const [call, setcall] = useState(false)
   const itemsPerPage = 6;
-  const Toaster = () => { toast.success('All Staff Export To Excel') }
-  const errtoast = () => { toast.error("Something Wrong") }
+
+  // -------------------------------
+  // --------  API Work  -----------
+  // -------------------------------
+  useEffect(() => {
+    async function fatchallstaff() {
+      const res = await getAllFaculty();
+      if (res) {
+        setFacultyData(res.staffData)
+        setcall(() => !call)
+      }
+    }
+    fatchallstaff();
+  }, [call]);
 
   // -------------------------------
   // -------- Pagination -----------
@@ -38,28 +48,23 @@ const Facultytable = ({ call, allFaculty }) => {
     setcurrentItems(facultyData.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(facultyData.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, facultyData])
-
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % facultyData.length;
     setserialno(event.selected + 1)
     setItemOffset(newOffset);
   };
 
-  const ExportAllfaculty = () => {
-    const res = Exportallfaculty()
-    if (res) {
-        Toaster()
+  // -----------------------------------------
+  // ------- Export To Excel All Staff --------
+  // ------------------------------------------
+  const ExportAllfaculty = async () => {
+    const res = await Exportallfaculty()
+    if (res.success) {
+      Toaster('success', 'Exported successfully. Check your download folder')
     } else {
-        errtoast()
+      Toaster('error', 'Something went wrong')
     }
   }
-
-  const temp = () => {
-    setIsPrint(true)
-  }
-
-
-
 
   return (
     <>
@@ -102,7 +107,6 @@ const Facultytable = ({ call, allFaculty }) => {
                 </button>
               </Tooltip>
             </div>
-
             <div ref={componentRef} className='p-5 pt-3 pb-0'>
               <table className="w-full text-sm text-center bg-class7-50 rounded-xl " id="table-to-xls">
                 <thead className="text-xs text-gray-700 uppercase">
@@ -128,60 +132,103 @@ const Facultytable = ({ call, allFaculty }) => {
                   </tr>
                 </thead>
                 <tbody className="bg-white border">
-                  {currentItems.length > 0 ? (
-                    currentItems.map((item, key) => {
-                      return (
-                        <tr className="border-b"  >
-                          <td className="py-5 px-6">{(key + 1) + (6 * Serialno - 6)}</td>
-                          <td className="py-5 px-6">{item.basic_info_id.full_name}</td>
-                          <td className="py-5 px-6">{item.contact_info_id.whatsapp_no}</td>
-                          <td className="py-5 px-6">{item.role}</td>
-                          <td className={`py-5 px-6 ${isPrint ? "hidden" : ""}`}>
-                            <div className="flex justify-center items-center">
-                              <NavLink to={`Profilefaculty/${item._id}`} >
-                                <Tooltip content="Show Profile" placement="bottom-end" className="text-white bg-black rounded p-2" >
-                                  <span className="text-xl text-darkblue-500">
-                                    <AiFillEye className="cursor-pointer" />
-                                  </span>
-                                </Tooltip>
-                              </NavLink>
-                            </div>
-                          </td>
-                          <td className={`py-5 px-5 ${isPrint ? "hidden" : ""}`}>
-                            <div className="flex justify-center items-center">
-                              <NavLink to={`/salary/${item._id}`}>
-                                <Tooltip
-                                  content="Pay Salary"
-                                  placement="bottom-end"
-                                  className="text-white bg-black rounded p-2"
-                                >
-                                  <span className="text-xl pb-1  text-green-500">
-                                    <GiWallet className="cursor-pointer" />
-                                  </span>
-                                </Tooltip>
-                              </NavLink>
-                            </div>
-                          </td>
-                        </tr>
+                  {currentItems.length > 0
+                    ?
+                    isPrint
+                      ?
+                      currentItems.map((item, key) => {
+                        return (
+                          <tr key={key} className="border-b"  >
+                            <th className="py-5 px-6">{(key + 1) + (itemsPerPage * Serialno - itemsPerPage)}</th>
+                            <td className="py-5 px-6">{item.basic_info_id.full_name}</td>
+                            <td className="py-5 px-6">{item.contact_info_id.whatsapp_no}</td>
+                            <td className="py-5 px-6">{item.role}</td>
+                            <td className={`py-5 px-6 ${isPrint ? "hidden" : ""}`}>
+                              <div className="flex justify-center items-center">
+                                <NavLink to={`Profilefaculty/${item._id}`} >
+                                  <Tooltip content="Show Profile" placement="bottom-end" className="text-white bg-black rounded p-2" >
+                                    <span className="text-xl text-darkblue-500">
+                                      <AiFillEye className="cursor-pointer" />
+                                    </span>
+                                  </Tooltip>
+                                </NavLink>
+                              </div>
+                            </td>
+                            <td className={`py-5 px-5 ${isPrint ? "hidden" : ""}`}>
+                              <div className="flex justify-center items-center">
+                                <NavLink to={`/salary/${item._id}`}>
+                                  <Tooltip
+                                    content="Pay Salary"
+                                    placement="bottom-end"
+                                    className="text-white bg-black rounded p-2"
+                                  >
+                                    <span className="text-xl pb-1  text-green-500">
+                                      <GiWallet className="cursor-pointer" />
+                                    </span>
+                                  </Tooltip>
+                                </NavLink>
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })
+                      :
+                      (
+                        currentItems.map((item, key) => {
+                          return (
+                            <tr key={key} className="border-b"  >
+                              <th className="py-5 px-6">{(key + 1) + (itemsPerPage * Serialno - itemsPerPage)}</th>
+                              <td className="py-5 px-6">{item.basic_info_id.full_name}</td>
+                              <td className="py-5 px-6">{item.contact_info_id.whatsapp_no}</td>
+                              <td className="py-5 px-6">{item.role}</td>
+                              <td className={`py-5 px-6 ${isPrint ? "hidden" : ""}`}>
+                                <div className="flex justify-center items-center">
+                                  <NavLink to={`Profilefaculty/${item._id}`} >
+                                    <Tooltip content="Show Profile" placement="bottom-end" className="text-white bg-black rounded p-2" >
+                                      <span className="text-xl text-darkblue-500">
+                                        <AiFillEye className="cursor-pointer" />
+                                      </span>
+                                    </Tooltip>
+                                  </NavLink>
+                                </div>
+                              </td>
+                              <td className={`py-5 px-5 ${isPrint ? "hidden" : ""}`}>
+                                <div className="flex justify-center items-center">
+                                  <NavLink to={`/salary/${item._id}`}>
+                                    <Tooltip
+                                      content="Pay Salary"
+                                      placement="bottom-end"
+                                      className="text-white bg-black rounded p-2"
+                                    >
+                                      <span className="text-xl pb-1  text-green-500">
+                                        <GiWallet className="cursor-pointer" />
+                                      </span>
+                                    </Tooltip>
+                                  </NavLink>
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                        })
                       )
-                    })
-                  ) : (
-                    <tr className="">
-                      <td colSpan={6} className="bg-red-200  font-bold p-2 rounded">
-                        <div className="flex space-x-2 justify-center items-center">
-
-                          <IoMdInformationCircle className="text-xl text-red-600" />
-                          <h1 className="text-red-800">Faculty not found </h1>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
+                    :
+                    (
+                      <tr className="">
+                        <td colSpan={6} className="bg-red-200  font-bold p-2 rounded">
+                          <div className="flex space-x-2 justify-center items-center">
+                            <IoMdInformationCircle className="text-xl text-red-600" />
+                            <h1 className="text-red-800">Faculty not found </h1>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  }
                 </tbody>
               </table>
             </div>
             {
-              currentItems.length > 0 
-              ?
+              currentItems.length > 0
+                ?
                 <div className=' flex justify-end items-center ml-32 py-5' >
                   <div className=' py-2'>
                     <ReactPaginate
@@ -198,10 +245,9 @@ const Facultytable = ({ call, allFaculty }) => {
                       nextLinkClassName='page-num'
                       activeLinkClassName='active-page'
                     />
-
                   </div>
                 </div>
-              :
+                :
                 null
             }
           </div>

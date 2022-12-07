@@ -65,7 +65,7 @@ function DashboardMenu() {
   ) : (
     <div className="bg-[#f5f7ff] min-h-screen flex">
       {<Sidebar />}
-      <div className="w-full">
+      <div className="w-full overflow-hidden">
         {<Searchbar />}
         <div className="relative" style={{ minHeight: "calc(100% - 70px)" }}>
           <ErrorBoundary>

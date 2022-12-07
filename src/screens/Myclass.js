@@ -87,7 +87,7 @@ const Myclass = () => {
     setIsHoverDelete(false);
   };
 
-  let is_primary = section == "primary" ? 0 : 1;
+  let is_primary = section == "primary" ? 1 : 0;
 
   async function fetchClassesByYear() {
     const res = await getAllClassesByYear();
@@ -159,7 +159,6 @@ const Myclass = () => {
 
   const handleMediumChange = (e) => {
     setMedium(e.target.value);
-    // console.log(selectYear)
     setClasses(() =>
       fetchData?.filter((data) => {
         return (
@@ -1042,11 +1041,11 @@ const Myclass = () => {
                       state={{ allClasses }}
                     >
                       <div
-                        className="icons  h-11 w-40 flex ml-3 items-center "
+                        className="icons  h-11 w-40 flex ml-3 items-center"
                         id="icons"
                       >
                         <FaArrowRight className="text-xl text-darkblue-500  " />
-                        <span className="ml-3 text-lg text-darkblue-500 font-semibold">
+                        <span className="ml-2 text-lg text-darkblue-500 font-semibold">
                           Change Year
                         </span>
                       </div>

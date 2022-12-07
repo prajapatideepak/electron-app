@@ -27,9 +27,9 @@ const Faculty = () => {
   const [facultyDetails, setFacultyDetails] = useState([])
 
 
-  // ------------------------------------------------------------------------------------
-  // -------------------------- API Works -----------------------------------------------
-  // ------------------------------------------------------------------------------------
+  // ----------------------------------------
+  // -------------- API Works ---------------
+  // ----------------------------------------
   useEffect(() => {
     async function fetchfacultdata() {
       const res = await getAllFaculty();
@@ -40,13 +40,15 @@ const Faculty = () => {
     fetchfacultdata()
   }, [])
 
-  // ------------------------------------------------------------------------------------
-  // -------------------------- FORM VALIDATION -----------------------------------------
-  // ------------------------------------------------------------------------------------
+  // ---------------------------------------
+  // ----------- FORM VALIDATION -----------
+  // ---------------------------------------
   const onImageChange = (e) => {
     const [file] = e.target.files;
     setImg(URL.createObjectURL(file));
   };
+
+
   const {
     register,
     handleSubmit,
@@ -55,12 +57,14 @@ const Faculty = () => {
     trigger,
     resetField,
   } = useForm();
-  
+
+  // ---------------------------------------
+  // -------  Data sent onsubmit   ---------
+  // ---------------------------------------
   const onSubmit = async () => {
     const formdata = new FormData(form.current);
     setIsLoadingOnSubmit(true);
     const response = await Addfaculty(formdata);
-
     if (response.data.success) {
       setData(data + 1)
       setIsLoadingOnSubmit(false);
@@ -73,8 +77,13 @@ const Faculty = () => {
     }
 
   }
+
+
+  // ---------------------------------------
+  // ---------Input field blank ------------
+  // ---------------------------------------
   const handleClick = () => {
-    resetField("photo"); resetField("full_name"); resetField("email"); resetField("whatsapp_no"); resetField("mobileno"); resetField("dob");
+    resetField("photo"); resetField("full_name"); resetField("email"); resetField("whatsapp_no"); resetField("alternate_no"); resetField("dob");
     resetField("joining_date"); resetField("role"); resetField("address"); resetField("gender");
     setImg('')
     setModel(false)
@@ -181,7 +190,7 @@ const Faculty = () => {
                         </div>
                         <div className="flex lg:flex-row md:flex-col gap-4 items-center">
 
-                          <div className="mobileno">
+                          <div className="alternate_no">
                             <label className="block">
                               <span className="block text-sm font-medium text-slate-700">
                                 Mobile No
@@ -189,13 +198,13 @@ const Faculty = () => {
                               <input
                                 type="text"
                                 placeholder="Enter Your Mobile No"
-                                className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.mobileno && 'border-red-600'}`}
-                                {...register("mobileno", { required: "Mobile no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida mobile no" } })}
+                                className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.alternate_no && 'border-red-600'}`}
+                                {...register("alternate_no", { pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida mobile no" } })}
                                 onKeyUp={() => {
-                                  trigger('mobileno')
+                                  trigger('alternate_no')
                                 }}
                               />
-                              {errors.mobileno && (<small className="text-red-700">{errors.mobileno.message}</small>)}
+                              {errors.alternate_no && (<small className="text-red-700">{errors.alternate_no.message}</small>)}
                             </label>
                           </div>
                           <div className="dateofbirth">
@@ -382,7 +391,7 @@ const Faculty = () => {
                 </div>
                 <div className="ml-10">
                   <p className='text-white text-5xl mb-3'>{data ? data : 0}</p>
-                  <h1 className='text-white text-lg '>Total <span>Faculty</span></h1>
+                  <h1 className='text-white text-lg '>Total <span>Staff</span></h1>
                 </div>
               </div>
             </div>

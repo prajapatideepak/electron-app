@@ -67,6 +67,7 @@ const Myclass = () => {
   ];
   const [isHoverEdit, setIsHoverEdit] = React.useState(false);
   const [isHoverDelete, setIsHoverDelete] = React.useState(false);
+  const [isAddingClass, setIsAddingClass] = React.useState(false);
   const [isCurrentYearSelected, setIsCurrentYearSelected] =
     React.useState(true);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -92,6 +93,9 @@ const Myclass = () => {
   async function fetchClassesByYear() {
     const res = await getAllClassesByYear();
     setIsLoading(false);
+    if(!res.data || res?.data?.length == 0){
+      return;
+    }
     const sortedClasses = res.data?.sort((a, b) =>
         a._id.batch_start_year < b._id.batch_start_year
           ? 1
@@ -145,7 +149,6 @@ const Myclass = () => {
       setIsCurrentYearSelected(false);
     }
 
-    console.log(isCurrentYearSelected);
     setClasses(() =>
       fetchData.filter((data) => {
         return (
@@ -218,12 +221,17 @@ const Myclass = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setIsAddingClass(true)
     const response = await AddClass(data);
-    if (response) {
+    setIsAddingClass(false)
+    if (response.data.success) {
       fetchClasses();
       setModel(false);
       reset();
       return notify();
+    }
+    else{
+      toast.error('Something went wrong')
     }
   };
 
@@ -452,8 +460,8 @@ const Myclass = () => {
                                   }}
                                 >
                                   <option value="">Select</option>
-                                  <option value={0}>Primary</option>
-                                  <option value={1}>Secondary</option>
+                                  <option value={1}>Primary</option>
+                                  <option value={0}>Secondary</option>
                                 </select>
                                 {errors.is_primary && (
                                   <small className="text-red-700">
@@ -532,9 +540,10 @@ const Myclass = () => {
                               </button>
                               <button
                                 type="submit"
-                                className="bg-darkblue-500 uppercase  hover:bg-white border-2 flex justify-center items-center  hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium h-11 w-28 rounded-md tracking-wider"
+                                disabled={isAddingClass}
+                                className={` ${isAddingClass ? 'bg-darkblue-300' : 'bg-darkblue-500'} uppercase  hover:bg-white border-2 flex justify-center items-center  hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium h-11 w-28 rounded-md tracking-wider`}
                               >
-                                <h1 className="">SUBMIT</h1>
+                                <h1 className="">{isAddingClass ? 'Loading...' : 'SUBMIT'}</h1>
                               </button>
                             </div>
                           </div>

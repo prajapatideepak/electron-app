@@ -285,7 +285,7 @@ export default function Salarydetails() {
                                                 className="px-4 py-1 bg-darkblue-500 text-white "
                                                 onClick={handlePINsubmit}
                                             >
-                                                Submit
+                                                verify
                                             </button>
                                         </div>
                                         {error && (

@@ -37,7 +37,7 @@ valid.register({
     length: [10, "Number should be of 10 digits"]
   },
   alternate_no: {
-    required: [true, 'Field is required'],
+    required: [false, 'Field is required'],
     pattern: [/^[0-9]*$/, "Please enter only numbers"],
     length: [10, "Number should be of 10 digits"]
   },
@@ -122,7 +122,7 @@ const Profilefaculty = () => {
       full_name: faculty_details.basic_info_id.full_name,
       email: faculty_details.contact_info_id.email,
       whatsapp_no: faculty_details.contact_info_id.whatsapp_no,
-      alternate_no: faculty_details.contact_info_id.alternate_no,
+      alternate_no: faculty_details.contact_info_id.alternate_no != '' ? faculty_details.contact_info_id.alternate_no : '--',
       dob: dob,
       gender: faculty_details.basic_info_id.gender,
       role: faculty_details.role,
@@ -273,6 +273,7 @@ const Profilefaculty = () => {
         setToggle(false);
       }
     } catch (error) {
+      setIsLoadingOnSubmit(false);
       if (error instanceof AxiosError) {
         Toaster('error', error.response.data.message);
       }
@@ -280,7 +281,6 @@ const Profilefaculty = () => {
         Toaster('error', error.message);
       }
 
-      setIsLoadingOnSubmit(false);
     }
   }
 
@@ -291,14 +291,20 @@ const Profilefaculty = () => {
     e.preventDefault();
     setIsEnable(false)
     setToggle(true);
+    setFacultyInputController((prevData)=>{
+      return {
+        ...prevData,
+        alternate_no : facultyInputController.alternate_no == '--' ? '' : facultyInputController.alternate_no
+      }
+    })
   }
 
   // --------------------------------
   // ------ Form Edit Cancel ------- 
   // --------------------------------
   function hendlecancel(e) {
-    setFacultyInputController(oldFacultyDetails)
     e.preventDefault();
+    setFacultyInputController(oldFacultyDetails)
     setState(valid.clearErrors())
     setIsEnable(true);
     setToggle(false);

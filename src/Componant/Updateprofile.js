@@ -214,7 +214,7 @@ const Updateprofile = () => {
       {admin ? (
         <section className="">
           <form
-            className="flex justify-center items-center "
+            className="flex justify-center items-center absolute w-full h-full"
             onSubmit={(e) => setState(valid.handleSubmit(e, onSubmit))}
           >
             <div className="w-2/3 grid grid-cols-1 rounded-lg drop-shadow-md truncate bg-white p-10 my-10">
@@ -397,12 +397,12 @@ const Updateprofile = () => {
                       )}
                     </label>
                   </div>
-                  <div className="btn mt-5 flex justify-center w-72">
+                  <div className="btn mt-5 flex justify-end w-72">
                     {!toggle ? (
                       <button
                         type="button"
                         onClick={handleedit}
-                        className="py-2 px-8 gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center"
+                        className="py-2 px-8 w-full gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center"
                       >
                         <FaUserEdit className="text-xl" />
                         Edit

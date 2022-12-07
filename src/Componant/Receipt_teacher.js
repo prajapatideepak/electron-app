@@ -295,15 +295,14 @@ function Receipt_teacher() {
                               null
                         }: <span className="text-black">{
                           facultyhistory?.transaction_id?.is_by_upi
-                            ?
+                          ?
                             facultyhistory?.transaction_id?.upi_no
-                            :
+                          :
                             facultyhistory?.transaction_id?.is_by_cheque
-                              ?
+                            ?
                               facultyhistory?.transaction_id?.cheque_no
-                              :
+                            :
                               'CASH'
-
                         }</span>
                       </p>
                     </div>
@@ -384,19 +383,19 @@ function Receipt_teacher() {
                               null
                         }: <span className="text-black">{
                           facultyhistory.transaction_id?.is_by_upi
-                            ?
+                          ?
                             facultyhistory.transaction_id?.upi_no
-                            :
+                          :
                             facultyhistory.transaction_id?.is_by_cheque
-                              ?
+                            ?
                               facultyhistory.transaction_id?.cheque_no
-                              :
+                            :
                               ' CASH'
 
                         }</span>
                       </p>
                     </div>
-                    {isHourly &&
+                    {isHourly ?
                       <div className="flex">
                         <div className={`flex justify-center items-center w-36 h-8 ${receiptBgColor} mt-5 mr-5 rounded-md`}>
                           <p className="text-white">Per Lecture: {feesdetails.rate_per_hour}</p>
@@ -405,7 +404,7 @@ function Receipt_teacher() {
                           <p className="text-white">Total Lectures: {feesdetails.total_hours}</p>
                         </div>
                       </div>
-
+                      : null
                     }
                     <div className="flex justify-between items-center mt-5">
                       <div className="flex flex-col">
@@ -431,7 +430,8 @@ function Receipt_teacher() {
                       </div>
                     </div>
                   </div>
-                </ReceiptMainDiv>}
+                </ReceiptMainDiv>
+                }
               </div>
               <div className="flex justify-center items-center">
                 <button className="flex justify-center items-center my-5 bg-indigo-900 py-1 px-3 rounded-md hover:bg-indigo-800" onClick={(e) => setModel(true)}>

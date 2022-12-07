@@ -252,7 +252,7 @@ export default function ReciptScreen() {
                                             </td>
                                             <td className="px-5  ">
                                               <span>
-                                                <NavLink to={"/reciept/recipet"}>
+                                                <NavLink to={`/salary/Receipt_teacher/${receipt.salary_receipt_id}`}>
                                                   <AiFillEye className="text-xl cursor-pointer" />
                                                 </NavLink>
                                               </span>

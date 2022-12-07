@@ -87,7 +87,7 @@ const Myclass = () => {
     setIsHoverDelete(false);
   };
 
-  let is_primary = section == "primary" ? 0 : 1;
+  let is_primary = section == "primary" ? 1 : 0;
 
   async function fetchClassesByYear() {
     const res = await getAllClassesByYear();
@@ -159,7 +159,6 @@ const Myclass = () => {
 
   const handleMediumChange = (e) => {
     setMedium(e.target.value);
-    // console.log(selectYear)
     setClasses(() =>
       fetchData?.filter((data) => {
         return (

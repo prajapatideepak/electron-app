@@ -85,8 +85,13 @@ const Faculty = () => {
   const handleClick = () => {
     resetField("photo"); resetField("full_name"); resetField("email"); resetField("whatsapp_no"); resetField("alternate_no"); resetField("dob");
     resetField("joining_date"); resetField("role"); resetField("address"); resetField("gender");
-    setImg('')
+    setImg(defaultImage)
     setModel(false)
+  }
+  const handleClear = () => {
+    resetField("photo"); resetField("full_name"); resetField("email"); resetField("whatsapp_no"); resetField("alternate_no"); resetField("dob");
+    resetField("joining_date"); resetField("role"); resetField("address"); resetField("gender");
+    setImg(defaultImage)
   }
 
   if (isloading) {
@@ -315,7 +320,7 @@ const Faculty = () => {
 
                           <div className="btn mt-5 flex justify-center w-60">
                             <button
-                              type="button" onClick={handleClick}
+                              type="button" onClick={handleClear}
                               className="bg-darkblue-500 hover:bg-white border-2 hover:border-darkblue-500 uppercase text-white hover:text-darkblue-500 font-medium h-11 w-28 rounded-md tracking-wider"
                             >
                               Clear

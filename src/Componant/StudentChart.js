@@ -128,7 +128,7 @@ function StudentChart() {
             <div className="grid grid-cols-4 px-5 py-3  gap-5 ">
               {noOfTransaction?.map((data, i) => {
                 return (
-                  <div className="rounded-xl shadow-2xl bg-white ">
+                  <div key={i} className="rounded-xl shadow-2xl bg-white ">
                     <h1 className=" text-sm py-1 font-semibold bg-green-300 rounded-t-xl text-center">
                       {months[i]}
                     </h1>

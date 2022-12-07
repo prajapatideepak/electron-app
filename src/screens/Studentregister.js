@@ -14,6 +14,7 @@ const Studentregister = () => {
     const [medium, setMedium] = useState('--');
     const [stream, setStream] = useState('--');
     const [netFees, setNetFees] = useState(0);
+    const [totalFees, setTotalFees] = useState(0);
     const [classes, setClasses] = useState([]);
     const [isLoadingOnSubmit, setIsLoadingOnSubmit] = useState(false);
     const navigate = useNavigate();
@@ -85,9 +86,9 @@ const Studentregister = () => {
         resetField("address");
         setNetFees(0);
     };
-    const totalDis = () => {
-        const totalFee = document.getElementById("totalfee").value;
-        const totalDis = document.getElementById("discount").value;
+    const totalDis = (totalFee) => {
+        const disc = document.getElementById("discount").value;
+        const totalDis = disc == '' ? 0 : disc;
 
         let netPay = totalFee - totalDis;
 
@@ -97,6 +98,7 @@ const Studentregister = () => {
     const handleClassChange = (e) =>{
         trigger('class')
         e.preventDefault();
+        let selectedClass;
         classes.map((item)=>{
             if(e.target.value == ''){
                 setMedium('--');
@@ -106,9 +108,12 @@ const Studentregister = () => {
             if(item._id == e.target.value){
                 setMedium(item.medium);
                 setStream(item.stream);
-                return;
+                selectedClass = item
+                return item;
             }
         })
+        setTotalFees(()=> selectedClass.fees)
+        totalDis(selectedClass.fees)
     }
 
     useEffect(()=>{
@@ -331,7 +336,7 @@ const Studentregister = () => {
                                                     classes.map((item, key) => {
                                                         return (
                                                             <option key={key} value={item._id}>
-                                                                <span>{`${item.class_name} ${item.medium} ${item.stream == 'none' ? '' : item.stream}`}</span>
+                                                                <>{`${item.class_name} ${item.medium} ${item.stream == 'none' ? '' : item.stream}`}</>
                                                             </option>
                                                         )
                                                     })
@@ -397,18 +402,16 @@ const Studentregister = () => {
                                 <div className="totalfee">
                                     <label className="block">
                                         <span className="block text-sm font-medium text-slate-700">
-                                            Total Fee *
+                                            Total Fee
                                         </span>
                                         <input
                                             type="text" id='totalfee'
                                             name="total_fees"
+                                            disabled={true}
+                                            value={totalFees}
                                             placeholder="Enter Your Total Fee"
                                             className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.total_fees && 'border-red-600'}`}
-                                            {...register("total_fees", { required: "Total Fee is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" } })}
-                                            onKeyUp={() => {
-                                                trigger('total_fees')
-                                                totalDis()
-                                            }}
+                                            {...register("total_fees")}
                                         />
                                         {errors.total_fees && (<small className="text-red-700">{errors.total_fees.message}</small>)}
                                     </label>
@@ -446,7 +449,7 @@ const Studentregister = () => {
                                             {...register("discount", { required: false, pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" } })}
                                             onKeyUp={() => {
                                                 trigger('discount')
-                                                totalDis()
+                                                totalDis(totalFees)
                                             }}
                                         />
                                         {errors.discount && (<small className="text-red-700">{errors.discount.message}</small>)}

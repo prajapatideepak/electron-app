@@ -52,8 +52,7 @@ valid.register({
         required: [true, 'Field is required']
     },
     total_fees: {
-        required: [true, 'Field is required'],
-        pattern: [/^[0-9]*$/, "Please enter only numbers"]
+        required: [false],
     },
     discount: {
         required: [false],
@@ -267,6 +266,7 @@ const Profilestudent = () => {
             photo_name = img.split("/")[3]
         }
         formdata.append('photo_name', photo_name);
+        formdata.append('total_fees', studentInputController.total_fees)
 
         setIsProcessing(true);
         try {
@@ -753,13 +753,13 @@ const Profilestudent = () => {
                                         <div className="totalfee">
                                             <label className="block">
                                                 <span className="block text-sm font-medium text-slate-700">
-                                                    Total Fee *
+                                                    Total Fee
                                                 </span>
                                                 <input
                                                     type="text" id='totalfee'
                                                     name="total_fees"
                                                     placeholder="Enter Your Total Fee"
-                                                    disabled={isEnable}
+                                                    disabled={true}
                                                     value={studentInputController.total_fees}
                                                     className={` 2xl:w-60 mt-1 block w-full px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${valid.errors?.total_fees != '' && 'border-red-600'}`}
 

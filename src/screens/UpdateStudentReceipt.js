@@ -330,7 +330,7 @@ export default function UpdateStudentReceipt() {
 
         if (res.data.success == true) {
             Toaster('success', 'Receipt updated successfully')
-            navigate("/receipt/receipt", {state:{isStaff: false, fees_receipt_id: student.receipt_no, prevPath: location.pathname}});
+            navigate("/receipt/receipt", {state:{isStaff: false, fees_receipt_id: student.receipt_no, prevPath: location.pathname, is_cancelled: 0}});
         } else {
             setErrors({
                 invalid_pin: res.data.message

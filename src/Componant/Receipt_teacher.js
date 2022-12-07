@@ -295,15 +295,14 @@ function Receipt_teacher() {
                               null
                         }: <span className="text-black">{
                           facultyhistory?.transaction_id?.is_by_upi
-                            ?
+                          ?
                             facultyhistory?.transaction_id?.upi_no
-                            :
+                          :
                             facultyhistory?.transaction_id?.is_by_cheque
-                              ?
+                            ?
                               facultyhistory?.transaction_id?.cheque_no
-                              :
+                            :
                               'CASH'
-
                         }</span>
                       </p>
                     </div>
@@ -387,14 +386,14 @@ function Receipt_teacher() {
                         :
                         <span className="text-black">{
                           facultyhistory.transaction_id?.is_by_upi
-                            ?
+                          ?
                             facultyhistory.transaction_id?.upi_no
-                            :
+                          :
                             facultyhistory.transaction_id?.is_by_cheque
-                              ?
+                            ?
                               facultyhistory.transaction_id?.cheque_no
-                              :
-                              'CASH'
+                            :
+                              ' CASH'
 
                         }</span>
                       </p>
@@ -408,7 +407,8 @@ function Receipt_teacher() {
                           <p className="text-white">Total Lectures: {feesdetails.total_hours}</p>
                         </div>
                       </div>
-                      : null}
+                      : null
+                    }
                     <div className="flex justify-between items-center mt-5">
                       <div className="flex flex-col">
                         <div className=" relative flex justify-center items-center">

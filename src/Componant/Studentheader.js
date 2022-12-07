@@ -32,6 +32,7 @@ const Studenthearder = () => {
     const post = postDate.setDate(postDate.getDate() + 1);
     return [previous, post];
   }
+  console.log(reportData)
 
   function handleDate(e) {
     const [previous, post] = handleDataFilter(e.target.value);
@@ -173,16 +174,14 @@ const Studenthearder = () => {
                       </td>
                       <td className="px-5  ">
                         <span>
-                          <NavLink to={"/reciept/recipet"}>
-                            <AiFillEye className="text-xl cursor-pointer" />
-                          </NavLink>
+                         ........
                         </span>
                       </td>
                     </tr>
                   ) : (
-                    data?.map((m) => {
+                    data?.map((m, key) => {
                       return (
-                        <tr className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
+                        <tr key={key} className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
                           <td className="pl-8">
                             {new Date(m.date)?.toISOString().slice(0, 10)}
                           </td>
@@ -217,7 +216,7 @@ const Studenthearder = () => {
                           </td>
                           <td className="px-5  ">
                             <span>
-                              <NavLink to={"/reciept/recipet"}>
+                              <NavLink to={"/receipt/receipt"}>
                                 <AiFillEye className="text-xl cursor-pointer" />
                               </NavLink>
                             </span>

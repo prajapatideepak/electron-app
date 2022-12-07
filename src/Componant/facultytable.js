@@ -9,21 +9,36 @@ import { NavLink } from "react-router-dom";
 import _ from "lodash"
 import ReactPaginate from "react-paginate";
 import './Pagination.css'
-import { Exportallfaculty } from "../hooks/usePost";
+import { Exportallfaculty , getAllFaculty } from "../hooks/usePost";
 import Toaster from '../hooks/showToaster'
 
-const Facultytable = ({allFaculty}) => {
+const Facultytable = () => {
   // -------------------------------
-  // -------- API WORKS -----------
+  // -------- All useState -----------
   // -------------------------------
   const componentRef = useRef();
   const [isPrint, setIsPrint] = useState(false);
-  const [facultyData, setFacultyData] = useState(allFaculty)
+  const [facultyData, setFacultyData] = useState([])
   const [currentItems, setcurrentItems] = useState([])
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
-  const [Serialno , setserialno] = useState(1)
+  const [Serialno, setserialno] = useState(1)
+  const [call, setcall] = useState(false)
   const itemsPerPage = 6;
+
+  // -------------------------------
+  // --------  API Work  -----------
+  // -------------------------------
+  useEffect(() => {
+    async function fatchallstaff() {
+      const res = await getAllFaculty();
+      if (res) {
+        setFacultyData(res.staffData)
+        setcall(() => !call)
+      }
+    }
+    fatchallstaff();
+  }, [call]);
 
   // -------------------------------
   // -------- Pagination -----------
@@ -33,19 +48,21 @@ const Facultytable = ({allFaculty}) => {
     setcurrentItems(facultyData.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(facultyData.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, facultyData])
-
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % facultyData.length;
     setserialno(event.selected + 1)
     setItemOffset(newOffset);
   };
 
+  // -----------------------------------------
+  // ------- Export To Excel All Staff --------
+  // ------------------------------------------
   const ExportAllfaculty = async () => {
     const res = await Exportallfaculty()
     if (res.success) {
-        Toaster('success', 'Exported successfully. Check your download folder')
+      Toaster('success', 'Exported successfully. Check your download folder')
     } else {
-        Toaster('error', 'Something went wrong')
+      Toaster('error', 'Something went wrong')
     }
   }
 
@@ -115,11 +132,11 @@ const Facultytable = ({allFaculty}) => {
                   </tr>
                 </thead>
                 <tbody className="bg-white border">
-                {currentItems.length > 0 
-                  ? 
-                    isPrint
+                  {currentItems.length > 0
                     ?
-                      allFaculty.map((item, key) => {
+                    isPrint
+                      ?
+                      currentItems.map((item, key) => {
                         return (
                           <tr key={key} className="border-b"  >
                             <th className="py-5 px-6">{(key + 1) + (itemsPerPage * Serialno - itemsPerPage)}</th>
@@ -155,7 +172,7 @@ const Facultytable = ({allFaculty}) => {
                           </tr>
                         )
                       })
-                    :
+                      :
                       (
                         currentItems.map((item, key) => {
                           return (
@@ -193,25 +210,25 @@ const Facultytable = ({allFaculty}) => {
                             </tr>
                           )
                         })
-                      ) 
-                  : 
+                      )
+                    :
                     (
                       <tr className="">
                         <td colSpan={6} className="bg-red-200  font-bold p-2 rounded">
                           <div className="flex space-x-2 justify-center items-center">
-                            <IoMdInformationCircle className="text-xl text-red-600"/>
+                            <IoMdInformationCircle className="text-xl text-red-600" />
                             <h1 className="text-red-800">Faculty not found </h1>
                           </div>
                         </td>
                       </tr>
                     )
-                }
+                  }
                 </tbody>
               </table>
             </div>
             {
-              currentItems.length > 0 
-              ?
+              currentItems.length > 0
+                ?
                 <div className=' flex justify-end items-center ml-32 py-5' >
                   <div className=' py-2'>
                     <ReactPaginate
@@ -230,7 +247,7 @@ const Facultytable = ({allFaculty}) => {
                     />
                   </div>
                 </div>
-              :
+                :
                 null
             }
           </div>

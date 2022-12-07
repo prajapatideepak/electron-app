@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { TbCurrencyRupee } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useParams, useLocation } from "react-router-dom";
-import { Facultyreciept, getAdminVerification,usegetAdmin } from "../hooks/usePost"
+import { Facultyreciept, getAdminVerification, usegetAdmin } from "../hooks/usePost"
 import { NavLink, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from 'react-icons/io';
 import { MdModeEditOutline } from "react-icons/md";
@@ -213,11 +213,11 @@ function Receipt_teacher() {
                             </div>
                             {
                               error != '' && error != undefined
-                              ?
+                                ?
                                 <p className="text-red-700">{error}</p>
-                              :
+                                :
                                 null
-                            } 
+                            }
                           </div>
                         </div>
                       </div>
@@ -341,7 +341,8 @@ function Receipt_teacher() {
                     </div>
                   </div>
                 </ReceiptMainDiv>
-                {print && <ReceiptMainDiv className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`} >
+                {print && 
+                <ReceiptMainDiv className={`border-4 rounded-3xl border-red-600 mx-auto mt-4`} >
                   <div className="p-5">
                     <div className="flex justify-between">
                       <img src="images/logo.png" style={{ maxWidth: '250px' }} alt="" />
@@ -381,7 +382,9 @@ function Receipt_teacher() {
                               "Cheque"
                               :
                               null
-                        }: <span className="text-black">{
+                        }
+                        :
+                        <span className="text-black">{
                           facultyhistory.transaction_id?.is_by_upi
                           ?
                             facultyhistory.transaction_id?.upi_no

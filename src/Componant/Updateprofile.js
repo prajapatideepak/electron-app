@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Validator from "../hooks/validator";
 import { AxiosError } from "axios";
 import { FaUserEdit } from "react-icons/fa";
-import Toaster from '../hooks/showToaster'
+import Toaster from "../hooks/showToaster";
 
 const valid = new Validator();
 valid.register({
@@ -67,6 +67,7 @@ const Updateprofile = () => {
   const [oldadminDetails, setOldadminyDetails] = useState({});
   const [state, setState] = React.useState(true);
   const [isLoadingOnSubmit, setIsLoadingOnSubmit] = useState(false);
+  const [newDate, setnewDate] = useState("");
   const [studDetails, setadminDetails] = useState({}); //Only used to pass data to next page
   const [adminInputController, setadminInputController] = useState({
     photo: "",
@@ -148,7 +149,7 @@ const Updateprofile = () => {
     setToggle(true);
   }
 
-  console.log(admin)
+  console.log(admin);
   function handleCancel(e) {
     e.preventDefault();
     let dob = new Date(admin?.staff_id?.basic_info_id?.dob);
@@ -156,8 +157,8 @@ const Updateprofile = () => {
       dob.getMonth() + 1 < 10 ? "0" + (dob.getMonth() + 1) : dob.getMonth() + 1
     }-${dob.getDate() < 10 ? "0" + dob.getDate() : dob.getDate()}`;
 
-    setadminInputController (() =>{
-      return{
+    setadminInputController(() => {
+      return {
         full_name: admin?.staff_id?.basic_info_id.full_name,
         email: admin?.staff_id?.contact_info_id.email,
         whatsapp_no: admin?.staff_id?.contact_info_id.whatsapp_no,
@@ -165,7 +166,7 @@ const Updateprofile = () => {
         security_pin: admin?.security_pin,
         address: admin?.staff_id?.contact_info_id.address,
         dob: dob,
-      }
+      };
     });
     setIsEnable(true);
     setToggle(false);
@@ -192,11 +193,13 @@ const Updateprofile = () => {
 
   React.useEffect(() => {
     if (updateAdmin.isSuccess) {
-      Toaster("success", "Profile Updated Successfully")
-      navigate('/')
+      Toaster("success", "Profile Updated Successfully");
+      navigate("/");
     }
   }, [updateAdmin.isSuccess]);
   const onSubmit = async (data) => {
+    data.dob = newDate;
+    console.log(data  );
     updateAdmin.mutate(data);
     reset();
   };
@@ -376,6 +379,7 @@ const Updateprofile = () => {
                         disabled={isEnable}
                         type="date"
                         name="dob"
+                        onChange={(e) => setnewDate(e.target.value)}
                         defaultValue={adminInputController.dob}
                         className={`w-72 hover:cursor-pointer mt-1 block w-full px-3 py-2 bg-white border border-slate-300 
                         rounded-md text-sm shadow-sm placeholder-slate-400 outline-none

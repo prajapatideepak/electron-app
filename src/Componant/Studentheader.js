@@ -13,6 +13,7 @@ import { IoMdInformationCircle } from "react-icons/io";
 
 const Studenthearder = () => {
   const [data, setData] = useState([]);
+  const [date, setDate] = useState("");
   const reportData = useQuery("reports", useGetReport);
   const componentRef = useRef();
 
@@ -26,6 +27,7 @@ const Studenthearder = () => {
   }
 
   function handleDate(e) {
+    setDate(e.target.value);
     const [previous, post] = handleDataFilter(e.target.value);
 
     const newData = reportData.data.data.filter(
@@ -60,6 +62,7 @@ const Studenthearder = () => {
             <input
               id=""
               type="Date"
+              value={date}
               onChange={(e) => handleDate(e)}
               className="outline-none bg-white border rounded-md p-2 cursor-pointer"
             />
@@ -67,6 +70,7 @@ const Studenthearder = () => {
               id=""
               className=" flex items-center border outline-none bg-white py-2 px-4 xl:p-4 xl:py-2 shadow-lg hover:shadow rounded-md  space-x-1 "
               onClick={(e) => {
+                setDate("");
                 setData(reportData?.data?.data);
               }}
             >

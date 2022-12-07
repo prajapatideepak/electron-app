@@ -13,6 +13,7 @@ import { IoMdInformationCircle } from "react-icons/io";
 const Facultyheader = () => {
   const salaryReport = useQuery("salary", useGetSalaryReport);
   const [data, setData] = React.useState([]);
+  const [date, setDate] = React.useState("");
   console.log(salaryReport?.data?.data);
   const componentRef = useRef();
 
@@ -27,6 +28,7 @@ const Facultyheader = () => {
 
   function handleDate(e) {
     const [previous, post] = handleDataFilter(e.target.value);
+    setDate(e.target.value);
 
     const newData = salaryReport.data.data.filter(
       (recipet) =>
@@ -58,6 +60,7 @@ const Facultyheader = () => {
           </div>
           <div className="print-btn flex items-center space-x-3">
             <input
+              value={date}
               id=""
               type="Date"
               onChange={(e) => handleDate(e)}
@@ -67,6 +70,7 @@ const Facultyheader = () => {
               id=""
               className=" flex items-center border outline-none bg-white py-2 px-4 xl:p-4 xl:py-2 shadow-lg hover:shadow rounded-md  space-x-1 "
               onClick={(e) => {
+                setDate("");
                 setData(salaryReport?.data?.data);
               }}
             >

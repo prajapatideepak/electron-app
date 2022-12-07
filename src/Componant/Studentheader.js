@@ -10,12 +10,19 @@ import { useGetMonthlyReport, useGetReport } from "../hooks/usePost";
 import { useState } from "react";
 import StudentChart from "./StudentChart";
 import { IoMdInformationCircle } from "react-icons/io";
+import ReactPaginate from "react-paginate";
+import './Pagination.css'
 
 const Studenthearder = () => {
   const [data, setData] = useState([]);
-  const [date, setDate] = useState("");
   const reportData = useQuery("reports", useGetReport);
   const componentRef = useRef();
+  const [student_data, setstudentdata] = useState(reportData)
+  const [currentItems, setcurrentItems] = useState([])
+  const [pageCount, setPageCount] = useState(0)
+  const [itemOffset, setItemOffset] = useState(0)
+  const [Serialno, setserialno] = useState(1)
+  const itemsPerPage = 6;
 
   function handleDataFilter(filterDate) {
     const preDate = new Date(`${filterDate},23:59:00`);
@@ -27,7 +34,6 @@ const Studenthearder = () => {
   }
 
   function handleDate(e) {
-    setDate(e.target.value);
     const [previous, post] = handleDataFilter(e.target.value);
 
     const newData = reportData.data.data.filter(
@@ -42,6 +48,24 @@ const Studenthearder = () => {
   React.useEffect(() => {
     setData(reportData?.data?.data);
   }, [reportData.isSuccess]);
+
+
+  // -------------------------------
+  // -------- Pagination -----------
+  // -------------------------------
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    setcurrentItems(data.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(data.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage, data])
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % data.length;
+    setserialno(event.selected + 1)
+    setItemOffset(newOffset);
+  };
+
+
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -62,7 +86,6 @@ const Studenthearder = () => {
             <input
               id=""
               type="Date"
-              value={date}
               onChange={(e) => handleDate(e)}
               className="outline-none bg-white border rounded-md p-2 cursor-pointer"
             />
@@ -70,25 +93,28 @@ const Studenthearder = () => {
               id=""
               className=" flex items-center border outline-none bg-white py-2 px-4 xl:p-4 xl:py-2 shadow-lg hover:shadow rounded-md  space-x-1 "
               onClick={(e) => {
-                setDate("");
                 setData(reportData?.data?.data);
               }}
             >
               Clear Filter
             </button>
-            <Tooltip
-              content="Print"
-              placement="bottom-end"
-              className="text-white bg-black rounded p-2"
-            >
-              <span
-                href="#"
-                className="text-3xl bg-green-200 rounded-md text-green-900  w-10 h-8 flex justify-center  "
-                onClick={handlePrint}
+            {currentItems.length > 0 ?
+              <Tooltip
+                content="Print"
+                placement="bottom-end"
+                className="text-white bg-black rounded p-2"
               >
-                <MdLocalPrintshop />
-              </span>
-            </Tooltip>
+                <span
+                  href="#"
+                  className="text-3xl bg-green-200 rounded-md text-green-900  w-10 h-8 flex justify-center  "
+                  onClick={handlePrint}
+                >
+                  <MdLocalPrintshop />
+                </span>
+              </Tooltip>
+              :
+              null
+            }
           </div>
           <div ref={componentRef} className="p-5 pt-3 pb-0">
             <div className="overflow-x-auto">
@@ -147,14 +173,12 @@ const Studenthearder = () => {
                       </td>
                       <td className="px-5  ">
                         <span>
-                          <NavLink to={"/reciept/recipet"}>
-                            <AiFillEye className="text-xl cursor-pointer" />
-                          </NavLink>
+                          ........
                         </span>
                       </td>
                     </tr>
                   ) : (
-                    data?.map((m, key) => {
+                    currentItems?.map((m, key) => {
                       return (
                         <tr key={key} className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
                           <td className="pl-8">
@@ -191,23 +215,8 @@ const Studenthearder = () => {
                           </td>
                           <td className="px-5  ">
                             <span>
-                              <NavLink
-                                className="nav-link"
-                                to="/receipt/receipt"
-                                state={{
-                                  isStaff: false,
-                                  fees_receipt_id: m.fees_receipt_id,
-                                }}
-                              >
-                                <Tooltip
-                                  content="Show Receipt"
-                                  placement="bottom-end"
-                                  className="text-white bg-black rounded p-2"
-                                >
-                                  <span>
-                                    <AiFillEye className="text-xl cursor-pointer" />
-                                  </span>
-                                </Tooltip>
+                              <NavLink to={"/receipt/receipt"}>
+                                <AiFillEye className="text-xl cursor-pointer" />
                               </NavLink>
                             </span>
                           </td>
@@ -217,15 +226,37 @@ const Studenthearder = () => {
                   )}
                 </tbody>
               </table>
-              {data?.length < 1 ? (
+              {currentItems?.length < 1 ? (
                 <div className="bg-red-200 font-bold justify-center items-center p-2 rounded  flex space-x-2">
                   <IoMdInformationCircle className="text-xl text-red-600" />
-
                   <h1 className="text-red-800"> Transaction not Found </h1>
                 </div>
               ) : null}
             </div>
           </div>
+          {
+            currentItems.length > 0
+              ?
+              <div className=' flex justify-end items-center  py-2' >
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel="next >"
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={3}
+                  pageCount={pageCount}
+                  previousLabel="< previous"
+                  renderOnZeroPageCount={null}
+                  containerClassName="pagination"
+                  pageLinkClassName='page-num'
+                  previousLinkClassName='page-num'
+                  nextLinkClassName='page-num'
+                  activeLinkClassName='active-page'
+                />
+
+              </div>
+              :
+              null
+          }
         </div>
       </div>
     </div>

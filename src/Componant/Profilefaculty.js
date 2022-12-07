@@ -15,7 +15,9 @@ import Validator from '../hooks/validator';
 import { AxiosError } from 'axios';
 
 
-
+// --------------------------------------
+// -------- Validation Library -----------
+// --------------------------------------
 const valid = new Validator();
 valid.register({
   photo: {
@@ -30,6 +32,11 @@ valid.register({
     pattern: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "Please enter valid email"]
   },
   whatsapp_no: {
+    required: [true, 'Field is required'],
+    pattern: [/^[0-9]*$/, "Please enter only numbers"],
+    length: [10, "Number should be of 10 digits"]
+  },
+  alternate_no: {
     required: [true, 'Field is required'],
     pattern: [/^[0-9]*$/, "Please enter only numbers"],
     length: [10, "Number should be of 10 digits"]
@@ -53,6 +60,10 @@ valid.register({
 })
 
 const Profilefaculty = () => {
+
+  // --------------------------------------
+  // -------- UseSatate -------------------
+  // --------------------------------------
   const componentRef = useRef();
   const form = useRef(null);
   const [isEnable, setIsEnable] = useState(true);
@@ -83,6 +94,7 @@ const Profilefaculty = () => {
     full_name: '',
     email: '',
     whatsapp_no: '',
+    alternate_no: '',
     dob: '',
     gender: '',
     role: '',
@@ -98,7 +110,6 @@ const Profilefaculty = () => {
   const setfacultydetails = () => {
     faculty_details = faculty_details.data.one_staff_Details;
     setStudDetails(faculty_details)
-
     let dob = new Date(faculty_details.basic_info_id.dob);
     dob = `${dob.getFullYear()}-${dob.getMonth() + 1 < 10 ? "0" + (dob.getMonth() + 1) : dob.getMonth() + 1}-${dob.getDate() < 10 ? "0" + dob.getDate() : dob.getDate()}`
 
@@ -106,18 +117,18 @@ const Profilefaculty = () => {
     joining_date = `${joining_date.getFullYear()}-${joining_date.getMonth() + 1 < 10 ? "0" + (joining_date.getMonth() + 1) : joining_date.getMonth() + 1}-${joining_date.getDate() < 10 ? "0" + joining_date.getDate() : joining_date.getDate()}`
 
     facul_data = {
-      id : faculty_details._id,
+      id: faculty_details._id,
       photo: faculty_details.basic_info_id.photo,
       full_name: faculty_details.basic_info_id.full_name,
       email: faculty_details.contact_info_id.email,
       whatsapp_no: faculty_details.contact_info_id.whatsapp_no,
+      alternate_no: faculty_details.contact_info_id.alternate_no,
       dob: dob,
       gender: faculty_details.basic_info_id.gender,
       role: faculty_details.role,
       address: faculty_details.contact_info_id.address,
       joining_date: joining_date,
     }
-
     const photo = faculty_details.basic_info_id.photo;
     setImg(photo != '' ? server + photo : defaultImage)
     setFacultyInputController(facul_data)
@@ -128,6 +139,7 @@ const Profilefaculty = () => {
       full_name: facul_data.full_name ?? facul_data.full_name,
       email: facul_data.email ?? facul_data.email,
       whatsapp_no: facul_data.whatsapp_no ?? facul_data.whatsapp_no,
+      alternate_no: facul_data.alternate_no ?? facul_data.alternate_no,
       dob: facul_data.dob ?? facul_data.dob,
       gender: facul_data.gender ?? facul_data.gender,
       role: facul_data.role ?? facul_data.role,
@@ -135,9 +147,11 @@ const Profilefaculty = () => {
       joining_date: facul_data.joining_date ?? facul_data.joining_date,
     }
   }
-  // -----------------------------
-  // ------ form_details --------
-  // -----------------------------
+
+
+  // --------------------------------
+  // ------ form_details API --------
+  // --------------------------------
   useEffect(() => {
     async function facultdata() {
       try {
@@ -205,22 +219,17 @@ const Profilefaculty = () => {
     setImg(URL.createObjectURL(file));
   };
 
+
+  // --------------------------
+  // -------- Form Eror -------
+  // --------------------------
   const {
-    register,
-    handleSubmit,
     formState: { errors },
-    reset,
-    trigger,
-    resetField,
   } = useForm();
 
-  function handlemale(e) {
-    setgender(e.target.value)
-  }
-  function handlefemale(e) {
-    setgender(e.target.value)
-  }
-
+  // --------------------------------
+  // ------  Input Value Fatch ------- 
+  // --------------------------------
   function handleChange(e) {
     e.preventDefault()
 
@@ -239,8 +248,11 @@ const Profilefaculty = () => {
       }
     });
   }
+
+  // --------------------------------
+  // ------  Send Data in API ------- 
+  // --------------------------------
   const onSubmit = async (data) => {
-    console.log(data, "data")
     Object.assign(data, { photo: data.photo, staff_id })
 
     const formdata = new FormData(form.current);
@@ -272,13 +284,20 @@ const Profilefaculty = () => {
     }
   }
 
+  // --------------------------------
+  // ------ Form details Edit  ------- 
+  // --------------------------------
   function handleedit(e) {
     e.preventDefault();
     setIsEnable(false)
     setToggle(true);
   }
 
+  // --------------------------------
+  // ------ Form Edit Cancel ------- 
+  // --------------------------------
   function hendlecancel(e) {
+    setFacultyInputController(oldFacultyDetails)
     e.preventDefault();
     setState(valid.clearErrors())
     setIsEnable(true);
@@ -393,6 +412,26 @@ const Profilefaculty = () => {
                   </div>
                 </div>
                 <div className="flex lg:flex-row md:flex-col gap-4 items-center">
+                  <div className="alternate_no">
+                    <label className="block">
+                      <span className="block text-sm font-medium text-slate-700">
+                        Mobile No
+                      </span>
+                      <input
+                        type="text"
+                        disabled={isEnable}
+                        placeholder="Enter Your Mobile No"
+                        name="alternate_no"
+                        value={facultyInputController.alternate_no}
+                        className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+                         placeholder-slate-400 outline-none 
+                         ${valid.errors?.alternate_no != '' && 'border-red-600'}
+                         `}
+                        onChange={handleChange}
+                      />
+                      {valid.errors?.alternate_no != '' ? <small className="text-red-600 mt-3">*{valid.errors?.alternate_no}</small> : null}
+                    </label>
+                  </div>
                   <div className="dob">
                     <label className="block">
                       <span className="block text-sm font-medium text-slate-700">
@@ -449,28 +488,29 @@ const Profilefaculty = () => {
                     </label>
                     {valid.errors?.gender != '' ? <small className="text-red-600 mt-3">*{valid.errors?.gender}</small> : null}
                   </div>
-                  <div className="role">
-                    <label className="block">
-                      <span className="block text-sm font-medium text-slate-700">
-                        Role
-                      </span>
-                      <input
-                        type="text"
-                        disabled={isEnable}
-                        value={facultyInputController.role}
-                        placeholder="Enter Your Role"
-                        name="role"
-                        className={`w-60 mt-1 block w-full px-3 py-2 bg-white border 
+
+                </div>
+                <div className="">
+                  <div className="flex lg:flex-row md:flex-col gap-4 ">
+                    <div className="role">
+                      <label className="block">
+                        <span className="block text-sm font-medium text-slate-700">
+                          Role
+                        </span>
+                        <input
+                          type="text"
+                          disabled={isEnable}
+                          value={facultyInputController.role}
+                          placeholder="Enter Your Role"
+                          name="role"
+                          className={`w-60 mt-1 block w-full px-3 py-2 bg-white border 
                          border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none
                           ${valid.errors?.role != '' && 'border-red-600'}`}
-                        onChange={handleChange}
-                      />
-                      {valid.errors?.role != '' ? <small className="text-red-600 mt-3">*{valid.errors?.role}</small> : null}
-                    </label>
-                  </div>
-                </div>
-                <div className=" flex">
-                  <div className="flex lg:flex-row md:flex-col gap-4 ">
+                          onChange={handleChange}
+                        />
+                        {valid.errors?.role != '' ? <small className="text-red-600 mt-3">*{valid.errors?.role}</small> : null}
+                      </label>
+                    </div>
                     <div className="address">
                       <label className="block">
                         <span className="block text-sm font-medium text-slate-700">
@@ -482,7 +522,7 @@ const Profilefaculty = () => {
                           placeholder="Enter Your Address"
                           value={facultyInputController.address}
                           name="address"
-                          className={`w-60 mt-1 block w-full px-3 py-2 bg-white border border-2
+                          className={`w-60 mt-1 block w-full px-3 py-2 bg-white border 
                            border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none
                             ${valid.errors?.address != '' && 'border-red-600'}`}
                           onChange={handleChange}
@@ -507,7 +547,7 @@ const Profilefaculty = () => {
                       </label>
                     </div>
                   </div>
-                  <div>
+                  <div className="flex justify-center items-center">
                     <div className="btn mt-5 flex justify-center w-60 ml-5">
                       {!toggle ? (
                         <button type="button" onClick={handleedit} className="py-2 px-8 gap-2 bg-darkblue-500  hover:bg-white border-2 hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium rounded-md tracking-wider flex justify-center items-center">
@@ -552,7 +592,7 @@ const Profilefaculty = () => {
                   </tr>
                 </thead>
                 <tbody className='bg-white border items-center '>
-                {Totalpaid.length > 0 ? (
+                  {Totalpaid.length > 0 ? (
 
                     <tr className=" border-b">
 
@@ -567,7 +607,7 @@ const Profilefaculty = () => {
                       </td>
                       <td className={`py-5 px-6 text-center  ${isPrint ? "hidden" : "block"}`}>
                         <div className='flex justify-center space-x-2'>
-                          <NavLink className="nav-link" to={`/Profilefaculty/Staffhistory/${facultyInputController.id}`} state={{faculty_name: facultyInputController.full_name}}>
+                          <NavLink className="nav-link" to={`/Profilefaculty/Staffhistory/${facultyInputController.id}`} state={{ faculty_name: facultyInputController.full_name }}>
                             <Tooltip content="Show History" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" class="text-xl text-darkblue-500"><AiFillEye /></a></Tooltip>
 
                           </NavLink>
@@ -575,18 +615,18 @@ const Profilefaculty = () => {
                       </td>
                     </tr>
 
-                ) : (
-                  <tr className="">
+                  ) : (
+                    <tr className="">
                       <td colSpan={7} className="bg-red-200  font-bold p-2 rounded">
-                          <div className="flex space-x-2 justify-center items-center">
+                        <div className="flex space-x-2 justify-center items-center">
 
-                          <IoMdInformationCircle className="text-xl text-red-600"/>
+                          <IoMdInformationCircle className="text-xl text-red-600" />
                           <h1 className="text-red-800">Receipt not found </h1>
-                          </div>
+                        </div>
                       </td>
-                  </tr> 
-                )}
-                  </tbody>
+                    </tr>
+                  )}
+                </tbody>
               </table>
             </div>
           </div>

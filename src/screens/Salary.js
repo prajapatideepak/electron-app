@@ -59,7 +59,7 @@ export default function Salary() {
     }
     fetchfacultdata()
   }, [])
-
+  console.log(faculty , "faculty")
 
   React.useEffect(() => {
     async function fetchfacultdata() {

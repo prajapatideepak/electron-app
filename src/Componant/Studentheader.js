@@ -32,8 +32,7 @@ const Studenthearder = () => {
     const post = postDate.setDate(postDate.getDate() + 1);
     return [previous, post];
   }
-  console.log(reportData)
-
+  
   function handleDate(e) {
     const [previous, post] = handleDataFilter(e.target.value);
 

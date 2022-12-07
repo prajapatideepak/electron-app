@@ -146,9 +146,9 @@ const Facultyheader = () => {
                   </tr>
                 </thead>
                 <tbody className="w-full">
-                  {currentItems.map((report) => {
+                  {currentItems.map((report, key) => {
                     return (
-                      <tr className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
+                      <tr key={key} className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
                         <td className=" px-10 text-center font-bold lg:px-6 xl:px-0">
                           {report?.salary_receipt_id}
                         </td>

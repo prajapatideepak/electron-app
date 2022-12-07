@@ -33,7 +33,7 @@ const Studenthearder = () => {
     return [previous, post];
   }
 
-  function handleDate(e) {
+  function handle_data(e) {
     const [previous, post] = handleDataFilter(e.target.value);
 
     const newData = reportData.data.data.filter(
@@ -55,8 +55,8 @@ const Studenthearder = () => {
   // -------------------------------
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
-    setcurrentItems(data.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(data.length / itemsPerPage));
+    setcurrentItems(data?.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(data?.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, data])
 
   const handlePageClick = (event) => {
@@ -86,7 +86,7 @@ const Studenthearder = () => {
             <input
               id=""
               type="Date"
-              onChange={(e) => handleDate(e)}
+              onChange={(e) => handle_data(e)}
               className="outline-none bg-white border rounded-md p-2 cursor-pointer"
             />
             <button
@@ -98,7 +98,7 @@ const Studenthearder = () => {
             >
               Clear Filter
             </button>
-            {currentItems.length > 0 ?
+            {currentItems?.length > 0 ?
               <Tooltip
                 content="Print"
                 placement="bottom-end"
@@ -235,7 +235,7 @@ const Studenthearder = () => {
             </div>
           </div>
           {
-            currentItems.length > 0
+            currentItems?.length > 0
               ?
               <div className=' flex justify-end items-center  py-2' >
                 <ReactPaginate

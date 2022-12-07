@@ -106,7 +106,7 @@ function StudentChart() {
                   className="rounded bg-gray-100   px-3 font-semibold py-1"
                 >
                   {year.map((y, i) => {
-                    return <option value={i}> {y} </option>;
+                    return <option key={i} value={i}> {y} </option>;
                   })}
                 </select>
               </div>

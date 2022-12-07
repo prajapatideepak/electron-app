@@ -105,9 +105,6 @@ function StudentChart() {
                   onChange={(e) => handleYearChange(e)}
                   className="rounded bg-gray-100   px-3 font-semibold py-1"
                 >
-                  <option value={year.length - 1}>
-                    {year[year.length - 1]}
-                  </option>
                   {year.map((y, i) => {
                     return <option value={i}> {y} </option>;
                   })}

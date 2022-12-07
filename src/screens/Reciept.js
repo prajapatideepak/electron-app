@@ -90,7 +90,6 @@ const Reciept = () => {
       else{
         try{
           let receipt_details = await searchReceipt(location.state.fees_receipt_id);
-          console.log(receipt_details)
           receipt_details = receipt_details.data.student_receipts[0]
           setReceiptDetails(()=>{
             let date = new Date(receipt_details?.academics[0].fees[0].fees_receipt[0].date).toLocaleString()

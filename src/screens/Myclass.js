@@ -67,6 +67,7 @@ const Myclass = () => {
   ];
   const [isHoverEdit, setIsHoverEdit] = React.useState(false);
   const [isHoverDelete, setIsHoverDelete] = React.useState(false);
+  const [isAddingClass, setIsAddingClass] = React.useState(false);
   const [isCurrentYearSelected, setIsCurrentYearSelected] =
     React.useState(true);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -220,12 +221,17 @@ const Myclass = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setIsAddingClass(true)
     const response = await AddClass(data);
-    if (response) {
+    setIsAddingClass(false)
+    if (response.data.success) {
       fetchClasses();
       setModel(false);
       reset();
       return notify();
+    }
+    else{
+      toast.error('Something went wrong')
     }
   };
 
@@ -534,9 +540,10 @@ const Myclass = () => {
                               </button>
                               <button
                                 type="submit"
-                                className="bg-darkblue-500 uppercase  hover:bg-white border-2 flex justify-center items-center  hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium h-11 w-28 rounded-md tracking-wider"
+                                disabled={isAddingClass}
+                                className={` ${isAddingClass ? 'bg-darkblue-300' : 'bg-darkblue-500'} uppercase  hover:bg-white border-2 flex justify-center items-center  hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium h-11 w-28 rounded-md tracking-wider`}
                               >
-                                <h1 className="">SUBMIT</h1>
+                                <h1 className="">{isAddingClass ? 'Loading...' : 'SUBMIT'}</h1>
                               </button>
                             </div>
                           </div>

@@ -53,11 +53,11 @@ const Studenthearder = () => {
   // -------------------------------
   // -------- Pagination -----------
   // -------------------------------
-  // useEffect(() => {
-  //   const endOffset = itemOffset + itemsPerPage;
-  //   setcurrentItems(data.slice(itemOffset, endOffset));
-  //   setPageCount(Math.ceil(data.length / itemsPerPage));
-  // }, [itemOffset, itemsPerPage, data])
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    setcurrentItems(data.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(data.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage, data])
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % data.length;
@@ -178,7 +178,7 @@ const Studenthearder = () => {
                       </td>
                     </tr>
                   ) : (
-                    data?.map((m, key) => {
+                    currentItems?.map((m, key) => {
                       return (
                         <tr key={key} className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
                           <td className="pl-8">

@@ -191,8 +191,23 @@ const Studenthearder = () => {
                           </td>
                           <td className="px-5  ">
                             <span>
-                              <NavLink to={"/reciept/recipet"}>
-                                <AiFillEye className="text-xl cursor-pointer" />
+                              <NavLink
+                                className="nav-link"
+                                to="/receipt/receipt"
+                                state={{
+                                  isStaff: false,
+                                  fees_receipt_id: m.fees_receipt_id,
+                                }}
+                              >
+                                <Tooltip
+                                  content="Show Receipt"
+                                  placement="bottom-end"
+                                  className="text-white bg-black rounded p-2"
+                                >
+                                  <span>
+                                    <AiFillEye className="text-xl cursor-pointer" />
+                                  </span>
+                                </Tooltip>
                               </NavLink>
                             </span>
                           </td>

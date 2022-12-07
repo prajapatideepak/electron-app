@@ -220,8 +220,23 @@ const Facultyheader = () => {
                           </td>
                           <td className="px-5  ">
                             <span className="flex justify-center">
-                              <NavLink to={"/reciept/recipet"}>
-                                <AiFillEye className="text-xl cursor-pointer" />
+                              <NavLink
+                                className="nav-link"
+                                to={`/Staffhistory/Receipt_teacher/${report.salary_receipt_id}`}
+                                state={{
+                                  isStaff: true,
+                                  isSalaried: report.is_hourly,
+                                }}
+                              >
+                                <Tooltip
+                                  content="Show Receipt"
+                                  placement="bottom-end"
+                                  className="text-white bg-black rounded p-2"
+                                >
+                                  <span className="text-xl bg-white text-darkblue-500">
+                                    <AiFillEye />
+                                  </span>
+                                </Tooltip>
                               </NavLink>
                             </span>
                           </td>

@@ -39,12 +39,11 @@ export const Addadmin = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#f5f7ff]  w-full ">
-      <div className="flex justify-center  bg-[#f5f7ff] ">
-        <div className=" h-2/3 mx-auto mt-28 opacity-100 shadow-2xl rounded xl:mt-4 2xl:mt-10 bg-white w-3/4 z-50 ">
+      <div className="flex justify-center items-center bg-[#f5f7ff] absolute w-full h-full">
+        <div className=" h-2/3 mx-auto opacity-100 shadow-2xl rounded bg-white w-3/4 z-50 mt-[-30px] ">
           <div className="">
             <div className="">
-              <h1 className="text-2xl font-bold text-darkblue-500 px-6 p-3 ">
+              <h1 className="text-2xl font-bold text-darkblue-500 text-center py-7 ">
                 Admin Registration
               </h1>
 
@@ -53,7 +52,7 @@ export const Addadmin = () => {
                 onSubmit={handleSubmit(OnSubmit)}
                 encType="multipart/form-data"
               >
-                <div className=" w-full grid grid-cols-1 rounded-lg drop-shadow-md truncate bg-white pb-5  ">
+                <div className=" w-full grid grid-cols-1 rounded-lg truncate bg-white pb-5  ">
                   <div className=" flex flex-col items-center gap-4">
                     <div className="flex lg:flex-row  gap-4">
                       <div className="username">
@@ -452,6 +451,5 @@ export const Addadmin = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };

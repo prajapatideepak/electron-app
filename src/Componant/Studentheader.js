@@ -156,7 +156,7 @@ const Studenthearder = () => {
                   ) : (
                     data?.map((m, key) => {
                       return (
-                        <tr className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
+                        <tr key={key} className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
                           <td className="pl-8">
                             {new Date(m.date)?.toISOString().slice(0, 10)}
                           </td>

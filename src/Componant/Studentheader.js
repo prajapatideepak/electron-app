@@ -32,7 +32,7 @@ const Studenthearder = () => {
     const post = postDate.setDate(postDate.getDate() + 1);
     return [previous, post];
   }
-  
+
   function handleDate(e) {
     const [previous, post] = handleDataFilter(e.target.value);
 
@@ -98,23 +98,23 @@ const Studenthearder = () => {
             >
               Clear Filter
             </button>
-            {currentItems.length > 0 ? 
-            <Tooltip
-              content="Print"
-              placement="bottom-end"
-              className="text-white bg-black rounded p-2"
-            >
-              <span
-                href="#"
-                className="text-3xl bg-green-200 rounded-md text-green-900  w-10 h-8 flex justify-center  "
-                onClick={handlePrint}
+            {currentItems.length > 0 ?
+              <Tooltip
+                content="Print"
+                placement="bottom-end"
+                className="text-white bg-black rounded p-2"
               >
-                <MdLocalPrintshop />
-              </span>
-            </Tooltip>
-            : 
-            null
-          }
+                <span
+                  href="#"
+                  className="text-3xl bg-green-200 rounded-md text-green-900  w-10 h-8 flex justify-center  "
+                  onClick={handlePrint}
+                >
+                  <MdLocalPrintshop />
+                </span>
+              </Tooltip>
+              :
+              null
+            }
           </div>
           <div ref={componentRef} className="p-5 pt-3 pb-0">
             <div className="overflow-x-auto">
@@ -173,7 +173,7 @@ const Studenthearder = () => {
                       </td>
                       <td className="px-5  ">
                         <span>
-                         ........
+                          ........
                         </span>
                       </td>
                     </tr>
@@ -229,7 +229,6 @@ const Studenthearder = () => {
               {currentItems?.length < 1 ? (
                 <div className="bg-red-200 font-bold justify-center items-center p-2 rounded  flex space-x-2">
                   <IoMdInformationCircle className="text-xl text-red-600" />
-
                   <h1 className="text-red-800"> Transaction not Found </h1>
                 </div>
               ) : null}

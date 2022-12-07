@@ -669,9 +669,9 @@ const Profilestudent = () => {
                                             {valid.errors?.gender != '' ? <small className="text-red-600 mt-3">*{valid.errors?.gender}</small> : null}
                                         </div>
                                     </div>
-                                    <div className="flex flex-1 w-full px-3">
-                                        <div className="Addresss w-full">
-                                            <label className="block flex flex-col">
+                                    <div className="flex flex-1 2xl:w-full px-6">
+                                        <div className="Addresss 2xl:w-full xl:w-96 lg:w-96">
+                                            <label className="flex flex-col">
                                                 <span className="block text-sm font-medium text-slate-700">
                                                     Address *
                                                 </span>

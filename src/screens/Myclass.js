@@ -789,17 +789,17 @@ const Myclass = () => {
                                         }}
                                       >
                                         <option
-                                          value={0}
+                                          value={1}
                                           selected={
-                                            item.is_primary == 0 ? true : false
+                                            item.is_primary == 1 ? true : false
                                           }
                                         >
                                           Primary
                                         </option>
                                         <option
-                                          value={1}
+                                          value={0}
                                           selected={
-                                            item.is_primary == 1 ? true : false
+                                            item.is_primary == 0 ? true : false
                                           }
                                         >
                                           Secondary

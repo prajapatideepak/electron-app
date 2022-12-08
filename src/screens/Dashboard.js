@@ -239,7 +239,7 @@ export default function Dashboard() {
                         <td className="py-5 px-6 text-center ">
                           {item.student_id}
                         </td>
-                        <td className="py-5 px-6 text-center ">
+                        <td className="py-5 px-6 text-center capitalize">
                           {item.basic_info[0].full_name}
                         </td>
                         <td className="py-5 px-6 text-center ">
@@ -292,7 +292,7 @@ export default function Dashboard() {
                         <td className="py-5 px-6 text-center ">
                           {item.student_id}
                         </td>
-                        <td className="py-5 px-6 text-center ">
+                        <td className="py-5 px-6 text-center capitalize">
                           {item.basic_info[0].full_name}
                         </td>
                         <td className="py-5 px-6 text-center ">

@@ -45,10 +45,10 @@ export default function AdminList() {
   return (
     <div className="px-12 py-8">
       <div className="">
-        <h1 className="text-3xl  font-bold text-darkblue-500">Admin List</h1>
+        <h1 className="text-3xl  font-bold text-darkblue-500">Admins List</h1>
       </div>
       <div className="px-12 py-20">
-        <h2 className="font-semibold text-red-500 pb-2">Note: On clicking on "Set Default" button will reset current password and the new password will be "admin"</h2>
+        <h2 className="font-semibold text-red-500 pb-2">Note: Clicking on "Set Default" button will reset current password and the new password will be "admin"</h2>
         <div className="overflow-x-auto">
           <table className="w-full whitespace-nowrap">
             <thead>
@@ -65,7 +65,7 @@ export default function AdminList() {
                 </th>
 
                 <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
-                  Action
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -77,7 +77,7 @@ export default function AdminList() {
                     <tr className="h-20 text-sm leading-none bg-white text-gray-800 border-b border-gray-100">
                       <td className="pl-10">{m?.username}</td>
                       <td className="px-10 lg:px-6 xl:px-0">
-                        <span className="font-bold">
+                        <span className="font-bold capitalize">
                           {m?.staff_id?.basic_info_id?.full_name}{" "}
                         </span>
                       </td>

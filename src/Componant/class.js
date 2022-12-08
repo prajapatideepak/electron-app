@@ -396,7 +396,7 @@ const Class = () => {
                             <td className=" py-5 text-gray-500">
                               {item.student_id.student_id}
                             </td>
-                            <td className="px-6 py-5">
+                            <td className="px-6 py-5 capitalize">
                               {item.student_id.basic_info_id.full_name}
                             </td>
                             <td className="px-6 py-5">
@@ -445,7 +445,7 @@ const Class = () => {
                             <td className="px-6 py-5 text-gray-500">
                               {item.student_id.student_id}
                             </td>
-                            <td className="px-6 py-5">
+                            <td className="px-6 py-5 capitalize">
                               {item.student_id.basic_info_id.full_name}
                             </td>
                             <td className="px-6 py-5">

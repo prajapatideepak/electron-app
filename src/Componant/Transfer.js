@@ -279,7 +279,7 @@ const Transfer = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="w-20 h-20">{item.student_id.basic_info_id.full_name}</td>
+                                        <td className="w-20 h-20 capitalize">{item.student_id.basic_info_id.full_name}</td>
                                         <td className="w-20 h-20">{item.class_id.class_name}</td>
                                         <td className="w-20 h-20">{item.student_id.contact_info_id.whatsapp_no}</td>
                                         <td className="w-20 h-20">{item.fees_id.net_fees}</td>
@@ -337,7 +337,7 @@ const Transfer = () => {
                                                 </div>
                                             </div>
                                         </th>
-                                        <td className="w-20 h-20">{item.student_id.basic_info_id.full_name}</td>
+                                        <td className="w-20 h-20 capitalize">{item.student_id.basic_info_id.full_name}</td>
                                         <td className="w-20 h-20">{item.class_id.class_name}</td>
                                         <td className="w-20 h-20">{item.student_id.contact_info_id.whatsapp_no}</td>
                                         <td className="w-20 h-20">{item.fees_id.net_fees}</td>

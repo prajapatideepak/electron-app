@@ -130,7 +130,7 @@ export default function Fess() {
                                             {m.personal.student_id}
                                         </span>
                                       </td>
-                                      <td className=" px-10 lg:px-6 xl:px-0">
+                                      <td className=" px-10 lg:px-6 xl:px-0 capitalize">
                                         {m.personal.basic_info_id.full_name}
                                       </td>
                                       <td className="px-10 lg:px-6 xl:px-0">

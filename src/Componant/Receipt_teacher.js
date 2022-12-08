@@ -272,7 +272,7 @@ function Receipt_teacher() {
                     </div>
                     <div className="flex justify-between items-center mt-5">
                       <div className="">
-                        <p className={`${receiptTextColor} font-bold italic`}>Name: <span className="text-black">{facultyhistory?.staff_id?.basic_info_id.full_name}</span></p>
+                        <p className={`${receiptTextColor} font-bold italic capitalize`}>Name: <span className="text-black">{facultyhistory?.staff_id?.basic_info_id.full_name}</span></p>
                       </div>
                       <div>
                         <p className={`${receiptTextColor} font-bold italic`}>Date: <span className="text-black">{date}</span></p>

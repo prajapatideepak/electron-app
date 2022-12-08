@@ -130,7 +130,7 @@ export default function ReciptScreen() {
                                               <td className=" px-10 font-bold lg:px-6 xl:px-0">
                                                 {receipt.fees_receipt_id}
                                               </td>
-                                              <td className="px-10 lg:px-6 xl:px-0">
+                                              <td className="px-10 lg:px-6 xl:px-0 capitalize">
                                                 {data.basic_info[0].full_name}
                                               </td>
                                               <td className="font-medium px-10 lg:px-6 xl:px-0">
@@ -233,7 +233,7 @@ export default function ReciptScreen() {
                                             <td className=" px-10 font-bold lg:px-6 xl:px-0">
                                               {receipt.salary_receipt_id}
                                             </td>
-                                            <td className="px-10 lg:px-6 xl:px-0">
+                                            <td className="px-10 lg:px-6 xl:px-0 capitalize">
                                               {data.basic_info[0].full_name}
                                             </td>
                                             <td className="px-10 lg:px-6 xl:px-4 ">

@@ -51,6 +51,7 @@
     "start": "react-scripts start",
     "build": "electron-packager .",
     "test": "react-scripts test",
+    "build-react": "set BUILD_PATH=../server/client&& react-scripts build",
     "eject": "react-scripts eject",
     "electron-build": "electron-builder -mwl",
     "package-win": "electron-packager . Nasir-Sir-And-Classes --overwrite --asar=true --platform=win32 --arch=ia32 --icon=public/favicon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Nasir-Sir-And-Classes\"",

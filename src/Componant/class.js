@@ -173,7 +173,7 @@ const Class = () => {
             <NavLink
               className="nav-link mr-10"
               to={totalStudents > 0 ? "Transfer" : ""}
-              state={{ classStudents }}
+              state={{ allClassStudents }}
             >
               <div className="wrapper">
                 <div

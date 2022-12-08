@@ -75,7 +75,7 @@ const Transfer = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const [studentsData,setStudentsData] = React.useState(location.state.classStudents);
+    const [studentsData,setStudentsData] = React.useState([]);
     
     let Eligible = [], NotEligible = []
     const [studentsEligibleData,setStudentsEligibleData] = React.useState([]);
@@ -86,15 +86,6 @@ const Transfer = () => {
     const [selectedClass, setSelectedClass] = useState('');
     const [classNotSelectedError, setClassNotSelectedError] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
-
-    studentsData?.map((item)=>{
-        if(item.fees_id.pending_amount == 0){
-            Eligible.push(item)
-        }else{
-            NotEligible.push(item)
-        }
-    })
-    
 
     const handleTransfer = (e)=>{
         if(selectedClass == ''){
@@ -146,6 +137,17 @@ const Transfer = () => {
     }
 
     useEffect(() => {
+        setStudentsData(() => location.state.classStudents.filter((student)=>{
+            return student.is_transferred != 1
+        }))
+        studentsData?.map((item)=>{
+            if(item.fees_id.pending_amount == 0){
+                Eligible.push(item)
+            }else{
+                NotEligible.push(item)
+            }
+        })
+
         setStudentsEligibleData(Eligible)
         setStudentsNotEligibleData(NotEligible)
         

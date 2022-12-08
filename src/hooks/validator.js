@@ -72,6 +72,26 @@ export default class Validator{
             throw new Error('Please enter message for Length for field ' + fieldName);
         }
 
+        //If minLength is there but Message is not there then throw an error
+        if(
+            this.regFields[fieldName].minLength
+            && 
+            (this.regFields[fieldName].minLength[1] == undefined || this.regFields[fieldName].minLength[1] == '')
+        )
+        {
+            throw new Error('Please enter message for mininum length for field ' + fieldName);
+        }
+
+        //If maxLength is there but Message is not there then throw an error
+        if(
+            this.regFields[fieldName].maxLength
+            && 
+            (this.regFields[fieldName].maxLength[1] == undefined || this.regFields[fieldName].maxLength[1] == '')
+        )
+        {
+            throw new Error('Please enter message for mininum length for field ' + fieldName);
+        }
+
         //If length value is 0 then throw an error
         if(
             this.regFields[fieldName].length
@@ -80,6 +100,42 @@ export default class Validator{
         )
         {
             throw new Error('Length should be greater than zero: '+ fieldName);
+        }
+
+        //If minlength value is 0 then throw an error
+        if(
+            this.regFields[fieldName].minLength
+            && 
+            this.regFields[fieldName].minLength[0] <= 0
+        )
+        {
+            throw new Error('Minimum length should be greater than zero: '+ fieldName);
+        }
+
+        //If maxlength value is 0 then throw an error
+        if(
+            this.regFields[fieldName].maxLength
+            && 
+            this.regFields[fieldName].maxLength[0] <= 0
+        )
+        {
+            throw new Error('Maximum length should be greater than zero: '+ fieldName);
+        }
+
+        //If minlength is greater than maxLength then throw an error
+        if(
+            (this.regFields[fieldName].minLength
+            && 
+            this.regFields[fieldName].minLength[0] > 0)
+            &&
+            (this.regFields[fieldName].maxLength
+            && 
+            this.regFields[fieldName].maxLength[0] > 0)
+            &&
+            (this.regFields[fieldName].minLength[0] > this.regFields[fieldName].maxLength[0])
+        )
+        {
+            throw new Error('Minimum length should be less than Maximum length');
         }
 
         
@@ -108,6 +164,20 @@ export default class Validator{
             : 
                 null
 
+        const minLength = this.regFields[fieldName].minLength && this.regFields[fieldName].minLength[0];
+        const minLengthMsg = this.regFields[fieldName].minLength && this.regFields[fieldName].minLength[1] 
+            ? 
+                this.regFields[fieldName].minLength[1] 
+            : 
+                null
+
+        const maxLength = this.regFields[fieldName].maxLength && this.regFields[fieldName].maxLength[0];
+        const maxLengthMsg = this.regFields[fieldName].maxLength && this.regFields[fieldName].maxLength[1] 
+            ? 
+                this.regFields[fieldName].maxLength[1] 
+            : 
+                null
+
         //If field is not required but the value is empty then remove the errors
         if(!isRequired && value == ''){
             this.errors[fieldName] = '';
@@ -128,6 +198,14 @@ export default class Validator{
         }
         else if(this.regFields[fieldName].length && (value.length > length || value.length < length) ){
             this.errors[fieldName] = lengthMsg;
+            return;
+        }
+        else if(this.regFields[fieldName].minLength &&  value.length < minLength ){
+            this.errors[fieldName] = minLengthMsg;
+            return;
+        }
+        else if(this.regFields[fieldName].maxLength &&  value.length > maxLength ){
+            this.errors[fieldName] = maxLengthMsg;
             return;
         }
         else{

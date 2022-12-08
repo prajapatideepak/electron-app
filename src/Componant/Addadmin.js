@@ -61,7 +61,7 @@ export const Addadmin = () => {
                             type="text"
                             placeholder="Enter Your username"
                             className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
-                              errors.qualification && "border-red-600"
+                              errors.username && "border-red-600"
                             }`}
                             {...register("username", {
                               required: "username is required",
@@ -90,13 +90,13 @@ export const Addadmin = () => {
                             type="password"
                             placeholder="Enter Your Password"
                             className={` xl:w-52 2xl:w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
-                              errors.address && "border-red-600"
+                              errors.password && "border-red-600"
                             }`}
                             {...register("password", {
                               required: "Password is required",
-                              pattern: {
-                                value: /^[A-Za-z ]+$/,
-                                message: "Please enter only characters",
+                              minLength: {
+                                value: 4,
+                                message: "Please enter atleast 4 characters",
                               },
                             })}
                             onKeyUp={() => {
@@ -123,7 +123,18 @@ export const Addadmin = () => {
                             }`}
                             {...register("security_pin", {
                               required: "Security Pin is required",
+                              pattern: {
+                                value: /^[0-9]+$/,
+                                message: "Please enter only numbers",
+                              },
+                               minLength: {
+                                value: 4,
+                                message: "Please enter atleast 4 digits",
+                              },
                             })}
+                            onKeyUp={() => {
+                              trigger("security_pin");
+                            }}
                           />
 
                           {errors.security_pin && (
@@ -213,7 +224,11 @@ export const Addadmin = () => {
                               },
                               minLength: {
                                 value: 10,
-                                message: "Please enter valida whatsapp no",
+                                message: "Please enter valid whatsapp no",
+                              },
+                              maxLength: {
+                                value: 10,
+                                message: "Please enter valid whatsapp no",
                               },
                             })}
                             onKeyUp={() => {
@@ -248,6 +263,10 @@ export const Addadmin = () => {
                               minLength: {
                                 value: 10,
                                 message: "Please enter valida mobile no",
+                              },
+                              maxLength: {
+                                value: 10,
+                                message: "Please enter valid mobile no",
                               },
                             })}
                             onKeyUp={() => {

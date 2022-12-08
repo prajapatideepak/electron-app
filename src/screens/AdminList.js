@@ -6,8 +6,10 @@ import {
   useGetAllAdmin,
   useSetDefault,
 } from "../hooks/usePost";
+import { NasirContext } from "../NasirContext";
 
 export default function AdminList() {
+  const { admin } = React.useContext(NasirContext);
   const [click, setclick] = React.useState(false);
   const admins = useQuery(["admins", click], useGetAllAdmin);
   const changeAdmin = useChangeByAdmin();
@@ -46,6 +48,7 @@ export default function AdminList() {
         <h1 className="text-3xl  font-bold text-darkblue-500">Admin List</h1>
       </div>
       <div className="px-12 py-20">
+        <h2 className="font-semibold text-red-500 pb-2">Note: On clicking on "Set Default" button will reset current password and the new password will be "admin"</h2>
         <div className="overflow-x-auto">
           <table className="w-full whitespace-nowrap">
             <thead>
@@ -55,7 +58,7 @@ export default function AdminList() {
                   Admin Name
                 </th>
                 <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
-                  is Super admin
+                  Super Admin
                 </th>
                 <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
                   Security PIN
@@ -69,6 +72,7 @@ export default function AdminList() {
             <tbody className="w-full">
               {!admins.isLoading ? (
                 admins?.data.map((m) => {
+                  if(admin._id != m._id)
                   return (
                     <tr className="h-20 text-sm leading-none bg-white text-gray-800 border-b border-gray-100">
                       <td className="pl-10">{m?.username}</td>
@@ -96,8 +100,8 @@ export default function AdminList() {
                             }`}
                           >
                             {m.is_super_admin
-                              ? "Remove SuperAdmin"
-                              : "Make    SuperAdmin"}
+                              ? "Remove Super Admin"
+                              : "Make Super Admin"}
                           </button>
 
                           <button

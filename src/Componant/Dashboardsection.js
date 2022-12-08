@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { GiSchoolBag } from "react-icons/gi";
 import { TbSchool } from "react-icons/tb";
 import { BiChevronRight } from "react-icons/bi";
@@ -8,10 +8,12 @@ import { getToken, setToken } from "../AuthProvider";
 import { NasirContext } from "../NasirContext";
 
 const Dashboardsection = () => {
+  const navigate = useNavigate();
   const { changeSection, section } = React.useContext(NasirContext);
   function handleSectionChange(s) {
     setToken("section", s);
     changeSection();
+    navigate('/')
   }
   return (
     <>

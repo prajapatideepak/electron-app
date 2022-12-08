@@ -100,6 +100,10 @@ const Changepassword = () => {
                         }`}
                         {...register("newpassword", {
                           required: "New password is required",
+                          minLength: {
+                                value: 4,
+                                message: "Please enter atleast 4 characters",
+                              },
                         })}
                         onKeyUp={() => {
                           trigger("newpassword");
@@ -129,6 +133,10 @@ const Changepassword = () => {
                         }`}
                         {...register("confirmpassword", {
                           required: "Confirm password is required",
+                          minLength: {
+                                value: 4,
+                                message: "Please enter atleast 4 characters",
+                              },
                         })}
                         onKeyUp={() => {
                           trigger("confirmpassword");

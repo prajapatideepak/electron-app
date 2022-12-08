@@ -38,6 +38,8 @@ valid.register({
   },
   security_pin: {
     required: [true, "Field is required"],
+    pattern: [/^[0-9]*$/, "Please enter only numbers"],
+    minLength: [4, "Security pin should be of at least 4 digits"],
   },
   dob: {
     required: [true, "Field is required"],

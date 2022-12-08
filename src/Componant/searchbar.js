@@ -53,7 +53,7 @@ export default function Searchbar() {
               />
             </div>
             <div className="text-left">
-              <p className="text-base">
+              <p className="text-base capitalize">
                 {myData?.staff_id?.basic_info_id?.full_name
                   ? myData?.staff_id?.basic_info_id?.full_name
                   : "...."}

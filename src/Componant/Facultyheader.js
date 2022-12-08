@@ -152,7 +152,7 @@ const Facultyheader = () => {
                         <td className=" px-10 text-center font-bold lg:px-6 xl:px-0">
                           {report?.salary_receipt_id}
                         </td>
-                        <td className="px-10 text-center lg:px-6 xl:px-0">
+                        <td className="px-10 text-center lg:px-6 xl:px-0 capitalize">
                           {report?.staff[0]?.basic_info[0]?.full_name}
                         </td>
                         <td className="font-medium px-10 lg:px-6 xl:px-0">

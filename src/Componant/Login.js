@@ -49,7 +49,7 @@ const Login = () => {
             <div className="mt-3 sm:px-5 flex flex-col">
               <input
                 type="text"
-                {...register("username", { required: "Field is required" })}
+                {...register("username", { required: "Username is required" })}
                 className={`border-2 outline-none bg-white focus:bg-white rounded-md h-10 w-64  px-2 ${
                   errors.username && "border-red-600"
                 }`}
@@ -64,7 +64,7 @@ const Login = () => {
             <div className="mt-3 flex flex-col">
               <input
                 type="password"
-                {...register("password", { required: "Field is required" })}
+                {...register("password", { required: "Password is required" })}
                 className={`border-2 bg-white outline-none rounded-md h-10 w-64 px-2 ${
                   errors.password && "border-red-600"
                 }`}

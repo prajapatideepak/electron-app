@@ -71,13 +71,13 @@ export default function ReciptScreen() {
           <Loader/>
         :
           <div className="p-4 mt-8 ">
-            {studentReceipts.length > 0 || staffReceipts.length > 0 ? (
+            {studentReceipts?.length > 0 || staffReceipts?.length > 0 ? (
               <div className="p-4 bg-whrounded  ">
                 <h1 className="font-bold text-2xl text-darkblue-500"> </h1>
                 {/* Recipet table  */}
                 <div className="">
                   {
-                    studentReceipts.length > 0 
+                    studentReceipts?.length > 0 
                     ? 
                       <div className="student-table bg-white rounded-lg shadow mb-14">
                         <div className="border rounded-lg border-gray-100">

@@ -42,13 +42,13 @@ const Class = () => {
   const [selectedPage, setSelectedPage] = useState(0);
   const itemsPerPage = 2;
   const Toaster = () => {
-    toast.success("All Student Export To Excel");
+    toast.success("All Students Exported. Check your download folder");
   };
   const errtoast = () => {
     toast.error("Something Wrong");
   };
   const ToasterPending = () => {
-    toast.success("Fees Pending Student Exported To Excel");
+    toast.success("Fees Pending Student Exported. Check your download folder");
   };
 
   let calculateTotalPendingFees = 0;

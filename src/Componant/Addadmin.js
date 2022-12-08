@@ -10,8 +10,6 @@ export const Addadmin = () => {
   const [img, setImg] = useState("/images/user.png");
   const createPost = useCreateAdmin();
 
-
-
   React.useEffect(() => {
     if (createPost.isSuccess) {
       toast.success("Registration SuccuesFull");
@@ -30,7 +28,6 @@ export const Addadmin = () => {
   } = useForm();
 
   const OnSubmit = (data) => {
-    console.log(data);
     createPost.mutate(data);
   };
 
@@ -90,7 +87,7 @@ export const Addadmin = () => {
                             Password
                           </span>
                           <input
-                            type="Password"
+                            type="password"
                             placeholder="Enter Your Password"
                             className={` xl:w-52 2xl:w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.address && "border-red-600"
@@ -244,7 +241,6 @@ export const Addadmin = () => {
                               errors.mobileno && "border-red-600"
                             }`}
                             {...register("mobileno", {
-                              required: "Mobile no is required",
                               pattern: {
                                 value: /^[0-9]*$/,
                                 message: "Please enter only numbers",

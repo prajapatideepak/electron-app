@@ -131,7 +131,6 @@ const Profilestudent = () => {
 
     const setStudentDetails = () => {
         student_details = student_details.data.data.students_detail[0];
-        console.log(student_details.fees)
         setStudDetails(student_details);
         let dob = new Date(student_details.personal.basic_info_id.dob);
         dob = `${dob.getFullYear()}-${dob.getMonth() + 1 < 10 ? "0" + (dob.getMonth() + 1) : dob.getMonth() + 1}-${dob.getDate() < 10 ? "0" + dob.getDate() : dob.getDate()}`

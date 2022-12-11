@@ -161,7 +161,7 @@ const Faculty = () => {
                           <div className="email">
                             <label className="block">
                               <span className="block text-sm font-medium text-slate-700">
-                                Email
+                                Email *
                               </span>
                               <input
                                 type="text"

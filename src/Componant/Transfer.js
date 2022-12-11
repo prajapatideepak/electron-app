@@ -135,12 +135,13 @@ const Transfer = () => {
         })
         
     }
-
+    
     useEffect(() => {
-        setStudentsData(() => location.state.classStudents.filter((student)=>{
+        const filteredStudents =  location.state.allClassStudents.filter((student)=>{
             return student.is_transferred != 1
-        }))
-        studentsData?.map((item)=>{
+        })
+        setStudentsData(filteredStudents)
+        filteredStudents?.map((item)=>{
             if(item.fees_id.pending_amount == 0){
                 Eligible.push(item)
             }else{
@@ -366,12 +367,12 @@ const Transfer = () => {
 
                             <div className="button flex justify-end ">
 
-                                <div id='transfer-btn' className='flex items-center bg-green-500 hover:bg-green-700 w-28 h-10 justify-center rounded-lg cursor-pointer space-x-2' onClick={(e) => setClassSelectionModel(true)} >
+                                <button id='transfer-btn' disabled={studentsEligibleData.length == 0 ? true : false} className={`flex items-center ${studentsEligibleData.length == 0 ? 'bg-green-300' : 'bg-green-500 hover:bg-green-700 cursor-pointer'} w-28 h-10 justify-center rounded-lg space-x-2`} onClick={(e) => setClassSelectionModel(true)} >
                                     <div className=''>
                                         <FiSend className=' ml-1  text-white text-2xl  ' />
                                     </div>
                                     <p className='text-white text-lg'>Transfer</p>
-                                </div>
+                                </button>
                             </div>
 
                         </div>

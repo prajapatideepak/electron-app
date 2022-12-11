@@ -5,7 +5,7 @@ import { Tooltip } from "@material-tailwind/react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { FaUserEdit } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
-import { getStudentDetails, studentAllAcademicDetails, updateStudent, getActiveClasses, transferStudent } from '../hooks/usePost';
+import { getStudentDetails, studentAllAcademicDetails, updateStudent, getActiveClasses, deleteAndtransferStudent } from '../hooks/usePost';
 import Toaster from '../hooks/showToaster';
 import SweetAlert from '../hooks/sweetAlert';
 import Loader from './Loader';
@@ -59,7 +59,7 @@ valid.register({
         pattern: [/^[0-9]*$/, "Please enter only numbers"]
     },
     email: {
-        required: [false],
+        required: [true, 'Email is required'],
         pattern: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "Please enter valid email"]
     },
     reference: {
@@ -331,18 +331,18 @@ const Profilestudent = () => {
             return setClassNotSelectedError(true)
         }
 
-        SweetAlert('Are you sure to transfer?', 'Student will be transfered to selected  class')
+        SweetAlert('Are you sure to transfer?', 'Student will be deleted from current class and transferred to selected  class')
             .then(async (res) => {
                 if (res.isConfirmed) {
                     try {
                         const data = {
-                            student_ids: [student_id],
+                            student_id,
                             class_id: selectedClass,
                         }
                         setIsProcessing(true)
 
                         //api call
-                        const res = await transferStudent(data)
+                        const res = await deleteAndtransferStudent(data)
 
                         setIsProcessing(false)
 
@@ -982,7 +982,7 @@ const Profilestudent = () => {
                         <div className="overflow-x-auto relative  sm:rounded-lg  p-10  space-y-5 w-full">
 
                             <div className="ml-5 flex items-center text-gray-700">
-                                <h3 className="text-2xl font-medium">Fees Details</h3>
+                                <h3 className="text-2xl font-medium">Academic Details</h3>
                             </div>
                             <div className='p-5 pt-2 pb-0'>
                                 <table className="w-full text-sm text-center bg-class3-50 rounded-xl overflow-hidden ">

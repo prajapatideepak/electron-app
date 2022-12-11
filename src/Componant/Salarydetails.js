@@ -35,6 +35,7 @@ export default function Salarydetails() {
     const [model, setModel] = React.useState(false);
     const [pin, setPin] = React.useState("");
     const [error, setError] = React.useState(false);
+    const [hourRateError, setHourRateError] = React.useState(false);
     const [salaryData, setSalaryData] = React.useState({
         hour: "",
         amount: "",
@@ -56,6 +57,10 @@ export default function Salarydetails() {
             setchaque(() => res.data.data.receipt_details.getdetails.transaction_id.is_by_cheque)
             setchaqueno(() => res.data.data.receipt_details.getdetails.transaction_id.cheque_no)
             setupino(() => res.data.data.receipt_details.getdetails.transaction_id.upi_no)
+            setSalaryData({
+                amount: res.data.data.receipt_details.hourlysalary?.rate_per_hour ? res.data.data.receipt_details.hourlysalary.rate_per_hour : "",
+                hour: res.data.data.receipt_details.hourlysalary?.rate_per_hour ? res.data.data.receipt_details.hourlysalary.total_hours : "",
+            })
             setPayment(
                 upi
                     ?
@@ -67,6 +72,9 @@ export default function Salarydetails() {
                         :
                         "1"
             )
+            if(res.data.data.receipt_details.getdetails.is_hourly == 1){
+                setToggle(true)
+            }
             setloading(false)
         }
         fetchfacultdata()
@@ -107,6 +115,8 @@ export default function Salarydetails() {
     // ----- Payment_type ------
     // ------------------------
     function handleCash(e) {
+        setchaqueerror(false)
+        setupierror(false)
         setPayment(e.target.value)
         setcash(true)
         setupi(false)
@@ -116,6 +126,7 @@ export default function Salarydetails() {
 
     }
     function handleUpi(e) {
+        setchaqueerror(false)
         setPayment(e.target.value);
         setcash(false)
         setupi(true)
@@ -124,6 +135,8 @@ export default function Salarydetails() {
         setupino("")
     }
     function handleCheque(e) {
+        setchaqueerror(false)
+        setupierror(false)
         setPayment(e.target.value);
         setcash(false)
         setupi(false)
@@ -137,17 +150,21 @@ export default function Salarydetails() {
     // ------------------------
     function handleFixed(e) {
         setishourly(e.target.value);
-        setsalaryamount("0");
+        setsalaryamount("");
         setamount(false)
         setToggle(false);
-
+        setamounterror(false)
+        setSalaryData({hour: '', amount: ''})
+        setHourRateError(false)
     }
 
     function handleLecture(e) {
-        setsalaryamount("0");
+        setsalaryamount("");
         setamount(true)
         setishourly(e.target.value);
         setToggle(true);
+        setHourRateError(false)
+        setamounterror(false)
     }
 
     // ------------------------------------
@@ -155,9 +172,13 @@ export default function Salarydetails() {
     // ------------------------------------
     function genreciept() {
         let error = 0
-        if (salary_amount == "") {
+        if (is_hourly == 0 && (amounterror || salary_amount == '')) {
             error++;
             setamounterror(true)
+        }
+        if(is_hourly == 1 && (salaryData.hour == '' || salaryData.amount == '')){
+            setHourRateError(true)
+            error++;
         }
         if (upi && upi_no == "") {
             return setupierror(true)
@@ -215,6 +236,10 @@ export default function Salarydetails() {
     // ----- Lecturedbase_calculation ------
     // ------------------------------------
     function calculateSalary() {
+        if(hourRateError){
+            return;
+        }
+        setamounterror(false)
         setsalaryamount(salaryData.hour * salaryData.amount);
         setToggle(false);
     }
@@ -365,20 +390,36 @@ export default function Salarydetails() {
                                                     type="text"
                                                     placeholder="Enter Total hour"
                                                     className=" placeholder-black p-1 outline-none border-2 m-1"
-                                                    defaultValue={salary?.total_hours ? salary.total_hours : ""}
-                                                    onChange={(e) =>
+                                                    value={salaryData.hour}
+                                                    onChange={(e) =>{
+                                                        const regex = new RegExp(/^[0-9]+$/)
+
+                                                        if(!regex.test(e.target.value) || !regex.test(salaryData.amount)){
+                                                        setHourRateError(true)
+                                                        }
+                                                        else{
+                                                        setHourRateError(false)
+                                                        }
                                                         setSalaryData({ ...salaryData, hour: e.target.value })
-                                                    }
+                                                    }}
                                                 />
 
                                                 <input
                                                     type="text"
                                                     placeholder="Enter Rate "
                                                     className=" placeholder-black outline-none p-1 border-2 m-1"
-                                                    defaultValue={salary?.rate_per_hour ? salary.rate_per_hour : ""}
-                                                    onChange={(e) =>
+                                                    value={salaryData.amount}
+                                                    onChange={(e) =>{
+                                                        const regex = new RegExp(/^[0-9]+$/)
+
+                                                        if(!regex.test(e.target.value) || !regex.test(salaryData.hour)){
+                                                        setHourRateError(true)
+                                                        }
+                                                        else{
+                                                        setHourRateError(false)
+                                                        }
                                                         setSalaryData({ ...salaryData, amount: e.target.value })
-                                                    }
+                                                    }}
                                                 />
 
 
@@ -391,12 +432,21 @@ export default function Salarydetails() {
                                                     </button>
                                                 }
                                             </div>
-                                        </div>
+                                            {
+                                                hourRateError 
+                                                ?
+                                                <h1 className=" text-red-700  mx-6 text-xs px-1 my-1 font-bold">
+                                                    Please enter only numbers
+                                                </h1>
+                                                :
+                                                null
+                                            }                                        
+                                            </div>
                                     ) : null}
                                 </div>
                                 <div className="flex px-6 justify-between items-center pt-4">
-                                    <div className="flex items-center border-2  shadow-2xl border-secondory-text w-fit  rounded-3xl">
-                                        <span className="py-2 bg-darkblue-500 text-white mr-4 font-bold border-2 border-secondory-text rounded-full p-2">
+                                    <div className="flex items-center border-2 border-secondory-text w-fit rounded-3xl">
+                                        <span className="py-2 bg-darkblue-500 text-white mr-2 font-bold border-2 border-secondory-text rounded-full p-2">
                                             <FaRupeeSign />
                                         </span>
                                         <input
@@ -404,16 +454,26 @@ export default function Salarydetails() {
                                             name="amount"
                                             id="amount"
                                             disabled={amount}
-                                            className="px-2  mr-4 text-xl font-bold outline-none w-20"
+                                            className="px-2  mr-4 text-xl font-bold outline-none w-28"
                                             value={salary_amount}
-                                            onChange={(e) => { setsalaryamount(e.target.value); setamounterror(false) }}
+                                            onChange={(e) => { 
+                                                const regex = new RegExp(/^[0-9]+$/)
+
+                                                if(!regex.test(e.target.value)){
+                                                setamounterror(true)                           
+                                                }
+                                                else{
+                                                setamounterror(false)
+                                                }
+                                                setsalaryamount(e.target.value)
+                                            }}
                                         />
 
                                     </div>
                                 </div>{amounterror && (
                                     <h1 className=" text-red-700  mx-6 text-xs px-1 my-1 font-bold">
                                         {" "}
-                                        Please Enter Amount
+                                        Please Enter Valid Amount
                                     </h1>
                                 )}
                             </div>
@@ -485,13 +545,23 @@ export default function Salarydetails() {
                                                     className=" placeholder-black p-1 active:outline-none"
                                                     name="cheque_no"
                                                     defaultValue={chaque_no ? chaque_no : ""}
-                                                    onChange={(e) => { setchaqueno(e.target.value); setchaqueerror(false) }}
+                                                    onChange={(e) => { 
+                                                        const regex = new RegExp(/^[0-9]+$/)
+
+                                                        if(!regex.test(e.target.value)){
+                                                        setchaqueerror(true)
+                                                        }
+                                                        else{
+                                                        setchaqueerror(false) 
+                                                        }
+                                                        setchaqueno(e.target.value);
+                                                    }}
                                                 />
 
                                             </div>{chaqueerror && (
                                                 <h1 className=" text-red-700  mx-6 text-xs px-1 my-1 font-bold">
                                                     {" "}
-                                                    Please Enter Chaque Number
+                                                    Please Enter Valid Cheque Number
                                                 </h1>
                                             )}
                                         </div>

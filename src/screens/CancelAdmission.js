@@ -12,15 +12,17 @@ import {getStudentDetails, tranferFees, cancelAdmission} from '../hooks/usePost'
 import { IoClose } from "react-icons/io5";
 import Toaster from '../hooks/showToaster';
 import SweetAlert from '../hooks/sweetAlert';
+import {NasirContext} from '../NasirContext'
 
 function CancelAdmission() {
     const location = useLocation();
     const navigate = useNavigate();
+    const {admin} = React.useContext(NasirContext);
     
     location.state == null ?? navigate('/')
 
     const {student_id} = useParams();
-    const admin_id = '632324e55f67f65bf8a5f53a'
+    const admin_id = admin._id
     
     const [studentDetails, setStudentDetails] = useState({
         full_name: location.state.studDetails.personal.basic_info_id.full_name,
@@ -487,7 +489,7 @@ function CancelAdmission() {
                                                                             setPayeeId(m.personal.student_id);
                                                                             setPayeePendingAmount(m.fees.pending_amount)
                                                                             setAmountModel(true)
-                                                                            setAmount(m.fees.pending_amount)
+                                                                            setAmount(amountToPay > m.fees.pending_amount ? m.fees.pending_amount : amountToPay)    
                                                                         }} 
                                                                         disabled={m.fees.pending_amount <= 0 ? true : false}>
                                                                         Pay
@@ -506,7 +508,7 @@ function CancelAdmission() {
                                             </div>
                                         ) 
                                         : (
-                                            <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2">
+                                            <div className="bg-red-200 font-bold items-center p-2 rounded mx-3 flex space-x-2 justify-center">
                                             <IoMdInformationCircle className="text-xl text-red-600" />
 
                                             <h1 className="text-red-800">No Student Found </h1>

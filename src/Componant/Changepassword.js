@@ -5,6 +5,8 @@ import { IoMdUnlock } from "react-icons/io";
 import { IoMdLock } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useChangePassword } from "../hooks/usePost";
+import {NasirContext} from '../NasirContext'
+import { handleLogout } from "../AuthProvider";
 
 const Changepassword = () => {
   const {
@@ -16,7 +18,7 @@ const Changepassword = () => {
   } = useForm();
 
   const changePassword = useChangePassword();
-
+  const {logout, changeSection} = React.useContext(NasirContext)
   const onSubmit = (data) => {
     if (data.newpassword !== data.confirmpassword) {
       document.getElementById("msg").style.display = "flex";
@@ -34,10 +36,12 @@ const Changepassword = () => {
 
   React.useEffect(() => {
     if (changePassword.isSuccess) {
-      toast.success("Password Successfully Change");
+      toast.success("Password Successfully Changed");
+      handleLogout();
+      logout(); 
+      changeSection();
     }
     if (changePassword.isError) {
-      console.log(changePassword?.error?.response?.data);
       toast.error(changePassword?.error?.response?.data);
     }
   }, [changePassword.isSuccess, changePassword.isError]);

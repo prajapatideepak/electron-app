@@ -31,6 +31,7 @@ const Studentregister = () => {
         reset,
         trigger,
         resetField,
+        clearErrors
     } = useForm();
 
     const onSubmit = async (data, e) => {
@@ -96,8 +97,11 @@ const Studentregister = () => {
     };
 
     const handleClassChange = (e) =>{
-        trigger('class')
         e.preventDefault();
+        clearErrors('class_name')
+        if(e.target.value == ''){
+            document.getElementById('discount').value = ''
+        }
         let selectedClass;
         classes.map((item)=>{
             if(e.target.value == ''){
@@ -112,8 +116,8 @@ const Studentregister = () => {
                 return item;
             }
         })
-        setTotalFees(()=> selectedClass.fees)
-        totalDis(selectedClass.fees)
+        setTotalFees(()=> selectedClass?.fees ? selectedClass?.fees : 0)
+        totalDis(selectedClass?.fees ? selectedClass?.fees : '')
     }
 
     useEffect(()=>{
@@ -324,7 +328,7 @@ const Studentregister = () => {
                                         </span>
                                         <select
                                             name="class"
-                                            id=""
+                                            id="class"
                                             className={` 2xl:w-[142px] w-[110px] hover:cursor-pointer mt-1 block  px-3 py-[6px] bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.class_name && 'border-red-600'}`}
                                             {...register("class_name", { required: "Class required" })}
                                             onChange={handleClassChange}
@@ -421,14 +425,14 @@ const Studentregister = () => {
                                 <div className="email">
                                     <label className="block">
                                         <span className="block text-sm font-medium text-slate-700">
-                                            Email
+                                            Email *
                                         </span>
                                         <input
                                             type="text"
                                             name="email"
                                             placeholder="Enter Your Email"
                                             className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.email && 'border-red-600'}`}
-                                            {...register("email", { pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "Please enter valid email" } })}
+                                            {...register("email", { required: "Email is required", pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: "Please enter valid email" } })}
                                             onKeyUp={() => {
                                                 trigger('email')
                                             }}

@@ -231,6 +231,10 @@ export async function transferStudent(data) {
   return await axios.post(`${SERVER}/students/transfer`, data);
 }
 
+export async function deleteAndtransferStudent(data) {
+  return await axios.post(`${SERVER}/students/delete-and-transfer/`, data);
+}
+
 //-----------------------------------------------------------------------
 //--------------------------------- STAFF -----------------------------
 //-----------------------------------------------------------------------

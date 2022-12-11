@@ -10,17 +10,17 @@ import { useGetSalaryReport } from "../hooks/usePost";
 import { useQuery } from "react-query";
 import { IoMdInformationCircle } from "react-icons/io";
 import ReactPaginate from "react-paginate";
-import './Pagination.css'
+import "./Pagination.css";
 import { GiWallet } from "react-icons/gi";
-
 
 const Facultyheader = () => {
   const salaryReport = useQuery("salary", useGetSalaryReport);
   const [data, setData] = React.useState([]);
-  const [itemOffset, setItemOffset] = React.useState(0)
-  const [Serialno, setserialno] = React.useState(1)
-  const [currentItems, setcurrentItems] = React.useState([])
-  const [pageCount, setPageCount] = React.useState(0)
+  const [date, setDate] = React.useState("");
+  const [itemOffset, setItemOffset] = React.useState(0);
+  const [Serialno, setserialno] = React.useState(1);
+  const [currentItems, setcurrentItems] = React.useState([]);
+  const [pageCount, setPageCount] = React.useState(0);
   const [isPrint, setIsPrint] = React.useState(false);
   const itemsPerPage = 6;
 
@@ -38,7 +38,7 @@ const Facultyheader = () => {
 
   function handleDate(e) {
     const [previous, post] = handleDataFilter(e.target.value);
-
+    setDate(e.target.value);
     const newData = salaryReport.data.data.filter(
       (recipet) =>
         new Date(recipet.date).getTime() > previous &&
@@ -66,11 +66,11 @@ const Facultyheader = () => {
     const endOffset = itemOffset + itemsPerPage;
     setcurrentItems(data.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(data.length / itemsPerPage));
-  }, [itemOffset, itemsPerPage, data])
-  console.log(currentItems , "current")
+  }, [itemOffset, itemsPerPage, data]);
+  console.log(currentItems, "current");
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % data.length;
-    setserialno(event.selected + 1)
+    setserialno(event.selected + 1);
     setItemOffset(newOffset);
   };
 
@@ -86,6 +86,7 @@ const Facultyheader = () => {
           <div className="print-btn flex items-center space-x-3">
             <input
               id=""
+              value={date}
               type="Date"
               onChange={(e) => handleDate(e)}
               className="outline-none bg-white border rounded-md p-2 cursor-pointer"
@@ -94,28 +95,27 @@ const Facultyheader = () => {
               id=""
               className=" flex items-center border outline-none bg-white py-2 px-4 xl:p-4 xl:py-2 shadow-lg hover:shadow rounded-md  space-x-1 "
               onClick={(e) => {
+                setDate("");
                 setData(salaryReport?.data?.data);
               }}
             >
               Clear Filter
             </button>
-            {currentItems.length > 0 ? 
-            <Tooltip
-              content="Print"
-              placement="bottom-end"
-              className="text-white bg-black rounded p-2">
-              <a
-                href="#"
-                className="text-3xl bg-blue-200 rounded-md text-darkblue-500  w-10 h-8 flex justify-center  "
-                onClick={handlePrint}
+            {currentItems.length > 0 ? (
+              <Tooltip
+                content="Print"
+                placement="bottom-end"
+                className="text-white bg-black rounded p-2"
               >
-                <MdLocalPrintshop />
-              </a>
-            </Tooltip>
-            :
-            null
-
-          }
+                <a
+                  href="#"
+                  className="text-3xl bg-blue-200 rounded-md text-darkblue-500  w-10 h-8 flex justify-center  "
+                  onClick={handlePrint}
+                >
+                  <MdLocalPrintshop />
+                </a>
+              </Tooltip>
+            ) : null}
           </div>
           <div ref={componentRef} className="p-5 pt-3 pb-0">
             <div className="overflow-x-auto">
@@ -148,7 +148,10 @@ const Facultyheader = () => {
                 <tbody className="w-full">
                   {currentItems.map((report, key) => {
                     return (
-                      <tr key={key} className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
+                      <tr
+                        key={key}
+                        className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100"
+                      >
                         <td className=" px-10 text-center font-bold lg:px-6 xl:px-0">
                           {report?.salary_receipt_id}
                         </td>
@@ -156,15 +159,11 @@ const Facultyheader = () => {
                           {report?.staff[0]?.basic_info[0]?.full_name}
                         </td>
                         <td className="font-medium px-10 lg:px-6 xl:px-0">
-                          <p className="text-center">
-                            {report?.staff[0].role}
-                          </p>
+                          <p className="text-center">{report?.staff[0].role}</p>
                         </td>
                         <td className="px-10 lg:px-6 xl:px-0">
                           <p className="text-center">
-                            {new Date(report.date)
-                              ?.toISOString()
-                              .slice(0, 10)}
+                            {new Date(report.date)?.toISOString().slice(0, 10)}
                           </p>
                         </td>
                         <td>
@@ -188,10 +187,8 @@ const Facultyheader = () => {
                         </td>
                       </tr>
                     );
-                  })
-                  }
+                  })}
                 </tbody>
-
               </table>
               {currentItems?.length < 1 ? (
                 <div className="bg-red-200 font-bold justify-center items-center p-2 rounded  flex space-x-2">
@@ -202,30 +199,26 @@ const Facultyheader = () => {
               ) : null}
             </div>
           </div>
-          {
-            currentItems.length > 0
-              ?
-              <div className="flex justify-end items-end">
-                <div className="py-2">
-                  <ReactPaginate
-                    breakLabel="..."
-                    nextLabel="next >"
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={3}
-                    pageCount={pageCount}
-                    previousLabel="< previous"
-                    renderOnZeroPageCount={null}
-                    containerClassName="pagination"
-                    pageLinkClassName='page-num'
-                    previousLinkClassName='page-num'
-                    nextLinkClassName='page-num'
-                    activeLinkClassName='active-page'
-                  />
-                </div>
+          {currentItems.length > 0 ? (
+            <div className="flex justify-end items-end">
+              <div className="py-2">
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel="next >"
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={3}
+                  pageCount={pageCount}
+                  previousLabel="< previous"
+                  renderOnZeroPageCount={null}
+                  containerClassName="pagination"
+                  pageLinkClassName="page-num"
+                  previousLinkClassName="page-num"
+                  nextLinkClassName="page-num"
+                  activeLinkClassName="active-page"
+                />
               </div>
-              :
-              null
-          }
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

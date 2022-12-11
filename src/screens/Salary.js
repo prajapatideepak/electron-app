@@ -23,7 +23,7 @@ export default function Salary() {
   const [isLoadingOnSubmit, setIsLoadingOnSubmit] = React.useState(false);
   const [fee, setFee] = React.useState('');
   const [amount, setamount] = React.useState(false);
-  const [payment, setPayment] = React.useState('');
+  const [payment, setPayment] = React.useState('1');
   const [paymenterror, setpaymenterror] = React.useState(false);
   const [cash, setcash] = React.useState(true);
   const [upi, setupi] = React.useState(false);
@@ -40,6 +40,7 @@ export default function Salary() {
   const [admin, setadmin] = React.useState();
   const [admin_username, setadmin_username] = React.useState();
   const [PIN, setpin] = React.useState();
+  const [hourRateError, setHourRateError] = React.useState(false);
   const [salaryData, setSalaryData] = React.useState({
     hour: "",
     amount: "",
@@ -59,7 +60,6 @@ export default function Salary() {
     }
     fetchfacultdata()
   }, [])
-  console.log(faculty , "faculty")
 
   React.useEffect(() => {
     async function fetchfacultdata() {
@@ -87,6 +87,8 @@ export default function Salary() {
   // ----- Payment_type ------
   // ------------------------
   function handleCash(e) {
+    setchaqueerror(false)
+    setupierror(false)
     setPayment(e.target.value)
     setcash(true)
     setupi(false)
@@ -95,20 +97,21 @@ export default function Salary() {
     setchaqueno("")
   }
   function handleUpi(e) {
+    setchaqueerror(false)
     setPayment(e.target.value);
     setcash(false)
     setupi(true)
     setchaque(false)
     setchaqueno("")
-
   }
   function handleCheque(e) {
+    setchaqueerror(false)
+    setupierror(false)
     setPayment(e.target.value);
     setcash(false)
     setupi(false)
     setchaque(true)
     setupino("")
-
   }
 
   // ------------------------
@@ -119,7 +122,9 @@ export default function Salary() {
     setamount(false)
     setishourly(e.target.value);
     setToggle(false);
-
+    setamounterror(false)
+    setSalaryData({hour: '', amount: ''})
+    setHourRateError(false)
   }
 
   function handleLecture(e) {
@@ -127,6 +132,8 @@ export default function Salary() {
     setToggle(true);
     setamount(true)
     setFee("");
+    setHourRateError(false)
+    setamounterror(false)
   }
 
   // ------------------------------------
@@ -134,9 +141,13 @@ export default function Salary() {
   // ------------------------------------
   function genreciept() {
     let error = 0
-    if (fee == "") {
+    if (is_hourly == 0 && (amounterror || fee == '')) {
       error++;
       setamounterror(true)
+    }
+    if(is_hourly == 1 && (salaryData.hour == '' || salaryData.amount == '')){
+      setHourRateError(true)
+      error++;
     }
     if (upi && upino == "") {
       return setupierror(true)
@@ -148,7 +159,6 @@ export default function Salary() {
       return;
     } else {
       setModel(true);
-
     }
   }
 
@@ -156,6 +166,10 @@ export default function Salary() {
   // ----- Lecturedbase_calculation ------
   // ------------------------------------
   function calculateSalary() {
+    if(hourRateError){
+      return;
+    }
+    setamounterror(false)
     setFee(salaryData.hour * salaryData.amount);
     setToggle(false);
   }
@@ -180,7 +194,7 @@ export default function Salary() {
       total_hours: salaryData.hour,
       rate_per_hour: salaryData.amount,
     });
-    console.log(gen_reciept)
+    
     const SPIN = PIN;
     if (pin == SPIN) {
       setIsLoadingOnSubmit(true)
@@ -264,7 +278,7 @@ export default function Salary() {
 
                     <div className="border-2 mx-8 mt-6  w-fit flex items-center border-secondory-text">
                       <input
-                        type="text"
+                        type="password"
                         className="p-1 px-3 outline-none "
                         placeholder="Enter Security PIN"
                       onChange={(e) => {setPin(e.target.value); setError(false)}}
@@ -341,9 +355,17 @@ export default function Salary() {
                           placeholder="Enter Total hours"
                           className=" placeholder-black p-1 outline-none border-2 m-1"
                           value={salaryData.hour}
-                          onChange={(e) =>
+                          onChange={(e) =>{
+                            const regex = new RegExp(/^[0-9]+$/)
+
+                            if(!regex.test(e.target.value) || !regex.test(salaryData.amount)){
+                              setHourRateError(true)
+                            }
+                            else{
+                              setHourRateError(false)
+                            }
                             setSalaryData({ ...salaryData, hour: e.target.value })
-                          }
+                          }}
                         />
 
                         <input
@@ -351,9 +373,17 @@ export default function Salary() {
                           placeholder="Enter Rate"
                           className=" placeholder-black outline-none p-1 border-2 m-1"
                           value={salaryData.amount}
-                          onChange={(e) =>
+                          onChange={(e) =>{
+                            const regex = new RegExp(/^[0-9]+$/)
+
+                            if(!regex.test(e.target.value) || !regex.test(salaryData.hour)){
+                              setHourRateError(true)
+                            }
+                            else{
+                              setHourRateError(false)
+                            }
                             setSalaryData({ ...salaryData, amount: e.target.value })
-                          }
+                          }}
                         />
 
                         {
@@ -365,12 +395,21 @@ export default function Salary() {
                           </button>
                         }
                       </div>
+                      {
+                        hourRateError 
+                        ?
+                          <h1 className=" text-red-700  mx-6 text-xs px-1 my-1 font-bold">
+                            Please enter only numbers
+                          </h1>
+                        :
+                          null
+                      }
                     </div>
                   ) : null}
                 </div>
                 <div className="flex px-6 justify-between items-center pt-4">
-                  <div className="flex items-center border-2  shadow-2xl border-secondory-text w-fit  rounded-3xl">
-                    <span className="py-2 bg-darkblue-500 text-white mr-4 font-bold border-2 border-secondory-text rounded-full p-2">
+                  <div className="flex items-center border-2 border-secondory-text w-fit rounded-3xl">
+                    <span className="py-2 bg-darkblue-500 text-white mr-2 font-bold border-2 border-secondory-text rounded-full p-2">
                       <FaRupeeSign />
                     </span>
                     <input
@@ -378,16 +417,25 @@ export default function Salary() {
                       name="amount"
                       id="amount"
                       disabled={amount}
-                      className="px-2  mr-4 text-xl font-bold outline-none w-20"
+                      className=" text-xl font-bold outline-none w-28"
                       value={fee}
-                      onChange={(e) => { setFee(e.target.value); setamounterror(false) }}
+                      onChange={(e) => {
+                        const regex = new RegExp(/^[0-9]+$/)
+
+                        if(!regex.test(e.target.value)){
+                          setamounterror(true)                           
+                        }
+                        else{
+                          setamounterror(false)
+                        }
+                         setFee(e.target.value); 
+                      }}
                     />
 
                   </div>
                 </div>{amounterror && (
                   <h1 className=" text-red-700  mx-6 text-xs px-1 my-1 font-bold">
-                    {" "}
-                    Please Enter Amount
+                    Please Enter Valid Amount
                   </h1>
                 )}
               </div>
@@ -439,7 +487,10 @@ export default function Salary() {
                           className=" placeholder-black p-1"
                           name="upi_no"
                           value={upino}
-                          onChange={(e) => { setupino(e.target.value); setupierror(false) }}
+                          onChange={(e) => { 
+                            setupino(e.target.value); 
+                            setupierror(false) 
+                          }}
                         />
                       </div>{upierror && (
                         <h1 className=" text-red-700  mx-6 text-xs px-1 my-1 font-bold">
@@ -459,13 +510,22 @@ export default function Salary() {
                           className=" placeholder-black p-1 active:outline-none"
                           name="cheque_no"
                           value={chaqueno}
-                          onChange={(e) => { setchaqueno(e.target.value); setchaqueerror(false) }}
+                          onChange={(e) => { 
+                            const regex = new RegExp(/^[0-9]+$/)
+
+                            if(!regex.test(e.target.value)){
+                              setchaqueerror(true)
+                            }
+                            else{
+                              setchaqueerror(false) 
+                            }
+                            setchaqueno(e.target.value); 
+                          }}
                         />
 
                       </div>{chaqueerror && (
                         <h1 className=" text-red-700  mx-6 text-xs px-1 my-1 font-bold">
-                          {" "}
-                          Please Enter Chaque Number
+                          Please Enter Valid Chaque Number
                         </h1>
                       )}
                     </div>

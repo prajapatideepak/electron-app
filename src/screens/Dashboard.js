@@ -31,6 +31,7 @@ export default function Dashboard() {
     async function fetchFeesPendingData() {
       const res = await Alloverstudent(section);
       const StudentsWithPendingFees = res.data?.filter((student) => {
+        console.log(student)
         return (
           student.academics[0].fees[0].pending_amount > 0 &&
           student.academics[0].class[0] != undefined
@@ -40,6 +41,7 @@ export default function Dashboard() {
       if (StudentsWithPendingFees.length > 0) {
         setIsStudentNotFound(false);
       }
+
       setstudent(StudentsWithPendingFees);
       setAllStudent(StudentsWithPendingFees);
       setloading(false);
@@ -48,13 +50,12 @@ export default function Dashboard() {
   }, []);
 
   let calculatepending = 0;
-  for (let i = 0; i < Student.length; i++) {
-    calculatepending += Student[i].academics[0].fees[0].pending_amount;
+  for (let i = 0; i < allStudent.length; i++) {
+    calculatepending += allStudent[i].academics[0].fees[0].pending_amount;
   }
 
   const handleSearchStudents = (e) => {
-    setstudent(() =>
-      allStudent?.filter((data) => {
+    const searchedStudents = allStudent?.filter((data) => {
         let searched_value = e.target.value;
         const full_name = data.basic_info[0].full_name?.toLowerCase();
         let isNameFound = false;
@@ -73,7 +74,8 @@ export default function Dashboard() {
           data.contact_info[0].whatsapp_no == searched_value
         );
       })
-    );
+    setstudent(searchedStudents);
+    setIsStudentNotFound(searchedStudents.length > 0 ? false : true);
   };
 
   // // -------------------------------
@@ -114,7 +116,7 @@ export default function Dashboard() {
               </div>
               <div className="">
                 <p className="text-white text-5xl mb-3 text-center ">
-                  {Student.length > 0 ? Student.length : 0}
+                  {allStudent.length > 0 ? allStudent.length : 0}
                 </p>
                 <h1 className="text-white  text-lg">
                   Total <span>Students</span>

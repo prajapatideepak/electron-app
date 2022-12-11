@@ -24,38 +24,38 @@ valid.register({
     required: [false],
   },
   full_name: {
-    required: [true, 'Field is required'],
+    required: [true, 'Full name is required'],
     pattern: [/^[A-Za-z ]+$/, "Please enter only characters"]
   },
   email: {
-    required: [true, 'Field is required'],
+    required: [true, 'Email is required'],
     pattern: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "Please enter valid email"]
   },
   whatsapp_no: {
-    required: [true, 'Field is required'],
+    required: [true, 'Whatsapp number is required'],
     pattern: [/^[0-9]*$/, "Please enter only numbers"],
     length: [10, "Number should be of 10 digits"]
   },
   alternate_no: {
-    required: [false, 'Field is required'],
+    required: [false],
     pattern: [/^[0-9]*$/, "Please enter only numbers"],
     length: [10, "Number should be of 10 digits"]
   },
   dob: {
-    required: [true, 'Field is required']
+    required: [true, 'Date of birth is required']
   },
   gender: {
     required: [false]
   },
   role: {
-    required: [true, 'Field is required'],
+    required: [true, 'Role is required'],
     pattern: [/^[A-Za-z ]+$/, "Please enter only characters"]
   },
   address: {
     required: [true, 'Address is required']
   },
   joining_date: {
-    required: [true, 'Field is required']
+    required: [true, 'Joining date is required']
   },
 })
 
@@ -379,7 +379,7 @@ const Profilefaculty = () => {
                   <div className="email">
                     <label className="block">
                       <span className="block text-sm font-medium text-slate-700">
-                        Email
+                        Email *
                       </span>
                       <input
                         type="text"

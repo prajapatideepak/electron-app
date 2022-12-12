@@ -147,7 +147,6 @@ const Updateprofile = () => {
 
   function handleedit(e) {
     e.preventDefault();
-    console.log(adminInputController.alternate_no)
     setadminInputController((prevData)=>{
       return {
         ...prevData,
@@ -158,7 +157,6 @@ const Updateprofile = () => {
     setToggle(true);
   }
 
-  console.log(admin);
   function handleCancel(e) {
     e.preventDefault();
     setState(valid.clearErrors())
@@ -210,7 +208,6 @@ const Updateprofile = () => {
   }, [updateAdmin.isSuccess]);
   const onSubmit = async (data) => {
     data.dob = newDate;
-    console.log(data  );
     updateAdmin.mutate(data);
     reset();
   };

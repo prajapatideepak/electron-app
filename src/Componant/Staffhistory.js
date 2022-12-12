@@ -29,7 +29,6 @@ const Staffhistory = () => {
   React.useEffect(() => {
     async function fetchfacultdata() {
       const res = await Facultyhistory(params.id);
-      console.log(res.data)
       setfacultyhistory(() => res.data)
       setloading(false)
     }

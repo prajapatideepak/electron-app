@@ -30,7 +30,6 @@ export default function Cards() {
         }
         fetchfacultdata()
     }, [])
-    // console.log(Pending[0].academics[0].fees[0].pending_amount,"pending")
     // ------------------------------
     // ------ Pending_Student -------
     // ------------------------------

@@ -71,10 +71,10 @@ export default function AdminList() {
             </thead>
             <tbody className="w-full">
               {!admins.isLoading ? (
-                admins?.data.map((m) => {
+                admins?.data.map((m, key) => {
                   if(admin._id != m._id)
                   return (
-                    <tr className="h-20 text-sm leading-none bg-white text-gray-800 border-b border-gray-100">
+                    <tr key={key} className="h-20 text-sm leading-none bg-white text-gray-800 border-b border-gray-100">
                       <td className="pl-10">{m?.username}</td>
                       <td className="px-10 lg:px-6 xl:px-0">
                         <span className="font-bold capitalize">
@@ -116,9 +116,13 @@ export default function AdminList() {
                   );
                 })
               ) : (
-                <div className=" leading-none text-xl text-gray-800 border-b w-full border-gray-100">
-                  Loading .........
-                </div>
+                <tr>
+                  <td colSpan={5}>
+                    <div className=" leading-none text-xl text-gray-800 border-b w-full border-gray-100">
+                      Loading....
+                    </div>
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>

@@ -22,6 +22,7 @@
     "electron-is-dev": "^2.0.0",
     "form-data": "^4.0.0",
     "framer-motion": "^7.3.5",
+    "imagekitio-react": "^2.0.0",
     "loadsh": "^0.0.4",
     "lodash": "^4.17.21",
     "react": "^18.2.0",

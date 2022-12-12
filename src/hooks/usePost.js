@@ -49,7 +49,6 @@ export function useUpdateAdmin() {
 
 export function useSetDefault() {
   return useMutation((values) => {
-    console.log(values);
     return axiosInstance
       .post(`${SERVER}/admin/default`, values)
       .then((res) => res.data);
@@ -73,7 +72,7 @@ export async function AddClass(addnew) {
     const response = await axios.post(`${SERVER}/classes/create`, addnew);
     return response;
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -85,7 +84,7 @@ export async function updateClass(classID, updatenew) {
     );
     return response;
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -97,7 +96,7 @@ export async function deleteClass(classID, deleteClass) {
     );
     return response;
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -138,7 +137,7 @@ export async function transferClasses(addnew) {
     );
     return response;
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -248,7 +247,7 @@ export async function Addfaculty(addnew) {
     return response;
   } catch (error) {
     toast.error("Error!!");
-    console.log(error);
+    
   }
 }
 
@@ -260,7 +259,6 @@ export const getAllFaculty = async () => {
     const { data } = await axios.get(`${SERVER}/Faculty`);
     return data;
   } catch (error) {
-    console.log(error)
   }
 
 }
@@ -278,7 +276,6 @@ export const Exportallfaculty = async () => {
     const { data } = await axios.get(`${SERVER}/Faculty/Exportallfaculty`);
     return data;
   } catch (error) {
-    console.log(error)
   }
 
 }
@@ -290,7 +287,7 @@ export async function Facultydetails(id) {
     const res = await axios.get(`${SERVER}/faculty/Facultydetails/` + id);
     return res;
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -318,7 +315,7 @@ export async function getFaculty(id) {
     const res = await axios.get(`${SERVER}/faculty/Profilefaculty/` + id);
     return res;
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -333,7 +330,7 @@ export async function salarypay(gen_reciept) {
     );
     return response;
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -357,7 +354,7 @@ export async function Facultyhistory(id) {
     const res = await axios.get(`${SERVER}/salary/Staffhistory/` + id);
     return res;
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -369,7 +366,7 @@ export async function Facultyreciept(id) {
     const res = await axios.get(`${SERVER}/salary/receipt/` + id);
     return res;
   } catch (error) {
-    console.log(error);
+    
   }
 }
 
@@ -400,7 +397,7 @@ export const Alloverstudent = async (section) => {
     });
     return data;
   } catch (error) {
-    console.log(error);
+    
     throw new Error("data is not fatched");
   }
 };
@@ -415,7 +412,6 @@ export function useGetSalaryReport() {
 }
 
 export function useGetMonthlyReport(sectionRequest) {
-  console.log(sectionRequest.queryKey[1]);
   return axiosInstance
     .get(`${SERVER}/report/month/${sectionRequest.queryKey[1]}`)
     .then((res) => res.data);

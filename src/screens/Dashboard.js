@@ -31,7 +31,6 @@ export default function Dashboard() {
     async function fetchFeesPendingData() {
       const res = await Alloverstudent(section);
       const StudentsWithPendingFees = res.data?.filter((student) => {
-        console.log(student)
         return (
           student.academics[0].fees[0].pending_amount > 0 &&
           student.academics[0].class[0] != undefined

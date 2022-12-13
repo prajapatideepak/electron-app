@@ -30,7 +30,6 @@ export default function Searchbar() {
     localStorage.removeItem("section");
     changeSection();
   }
-
   return (
     <div className="w-full z-[100] sticky top-0 bg-white h-[70px] flex flex-row items-center justify-between shadow-[0_10px_10px_-15px_rgba(0,0,0,0.3)]">
       <div className="left pl-5 w-1/4">
@@ -43,16 +42,16 @@ export default function Searchbar() {
             className="flex items-center space-x-2 cursor-pointer"
             id="profile"
           >
-            <div className="profile">
+            <div className="profile h-12 w-12 border-2 rounded-full flex justify-center items-center">
               <img
-                className="rounded-full w-10 mx-auto"
-                src="/images/user.png"
+                className="rounded-full  w-full mx-auto"
+                src={myData?.staff_id?.basic_info_id?.photo != '' ? myData?.staff_id?.basic_info_id?.photo : "images/user_default@123.png"}
                 width="7%"
                 height="7%"
                 alt="profile"
               />
             </div>
-            <div className="text-left">
+            <div className="text-left items-center">
               <p className="text-base capitalize">
                 {myData?.staff_id?.basic_info_id?.full_name
                   ? myData?.staff_id?.basic_info_id?.full_name

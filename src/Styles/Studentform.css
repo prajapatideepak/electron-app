@@ -6,8 +6,7 @@
     overflow: hidden;
 }
 .profile_img_div img{
-    height: 100%;width:100%
-    
+    width:100%
 }
 .profile_img_overlay{
     top:0;

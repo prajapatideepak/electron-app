@@ -6,7 +6,6 @@ export default function Whatsapp() {
   //   authStrategy: new LocalAuth(),
   // });
 
-  // console.log(client);
 
   return <div>Whatsapp</div>;
 }

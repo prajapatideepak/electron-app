@@ -24,7 +24,6 @@ const Facultyheader = () => {
   const [isPrint, setIsPrint] = React.useState(false);
   const itemsPerPage = 6;
 
-  console.log(salaryReport?.data?.data);
   const componentRef = useRef();
 
   function handleDataFilter(filterDate) {
@@ -57,7 +56,6 @@ const Facultyheader = () => {
       setData(() => salaryReport.data.data);
     }
   }, [salaryReport.isSuccess]);
-  console.log("data", data);
 
   // -------------------------------
   // -------- Pagination -----------
@@ -67,7 +65,7 @@ const Facultyheader = () => {
     setcurrentItems(data.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(data.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, data]);
-  console.log(currentItems, "current");
+
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % data.length;
     setserialno(event.selected + 1);

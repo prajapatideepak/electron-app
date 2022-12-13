@@ -26,7 +26,6 @@ export default function Fess() {
       setShowNotFound(1)
     }
     catch(err){
-      console.log(err)
         setLoading(false);
         if(err instanceof AxiosError){
           if(err.response){

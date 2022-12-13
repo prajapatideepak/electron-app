@@ -19,7 +19,7 @@ const Faculty = () => {
   const [isloading, setloading] = React.useState(true)
   const form = useRef()
   const [isLoadingOnSubmit, setIsLoadingOnSubmit] = useState(false);
-  const defaultImage = "http://localhost:4000/user_default@123.png"
+  const defaultImage = "images/user_default@123.png"
   const [data, setData] = useState();
   const Toaster = () => { toast.success('New Staff Registered successfully') }
   const errtoast = () => { toast.error("Something went wrong") }
@@ -74,9 +74,7 @@ const Faculty = () => {
     } else {
       return errtoast()
     }
-
   }
-
 
   // ---------------------------------------
   // ---------Input field blank ------------
@@ -119,7 +117,7 @@ const Faculty = () => {
                   <form ref={form} className="flex justify-center items-center " onSubmit={handleSubmit(onSubmit)}>
                     <div className=" w-full grid grid-cols-1 rounded-lg  bg-white pb-5 pt-10 ">
                       <div className=" flex flex-col items-center gap-4">
-                        <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
+                        <div className='profile_img_div flex justify-center items-center border-2 border-gray-500 shadow-lg'>
                           <img src={img} width="100%" height="100%" alt="student profile" />
                           <div className='profile_img_overlay flex flex-col justify-center items-center'>
                             <input type='file' id="file" className="rounded-md w-16" accept=".png, .jpg, .jpeg" onInput={onImageChange} {...register('photo')} />

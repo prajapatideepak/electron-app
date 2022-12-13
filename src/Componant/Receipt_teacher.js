@@ -102,7 +102,6 @@ function Receipt_teacher() {
       }
     }
     catch (error) {
-      console.log(error.message)
       if (error instanceof AxiosError) {
         setError(error.response.data.error);
       }

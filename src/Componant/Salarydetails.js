@@ -12,7 +12,6 @@ import { IoIosArrowBack } from "react-icons/io";
 
 export default function Salarydetails() {
     const { admin } = React.useContext(NasirContext);
-    console.log(admin , "admin")
     const Toaster = () => { toast.success('Salary_Reciept updated') }
     const errtoast = () => { toast.error("Invalid UserID / Password") }
     const params = useParams();

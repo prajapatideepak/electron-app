@@ -81,10 +81,9 @@ const Profilestudent = () => {
     const location = useLocation();
     const params = useParams();
     const form = useRef(null);
-    const server = "http://localhost:4000/";
-    const defaultImage = "http://localhost:4000/user_default@123.png";
+    const defaultImage = "images/user_default@123.png";
     const [state, setState] = React.useState(true);
-    const [img, setImg] = useState(defaultImage);
+    const [img, setImg] = useState('');
     const [isLoadingDetails, setIsLoadingDetails] = useState(true); //used in fetching details and on update details
     const [isProcessing, setIsProcessing] = useState(false); //used in fetching details and on update details
     const [studentInputController, setStudentInputController] = useState({
@@ -166,7 +165,7 @@ const Profilestudent = () => {
         }
 
         const photo = student_details.personal.basic_info_id.photo;
-        setImg(photo != '' ? server + photo : defaultImage)
+        setImg(photo != '' ? photo : '')
         setStudentInputController(stud_data)
 
         setOldStudentDetails(stud_data)
@@ -259,12 +258,17 @@ const Profilestudent = () => {
         delete data.total_fees;
 
         const formdata = new FormData(form.current);
-        const http = img.split(':')
-        let photo_name = '';
-        if (http[0] == 'http') {
-            photo_name = img.split("/")[3]
+        const old_photo_url = studDetails.personal.basic_info_id.photo
+
+        let photo_name = img;
+        if(img != old_photo_url){
+            const http = img.split(':')
+            if (http[0] == 'http') {
+                photo_name = img.split("/")[3]
+            }
         }
         formdata.append('photo_name', photo_name);
+        formdata.append('old_photo_url', old_photo_url);
         formdata.append('total_fees', studentInputController.total_fees)
 
         setIsProcessing(true);
@@ -384,7 +388,7 @@ const Profilestudent = () => {
             ?
                 ''
             :
-                server + studDetails.personal.basic_info_id.photo
+                studDetails.personal.basic_info_id.photo
             
 
         navigate(
@@ -501,19 +505,20 @@ const Profilestudent = () => {
                         <form ref={form} className="flex justify-center items-center" onSubmit={(e) => setState(valid.handleSubmit(e, onSubmit))} >
                             <div className="w-11/12 grid grid-cols-2 rounded-lg  truncate bg-white p-5">
                                 <div className="left flex flex-col items-center gap-5">
-                                    <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
-                                        <img src={img} name="photo_name" width="100%" height="100%" alt="student profile" />
+                                    <div className='profile_img_div flex justify-center items-center border-2 border-gray-500 shadow-lg'>
+                                        <img src={img != '' ? img : defaultImage} name="photo_name" width="100%" height="100%" alt="student profile" />
                                         {
                                             !isEnable
                                                 ?
                                                 <div className='profile_img_overlay flex flex-col justify-center items-center'>
                                                     <input type='file' id="file" name="photo" className="rounded-md w-16" onChange={onImageChange} accept=".png, .jpg, .jpeg" />
                                                     {
-                                                        img != defaultImage
+                                                        img != ''
                                                             ?
                                                             <button
-                                                                className='bg-red-600 px-1 rounded text-white hover:bg-red-400 mt-5 flex items-center justify-center gap-3' onClick={() => {
-                                                                    setImg(defaultImage);
+                                                                className='bg-red-600 px-1 rounded text-white hover:bg-red-400 mt-5 flex items-center justify-center gap-3' onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    setImg('');
                                                                     document.getElementById('file').value = ''
                                                                 }}>
                                                                 <span> Remove</span>

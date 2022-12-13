@@ -4,11 +4,10 @@ import "../Styles/Studentform.css";
 import {registerStudent, getActiveClasses} from '../hooks/usePost';
 import { useNavigate } from "react-router-dom";
 import Toaster from '../hooks/showToaster'
-import StudentAdmissionForm from "../Componant/StudentAdmissionForm"
 
 const Studentregister = () => {
     const form = useRef(null);
-    const defaultImage = "http://localhost:4000/user_default@123.png"
+    const defaultImage = "images/user_default@123.png"
     
     const [img, setImg] = useState(defaultImage);
     const [medium, setMedium] = useState('--');
@@ -149,7 +148,7 @@ const Studentregister = () => {
                 <form id="student_reg_form" ref={form} encType="multipart/form-data" className="flex justify-center  items-center pt-3 " onSubmit={handleSubmit(onSubmit, onError)} method="post">
                     <div className=" w-11/12 grid grid-cols-2 rounded-lg  truncate bg-white p-5 2xl:p-10  shadow-2xl">
                         <div className="left flex flex-col items-center gap-5">
-                            <div className='profile_img_div border-2 border-gray-500 shadow-lg'>
+                            <div className='profile_img_div flex justify-center items-center border-2 border-gray-500 shadow-lg'>
                                 <img src={img} width="100%" height="100%" alt="student profile" />
                                 <div className='profile_img_overlay flex flex-col justify-center items-center'>
                                     <input type='file' id="file" className="rounded-md w-16"  accept=".png, .jpg, .jpeg" onInput={onImageChange} {...register('photo')} />
@@ -319,7 +318,7 @@ const Studentregister = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="right flex flex-col justify-center items-center gap-5">
+                       <div className="right flex flex-col justify-center items-center gap-5">
                             <div className="flex lg:flex-row md:flex-col gap-6 2xl:gap-9">
                                 <div className="selectstd">
                                     <label className="block">

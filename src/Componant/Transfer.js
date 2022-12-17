@@ -19,58 +19,6 @@ import { IoIosArrowBack } from 'react-icons/io';
 
 import {AxiosError} from 'axios';
 
-
-function Send() {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't Transfer Student ??",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Transfer it!'
-    })
-}
-function Remove() {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-            )
-        }
-    })
-}
-function Addall() {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't add all Student!!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Add it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire(
-                'Added All!',
-                'Your file has been Add.',
-                'success'
-            )
-        }
-    })
-}
-
-
 const Transfer = () => {
     const location = useLocation();
     const navigate = useNavigate();

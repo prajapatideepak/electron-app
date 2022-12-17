@@ -10,7 +10,7 @@ function App() {
   const { token, section } = React.useContext(NasirContext);
 
   return (
-    <div>
+    <div className="min-h-screen w-full">
       {!token ? (
         <div>
           <ErrorBoundary>

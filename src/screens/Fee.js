@@ -41,7 +41,7 @@ export default function Fess() {
     }
   }
   return (
-    <div className="bg-student-100 m-1 min-h-screen py-10 px-14">
+    <div className="bg-student-100 min-h-screen py-10 px-14">
       <div className="">
         <h1 className="text-3xl  font-bold text-darkblue-500">Fees Pay</h1>
 

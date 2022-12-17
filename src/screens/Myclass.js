@@ -260,7 +260,7 @@ const Myclass = () => {
   }
 
   return (
-    <div className="relative p-5">
+    <div className="relative m-5">
       {/* Add New Class Model */}
       {model && (
         <div className="absolute w-full h-full  z-30 ">
@@ -332,6 +332,7 @@ const Myclass = () => {
                                       <input
                                         type="text"
                                         placeholder="Starting year"
+                                        defaultValue={new Date().getFullYear()}
                                         className={`w-36 2xl:w-44  block  px-3 py-2 bg-white rounded-md text-sm shadow-sm placeholder-slate-400 border border-slate-300 outline-none
                                        ${
                                          errors.batch_start_year &&
@@ -1187,7 +1188,7 @@ const Myclass = () => {
               ) : (
                 <div className="bg-red-200 font-bold flex justify-center items-center p-2 rounded mx-3 space-x-2">
                   <IoMdInformationCircle className="text-xl text-red-600" />
-                  <h1 className="text-red-800">Classes not found </h1>
+                  <h1 className="text-red-800">No Classes Found</h1>
                 </div>
               )}
             </ul>

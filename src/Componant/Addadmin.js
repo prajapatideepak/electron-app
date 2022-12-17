@@ -36,8 +36,8 @@ export const Addadmin = () => {
   };
 
   return (
-      <div className="flex justify-center items-center bg-[#f5f7ff] absolute w-full h-full">
-        <div className=" h-2/3 mx-auto opacity-100 shadow-2xl rounded bg-white w-3/4 z-50 mt-[-30px] ">
+      <div className="flex justify-center items-center bg-[#f5f7ff] w-full " style={{minHeight: "calc(100vh - 70px)"}}>
+        <div className=" mx-auto opacity-100 shadow-lg rounded bg-white w-3/4 z-50 lg:mt-[-30px] ">
           <div className="">
             <div className="">
               <h1 className="text-2xl font-bold text-darkblue-500 text-center py-7 ">
@@ -45,13 +45,13 @@ export const Addadmin = () => {
               </h1>
 
               <form
-                className="flex justify-center items-center "
+                className="flex justify-center items-center"
                 onSubmit={handleSubmit(OnSubmit)}
                 encType="multipart/form-data"
               >
                 <div className=" w-full grid grid-cols-1 rounded-lg truncate bg-white pb-5  ">
                   <div className=" flex flex-col items-center gap-4">
-                    <div className="flex lg:flex-row  gap-4">
+                    <div className="flex lg:flex-row flex-col gap-4">
                       <div className="username">
                         <label className="block">
                           <span className="block text-sm font-medium text-slate-700">
@@ -60,7 +60,7 @@ export const Addadmin = () => {
                           <input
                             type="text"
                             placeholder="Enter Your username"
-                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
+                            className={`xl:w-52 2xl:w-60 lg:w-48 w-60 lg:w-48 w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.username && "border-red-600"
                             }`}
                             {...register("username", {
@@ -89,7 +89,7 @@ export const Addadmin = () => {
                           <input
                             type="password"
                             placeholder="Enter Your Password"
-                            className={` xl:w-52 2xl:w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
+                            className={` xl:w-52 2xl:w-60 lg:w-48 w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.password && "border-red-600"
                             }`}
                             {...register("password", {
@@ -118,7 +118,7 @@ export const Addadmin = () => {
                           <input
                             type="input"
                             placeholder="Enter Security Pin"
-                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
+                            className={`xl:w-52 2xl:w-60 lg:w-48 w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.security_pin && "border-red-600"
                             }`}
                             {...register("security_pin", {
@@ -145,7 +145,7 @@ export const Addadmin = () => {
                         </label>
                       </div>
                     </div>
-                    <div className="flex lg:flex-row   gap-4 ">
+                    <div className="flex lg:flex-row flex-col  gap-4 ">
                       <div className="fullname">
                         <label className="block">
                           <span className="block text-sm font-medium text-slate-700">
@@ -154,7 +154,7 @@ export const Addadmin = () => {
                           <input
                             type="text"
                             placeholder="First Name, Middle Name, Last Name"
-                            className={`xl:w-52 2xl:w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
+                            className={`xl:w-52 2xl:w-60 lg:w-48 w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.full_name && "border-red-600"
                             }`}
                             {...register("full_name", {
@@ -183,7 +183,7 @@ export const Addadmin = () => {
                           <input
                             type="text"
                             placeholder="Enter Your Email"
-                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
+                            className={`xl:w-52 2xl:w-60 lg:w-48 w-60 mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.email && "border-red-600"
                             }`}
                             {...register("email", {
@@ -213,7 +213,7 @@ export const Addadmin = () => {
                           <input
                             type="text"
                             placeholder="Enter Your WhatsApp No"
-                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
+                            className={`xl:w-52 2xl:w-60 lg:w-48 w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.whatsapp_no && "border-red-600"
                             }`}
                             {...register("whatsapp_no", {
@@ -243,7 +243,7 @@ export const Addadmin = () => {
                         </label>
                       </div>
                     </div>
-                    <div className="flex lg:flex-row  gap-4">
+                    <div className="flex lg:flex-row flex-col gap-4">
                       <div className="mobileno">
                         <label className="block">
                           <span className="block text-sm font-medium text-slate-700">
@@ -252,7 +252,7 @@ export const Addadmin = () => {
                           <input
                             type="text"
                             placeholder="Enter Your Mobile No"
-                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
+                            className={`xl:w-52 2xl:w-60 lg:w-48 w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.mobileno && "border-red-600"
                             }`}
                             {...register("mobileno", {
@@ -287,7 +287,7 @@ export const Addadmin = () => {
                           </span>
                           <input
                             type="date"
-                            className={`xl:w-52 2xl:w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
+                            className={`xl:w-52 2xl:w-60 lg:w-48 w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.dob && "border-red-600"
                             }`}
                             {...register("dob", {
@@ -308,7 +308,7 @@ export const Addadmin = () => {
                             Gender
                           </span>
                           <div
-                            className={`xl:w-52 2xl:w-60 border border-slate-300 mt-1  rounded-md h-10 flex justify-center items-center space-x-5 outline-none ${
+                            className={`xl:w-52 2xl:w-60 lg:w-48 w-60 border border-slate-300 mt-1  rounded-md h-10 flex justify-center items-center space-x-5 outline-none ${
                               errors.gender && "border-red-600"
                             }`}
                           >
@@ -351,7 +351,7 @@ export const Addadmin = () => {
                         )}
                       </div>
                     </div>
-                    <div className="flex lg:flex-row  gap-4">
+                    <div className="flex lg:flex-row flex-col gap-4">
                       <div className="qualification">
                         <label className="block">
                           <span className="block text-sm font-medium text-slate-700">
@@ -360,7 +360,7 @@ export const Addadmin = () => {
                           <input
                             type="text"
                             placeholder="Enter Your Qualification"
-                            className={`xl:w-52 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
+                            className={`xl:w-52 2xl:w-60 lg:w-48 w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.qualification && "border-red-600"
                             }`}
                             {...register("qualification", {
@@ -389,7 +389,7 @@ export const Addadmin = () => {
                           <input
                             type="text"
                             placeholder="Enter Your Address"
-                            className={`xl:w-52 2xl:w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
+                            className={`xl:w-52 2xl:w-60 lg:w-48 w-60 mt-1 block px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.address && "border-red-600"
                             }`}
                             {...register("address", {
@@ -417,7 +417,7 @@ export const Addadmin = () => {
                           </span>
                           <input
                             type="date"
-                            className={`xl:w-52 2xl:w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
+                            className={`xl:w-52 2xl:w-60 lg:w-48 w-60 hover:cursor-pointer mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.dateofjoining && "border-red-600"
                             }`}
                             {...register("dateofjoining", {
@@ -434,7 +434,7 @@ export const Addadmin = () => {
                       </div>
                     </div>
 
-                    <div className="flex lg:flex-row   gap-10">
+                    <div className="flex lg:flex-row flex-col  gap-10">
                       <div className="btn mt-5 flex justify-center w-60">
                         <button
                           type="button"

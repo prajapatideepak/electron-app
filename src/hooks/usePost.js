@@ -403,16 +403,21 @@ export const Alloverstudent = async (section) => {
 };
 
 // Report API
-export function useGetReport() {
-  return axiosInstance.get(`${SERVER}/report`).then((res) => res.data);
+export async function useGetReport() {
+  return await axiosInstance.get(`${SERVER}/report`).then((res) => res.data);
 }
 
-export function useGetSalaryReport() {
-  return axiosInstance.get(`${SERVER}/report/salary`).then((res) => res.data);
+export async function useGetSalaryReport() {
+  return await axiosInstance.get(`${SERVER}/report/salary`).then((res) => res.data);
 }
 
-export function useGetMonthlyReport(sectionRequest) {
-  return axiosInstance
+export async function useGetMonthlyReport(sectionRequest) {
+  return await axiosInstance
     .get(`${SERVER}/report/month/${sectionRequest.queryKey[1]}`)
     .then((res) => res.data);
+}
+
+//Send notification to pendig student API
+export async function sendPendingFeesNotification(data) {
+  return await axiosInstance.post(`${SERVER}/mail/pendingStudent`, data);
 }

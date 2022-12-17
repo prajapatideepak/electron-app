@@ -13,7 +13,6 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { AxiosError } from 'axios';
 import Validator from '../hooks/validator';
 import { useParams } from "react-router-dom";
-import StudentAdmissionForm from "../Componant/StudentAdmissionForm"
 
 const valid = new Validator();
 valid.register({

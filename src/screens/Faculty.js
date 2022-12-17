@@ -350,7 +350,7 @@ const Faculty = () => {
         )}
 
         <div className={`bg-slate-100 ${model && "opacity-5"}`}>
-          <div className="xl:mt-5 ">
+          <div className="">
             <div className="flex justify-between  items-center  p-5 pt-0 xl:pt-2 xl:pl-12 space-y-5">
               <h1 className=" text-xl xl:text-3xl text-center xl:text-left text-darkblue-500 font-bold">
                 Staff

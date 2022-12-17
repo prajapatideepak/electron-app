@@ -178,7 +178,9 @@ const Facultyheader = () => {
                         </td>
                         <td className="px-5  ">
                           <span className="flex justify-center">
-                            <NavLink to={"/reciept/recipet"}>
+                            <NavLink  
+                              to={`/Staffhistory/Receipt_teacher/${report?.salary_receipt_id}`} 
+                              state={{ isStaff: true, isSalaried: report?.is_hourly }}>
                               <AiFillEye className="text-xl cursor-pointer" />
                             </NavLink>
                           </span>

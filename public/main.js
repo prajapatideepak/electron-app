@@ -1,28 +1,43 @@
-const {app, BrowserWindow} = require('electron');
+const electron = require("electron");
+const app = electron.app;
+const {execFileSync} = require('child_process');
+const BrowserWindow = electron.BrowserWindow;
 
-function createWindow(){
-    //Create the browser window.
-    const win = new BrowserWindow({
-        width: 1000,
-        height: 1000,
-        webPreferences:{
-        }
-    })
 
-    win.loadURL('http://localhost:3000')
+const path = require("path");
+
+let mainWindow;
+
+function createWindow() {
+  mainWindow = new BrowserWindow({ 
+    width: 900, 
+    height: 680,
+    icon: path.join(__dirname, 'software_icon.png'),
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      preload: path.join(__dirname, '../src/server.js')
+    },
+  });
+  
+  mainWindow.loadURL(
+    `file://${path.join(__dirname, "/index.html")}`
+  );
+  mainWindow.on("closed", () => (mainWindow = null));
 }
 
-app.on('ready', createWindow);
+app.on("ready", createWindow);
 
-//Quit when all window are close.
-app.on('window-all-close', function(){
-    //On OS X it si common for applications and their menu bar to stay active until the user quires explicitly with Cmd + Q
-    if(process.platform !== 'darwin'){
-        app.quit()
-    }
-})
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
 
-app.on('activate', function(){
-    //On OS X it is common to re-create a window in the app when the dock icon is clicked and there are no other windows open.
-    if(BrowserWindow.getAllWindows().length === 0) createWindow();
-})
+app.on("activate", () => {
+  if (mainWindow === null) {
+    createWindow();
+  }
+});
+
+

@@ -28,7 +28,6 @@ import Receipt_teacher from "./Componant/Receipt_teacher";
 import Dashboardsection from "./Componant/Dashboardsection";
 import { usegetAdmin } from "./hooks/usePost";
 import { useQuery } from "react-query";
-import Whatsapp from "./Componant/Whatsapp";
 import { NasirContext } from "./NasirContext";
 import AdminList from "./screens/AdminList";
 import CancelAdmission from "./screens/CancelAdmission";
@@ -65,7 +64,7 @@ function DashboardMenu() {
   ) : (
     <div className="bg-[#f5f7ff] min-h-screen flex">
       {<Sidebar />}
-      <div className="w-full overflow-hidden">
+      <div className="w-full">
         {<Searchbar />}
         <div className="relative" style={{ minHeight: "calc(100% - 70px)" }}>
           <ErrorBoundary>
@@ -76,7 +75,6 @@ function DashboardMenu() {
                 path="/dashboardsection"
                 element={<Dashboardsection />}
               />
-              <Route exact path="/whatsapp" element={<Whatsapp />} />
               <Route
                 exact
                 path="/dashboardsection/dashboard"

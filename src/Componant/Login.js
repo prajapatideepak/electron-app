@@ -16,8 +16,8 @@ const Login = () => {
   } = useForm();
 
   React.useEffect(() => {
-    if (requestLogin.isSuccess) {
-      toast.success("Login Successfull");
+    if (requestLogin?.data?.ok) {
+      toast.success("Login Successfull", {toastId: 'success1'});
       setToken("token", requestLogin.data.token);
       axiosInstance.defaults.headers.Authorization = requestLogin.data.token;
 
@@ -26,8 +26,9 @@ const Login = () => {
     if (requestLogin.isError) {
       toast.error(requestLogin.error.response.data.error);
     }
-  }, [requestLogin.isSuccess, requestLogin.isError]);
 
+  }, [requestLogin?.data?.ok, requestLogin.isError]);
+  
   const onSubmit = (data) => {
     requestLogin.mutate(data);
   };

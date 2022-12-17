@@ -99,7 +99,7 @@ export default function Dashboard() {
   return (
     <div className="">
       <div className="pt-0 md:flex items-center justify-center md:justify-between mr-5 ">
-        <div className="left pt-0 ">
+        <div className="left pt-0">
           <img src="images/desk.webp" alt="" className="" />
         </div>
         <div className="w-4/5  ">

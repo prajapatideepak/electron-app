@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import "react-toastify/dist/ReactToastify.css";
 import { NasirContext } from "../NasirContext";
-import Loader from "../Componant/Loader";
+import LoaderSmall from "../Componant/LoaderSmall";
 
 const Myclass = () => {
   const { section } = React.useContext(NasirContext);
@@ -255,12 +255,8 @@ const Myclass = () => {
     resetField("stream");
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
-    <div className="relative m-5">
+    <div className="relative p-5">
       {/* Add New Class Model */}
       {model && (
         <div className="absolute w-full h-full  z-30 ">
@@ -430,7 +426,8 @@ const Myclass = () => {
                                   {...register("medium", {
                                     required: "Medium is required",
                                   })}
-                                  onKeyUp={() => {
+                                  onKeyUp={(e) => {
+                                    e.preventDefault();
                                     trigger("medium");
                                   }}
                                 >
@@ -1048,7 +1045,8 @@ const Myclass = () => {
                     </div>
                   </div>
                 </Tooltip>
-                {allClasses && allClasses?.length > 0 ? (
+                {
+                  allClasses && allClasses?.length > 0 ? (
                   <button
                     className="btn cursor-pointer  h-11 w-40 rounded-full bg-white text-left border  overflow-hidden"
                     id="btn"
@@ -1075,122 +1073,134 @@ const Myclass = () => {
           </div>
 
           <div
-            className={`mt-5 h-1/5 rounded-lg bg-white pt-5 ${
+            className={`mt-5 rounded-lg bg-white pt-5 ${
               classes?.length > 0 ? "pb-10" : "pb-5"
             } flex justify-center items-center`}
           >
-            <ul className="justify-between grid grid-custom gap-10 p-10 pb-0 pt-0">
-              {classes?.length > 0 ? (
-                classes?.map((item, index) => {
-                  return (
-                    <li
-                      className="rounded-md h-28 xl:w-72  xl:h-44 p-3 pt-2 cursor-pointer"
-                      key={index}
-                    >
-                      <div
-                        className="class_card drop-shadow-lg rounded-lg p-2 pr-0 h-40"
-                        style={{
-                          backgroundColor: bgColors[index % bgColors.length],
-                        }}
-                      >
-                        <div className=" h-6  flex justify-end items-center space-x-2 mr-2 ">
-                          {isCurrentYearSelected ? (
-                            <>
-                              <div
-                                className="edit_delete_btns px-1 py-1 rounded-md"
-                                style={{
-                                  color: isHoverEdit
-                                    ? "#fff"
-                                    : headingBgColor[
-                                        index % headingBgColor.length
-                                      ],
-                                  backgroundColor: isHoverEdit
-                                    ? headingBgColor[
-                                        index % headingBgColor.length
-                                      ]
-                                    : "#fff",
-                                }}
-                                onMouseEnter={handleMouseEnterEdit}
-                                onMouseLeave={handleMouseLeaveEdit}
-                                onClick={() => handleEditClass(item._id)}
-                              >
-                                <MdModeEdit />
-                              </div>
-
-                              <div
-                                className="edit_delete_btns px-1 py-1 rounded-md"
-                                style={{
-                                  color: isHoverDelete
-                                    ? "#fff"
-                                    : headingBgColor[
-                                        index % headingBgColor.length
-                                      ],
-                                  backgroundColor: isHoverDelete
-                                    ? headingBgColor[
-                                        index % headingBgColor.length
-                                      ]
-                                    : "#fff",
-                                }}
-                                onMouseEnter={handleMouseEnterDelete}
-                                onMouseLeave={handleMouseLeaveDelete}
-                                onClick={() => handleDeleteClass(item._id)}
-                              >
-                                <MdDelete />
-                              </div>
-                            </>
-                          ) : null}
-                        </div>
-                        <NavLink className="nav-link" to={`class/${item._id}`}>
-                          <div className="flex  space-x-2 items-center ml-3 ">
+            <ul className="justify-center flex flex-wrap gap-10 p-10 pb-0 pt-0">
+              {
+                isLoading
+                ?
+                  <LoaderSmall />
+                :
+                  classes?.length > 0 
+                  ? 
+                    (
+                      classes?.map((item, index) => {
+                        return (
+                          <li
+                            className="rounded-md h-28 xl:w-72  xl:h-44 p-3 pt-2 mb-10 xl:mb-0 cursor-pointer"
+                            key={index}
+                          >
                             <div
-                              className="rounded-md"
+                              className="class_card drop-shadow-lg rounded-lg p-2 pr-0 h-40"
                               style={{
-                                backgroundColor:
-                                  headingBgColor[index % headingBgColor.length],
+                                backgroundColor: bgColors[index % bgColors.length],
                               }}
                             >
-                              <RiFolderUserFill className="text-white text-4xl md:text-5xl xl:text-7xl " />
+                              <div className=" h-6 flex justify-end items-center space-x-2 mr-2 ">
+                                {isCurrentYearSelected ? (
+                                  <>
+                                    <div
+                                      className="edit_delete_btns px-1 py-1 rounded-md"
+                                      style={{
+                                        color: isHoverEdit
+                                          ? "#fff"
+                                          : headingBgColor[
+                                              index % headingBgColor.length
+                                            ],
+                                        backgroundColor: isHoverEdit
+                                          ? headingBgColor[
+                                              index % headingBgColor.length
+                                            ]
+                                          : "#fff",
+                                      }}
+                                      onMouseEnter={handleMouseEnterEdit}
+                                      onMouseLeave={handleMouseLeaveEdit}
+                                      onClick={() => handleEditClass(item._id)}
+                                    >
+                                      <MdModeEdit />
+                                    </div>
+
+                                    <div
+                                      className="edit_delete_btns px-1 py-1 rounded-md"
+                                      style={{
+                                        color: isHoverDelete
+                                          ? "#fff"
+                                          : headingBgColor[
+                                              index % headingBgColor.length
+                                            ],
+                                        backgroundColor: isHoverDelete
+                                          ? headingBgColor[
+                                              index % headingBgColor.length
+                                            ]
+                                          : "#fff",
+                                      }}
+                                      onMouseEnter={handleMouseEnterDelete}
+                                      onMouseLeave={handleMouseLeaveDelete}
+                                      onClick={() => handleDeleteClass(item._id)}
+                                    >
+                                      <MdDelete />
+                                    </div>
+                                  </>
+                                ) : null}
+                              </div>
+                              <NavLink className="nav-link" to={`class/${item._id}`}>
+                                <div className="flex  space-x-2 items-center ml-3 ">
+                                  <div
+                                    className="rounded-md"
+                                    style={{
+                                      backgroundColor:
+                                        headingBgColor[index % headingBgColor.length],
+                                    }}
+                                  >
+                                    <RiFolderUserFill className="text-white text-4xl md:text-5xl xl:text-7xl " />
+                                  </div>
+                                  <div className="flex flex-1 justify-center items-center">
+                                    <h1
+                                      style={{
+                                        color:
+                                          headingBgColor[
+                                            index % headingBgColor.length
+                                          ],
+                                      }}
+                                      className={`text-xl font-bold ${
+                                        item.class_name.length < 8 && "text-4xl"
+                                      }  ${
+                                        item.class_name.length <= 2 && "text-7xl"
+                                      }   `}
+                                    >
+                                      {item.class_name}
+                                    </h1>
+                                  </div>
+                                </div>
+                                <div
+                                  className="total h-8 ml-1 mr-2 md:mr-2 xl:mr-0 rounded-md  flex  justify-center items-center mt-4 "
+                                  style={{
+                                    backgroundColor:
+                                      headingBgColor[index % headingBgColor.length],
+                                    minWidth: '220px',
+                                    maxWidth: '240px',
+                                  }}
+                                >
+                                  <p className="text-white">
+                                    Total Student : {item.total_student}
+                                  </p>
+                                </div>
+                              </NavLink>
                             </div>
-                            <div className="flex flex-1 justify-center items-center">
-                              <h1
-                                style={{
-                                  color:
-                                    headingBgColor[
-                                      index % headingBgColor.length
-                                    ],
-                                }}
-                                className={`text-xl font-bold ${
-                                  item.class_name.length < 8 && "text-4xl"
-                                }  ${
-                                  item.class_name.length <= 2 && "text-7xl"
-                                }   `}
-                              >
-                                {item.class_name}
-                              </h1>
-                            </div>
-                          </div>
-                          <div
-                            className="total w-60 h-8 ml-1 rounded-md  flex  justify-center items-center mt-4 "
-                            style={{
-                              backgroundColor:
-                                headingBgColor[index % headingBgColor.length],
-                            }}
-                          >
-                            <p className="  text-white    ">
-                              Total Student : {item.total_student}
-                            </p>
-                          </div>
-                        </NavLink>
+                          </li>
+                        );
+                      })
+                    ) 
+                  : 
+                    (
+                      <div className="bg-red-200 font-bold flex justify-center items-center p-2 rounded mx-3 space-x-2">
+                        <IoMdInformationCircle className="text-xl text-red-600" />
+                        <h1 className="text-red-800">No Classes Found</h1>
                       </div>
-                    </li>
-                  );
-                })
-              ) : (
-                <div className="bg-red-200 font-bold flex justify-center items-center p-2 rounded mx-3 space-x-2">
-                  <IoMdInformationCircle className="text-xl text-red-600" />
-                  <h1 className="text-red-800">No Classes Found</h1>
-                </div>
-              )}
+                    )
+              }
             </ul>
           </div>
         </div>

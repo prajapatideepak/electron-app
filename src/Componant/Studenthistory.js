@@ -120,24 +120,24 @@ const Studenthistory = () => {
                   <table className="w-full text-sm text-left ">
                     <thead className="text-sm uppercase bg-darkblue-500">
                       <tr className="text-white">
-                        <th scope="col" className="py-3 px-6 text-center">
+                        <th scope="col" className="py-3 px-2 text-center">
                           Reciept No
                         </th>
-                        <th scope="col" className="py-3 px-6 text-center">
+                        <th scope="col" className="py-3 px-2 text-center">
                           Amount
                         </th>
-                        <th scope="col" className="py-3 px-6 text-center">
+                        <th scope="col" className="py-3 px-2 text-center">
                           Discount
                         </th>
-                        <th scope="col" className="py-3 px-6 text-center">
+                        <th scope="col" className="py-3 px-2 text-center">
                           Date
                         </th>
-                        <th scope="col" className="py-3 px-6 text-center">
+                        <th scope="col" className="py-3 px-2 text-center">
                           Admin
                         </th>
                         <th
                           scope="col"
-                          className={`py-3 px-6 text-center ${
+                          className={`py-3 px-2 text-center ${
                             isPrint ? "hidden" : "block"
                           }`}
                         >
@@ -155,21 +155,21 @@ const Studenthistory = () => {
                         }
                         return (
                           <tr key={index} className="bg-white border-b">
-                            <td className="py-4 px-7 text-center">
+                            <td className="py-4 px-2 text-center">
                               {receipt.fees_receipt_id}
                             </td>
-                            <td className="py-4 px-7 text-center">
+                            <td className="py-4 px-2 text-center">
                               {receipt.transaction_id.amount}
                             </td>
-                            <td className="py-4 px-7 text-center">
+                            <td className="py-4 px-2 text-center">
                               {receipt.discount}
                             </td>
-                            <td className="py-4 px-7 text-center">{date}</td>
-                            <td className="py-4 px-7 text-center">
+                            <td className="py-4 px-2 text-center">{date}</td>
+                            <td className="py-4 px-2 text-center">
                               {receipt.admin_id.username}
                             </td>
                             <td
-                              className={`py-4 px-7 text-center ${
+                              className={`py-4 px-2 text-center ${
                                 isPrint ? "hidden" : "flex"
                               } `}
                             >

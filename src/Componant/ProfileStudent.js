@@ -129,6 +129,7 @@ const Profilestudent = () => {
 
     const setStudentDetails = () => {
         student_details = student_details.data.data.students_detail[0];
+        console.log(student_details);
         setStudDetails(student_details);
         let dob = new Date(student_details.personal.basic_info_id.dob);
         dob = `${dob.getFullYear()}-${dob.getMonth() + 1 < 10 ? "0" + (dob.getMonth() + 1) : dob.getMonth() + 1}-${dob.getDate() < 10 ? "0" + dob.getDate() : dob.getDate()}`
@@ -992,13 +993,13 @@ const Profilestudent = () => {
                                 <table className="w-full text-sm text-center bg-class3-50 rounded-xl overflow-hidden ">
                                     <thead className="text-xs text-gray-700 uppercase">
                                         <tr className='text-white text-base'>
-                                            <th scope="col" className="px-6 py-4">Batch</th>
-                                            <th scope="col" className="px-6 py-4">Class</th>
-                                            <th scope="col" className="px-6 py-4">Net Fees</th>
-                                            <th scope="col" className="px-6 py-4">Discount</th>
-                                            <th scope="col" className="px-6 py-4">Paidup</th>
-                                            <th scope="col" className="px-6 py-4">Pending</th>
-                                            <th scope="col" className="px-6 py-4">Action</th>
+                                            <th scope="col" className="px-2 py-4">Batch</th>
+                                            <th scope="col" className="px-2 py-4">Class</th>
+                                            <th scope="col" className="px-2 py-4">Net Fees</th>
+                                            <th scope="col" className="px-2 py-4">Discount</th>
+                                            <th scope="col" className="px-2 py-4">Paidup</th>
+                                            <th scope="col" className="px-2 py-4">Pending</th>
+                                            <th scope="col" className="px-2 py-4">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody className='bg-white border items-center '>
@@ -1007,15 +1008,15 @@ const Profilestudent = () => {
                                             ?
                                             academicDetails.map((academic, index) => {
                                                 return <tr key={index} className=" border-b">
-                                                    <td scope="row" className="px-6 py-5">
+                                                    <td scope="row" className="px-2 py-5">
                                                         {academic.class_id.batch_start_year}-{academic.class_id.batch_end_year}
                                                     </td>
-                                                    <td className="px-6 py-5">{academic.class_id.class_name}</td>
-                                                    <td className="px-6 py-5">{academic.fees_id.net_fees}</td>
-                                                    <td className="px-6 py-5">{academic.fees_id.discount}</td>
-                                                    <td className="px-6 py-5">{academic.fees_id.net_fees - academic.fees_id.pending_amount}</td>
-                                                    <td className="px-6 py-5">{academic.fees_id.pending_amount}</td>
-                                                    <td className="px-6 py-5 ">
+                                                    <td className="px-2 py-5">{academic.class_id.class_name}</td>
+                                                    <td className="px-2 py-5">{academic.fees_id.net_fees}</td>
+                                                    <td className="px-2 py-5">{academic.fees_id.discount}</td>
+                                                    <td className="px-2 py-5">{academic.fees_id.net_fees - academic.fees_id.pending_amount}</td>
+                                                    <td className="px-2 py-5">{academic.fees_id.pending_amount}</td>
+                                                    <td className="px-2 py-5 ">
                                                         <div className='flex justify-center space-x-2'>
                                                             <NavLink className="nav-link" to= '/myclass/class/Profilestudent/Studenthistory' 
                                                                 state={{

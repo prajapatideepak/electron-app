@@ -139,7 +139,7 @@ const Studentregister = () => {
 
     return (
         <>
-            <section className="">
+            <section className="h-full">
                 <div className="title px-14 pt-6">
                     <h1 className="text-3xl font-bold text-[#020D46] mb-3">
                         Student Registration
@@ -339,7 +339,7 @@ const Studentregister = () => {
                                                     classes.map((item, key) => {
                                                         return (
                                                             <option key={key} value={item._id}>
-                                                                <>{`${item.class_name} ${item.medium} ${item.stream == 'none' ? '' : item.stream}`}</>
+                                                                <>{`${item.class_name} ${item.medium.toUpperCase()} ${item.stream == 'none' ? '' : item.stream.toUpperCase()}`}</>
                                                             </option>
                                                         )
                                                     })
@@ -349,23 +349,6 @@ const Studentregister = () => {
                                         </select>
                                     </label>
                                     {errors.class_name && (<small className="text-red-700">{errors.class_name.message}</small>)}
-                                </div>
-                                <div className="selectstream">
-                                    <label className="block">
-                                        <span className="block text-sm font-medium text-slate-700">
-                                            Stream
-                                        </span>
-                                        <input
-                                            type="text" 
-                                            name=""
-                                            id=""
-                                            placeholder="--"
-                                            value={stream}
-                                            disabled={true}
-                                            className={`2xl:w-[142px] w-[110px] mt-1 block px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none `}
-                                            {...register("stream")}
-                                        />
-                                    </label>
                                 </div>
                                 <div className="selectmedium">
                                     <label className="block">
@@ -379,10 +362,27 @@ const Studentregister = () => {
                                             placeholder="--"
                                             disabled={true}
                                             value={medium}
-                                            className={`2xl:w-[142px] w-[110px] mt-1 block  px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none`}
+                                            className={`2xl:w-[142px] w-[110px] mt-1 block  px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none capitalize`}
                                             {...register("medium")}
                                         />
                                             
+                                    </label>
+                                </div>
+                                <div className="selectstream">
+                                    <label className="block">
+                                        <span className="block text-sm font-medium text-slate-700">
+                                            Stream
+                                        </span>
+                                        <input
+                                            type="text" 
+                                            name=""
+                                            id=""
+                                            placeholder="--"
+                                            value={stream}
+                                            disabled={true}
+                                            className={`2xl:w-[142px] w-[110px] mt-1 block px-3 py-[6px] bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none capitalize`}
+                                            {...register("stream")}
+                                        />
                                     </label>
                                 </div>
                             </div>

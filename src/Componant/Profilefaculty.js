@@ -602,10 +602,10 @@ const Profilefaculty = () => {
                 <thead className="text-xs text-gray-700 uppercase bg-class3-50">
                   <tr className='text-white text-base'>
 
-                    <th scope="col" className="py-4 px-6 text-center ">Total Paid</th>
-                    <th scope="col" className="py-4 px-6 text-center ">LastPaid</th>
-                    <th scope="col" className="py-4 px-6 text-center ">Date</th>
-                    <th scope="col" className={`py-4 px-6 text-center  ${isPrint ? "hidden" : "block"}`}>Action</th>
+                    <th scope="col" className="py-4 px-2 text-center ">Total Paid</th>
+                    <th scope="col" className="py-4 px-2 text-center ">LastPaid</th>
+                    <th scope="col" className="py-4 px-2 text-center ">Date</th>
+                    <th scope="col" className={`py-4 px-2 text-center  ${isPrint ? "hidden" : "block"}`}>Action</th>
                   </tr>
                 </thead>
                 <tbody className='bg-white border items-center '>
@@ -613,16 +613,16 @@ const Profilefaculty = () => {
 
                     <tr className=" border-b">
 
-                      <td className="py-5 px-6 text-center ">
+                      <td className="py-5 px-2 text-center ">
                         {calculateTotalpaid}
                       </td>
-                      <td className="py-5 px-6 text-center ">
+                      <td className="py-5 px-2 text-center ">
                         {LastPaid?.transaction_id.amount}
                       </td>
-                      <td className="py-5 px-6 text-center ">
+                      <td className="py-5 px-2 text-center ">
                         {date}
                       </td>
-                      <td className={`py-5 px-6 text-center  ${isPrint ? "hidden" : "block"}`}>
+                      <td className={`py-5 px-2 text-center  ${isPrint ? "hidden" : "block"}`}>
                         <div className='flex justify-center space-x-2'>
                           <NavLink className="nav-link" to={`/Profilefaculty/Staffhistory/${facultyInputController.id}`} state={{ faculty_name: facultyInputController.full_name }}>
                             <Tooltip content="Show History" placement="bottom-end" className='text-white bg-black rounded p-2'><a href="#" class="text-xl text-darkblue-500"><AiFillEye /></a></Tooltip>

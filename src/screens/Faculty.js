@@ -8,8 +8,6 @@ import { useForm } from "react-hook-form";
 import { getAllFaculty, Addfaculty } from "../hooks/usePost"
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from '../Componant/Loader';
-
 
 const Faculty = () => {
   // ------------------------------------------------------------------------------------
@@ -90,10 +88,6 @@ const Faculty = () => {
     resetField("photo"); resetField("full_name"); resetField("email"); resetField("whatsapp_no"); resetField("alternate_no"); resetField("dob");
     resetField("joining_date"); resetField("role"); resetField("address"); resetField("gender");
     setImg(defaultImage)
-  }
-
-  if (isloading) {
-    return <Loader />
   }
 
   return (
@@ -182,9 +176,9 @@ const Faculty = () => {
                                 type="text"
                                 placeholder="Enter Your WhatsApp No"
                                 className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.whatsapp_no && 'border-red-600'}`}
-                                {...register("whatsapp_no", { required: "Whatsapp no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida whatsapp no" } })}
+                                {...register("whatsapp_no", { required: "Whatsapp no is required", pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valid whatsapp no" } })}
                                 onKeyUp={() => {
-                                  trigger('whatsappno')
+                                  trigger('whatsapp_no')
                                 }}
                               />
                               {errors.whatsapp_no && (<small className="text-red-700">{errors.whatsapp_no.message}</small>)}
@@ -202,7 +196,7 @@ const Faculty = () => {
                                 type="text"
                                 placeholder="Enter Your Mobile No"
                                 className={`w-full 2xl:w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${errors.alternate_no && 'border-red-600'}`}
-                                {...register("alternate_no", { pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valida mobile no" } })}
+                                {...register("alternate_no", { pattern: { value: /^[0-9]*$/, message: "Please enter only numbers" }, minLength: { value: 10, message: "Please enter valid mobile no" } })}
                                 onKeyUp={() => {
                                   trigger('alternate_no')
                                 }}

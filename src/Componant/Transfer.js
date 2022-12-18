@@ -151,11 +151,11 @@ const Transfer = () => {
                                                 classes.map((classes, index)=>{
                                                     return(
                                                         <option key={index} value={classes._id}>
-                                                            {classes.class_name + ' | ' + classes.medium}
+                                                            {classes.class_name + ' | ' + classes.medium.toUpperCase()}
                                                             {
                                                                 classes.stream.toLowerCase() != 'none' 
                                                                 ?
-                                                                    <>{' | ' + classes.stream}</>
+                                                                    <>{' | ' + classes.stream.toUpperCase()}</>
                                                                 : 
                                                                     null
                                                             }

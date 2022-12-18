@@ -200,13 +200,12 @@ export default function Salary() {
       setIsLoadingOnSubmit(true)
       setError(false)
       const res = await salarypay(gen_reciept)
+      setIsLoadingOnSubmit(false)
       if (res.data.success == true) {
-        setIsLoadingOnSubmit(true)
         const salary_receipt_id = res.data.data.salaryreceipt.salary_receipt_id
         navigate(`/salary/Receipt_teacher/${salary_receipt_id}`, { state: { prevPath: "generate_receipt" } });
         regtoast()
       } else {
-        setIsLoadingOnSubmit(false)
         errtoast({
           invalid_pin: res.data.message
         });

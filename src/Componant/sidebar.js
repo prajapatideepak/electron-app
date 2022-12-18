@@ -6,7 +6,7 @@ import { FaWpforms } from "react-icons/fa";
 import { BsReceipt } from "react-icons/bs";
 import { IoMdPersonAdd } from "react-icons/io";
 import { GiTeacher } from "react-icons/gi";
-import { IoMdInformationCircle } from "react-icons/io";
+import { IoMdInformationCircle, IoMdHelpCircle } from "react-icons/io";
 import { NavLink } from "react-router-dom";
 
 export default function Sidebar({ data }) {
@@ -53,7 +53,7 @@ export default function Sidebar({ data }) {
               >
                 <li className="inline-flex xl:pl-11 items-center px-2 py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
                   <FaUsers className="xl:w-5 xl:h-5 xl:mr-2" />
-                  <h1 className="text-base hidden  xl:block  ">My Class</h1>
+                  <h1 className="text-base hidden  xl:block  ">My Classes</h1>
                 </li>
               </NavLink>
             </div>
@@ -111,6 +111,18 @@ export default function Sidebar({ data }) {
                 <li className="inline-flex xl:pl-11 items-center px-2 py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
                   <IoMdPersonAdd className="xl:w-5 xl:h-5 xl:mr-2" />
                   <h1 className="text-base hidden  xl:block  ">Student Reg.</h1>
+                </li>
+              </NavLink>
+            </div>
+            <div className="mb-3">
+              <NavLink
+                className="nav-link"
+                activeclassname="active"
+                to="help"
+              >
+                <li className="inline-flex xl:pl-11 items-center px-2 py-2 xl:w-48 cursor-pointer hover:bg-lightblue-200 hover:text-blue-500 rounded-md">
+                  <IoMdHelpCircle className="xl:w-6 xl:h-6 xl:mr-2" />
+                  <h1 className="text-base hidden  xl:block  ">Help</h1>
                 </li>
               </NavLink>
             </div>

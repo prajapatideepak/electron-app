@@ -12,7 +12,7 @@ export const Addadmin = () => {
 
   React.useEffect(() => {
     if (createPost.isSuccess) {
-      toast.success("Registration SuccuesFull");
+      toast.success("Registration Successfull");
     }
     if (createPost.isError) {
       toast.error(createPost.error.response.data.error);
@@ -255,14 +255,14 @@ export const Addadmin = () => {
                             className={`xl:w-52 2xl:w-60 lg:w-48 w-60 mt-1 block  px-3 py-2 bg-white border  border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 outline-none ${
                               errors.mobileno && "border-red-600"
                             }`}
-                            {...register("mobileno", {
+                            {...register("alternate_no", {
                               pattern: {
                                 value: /^[0-9]*$/,
                                 message: "Please enter only numbers",
                               },
                               minLength: {
                                 value: 10,
-                                message: "Please enter valida mobile no",
+                                message: "Please enter valid mobile no",
                               },
                               maxLength: {
                                 value: 10,
@@ -270,12 +270,12 @@ export const Addadmin = () => {
                               },
                             })}
                             onKeyUp={() => {
-                              trigger("mobileno");
+                              trigger("alternate_no");
                             }}
                           />
-                          {errors.mobileno && (
+                          {errors.alternate_no && (
                             <small className="text-red-700">
-                              {errors.mobileno.message}
+                              {errors.alternate_no.message}
                             </small>
                           )}
                         </label>

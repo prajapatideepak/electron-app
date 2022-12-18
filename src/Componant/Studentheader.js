@@ -23,7 +23,7 @@ const Studenthearder = () => {
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   const [Serialno, setserialno] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 12;
 
   function handleDataFilter(filterDate) {
     const preDate = new Date(`${filterDate},23:59:00`);
@@ -90,7 +90,6 @@ const Studenthearder = () => {
               id=""
               className=" flex items-center border outline-none bg-white py-2 px-4 xl:p-4 xl:py-2 shadow-lg hover:shadow rounded-md  space-x-1 "
               onClick={(e) => {
-                setDate("");
                 setData(reportData?.data?.data);
               }}
             >
@@ -129,28 +128,28 @@ const Studenthearder = () => {
                 <thead>
                   <tr className="bg-gray-100 h-16 w-full text-sm leading-none font-bold text-darkblue-500">
                     <th className="font-normal text-left pl-10">Date</th>
-                    <th className="font-normal text-left  px-10 lg:px-6 xl:px-0">
+                    <th className="font-normal text-left  px-2 xl:px-0">
                       Reciept No
                     </th>
-                    <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                    <th className="font-normal text-left px-2 xl:px-0">
                       Student Name
                     </th>
-                    <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                    <th className="font-normal text-left px-2 xl:px-0">
                       Paid
                     </th>
-                    <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                    <th className="font-normal text-left px-2 xl:px-0">
                       Discount
                     </th>
-                    <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                    <th className="font-normal text-left px-2 xl:px-0">
                       total
                     </th>
-                    <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                    <th className="font-normal text-left px-2 xl:px-0">
                       Admin
                     </th>
                     {
                       !isPrint
                       ?
-                        <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                        <th className="font-normal text-left px-2 xl:px-0">
                           Detail
                         </th>
                       :
@@ -164,14 +163,14 @@ const Studenthearder = () => {
                     ? 
                       <tr className="h-20 blur-sm text-sm leading-none text-gray-800 border-b border-gray-100">
                       <td className="pl-8">.........</td>
-                      <td className=" px-10 font-bold lg:px-6 xl:px-0">..</td>
-                      <td className="px-10 lg:px-6 xl:px-0">.....</td>
-                      <td className="font-medium px-10 lg:px-6 xl:px-0">
+                      <td className=" px-2 font-bold xl:px-0">..</td>
+                      <td className="px-2 xl:px-0">.....</td>
+                      <td className="font-medium px-2 xl:px-0">
                         <span className="bg-green-200 px-4 text-green-900 font-bold rounded">
                           ...
                         </span>
                       </td>
-                      <td className="px-10 lg:px-6 xl:px-0">
+                      <td className="px-2 xl:px-0">
                         <p className="">
                           <span className="bg-red-200 px-4 text-red-900 font-bold rounded">
                             ..
@@ -201,23 +200,23 @@ const Studenthearder = () => {
                               className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100"
                             >
                               <td className="pl-8">
-                                {new Date(m.date)?.toISOString().slice(0, 10)}
+                                {new Date(m.date)?.toISOString().slice(0, 10).split('-').reverse().join('-')}
                               </td>
-                              <td className=" px-10 font-bold lg:px-6 xl:px-0">
+                              <td className=" px-2 font-bold xl:px-0">
                                 {m.fees_receipt_id}
                               </td>
-                              <td className="px-10 lg:px-6 xl:px-0 capitalize">
+                              <td className="px-2 xl:px-0 capitalize">
                                 {
                                   m.fees[0].academics[0].students[0].basic_info[0]
                                     .full_name
                                 }
                               </td>
-                              <td className="font-medium px-10 lg:px-6 xl:px-0">
+                              <td className="font-medium px-2 xl:px-0">
                                 <span className="bg-green-200 px-4 text-green-900 font-bold rounded">
                                   {m.transaction[0].amount}
                                 </span>
                               </td>
-                              <td className="px-10 lg:px-6 xl:px-0">
+                              <td className="px-2 xl:px-0">
                                 <p className="">
                                   <span className="bg-red-200 px-4 text-red-900 font-bold rounded">
                                     {m.discount}
@@ -243,23 +242,23 @@ const Studenthearder = () => {
                               className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100"
                             >
                               <td className="pl-8">
-                                {new Date(m.date)?.toISOString().slice(0, 10)}
+                                {new Date(m.date)?.toISOString().slice(0, 10).split('-').reverse().join('-')}
                               </td>
-                              <td className=" px-10 font-bold lg:px-6 xl:px-0">
+                              <td className=" px-2 font-bold xl:px-0">
                                 {m.fees_receipt_id}
                               </td>
-                              <td className="px-10 lg:px-6 xl:px-0 capitalize">
+                              <td className="px-2 xl:px-0 capitalize">
                                 {
                                   m.fees[0].academics[0].students[0].basic_info[0]
                                     .full_name
                                 }
                               </td>
-                              <td className="font-medium px-10 lg:px-6 xl:px-0">
+                              <td className="font-medium px-2 xl:px-0">
                                 <span className="bg-green-200 px-4 text-green-900 font-bold rounded">
                                   {m.transaction[0].amount}
                                 </span>
                               </td>
-                              <td className="px-10 lg:px-6 xl:px-0">
+                              <td className="px-2 xl:px-0">
                                 <p className="">
                                   <span className="bg-red-200 px-4 text-red-900 font-bold rounded">
                                     {m.discount}

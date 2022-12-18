@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import Loader from '../Componant/Loader';
+import LoaderSmall from '../Componant/LoaderSmall';
 import { IoIosArrowBack } from "react-icons/io";
 import { TbCurrencyRupee } from "react-icons/tb";
 import { GiReceiveMoney, GiPayMoney } from "react-icons/gi";
@@ -374,7 +374,7 @@ function CancelAdmission() {
                                     {
                                     loading
                                     ?
-                                        <Loader/>
+                                        <LoaderSmall/>
                                     :
 
                                         (
@@ -395,89 +395,82 @@ function CancelAdmission() {
                                                     <table className="w-full whitespace-nowrap">
                                                         <thead>
                                                         <tr className="bg-gray-100 h-16 w-full text-sm leading-none font-bold text-darkblue-500">
-                                                            <th className="font-bold text-left pl-10">Profile</th>
-                                                            <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                                            <th className="font-bold text-left pl-10">
                                                             Student ID
                                                             </th>
-                                                            <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                                            <th className="font-bold text-left px-2 xl:px-0">
                                                             Name
                                                             </th>
-                                                            <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                                            <th className="font-bold text-left px-2 xl:px-0">
                                                             Mobile
                                                             </th>
-                                                            <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                                            <th className="font-bold text-left px-2 xl:px-0">
                                                             Class
                                                             </th>
-                                                            <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                                            <th className="font-bold text-left px-2 xl:px-0">
                                                             Medium
                                                             </th>
-                                                            <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                                            <th className="font-bold text-left px-2 xl:px-0">
                                                             Stream
                                                             </th>
-                                                            <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                                            <th className="font-bold text-left px-2 xl:px-0">
                                                             Net Fees
                                                             </th>
-                                                            <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                                            <th className="font-bold text-left px-2 xl:px-0">
                                                             Pending
                                                             </th>
-                                                            <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                                            <th className="font-bold text-left px-2 xl:px-0">
                                                             Action
                                                             </th>
                                                         </tr>
                                                         </thead>
                                                         <tbody className="w-full">
                                                             {data.map((m, index) => {
+
                                                             return (
-                                                                <tr key={index} className={`${m.fees.pending_amount > 0 ? 'bg-red-100' : 'bg-green-100'} border-b-1 border-gray-200 h-20 text-sm leading-none text-gray-800 border-b border-gray-100`}>
-                                                                <td className="pl-10"> 
-                                                                <img
-                                                                    src="images/user.png"
-                                                                    className="w-14 shadow-2xl h-14 rounded-full"
-                                                                    alt={m.personal.student_id}
-                                                                    ></img>
-                                                                </td>
-                                                                <td className="px-10 lg:px-6 xl:px-0">
+                                                                <tr key={index} className={` border-b-1 border-gray-200 h-20 text-sm leading-none text-gray-800 border-b border-gray-100`}>
+                                                                <td className="pl-10">
                                                                     <span className="font-bold">
                                                                         {m.personal.student_id}
                                                                     </span>
                                                                 </td>
-                                                                <td className=" px-10 lg:px-6 xl:px-0 capitalize">
+                                                                <td className=" px-2 xl:px-0 capitalize">
                                                                     {m.personal.basic_info_id.full_name}
                                                                 </td>
-                                                                <td className="px-10 lg:px-6 xl:px-0">
+                                                                <td className="px-2 xl:px-0">
                                                                     <span className="">
                                                                     {m.personal.contact_info_id.whatsapp_no}
                                                                     </span>
                                                                 </td>
-                                                                <td className="px-10 lg:px-6 xl:px-0">
+                                                                <td className="px-2 xl:px-0">
                                                                     <p className="">
                                                                     <span className="">
                                                                         {m.academic.class_id.class_name}
                                                                     </span>
                                                                     </p>
                                                                 </td>
-                                                                <td className="px-10 lg:px-6 xl:px-0">
+                                                                <td className="px-2 xl:px-0">
                                                                     <p className="">
                                                                     <span className="">
                                                                         {m.academic.class_id.medium}
                                                                     </span>
                                                                     </p>
                                                                 </td>
-                                                                <td className="px-10 lg:px-6 xl:px-0">
+                                                                <td className="px-2 xl:px-0">
                                                                     <p className="">
                                                                     <span className="">
                                                                         {m.academic.class_id.stream.toLowerCase() == 'none' ? '--' : m.academic.class_id.stream}
                                                                     </span>
                                                                     </p>
                                                                 </td>
-                                                                <td className="px-10 lg:px-6 xl:px-0">
+                                                                <td className="px-2 xl:px-0">
                                                                     <p className="">
                                                                     <span className="">
                                                                         {m.fees.net_fees}
                                                                     </span>
                                                                     </p>
                                                                 </td>
-                                                                <td className="px-10 lg:px-6 xl:px-0">
+                                                                <td className="px-2 xl:px-0">
                                                                     <p className="">
                                                                     <span className="">
                                                                         {m.fees.pending_amount}

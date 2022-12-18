@@ -4,7 +4,7 @@ import { Tooltip } from "@material-tailwind/react";
 import { IoMdInformationCircle } from "react-icons/io";
 import { NavLink } from "react-router-dom";
 import {getStudentDetails} from '../hooks/usePost';
-import Loader from '../Componant/Loader';
+import LoaderSmall from '../Componant/LoaderSmall';
 import Toaster from '../hooks/showToaster';
 import {AxiosError} from 'axios';
 
@@ -40,8 +40,18 @@ export default function Fess() {
         }
     }
   }
+
+  function dateDiffInDays(startDate, currentDate) {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    const utc1 = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    const utc2 = Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  }
+
   return (
-    <div className="bg-student-100 min-h-screen py-10 px-14">
+    <div className="bg-student-100 py-10 px-14" style={{minHeight: "calc(100vh - 70px)"}}>
       <div className="">
         <h1 className="text-3xl  font-bold text-darkblue-500">Fees Pay</h1>
 
@@ -67,7 +77,7 @@ export default function Fess() {
         {
           loading
           ?
-            <Loader/>
+            <LoaderSmall />
           :
 
             (
@@ -88,84 +98,99 @@ export default function Fess() {
                           <table className="w-full whitespace-nowrap">
                             <thead>
                               <tr className="bg-gray-100 h-16 w-full text-sm leading-none font-bold text-darkblue-500">
-                                <th className="font-bold text-left px-10 lg:px-6 xl:px-auto">
+                                <th className="font-bold text-left pl-5">
                                   Student ID
                                 </th>
-                                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                <th className="font-bold text-left px-2 xl:px-0">
                                   Name
                                 </th>
-                                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                <th className="font-bold text-left px-2 xl:px-0">
                                   Mobile
                                 </th>
-                                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                <th className="font-bold text-left px-2 xl:px-0">
                                   Class
                                 </th>
-                                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                <th className="font-bold text-left px-2 xl:px-0">
                                   Medium
                                 </th>
-                                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                <th className="font-bold text-left px-2 xl:px-0">
                                   Stream
                                 </th>
-                                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                <th className="font-bold text-left px-2 xl:px-0">
                                   Net Fees
                                 </th>
-                                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                <th className="font-bold text-left px-2 xl:px-0">
                                   Pending
                                 </th>
-                                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                <th className="font-bold text-left px-2 xl:px-0">
                                   Profile
                                 </th>
-                                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                                <th className="font-bold text-left px-2 xl:px-0">
                                   Action
                                 </th>
                               </tr>
                             </thead>
                               <tbody className="w-full">
                                 {data.map((m, index) => {
+                                  let isPending = false;
+
+                                  const studentAcademicStartDate = new Date(m.academic.date);
+                                  const currentDate = new Date();
+
+                                  const daysDifferent = dateDiffInDays(studentAcademicStartDate, currentDate);
+                                  const perDayFee = m.fees.net_fees / 365
+
+                                  const feesToBePaid = daysDifferent * perDayFee;
+
+                                  const paidAmount = m.fees.net_fees - m.fees.pending_amount;
+
+                                  if(feesToBePaid > paidAmount){
+                                    isPending = true;
+                                  }
                                   return (
-                                    <tr key={index} className={`${m.fees.pending_amount > 0 ? 'bg-red-100' : 'bg-green-100'} border-b-1 border-gray-200 h-20 text-sm leading-none text-gray-800 border-b border-gray-100`}>
-                                      <td className="px-10 lg:px-6 xl:px-auto">
+                                    <tr key={index} className={`${isPending ? 'bg-red-100' : 'bg-green-100'} border-b-1 border-gray-200 h-20 text-sm leading-none text-gray-800 border-b border-gray-100`}>
+                                      <td className="pl-5">
                                         <span className="font-bold">
                                             {m.personal.student_id}
                                         </span>
                                       </td>
-                                      <td className=" px-10 lg:px-6 xl:px-0 capitalize">
+                                      <td className=" px-2 xl:px-0 capitalize">
                                         {m.personal.basic_info_id.full_name}
                                       </td>
-                                      <td className="px-10 lg:px-6 xl:px-0">
+                                      <td className="px-2 xl:px-0">
                                         <span className="">
                                           {m.personal.contact_info_id.whatsapp_no}
                                         </span>
                                       </td>
-                                      <td className="px-10 lg:px-6 xl:px-0">
+                                      <td className="px-2 xl:px-0">
                                         <p className="">
                                           <span className="">
                                             {m.academic.class_id.class_name}
                                           </span>
                                         </p>
                                       </td>
-                                      <td className="px-10 lg:px-6 xl:px-0">
+                                      <td className="px-2 xl:px-0">
                                         <p className="">
                                           <span className="">
                                             {m.academic.class_id.medium}
                                           </span>
                                         </p>
                                       </td>
-                                      <td className="px-10 lg:px-6 xl:px-0">
+                                      <td className="px-2 xl:px-0">
                                         <p className="">
                                           <span className="">
                                             {m.academic.class_id.stream.toLowerCase() == 'none' ? '--' : m.academic.class_id.stream}
                                           </span>
                                         </p>
                                       </td>
-                                      <td className="px-10 lg:px-6 xl:px-0">
+                                      <td className="px-2 xl:px-0">
                                         <p className="">
                                           <span className="">
                                             {m.fees.net_fees}
                                           </span>
                                         </p>
                                       </td>
-                                      <td className="px-10 lg:px-6 xl:px-0">
+                                      <td className="px-2 xl:px-0">
                                         <p className="">
                                           <span className="">
                                             {m.fees.pending_amount}

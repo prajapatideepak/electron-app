@@ -66,7 +66,10 @@ function DashboardMenu() {
       {<Sidebar />}
       <div className="w-full">
         {<Searchbar />}
-        <div className="relative" style={{ minHeight: "calc(100% - 70px)" }}>
+        <div
+          className="relative overflow-x-hidden"
+          style={{ minHeight: "calc(100% - 70px)" }}
+        >
           <ErrorBoundary>
             <Routes>
               <Route exact path="/admin-login" element={<AdminLogin />} />
@@ -75,11 +78,7 @@ function DashboardMenu() {
                 path="/dashboardsection"
                 element={<Dashboardsection />}
               />
-              <Route
-                exact
-                path="/dashboardsection/dashboard"
-                element={<Dashboard />}
-              />
+
               <Route exact path="/" element={<Dashboard />} />
               <Route
                 exact

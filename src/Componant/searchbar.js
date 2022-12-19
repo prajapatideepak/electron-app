@@ -3,7 +3,6 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlinePersonAddAlt } from "react-icons/md";
-import { MdPeopleOutline } from "react-icons/md";
 import { MdPublishedWithChanges } from "react-icons/md";
 import { VscKey } from "react-icons/vsc";
 import { NavLink } from "react-router-dom";
@@ -31,7 +30,7 @@ export default function Searchbar() {
     changeSection();
   }
   return (
-    <div className="w-full z-[100] sticky top-0 bg-white h-[70px] flex flex-row items-center justify-between shadow-[0_10px_10px_-15px_rgba(0,0,0,0.3)]">
+    <div className=" z-[100] sticky top-0 bg-white h-[70px] flex flex-row items-center justify-between shadow-[0_10px_10px_-15px_rgba(0,0,0,0.3)]">
       <div className="left pl-5 w-1/4">
         {/* This sectione empty for searchbar */}
       </div>
@@ -45,7 +44,11 @@ export default function Searchbar() {
             <div className="profile h-12 w-12 border-2 rounded-full flex justify-center items-center">
               <img
                 className="rounded-full  w-full mx-auto"
-                src={myData?.staff_id?.basic_info_id?.photo != '' ? myData?.staff_id?.basic_info_id?.photo : "images/user_default@123.png"}
+                src={
+                  myData?.staff_id?.basic_info_id?.photo != ""
+                    ? myData?.staff_id?.basic_info_id?.photo
+                    : "images/user_default@123.png"
+                }
                 width="7%"
                 height="7%"
                 alt="profile"

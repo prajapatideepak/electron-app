@@ -36,7 +36,7 @@ const Myclass = () => {
   const [classesByYear, setClassesByYear] = React.useState([]);
   const [fetchData, setFetchData] = React.useState([]);
   const [call, setCall] = React.useState(false);
-  const [allClasses, setAllClasses] = React.useState([])
+  const [allClasses, setAllClasses] = React.useState([]);
   const [selectYear, setSelectYear] = React.useState(0);
   const [medium, setMedium] = React.useState("");
   const [stream, setStream] = React.useState("");
@@ -93,17 +93,17 @@ const Myclass = () => {
   async function fetchClassesByYear() {
     const res = await getAllClassesByYear();
     setIsLoading(false);
-    if(!res.data || res?.data?.length == 0){
+    if (!res.data || res?.data?.length == 0) {
       return;
     }
     const sortedClasses = res.data?.sort((a, b) =>
-        a._id.batch_start_year < b._id.batch_start_year
-          ? 1
-          : a._id.batch_start_year > b._id.batch_start_year
-          ? -1
-          : 0
-      )
-    setSelectYear(sortedClasses[0]?._id?.batch_start_year)
+      a._id.batch_start_year < b._id.batch_start_year
+        ? 1
+        : a._id.batch_start_year > b._id.batch_start_year
+        ? -1
+        : 0
+    );
+    setSelectYear(sortedClasses[0]?._id?.batch_start_year);
     setClassesByYear(sortedClasses);
   }
 
@@ -116,11 +116,11 @@ const Myclass = () => {
       })
     );
 
-    setAllClasses(()=>
+    setAllClasses(() =>
       res?.data?.filter((data) => {
         return data.is_active == 1;
       })
-    )
+    );
 
     setFetchData(() =>
       res?.data?.filter((data) => {
@@ -221,17 +221,16 @@ const Myclass = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    setIsAddingClass(true)
+    setIsAddingClass(true);
     const response = await AddClass(data);
-    setIsAddingClass(false)
+    setIsAddingClass(false);
     if (response.data.success) {
       fetchClasses();
       setModel(false);
       reset();
       return notify();
-    }
-    else{
-      toast.error('Something went wrong')
+    } else {
+      toast.error("Something went wrong");
     }
   };
 
@@ -306,7 +305,8 @@ const Myclass = () => {
                                     required: "Class name is required",
                                     pattern: {
                                       value: /^[A-Za-z0-9 ]+$/,
-                                      message: "Please enter only letters or numbers",
+                                      message:
+                                        "Please enter only letters or numbers",
                                     },
                                   })}
                                   onKeyUp={() => {
@@ -438,6 +438,7 @@ const Myclass = () => {
                                   <option value="english">English</option>
                                   <option value="gujarati">Gujarati</option>
                                   <option value="hindi">Hindi</option>
+                                  <option value="Urdu">Urdu</option>
                                 </select>
                                 {errors.medium && (
                                   <small className="text-red-700">
@@ -546,9 +547,15 @@ const Myclass = () => {
                               <button
                                 type="submit"
                                 disabled={isAddingClass}
-                                className={` ${isAddingClass ? 'bg-darkblue-300' : 'bg-darkblue-500'} uppercase  hover:bg-white border-2 flex justify-center items-center  hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium h-11 w-28 rounded-md tracking-wider`}
+                                className={` ${
+                                  isAddingClass
+                                    ? "bg-darkblue-300"
+                                    : "bg-darkblue-500"
+                                } uppercase  hover:bg-white border-2 flex justify-center items-center  hover:border-darkblue-500 text-white hover:text-darkblue-500 font-medium h-11 w-28 rounded-md tracking-wider`}
                               >
-                                <h1 className="">{isAddingClass ? 'Loading...' : 'SUBMIT'}</h1>
+                                <h1 className="">
+                                  {isAddingClass ? "Loading..." : "SUBMIT"}
+                                </h1>
                               </button>
                             </div>
                           </div>
@@ -610,7 +617,8 @@ const Myclass = () => {
                                           required: "Classname is required",
                                           pattern: {
                                             value: /^[A-Za-z0-9 ]+$/,
-                                            message: "Please enter only letters or numbers",
+                                            message:
+                                              "Please enter only letters or numbers",
                                           },
                                         })}
                                         onKeyUp={() => {
@@ -741,6 +749,14 @@ const Myclass = () => {
                                               : false
                                           }
                                         >
+                                          <option
+                                            value="Urdu"
+                                            selected={
+                                              item.medium == "Urdu"
+                                                ? true
+                                                : false
+                                            }
+                                          ></option>
                                           English
                                         </option>
                                         <option

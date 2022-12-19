@@ -2,8 +2,7 @@ import React from "react";
 import { TbCurrencyRupee } from "react-icons/tb";
 import styled from "styled-components";
 
-function Receipt_student({receiptDetails}) {
-  
+function Receipt_student({ receiptDetails }) {
   const receiptBgColor = "bg-red-600";
   const receiptTextColor = "text-red-600";
 
@@ -19,7 +18,7 @@ function Receipt_student({receiptDetails}) {
               E-35, Sumel-8, Safal Market, Nr. Ajit Mill Char Rasta, Rakhial,
               Ahmedabad.
             </p>
-            <p className="pt-2">Mobile: 8747382919</p>
+            <p className="pt-2">Mobile: 9725272326</p>
           </div>
         </div>
         <div className="flex justify-between items-center mt-5">
@@ -30,31 +29,39 @@ function Receipt_student({receiptDetails}) {
           </div>
           <div>
             <p className={`${receiptTextColor} font-bold`}>
-              Receipt No: <span className="text-black">{receiptDetails?.receipt_no}</span>
+              Receipt No:{" "}
+              <span className="text-black">{receiptDetails?.receipt_no}</span>
             </p>
           </div>
         </div>
         <div className="flex justify-between items-center mt-5">
           <div>
             <p className={`${receiptTextColor} font-bold italic`}>
-              Stream: <span className="text-black">{receiptDetails?.stream?.toUpperCase()}</span>
+              Stream:{" "}
+              <span className="text-black">
+                {receiptDetails?.stream?.toUpperCase()}
+              </span>
             </p>
           </div>
           <div>
             <p className={`${receiptTextColor} font-bold italic`}>
-              Date: <span className="text-black">{ receiptDetails?.date }</span>
+              Date: <span className="text-black">{receiptDetails?.date}</span>
             </p>
           </div>
         </div>
         <div className="flex justify-between items-center mt-5">
           <div>
             <p className={`${receiptTextColor} font-bold italic`}>
-              Roll No: <span className="text-black">{receiptDetails?.roll_no}</span>
+              Roll No:{" "}
+              <span className="text-black">{receiptDetails?.roll_no}</span>
             </p>
           </div>
           <div>
             <p className={`${receiptTextColor} font-bold italic`}>
-              class: <span className="text-black">{receiptDetails?.class_name?.toUpperCase()}</span>
+              class:{" "}
+              <span className="text-black">
+                {receiptDetails?.class_name?.toUpperCase()}
+              </span>
             </p>
           </div>
           <div>
@@ -65,39 +72,36 @@ function Receipt_student({receiptDetails}) {
         </div>
         <div className="mt-5">
           <p className={`${receiptTextColor} font-bold italic`}>
-            Name: <span className="text-black">{receiptDetails?.full_name?.toUpperCase()}</span>
+            Name:{" "}
+            <span className="text-black">
+              {receiptDetails?.full_name?.toUpperCase()}
+            </span>
           </p>
         </div>
         <div className="mt-5">
           <p className={`${receiptTextColor} font-bold italic`}>
             The sum of Rupees:{" "}
-            <span className="text-black">{receiptDetails?.amount_in_words}</span>
+            <span className="text-black">
+              {receiptDetails?.amount_in_words}
+            </span>
           </p>
         </div>
-        <div className="mt-5">  
+        <div className="mt-5">
           <p className={`${receiptTextColor} font-bold italic`}>
-            By {
-              receiptDetails?.is_by_upi 
-            ?
-               'UPI'
-            :
-              receiptDetails?.is_by_cheque
-              ?
-                "CHEQUE"
-              :
-                null
-            }: <span className="text-black">{
-            receiptDetails?.is_by_upi 
-            ?
-               receiptDetails?.upi_no
-            :
-              receiptDetails?.is_by_cheque
-              ?
-                receiptDetails?.cheque_no
-              :
-                ' CASH'
-
-          }</span>
+            By{" "}
+            {receiptDetails?.is_by_upi
+              ? "UPI"
+              : receiptDetails?.is_by_cheque
+              ? "CHEQUE"
+              : null}
+            :{" "}
+            <span className="text-black">
+              {receiptDetails?.is_by_upi
+                ? receiptDetails?.upi_no
+                : receiptDetails?.is_by_cheque
+                ? receiptDetails?.cheque_no
+                : " CASH"}
+            </span>
           </p>
         </div>
         <div className="flex justify-between items-center mt-5">
@@ -123,7 +127,10 @@ function Receipt_student({receiptDetails}) {
             </div>
             <div className="pt-2">
               <p className={`${receiptTextColor} font-bold text-sm ml-1 mt-3`}>
-                Admin: <span className="text-black">{receiptDetails?.admin?.toUpperCase()}</span>
+                Admin:{" "}
+                <span className="text-black">
+                  {receiptDetails?.admin?.toUpperCase()}
+                </span>
               </p>
             </div>
           </div>

@@ -98,7 +98,10 @@ const Updateprofile = () => {
       full_name: admin_details?.staff_id?.basic_info_id.full_name,
       email: admin_details?.staff_id?.contact_info_id.email,
       whatsapp_no: admin_details?.staff_id?.contact_info_id.whatsapp_no,
-      alternate_no: admin_details?.staff_id?.contact_info_id.alternate_no == '' ? '--' : admin_details?.staff_id?.contact_info_id.alternate_no,
+      alternate_no:
+        admin_details?.staff_id?.contact_info_id.alternate_no == ""
+          ? "--"
+          : admin_details?.staff_id?.contact_info_id.alternate_no,
       security_pin: admin_details?.security_pin,
       address: admin_details?.staff_id?.contact_info_id.address,
       dob: dob,
@@ -147,19 +150,22 @@ const Updateprofile = () => {
 
   function handleedit(e) {
     e.preventDefault();
-    setadminInputController((prevData)=>{
+    setadminInputController((prevData) => {
       return {
         ...prevData,
-        alternate_no: adminInputController.alternate_no == '--' ? '' : adminInputController.alternate_no
-      }
-    })
+        alternate_no:
+          adminInputController.alternate_no == "--"
+            ? ""
+            : adminInputController.alternate_no,
+      };
+    });
     setIsEnable(false);
     setToggle(true);
   }
 
   function handleCancel(e) {
     e.preventDefault();
-    setState(valid.clearErrors())
+    setState(valid.clearErrors());
     let dob = new Date(admin?.staff_id?.basic_info_id?.dob);
     dob = `${dob.getFullYear()}-${
       dob.getMonth() + 1 < 10 ? "0" + (dob.getMonth() + 1) : dob.getMonth() + 1
@@ -170,7 +176,10 @@ const Updateprofile = () => {
         full_name: admin?.staff_id?.basic_info_id.full_name,
         email: admin?.staff_id?.contact_info_id.email,
         whatsapp_no: admin?.staff_id?.contact_info_id.whatsapp_no,
-        alternate_no: admin?.staff_id?.contact_info_id.alternate_no == '' ? '--' : admin?.staff_id?.contact_info_id.alternate_no,
+        alternate_no:
+          admin?.staff_id?.contact_info_id.alternate_no == ""
+            ? "--"
+            : admin?.staff_id?.contact_info_id.alternate_no,
         security_pin: admin?.security_pin,
         address: admin?.staff_id?.contact_info_id.address,
         dob: dob,
@@ -201,7 +210,7 @@ const Updateprofile = () => {
 
   React.useEffect(() => {
     if (updateAdmin.isSuccess) {
-      Toaster("success", "Profile Updated Successfully")
+      Toaster("success", "Profile Updated Successfully");
       localStorage.removeItem("section");
       changeSection();
     }
@@ -217,7 +226,7 @@ const Updateprofile = () => {
       {admin ? (
         <section className="">
           <form
-            className="flex justify-center items-center absolute w-full h-full"
+          className="flex justify-center items-center  w-full h-full"
             onSubmit={(e) => setState(valid.handleSubmit(e, onSubmit))}
           >
             <div className="w-2/3 grid grid-cols-1 rounded-lg drop-shadow-md truncate bg-white p-10 my-10">
@@ -242,7 +251,7 @@ const Updateprofile = () => {
                         placeholder="First Name, Middle Name, Last Name"
                         className={`w-72 mt-1 block  px-3 py-2 bg-white border  border-slate-300 
                         rounded-md text-sm shadow-sm placeholder-slate-400 outline-none
-                        ${valid.errors?.full_name != "" && "border-red-600"}
+                        ${valid.errors?.full_name != "" && "border-red-600" }
                         `}
                       />
                       {valid.errors?.full_name != "" ? (

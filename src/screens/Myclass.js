@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import "react-toastify/dist/ReactToastify.css";
 import { NasirContext } from "../NasirContext";
-import Loader from "../Componant/Loader";
+import LoaderSmall from "../Componant/LoaderSmall";
 
 const Myclass = () => {
   const { section } = React.useContext(NasirContext);
@@ -254,12 +254,8 @@ const Myclass = () => {
     resetField("stream");
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
-    <div className="relative m-5">
+    <div className="relative p-5">
       {/* Add New Class Model */}
       {model && (
         <div className="absolute w-full h-full  z-30 ">
@@ -430,7 +426,8 @@ const Myclass = () => {
                                   {...register("medium", {
                                     required: "Medium is required",
                                   })}
-                                  onKeyUp={() => {
+                                  onKeyUp={(e) => {
+                                    e.preventDefault();
                                     trigger("medium");
                                   }}
                                 >
@@ -438,7 +435,7 @@ const Myclass = () => {
                                   <option value="english">English</option>
                                   <option value="gujarati">Gujarati</option>
                                   <option value="hindi">Hindi</option>
-                                  <option value="Urdu">Urdu</option>
+                                  <option value="urdu">Urdu</option>
                                 </select>
                                 {errors.medium && (
                                   <small className="text-red-700">
@@ -749,16 +746,9 @@ const Myclass = () => {
                                               : false
                                           }
                                         >
-                                          <option
-                                            value="Urdu"
-                                            selected={
-                                              item.medium == "Urdu"
-                                                ? true
-                                                : false
-                                            }
-                                          ></option>
                                           English
                                         </option>
+
                                         <option
                                           value="gujarati"
                                           selected={
@@ -768,6 +758,14 @@ const Myclass = () => {
                                           }
                                         >
                                           Gujarati
+                                        </option>
+                                        <option
+                                          value="urdu"
+                                          selected={
+                                            item.medium == "urdu" ? true : false
+                                          }
+                                        >
+                                          Urdu
                                         </option>
                                         <option
                                           value="hindi"
@@ -1017,6 +1015,7 @@ const Myclass = () => {
                     <option value="english">English</option>
                     <option value="gujarati">Gujarati</option>
                     <option value="hindi">Hindi</option>
+                    <option value="urdu">Urdu</option>
                   </select>
                 </button>
               </div>
@@ -1091,16 +1090,18 @@ const Myclass = () => {
           </div>
 
           <div
-            className={`mt-5 h-1/5 rounded-lg bg-white pt-5 ${
+            className={`mt-5 rounded-lg bg-white pt-5 ${
               classes?.length > 0 ? "pb-10" : "pb-5"
             } flex justify-center items-center`}
           >
-            <ul className="justify-between grid grid-custom gap-10 p-10 pb-0 pt-0">
-              {classes?.length > 0 ? (
+            <ul className="justify-center flex flex-wrap gap-10 p-10 pb-0 pt-0">
+              {isLoading ? (
+                <LoaderSmall />
+              ) : classes?.length > 0 ? (
                 classes?.map((item, index) => {
                   return (
                     <li
-                      className="rounded-md h-28 xl:w-72  xl:h-44 p-3 pt-2 cursor-pointer"
+                      className="rounded-md h-28 xl:w-72  xl:h-44 p-3 pt-2 mb-10 xl:mb-0 cursor-pointer"
                       key={index}
                     >
                       <div
@@ -1109,7 +1110,7 @@ const Myclass = () => {
                           backgroundColor: bgColors[index % bgColors.length],
                         }}
                       >
-                        <div className=" h-6  flex justify-end items-center space-x-2 mr-2 ">
+                        <div className=" h-6 flex justify-end items-center space-x-2 mr-2 ">
                           {isCurrentYearSelected ? (
                             <>
                               <div
@@ -1186,13 +1187,15 @@ const Myclass = () => {
                             </div>
                           </div>
                           <div
-                            className="total w-60 h-8 ml-1 rounded-md  flex  justify-center items-center mt-4 "
+                            className="total h-8 ml-1 mr-2 md:mr-2 xl:mr-0 rounded-md  flex  justify-center items-center mt-4 "
                             style={{
                               backgroundColor:
                                 headingBgColor[index % headingBgColor.length],
+                              minWidth: "220px",
+                              maxWidth: "240px",
                             }}
                           >
-                            <p className="  text-white    ">
+                            <p className="text-white">
                               Total Student : {item.total_student}
                             </p>
                           </div>

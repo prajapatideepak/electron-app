@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useEffect } from "react";
-import { useReactToPrint } from "react-to-print";
+import ReactToPrint from "react-to-print";
 import { MdLocalPrintshop } from "react-icons/md";
 import { AiFillEye } from "react-icons/ai";
 import { Tooltip } from "@material-tailwind/react";
@@ -16,9 +16,10 @@ import "./Pagination.css";
 const Studenthearder = () => {
   const [data, setData] = useState([]);
   const [date, setDate] = useState("");
+  const [nextDate, setNextDate] = useState("");
   const reportData = useQuery("reports", useGetReport);
   const componentRef = useRef();
-
+  const [isPrint, setIsPrint] = useState(false);
   const [currentItems, setcurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
@@ -36,15 +37,34 @@ const Studenthearder = () => {
 
   function handle_data(e) {
     const [previous, post] = handleDataFilter(e.target.value);
-
     setDate(e.target.value);
+
+    if (nextDate) {
+      handleNextDate(nextDate);
+    } else {
+      const newData = reportData.data.data.filter(
+        (recipet) =>
+          new Date(recipet.date).getTime() > previous &&
+          new Date(recipet.date).getTime() < post
+      );
+      setData(() => newData);
+    }
+  }
+
+  function handleNextDate(e) {
+    const [_, post] = handleDataFilter(e);
+    const dateData = handleDataFilter(date);
+
+    setNextDate(() => e);
+    console.log(dateData);
+
     const newData = reportData.data.data.filter(
       (recipet) =>
-        new Date(recipet.date).getTime() > previous &&
+        new Date(recipet.date).getTime() > dateData[0] &&
         new Date(recipet.date).getTime() < post
     );
 
-    setData(() => newData);
+    setData(() => newData.reverse());
   }
 
   React.useEffect(() => {
@@ -66,9 +86,6 @@ const Studenthearder = () => {
     setItemOffset(newOffset);
   };
 
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
   return (
     <div>
       <div className="mt-4">
@@ -89,12 +106,22 @@ const Studenthearder = () => {
               onChange={(e) => handle_data(e)}
               className="outline-none bg-white border rounded-md p-2 cursor-pointer"
             />
+
+            <input
+              id=""
+              value={nextDate}
+              type="Date"
+              onChange={(e) => handleNextDate(e.target.value)}
+              disabled={date ? false : true}
+              className="outline-none bg-white border rounded-md p-2 cursor-pointer"
+            />
             <button
               id=""
               className=" flex items-center border outline-none bg-white py-2 px-4 xl:p-4 xl:py-2 shadow-lg hover:shadow rounded-md  space-x-1 "
               onClick={(e) => {
-                setDate("");
                 setData(reportData?.data?.data);
+                setDate("");
+                setNextDate("");
               }}
             >
               Clear Filter
@@ -107,55 +134,64 @@ const Studenthearder = () => {
               >
                 <span
                   href="#"
-                  className="text-3xl bg-green-200 rounded-md text-green-900  w-10 h-8 flex justify-center  "
-                  onClick={handlePrint}
+                  className="text-3xl bg-green-200 rounded-md text-green-900  w-10 h-8 flex justify-center  cursor-pointer"
                 >
-                  <MdLocalPrintshop />
+                  <ReactToPrint
+                    trigger={() => <MdLocalPrintshop />}
+                    content={() => componentRef.current}
+                    onBeforeGetContent={() => {
+                      return new Promise((resolve) => {
+                        setIsPrint(true);
+                        resolve();
+                      });
+                    }}
+                    onAfterPrint={() => setIsPrint(false)}
+                  />
                 </span>
               </Tooltip>
             ) : null}
           </div>
-          <div ref={componentRef} className="p-5 pt-3 pb-0">
+          <div className="p-5 pt-3 pb-0">
             <div className="overflow-x-auto">
-              <table className="w-full whitespace-nowrap">
+              <table ref={componentRef} className="w-full whitespace-nowrap">
                 <thead>
                   <tr className="bg-gray-100 h-16 w-full text-sm leading-none font-bold text-darkblue-500">
                     <th className="font-normal text-left pl-10">Date</th>
-                    <th className="font-normal text-left  px-10 lg:px-6 xl:px-0">
+                    <th className="font-normal text-left  px-2 xl:px-0">
                       Reciept No
                     </th>
-                    <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                    <th className="font-normal text-left px-2 xl:px-0">
                       Student Name
                     </th>
-                    <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
-                      Paid
-                    </th>
-                    <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                    <th className="font-normal text-left px-2 xl:px-0">Paid</th>
+                    <th className="font-normal text-left px-2 xl:px-0">
                       Discount
                     </th>
-                    <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                    <th className="font-normal text-left px-2 xl:px-0">
                       total
                     </th>
-                    <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                    <th className="font-normal text-left px-2 xl:px-0">
                       Admin
                     </th>
-                    <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
-                      Detail
-                    </th>
+                    {!isPrint ? (
+                      <th className="font-normal text-left px-2 xl:px-0">
+                        Detail
+                      </th>
+                    ) : null}
                   </tr>
                 </thead>
                 <tbody className="w-full">
                   {reportData.isLoading ? (
                     <tr className="h-20 blur-sm text-sm leading-none text-gray-800 border-b border-gray-100">
                       <td className="pl-8">.........</td>
-                      <td className=" px-10 font-bold lg:px-6 xl:px-0">..</td>
-                      <td className="px-10 lg:px-6 xl:px-0">.....</td>
-                      <td className="font-medium px-10 lg:px-6 xl:px-0">
+                      <td className=" px-2 font-bold xl:px-0">..</td>
+                      <td className="px-2 xl:px-0">.....</td>
+                      <td className="font-medium px-2 xl:px-0">
                         <span className="bg-green-200 px-4 text-green-900 font-bold rounded">
                           ...
                         </span>
                       </td>
-                      <td className="px-10 lg:px-6 xl:px-0">
+                      <td className="px-2 xl:px-0">
                         <p className="">
                           <span className="bg-red-200 px-4 text-red-900 font-bold rounded">
                             ..
@@ -174,6 +210,53 @@ const Studenthearder = () => {
                         <span>........</span>
                       </td>
                     </tr>
+                  ) : isPrint ? (
+                    data?.map((m, key) => {
+                      return (
+                        <tr
+                          key={key}
+                          className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100"
+                        >
+                          <td className="pl-8">
+                            {new Date(m.date)
+                              ?.toISOString()
+                              .slice(0, 10)
+                              .split("-")
+                              .reverse()
+                              .join("-")}
+                          </td>
+                          <td className=" px-2 font-bold xl:px-0">
+                            {m.fees_receipt_id}
+                          </td>
+                          <td className="px-2 xl:px-0 capitalize">
+                            {
+                              m.fees[0].academics[0].students[0].basic_info[0]
+                                .full_name
+                            }
+                          </td>
+                          <td className="font-medium px-2 xl:px-0">
+                            <span className="bg-green-200 px-4 text-green-900 font-bold rounded">
+                              {m.transaction[0].amount}
+                            </span>
+                          </td>
+                          <td className="px-2 xl:px-0">
+                            <p className="">
+                              <span className="bg-red-200 px-4 text-red-900 font-bold rounded">
+                                {m.discount}
+                              </span>
+                            </p>
+                          </td>
+                          <td>
+                            <span className="bg-blue-200 px-4 text-darkblue-500 font-bold rounded">
+                              {m.transaction[0]?.amount + m.discount}
+                            </span>
+                          </td>
+                          <td>
+                            <span>{m.admin[0]?.username}</span>
+                          </td>
+                        </tr>
+                      );
+                    })
                   ) : (
                     currentItems?.map((m, key) => {
                       return (
@@ -182,23 +265,28 @@ const Studenthearder = () => {
                           className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100"
                         >
                           <td className="pl-8">
-                            {new Date(m.date)?.toISOString().slice(0, 10)}
+                            {new Date(m.date)
+                              ?.toISOString()
+                              .slice(0, 10)
+                              .split("-")
+                              .reverse()
+                              .join("-")}
                           </td>
-                          <td className=" px-10 font-bold lg:px-6 xl:px-0">
+                          <td className=" px-2 font-bold xl:px-0">
                             {m.fees_receipt_id}
                           </td>
-                          <td className="px-10 lg:px-6 xl:px-0 capitalize">
+                          <td className="px-2 xl:px-0 capitalize">
                             {
                               m.fees[0].academics[0].students[0].basic_info[0]
                                 .full_name
                             }
                           </td>
-                          <td className="font-medium px-10 lg:px-6 xl:px-0">
+                          <td className="font-medium px-2 xl:px-0">
                             <span className="bg-green-200 px-4 text-green-900 font-bold rounded">
                               {m.transaction[0].amount}
                             </span>
                           </td>
-                          <td className="px-10 lg:px-6 xl:px-0">
+                          <td className="px-2 xl:px-0">
                             <p className="">
                               <span className="bg-red-200 px-4 text-red-900 font-bold rounded">
                                 {m.discount}
@@ -215,7 +303,16 @@ const Studenthearder = () => {
                           </td>
                           <td className="px-5  ">
                             <span>
-                              <NavLink to={"/receipt/receipt"}>
+                              <NavLink
+                                to={"/receipt/receipt"}
+                                state={{
+                                  is_cancelled:
+                                    m.fees[0].academics[0].students[0]
+                                      .basic_info[0].is_cancelled,
+                                  isStaff: false,
+                                  fees_receipt_id: m.fees_receipt_id,
+                                }}
+                              >
                                 <AiFillEye className="text-xl cursor-pointer" />
                               </NavLink>
                             </span>

@@ -3,7 +3,7 @@ import { AiFillEye, AiOutlineSearch } from "react-icons/ai";
 import { IoMdInformationCircle } from "react-icons/io";
 import { NavLink } from "react-router-dom";
 import {searchReceipt} from '../hooks/usePost';
-import Loader from '../Componant/Loader'; 
+import LoaderSmall from '../Componant/LoaderSmall'; 
 import Toaster from '../hooks/showToaster';
 import {AxiosError} from 'axios';
 import { Tooltip } from "@material-tailwind/react";
@@ -44,7 +44,7 @@ export default function ReciptScreen() {
   }
   
   return (
-    <div className="bg-student-100 min-h-screen py-10 px-14">
+    <div className="bg-student-100 py-10 px-14" style={{minHeight: "calc(100vh - 70px)"}}>
       <div className="">
       
         <h1 className="text-3xl  font-bold text-darkblue-500">Search Receipt</h1>
@@ -68,7 +68,7 @@ export default function ReciptScreen() {
       {
         loading
         ?
-          <Loader/>
+          <LoaderSmall/>
         :
           <div className="p-4 mt-8 ">
             {studentReceipts?.length > 0 || staffReceipts?.length > 0 ? (
@@ -91,25 +91,25 @@ export default function ReciptScreen() {
                               <thead>
                                 <tr className="bg-gray-100 h-16 w-full text-sm leading-none font-bold text-darkblue-500">
                                   <th className="font-normal text-left pl-10">Date</th>
-                                  <th className="font-normal text-left  px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left  px-2 xl:px-0">
                                     Reciept No
                                   </th>
-                                  <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left px-2 xl:px-0">
                                     Name
                                   </th>
-                                  <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left px-2 xl:px-0">
                                     Paid
                                   </th>
-                                  <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left px-2 xl:px-0">
                                     Discount
                                   </th>
-                                  <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left px-2 xl:px-0">
                                     Total
                                   </th>
-                                  <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left px-2 xl:px-0">
                                     Admin
                                   </th>
-                                  <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left px-2 xl:px-0">
                                     Action
                                   </th>
                                 </tr>
@@ -127,19 +127,19 @@ export default function ReciptScreen() {
                                           return(
                                             <tr key={index} className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
                                               <td className="pl-8">{date}</td>
-                                              <td className=" px-10 font-bold lg:px-6 xl:px-0">
+                                              <td className=" px-2 font-bold xl:px-0">
                                                 {receipt.fees_receipt_id}
                                               </td>
-                                              <td className="px-10 lg:px-6 xl:px-0 capitalize">
+                                              <td className="px-2 xl:px-0 capitalize">
                                                 {data.basic_info[0].full_name}
                                               </td>
-                                              <td className="font-medium px-10 lg:px-6 xl:px-0">
+                                              <td className="font-medium px-2 xl:px-0">
                                                 <span className="bg-green-200 px-4 text-green-900 font-bold rounded">
                                                   {" "}
                                                   {receipt.transaction[0].amount}{" "}
                                                 </span>
                                               </td>
-                                              <td className="px-10 lg:px-6 xl:px-0">
+                                              <td className="px-2 xl:px-0">
                                                 <p className="">
                                                   <span className="bg-red-200 px-4 text-red-900 font-bold rounded">
                                                     {receipt.discount}{" "}
@@ -198,22 +198,22 @@ export default function ReciptScreen() {
                               <thead>
                                 <tr className="bg-gray-100 h-16 w-full text-sm leading-none font-bold text-darkblue-500">
                                   <th className="font-normal text-left pl-10">Date</th>
-                                  <th className="font-normal text-left  px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left  px-2 xl:px-0">
                                     Reciept No
                                   </th>
-                                  <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left px-2 xl:px-0">
                                     Name
                                   </th>
-                                  <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left px-2 xl:px-0">
                                     Salary Type
                                   </th>                                
-                                  <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left px-2 xl:px-0">
                                     Amount
                                   </th>
-                                  <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left px-2 xl:px-0">
                                     Admin
                                   </th>
-                                  <th className="font-normal text-left px-10 lg:px-6 xl:px-0">
+                                  <th className="font-normal text-left px-2 xl:px-0">
                                     Action
                                   </th>
                                 </tr>
@@ -230,13 +230,13 @@ export default function ReciptScreen() {
                                         return(
                                           <tr className="h-20 text-sm leading-none text-gray-800 border-b border-gray-100">
                                             <td className="pl-8">{date}</td>
-                                            <td className=" px-10 font-bold lg:px-6 xl:px-0">
+                                            <td className=" px-2 font-bold xl:px-0">
                                               {receipt.salary_receipt_id}
                                             </td>
-                                            <td className="px-10 lg:px-6 xl:px-0 capitalize">
+                                            <td className="px-2 xl:px-0 capitalize">
                                               {data.basic_info[0].full_name}
                                             </td>
-                                            <td className="px-10 lg:px-6 xl:px-4 ">
+                                            <td className="px-2 xl:px-4 ">
                                               <span className="">
                                                 {receipt.is_hourly ? 'Hourly' : 'Monthly'}
                                               </span>

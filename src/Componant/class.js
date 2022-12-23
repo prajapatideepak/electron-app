@@ -20,7 +20,7 @@ import {
 } from "../hooks/usePost";
 import { IoIosArrowBack } from "react-icons/io";
 import _ from "lodash";
-import Loader from "./Loader";
+import LoaderSmall from "./LoaderSmall";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
 
@@ -40,7 +40,7 @@ const Class = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [Serialno, setserialno] = useState(1);
   const [selectedPage, setSelectedPage] = useState(0);
-  const itemsPerPage = 2;
+  const itemsPerPage = 12;
   const Toaster = () => {
     toast.success("All Students Exported. Check your download folder");
   };
@@ -158,10 +158,6 @@ const Class = () => {
     }
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
     <div className="relative  ">
       <div className={`bg-slate-100 `}>
@@ -179,11 +175,11 @@ const Class = () => {
                 <div
                   className={`btn ${
                     totalStudents > 0 ? "cursor-pointer" : "cursor-default"
-                  }  h-12 w-40 rounded-full bg-white text-left border  overflow-hidden`}
+                  }  h-10 w-40 rounded-full bg-white text-left border  overflow-hidden`}
                   id="btn"
                 >
                   <div
-                    className="icons  h-12 w-40 flex ml-3 items-center"
+                    className="icons h-10 w-40 flex ml-3 items-center"
                     id="icons"
                   >
                     <FaArrowRight
@@ -225,7 +221,7 @@ const Class = () => {
           <div className="right ml-5 p-5 pt-14 flex  2xl:space-x-10 space-x-5 justify-center items-center text-center">
             <div
               id="Student-cards"
-              className=" cursor-pointer h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class4-50  xl:space-y-3 space-y-2 flex justify-center items-center"
+              className="h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class4-50  xl:space-y-3 space-y-2 flex justify-center items-center"
             >
               <div>
                 <div className="flex items-center text-center justify-center space-x-5  ">
@@ -237,26 +233,33 @@ const Class = () => {
                 </h1>
               </div>
             </div>
-            <div
-              id="Student-cards"
-              onClick={Exportpendingstudent}
-              className=" cursor-pointer h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class1-50  xl:space-y-3 space-y-2 flex justify-center items-center "
+            <Tooltip
+              content="Click here to export excel file of students with pending fees"
+              placement="bottom-end"
+              className="text-white bg-black rounded p-2"
             >
-              <div>
-                <div className="flex items-center text-center justify-center space-x-5  ">
-                  <MdPendingActions className=" text-class1-50 rounded-full xl:text-5xl text-5xl  xl:p-1 p-1 bg-white" />
-                  <p className="text-white text-4xl">
-                    {totalPendingStudents ? totalPendingStudents?.length : 0}
-                  </p>
+
+              <div
+                id="Student-cards"
+                onClick={Exportpendingstudent}
+                className=" cursor-pointer h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class1-50  xl:space-y-3 space-y-2 flex justify-center items-center "
+              >
+                <div>
+                  <div className="flex items-center text-center justify-center space-x-5  ">
+                    <MdPendingActions className=" text-class1-50 rounded-full xl:text-5xl text-5xl  xl:p-1 p-1 bg-white" />
+                    <p className="text-white text-4xl">
+                      {totalPendingStudents ? totalPendingStudents?.length : 0}
+                    </p>
+                  </div>
+                  <h1 className="text-white text-lg  ">
+                    Fees Pending <span>Students</span>
+                  </h1>
                 </div>
-                <h1 className="text-white text-lg  ">
-                  Fees Pending <span>Students</span>
-                </h1>
               </div>
-            </div>
+            </Tooltip>
             <div
               id="Student-cards"
-              className=" cursor-pointer h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class2-50  xl:space-y-3 space-y-2 flex justify-center items-center "
+              className=" h-32 w-44 2xl:w-52 rounded-lg xl:h-28 bg-class2-50  xl:space-y-3 space-y-2 flex justify-center items-center "
             >
               <div>
                 <div className="flex items-center text-center justify-center space-x-5  ">
@@ -357,27 +360,27 @@ const Class = () => {
                     <th scope="col" className="pl-3 py-4">
                       Student Id
                     </th>
-                    <th scope="col" className="px-6 py-4">
+                    <th scope="col" className="px-2 py-4">
                       Name
                     </th>
-                    <th scope="col" className="px-6 py-4">
+                    <th scope="col" className="px-2 py-4">
                       Phone
                     </th>
-                    <th scope="col" className="px-6 py-4">
+                    <th scope="col" className="px-2 py-4">
                       Total
                     </th>
-                    <th scope="col" className="px-6 py-4">
+                    <th scope="col" className="px-2 py-4">
                       Paidup
                     </th>
-                    <th scope="col" className="px-6 py-4">
+                    <th scope="col" className="px-2 py-4">
                       Pending
                     </th>
                     {!isPrint ? (
                       <>
-                        <th scope="col" className="px-6 py-4">
+                        <th scope="col" className="px-2 py-4">
                           Profile
                         </th>
-                        <th scope="col" className="px-6 py-4">
+                        <th scope="col" className="px-2 py-4">
                           Action
                         </th>
                       </>
@@ -385,157 +388,165 @@ const Class = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white border items-center ">
-                  {paginationData.length > 0 ? (
-                    isPrint ? (
-                      allClassStudents.map((item, index) => {
-                        return (
-                          <tr className=" border-b" key={index}>
-                            <th className="py-5 px-6">
-                              {index + 1 + (itemsPerPage * Serialno - itemsPerPage)}
-                            </th>
-                            <td className=" py-5 text-gray-500">
-                              {item.student_id.student_id}
-                            </td>
-                            <td className="px-6 py-5 capitalize">
-                              {item.student_id.basic_info_id.full_name}
-                            </td>
-                            <td className="px-6 py-5">
-                              {item.student_id.contact_info_id.whatsapp_no}
-                            </td>
-                            <td className="px-6 py-5">
-                              {item.fees_id.net_fees}
-                            </td>
-                            <td className="px-6 py-5">
-                              {item.fees_id.net_fees -
-                                item.fees_id.pending_amount}
-                            </td>
-                            <td className="px-6 py-5">
-                              {item.fees_id.pending_amount}
-                            </td>
-                            {!isPrint ? (
-                              <td className="px-6 py-5 ">
-                                <div className="flex justify-center space-x-3">
-                                  <NavLink
-                                    className="nav-link"
-                                    to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}
-                                  >
-                                    <Tooltip
-                                      content="Show Profile"
-                                      placement="bottom-end"
-                                      className="text-white bg-black rounded p-2"
-                                    >
-                                      <span>
-                                        <AiFillEye className="text-xl text-darkblue-500" />
-                                      </span>
-                                    </Tooltip>
-                                  </NavLink>
-                                </div>
-                              </td>
-                            ) : null}
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      paginationData.map((item, index) => {
-                        return (
-                          <tr className=" border-b" key={index}>
-                            <th className="py-5 px-6">
-                              {index + 1 + (itemsPerPage * Serialno - itemsPerPage)}
-                            </th>
-                            <td className="px-6 py-5 text-gray-500">
-                              {item.student_id.student_id}
-                            </td>
-                            <td className="px-6 py-5 capitalize">
-                              {item.student_id.basic_info_id.full_name}
-                            </td>
-                            <td className="px-6 py-5">
-                              {item.student_id.contact_info_id.whatsapp_no}
-                            </td>
-                            <td className="px-6 py-5">
-                              {item.fees_id.net_fees}
-                            </td>
-                            <td className="px-6 py-5">
-                              {item.fees_id.net_fees -
-                                item.fees_id.pending_amount}
-                            </td>
-                            <td className="px-6 py-5">
-                              {item.fees_id.pending_amount}
-                            </td>
-                            {!isPrint ? (
-                              <>
-                                <td className="px-6 py-5 ">
-                                  <div className="flex justify-center space-x-3">
-                                    <NavLink
-                                      className="nav-link"
-                                      to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}
-                                    >
-                                      <Tooltip
-                                        content="Show Profile"
-                                        placement="bottom-end"
-                                        className="text-white bg-black rounded p-2"
-                                      >
-                                        <span>
-                                          <AiFillEye className="text-xl text-darkblue-500" />
-                                        </span>
-                                      </Tooltip>
-                                    </NavLink>
-
-                                    {/* <Tooltip content="Admission Cansel" placement="bottom-end" className='text-white bg-black rounded p-2'>
-                                                                        <MdDelete className="text-xl text-red-600" onClick={(e) => navigate(`/cancelAdmission/${item.student_id.student_id}`, {state:{item}})} />
-                                                                    </Tooltip> */}
-                                  </div>
-                                </td>
-                                <td className="px-6 py-5 ">
-                                  <div className="flex justify-center space-x-3">
-                                    <NavLink
-                                      to={"/receipt/FeesDetail"}
-                                      state={{
-                                        rollno: item.student_id.student_id,
-                                        full_name:
-                                          item.student_id.basic_info_id
-                                            .full_name,
-                                        class_name: classDetails.class_name,
-                                        medium: classDetails.medium,
-                                        stream: classDetails.stream,
-                                        batch: `${classDetails.batch_start_year}-${classDetails.batch_end_year}`,
-                                      }}
-                                    >
-                                      <button
-                                        className={`${
-                                          item.fees_id.pending_amount <= 0
-                                            ? "disabled:opacity-40"
-                                            : "bg-darkblue-500 hover:bg-blue-900"
-                                        } bg-darkblue-500 rounded-lg  duration-200 transition text-white px-5 font-semibold py-1`}
-                                        disabled={
-                                          item.fees_id.pending_amount <= 0
-                                            ? true
-                                            : false
-                                        }
-                                      >
-                                        Pay
-                                      </button>
-                                    </NavLink>
-                                  </div>
-                                </td>
-                              </>
-                            ) : null}
-                          </tr>
-                        );
-                      })
-                    )
-                  ) : (
-                    <tr className="">
-                      <td
-                        colSpan={9}
-                        className="bg-red-200  font-bold p-2 rounded"
-                      >
-                        <div className="flex space-x-2 justify-center items-center">
-                          <IoMdInformationCircle className="text-xl text-red-600" />
-                          <h1 className="text-red-800">Students not found </h1>
-                        </div>
+                  {
+                    isLoading
+                    ?
+                      <td colSpan={9}>
+                        <LoaderSmall />
                       </td>
-                    </tr>
-                  )}
+                    :
+                      paginationData.length > 0 ? (
+                        isPrint ? (
+                          allClassStudents.map((item, index) => {
+                            return (
+                              <tr className=" border-b" key={index}>
+                                <th className="py-5 px-2">
+                                  {index + 1 + (itemsPerPage * Serialno - itemsPerPage)}
+                                </th>
+                                <td className=" py-5 text-gray-500">
+                                  {item.student_id.student_id}
+                                </td>
+                                <td className="px-2 py-5 capitalize">
+                                  {item.student_id.basic_info_id.full_name}
+                                </td>
+                                <td className="px-2 py-5">
+                                  {item.student_id.contact_info_id.whatsapp_no}
+                                </td>
+                                <td className="px-2 py-5">
+                                  {item.fees_id.net_fees}
+                                </td>
+                                <td className="px-2 py-5">
+                                  {item.fees_id.net_fees -
+                                    item.fees_id.pending_amount}
+                                </td>
+                                <td className="px-2 py-5">
+                                  {item.fees_id.pending_amount}
+                                </td>
+                                {!isPrint ? (
+                                  <td className="px-2 py-5 ">
+                                    <div className="flex justify-center space-x-3">
+                                      <NavLink
+                                        className="nav-link"
+                                        to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}
+                                      >
+                                        <Tooltip
+                                          content="Show Profile"
+                                          placement="bottom-end"
+                                          className="text-white bg-black rounded p-2"
+                                        >
+                                          <span>
+                                            <AiFillEye className="text-xl text-darkblue-500" />
+                                          </span>
+                                        </Tooltip>
+                                      </NavLink>
+                                    </div>
+                                  </td>
+                                ) : null}
+                              </tr>
+                            );
+                          })
+                        ) : (
+                          paginationData.map((item, index) => {
+                            return (
+                              <tr className=" border-b" key={index}>
+                                <th className="py-5 px-2">
+                                  {index + 1 + (itemsPerPage * Serialno - itemsPerPage)}
+                                </th>
+                                <td className="px-2 py-5 text-gray-500">
+                                  {item.student_id.student_id}
+                                </td>
+                                <td className="px-2 py-5 capitalize">
+                                  {item.student_id.basic_info_id.full_name}
+                                </td>
+                                <td className="px-2 py-5">
+                                  {item.student_id.contact_info_id.whatsapp_no}
+                                </td>
+                                <td className="px-2 py-5">
+                                  {item.fees_id.net_fees}
+                                </td>
+                                <td className="px-2 py-5">
+                                  {item.fees_id.net_fees -
+                                    item.fees_id.pending_amount}
+                                </td>
+                                <td className="px-2 py-5">
+                                  {item.fees_id.pending_amount}
+                                </td>
+                                {!isPrint ? (
+                                  <>
+                                    <td className="px-2 py-5 ">
+                                      <div className="flex justify-center space-x-3">
+                                        <NavLink
+                                          className="nav-link"
+                                          to={`/myclass/class/Profilestudent/${item.student_id.student_id}`}
+                                        >
+                                          <Tooltip
+                                            content="Show Profile"
+                                            placement="bottom-end"
+                                            className="text-white bg-black rounded p-2"
+                                          >
+                                            <span>
+                                              <AiFillEye className="text-xl text-darkblue-500" />
+                                            </span>
+                                          </Tooltip>
+                                        </NavLink>
+
+                                        {/* <Tooltip content="Admission Cansel" placement="bottom-end" className='text-white bg-black rounded p-2'>
+                                                                            <MdDelete className="text-xl text-red-600" onClick={(e) => navigate(`/cancelAdmission/${item.student_id.student_id}`, {state:{item}})} />
+                                                                        </Tooltip> */}
+                                      </div>
+                                    </td>
+                                    <td className="px-2 py-5 ">
+                                      <div className="flex justify-center space-x-3">
+                                        <NavLink
+                                          to={"/receipt/FeesDetail"}
+                                          state={{
+                                            rollno: item.student_id.student_id,
+                                            full_name:
+                                              item.student_id.basic_info_id
+                                                .full_name,
+                                            class_name: classDetails.class_name,
+                                            medium: classDetails.medium,
+                                            stream: classDetails.stream,
+                                            batch: `${classDetails.batch_start_year}-${classDetails.batch_end_year}`,
+                                          }}
+                                        >
+                                          <button
+                                            className={`${
+                                              item.fees_id.pending_amount <= 0
+                                                ? "disabled:opacity-40"
+                                                : "bg-darkblue-500 hover:bg-blue-900"
+                                            } bg-darkblue-500 rounded-lg  duration-200 transition text-white px-5 font-semibold py-1`}
+                                            disabled={
+                                              item.fees_id.pending_amount <= 0
+                                                ? true
+                                                : false
+                                            }
+                                          >
+                                            Pay
+                                          </button>
+                                        </NavLink>
+                                      </div>
+                                    </td>
+                                  </>
+                                ) : null}
+                              </tr>
+                            );
+                          })
+                        )
+                      ) : (
+                        <tr className="">
+                          <td
+                            colSpan={9}
+                            className="bg-red-200  font-bold p-2 rounded"
+                          >
+                            <div className="flex space-x-2 justify-center items-center">
+                              <IoMdInformationCircle className="text-xl text-red-600" />
+                              <h1 className="text-red-800">Students not found </h1>
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                  }
                 </tbody>
               </table>
             </div>

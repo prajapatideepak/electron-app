@@ -54,17 +54,17 @@ export default function AdminList() {
             <thead>
               <tr className="bg-gray-200 h-16 w-full text-sm leading-none font-bold text-darkblue-500">
                 <th className="font-bold text-left pl-10">Username</th>
-                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                <th className="font-bold text-left px-2 xl:px-0">
                   Admin Name
                 </th>
-                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                <th className="font-bold text-left px-2 xl:px-0">
                   Super Admin
                 </th>
-                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                <th className="font-bold text-left px-2 xl:px-0">
                   Security PIN
                 </th>
 
-                <th className="font-bold text-left px-10 lg:px-6 xl:px-0">
+                <th className="font-bold text-left px-2 xl:px-0">
                   Actions
                 </th>
               </tr>
@@ -76,15 +76,15 @@ export default function AdminList() {
                   return (
                     <tr key={key} className="h-20 text-sm leading-none bg-white text-gray-800 border-b border-gray-100">
                       <td className="pl-10">{m?.username}</td>
-                      <td className="px-10 lg:px-6 xl:px-0">
+                      <td className="px-2 xl:px-0">
                         <span className="font-bold capitalize">
                           {m?.staff_id?.basic_info_id?.full_name}{" "}
                         </span>
                       </td>
-                      <td className=" px-10 lg:px-6 xl:px-0">
+                      <td className=" px-2 xl:px-0">
                         {m.is_super_admin ? "Yes" : "No"}
                       </td>
-                      <td className="px-10 lg:px-6 xl:px-0">
+                      <td className="px-2 xl:px-0">
                         <span className=""> {m.security_pin} </span>
                       </td>
 

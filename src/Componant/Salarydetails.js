@@ -12,7 +12,7 @@ import { IoIosArrowBack } from "react-icons/io";
 
 export default function Salarydetails() {
     const { admin } = React.useContext(NasirContext);
-    const Toaster = () => { toast.success('Salary_Reciept updated') }
+    const Toaster = () => { toast.success('Receipt updated successfully') }
     const errtoast = () => { toast.error("Invalid UserID / Password") }
     const params = useParams();
     const [isloading, setloading] = React.useState(true)
@@ -39,6 +39,8 @@ export default function Salarydetails() {
         hour: "",
         amount: "",
     });
+    const [isLoadingOnSubmit, setIsLoadingOnSubmit] = React.useState(false);
+
 
     // --------------------------------
     // --------  API WORK -------------
@@ -215,7 +217,10 @@ export default function Salarydetails() {
 
         });
         if (pin == admin.security_pin) {
+            setIsLoadingOnSubmit(true)
             const res = await Update_faculty_reciept(gen_reciept)
+            setIsLoadingOnSubmit(false)
+
             if (res.data.success == true) {
                 const receipt_id = res.data.salary_receipt_details.salary_receipt_id
                 navigate(`/salary/Receipt_teacher/${receipt_id}`, { state: { prevPath: "update_receipt" } })
@@ -306,10 +311,11 @@ export default function Salarydetails() {
                                                 onChange={(e) => { setPin(e.target.value); setError(false) }}
                                             />
                                             <button
-                                                className="px-4 py-1 bg-darkblue-500 text-white "
+                                                className={`px-4 py-1 bg-darkblue-500 text-white ${isLoadingOnSubmit ? 'opacity-40' : 'opacity-100'} `}
+                                                disabled={isLoadingOnSubmit}
                                                 onClick={handlePINsubmit}
                                             >
-                                                verify
+                                                {isLoadingOnSubmit ? 'Loading...' : 'SUBMIT'}
                                             </button>
                                         </div>
                                         {error && (

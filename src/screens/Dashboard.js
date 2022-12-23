@@ -6,12 +6,14 @@ import { MdLocalPrintshop } from "react-icons/md";
 import { Tooltip } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
 import { Alloverstudent } from "../hooks/usePost";
-import Loader from "../Componant/Loader";
+import LoaderSmall from "../Componant/LoaderSmall";
 import { NasirContext } from "../NasirContext";
 import ReactPaginate from "react-paginate";
 import { AiOutlineUser } from "react-icons/ai";
 import { MdPendingActions } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
+import {sendPendingFeesNotification} from '../hooks/usePost'
+import Toaster from '../hooks/showToaster'
 
 export default function Dashboard() {
   const componentRef = useRef();
@@ -25,15 +27,40 @@ export default function Dashboard() {
   const [Student, setstudent] = useState([]);
   const [allStudent, setAllStudent] = useState([]);
   const [isStudentNotFound, setIsStudentNotFound] = useState(true);
-  const itemsPerPage = 2;
+  const itemsPerPage = 12;
+
+  function dateDiffInDays(startDate, currentDate) {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    const utc1 = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    const utc2 = Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  }
 
   useEffect(() => {
     async function fetchFeesPendingData() {
       const res = await Alloverstudent(section);
       const StudentsWithPendingFees = res.data?.filter((student) => {
+        let isPending = false;
+
+        const studentAcademicStartDate = new Date(student.academics[0].date);
+        const currentDate = new Date();
+
+        const daysDifferent = dateDiffInDays(studentAcademicStartDate, currentDate);
+        const perDayFee = student.academics[0].fees[0].net_fees / 365
+
+        const feesToBePaid = daysDifferent * perDayFee;
+
+        const paidAmount = student.academics[0].fees[0].net_fees - student.academics[0].fees[0].pending_amount;
+
+        if(feesToBePaid > paidAmount){
+          isPending = true;
+        }
+
         return (
-          student.academics[0].fees[0].pending_amount > 0 &&
-          student.academics[0].class[0] != undefined
+          student.academics[0].class[0] != undefined &&
+          isPending
         );
       });
 
@@ -77,6 +104,19 @@ export default function Dashboard() {
     setIsStudentNotFound(searchedStudents.length > 0 ? false : true);
   };
 
+  const sendNotification = async (e) =>{
+    e.preventDefault();
+    const res = await sendPendingFeesNotification(allStudent);
+
+    if(res.data.success){
+      Toaster('success', 'Message sent successfully');
+    }
+    else{
+      Toaster('error', 'Failed to send message');
+
+    }
+  }
+
   // // -------------------------------
   // // -------- Pagination -----------
   // // -------------------------------
@@ -92,9 +132,6 @@ export default function Dashboard() {
     setItemOffset(newOffset);
   };
 
-  if (isloading) {
-    return <Loader />;
-  }
 
   return (
     <div className="">
@@ -158,67 +195,78 @@ export default function Dashboard() {
                 <AiOutlineSearch className="text-3xl font-bold hover:scale-125  text-white transition duration-400" />
               </button>
             </div>
-            <Tooltip
-              content="Print"
-              placement="bottom-end"
-              className="text-white bg-black rounded p-2"
-            >
-              <span>
-                <ReactToPrint
-                  trigger={() => (
-                    <button
-                      id="print"
-                      className="text-3xl bg-class2-50 rounded-md text-white p-1 mr-5"
-                    >
-                      <MdLocalPrintshop />
-                    </button>
-                  )}
-                  content={() => componentRef.current}
-                  onBeforeGetContent={(e) => {
-                    return new Promise((resolve) => {
-                      setIsPrint(true);
-                      resolve();
-                    });
-                  }}
-                  onAfterPrint={() => setIsPrint(false)}
-                />
-              </span>
-            </Tooltip>
+            <div className="flex">
+              {
+                allStudent.length > 0
+                ?
+                  <div className="mr-4 flex items-center">
+                    <button className="bg-red-400 px-3 py-2 rounded-md text-white hover:bg-red-300" onClick={sendNotification}>Send Notification</button>
+                  </div>
+                :
+                  null
+              }
+              <Tooltip
+                content="Print"
+                placement="bottom-end"
+                className="text-white bg-black rounded p-2"
+              >
+                <span>
+                  <ReactToPrint
+                    trigger={() => (
+                      <button
+                        id="print"
+                        className="text-3xl bg-class2-50 rounded-md text-white p-1 mr-5"
+                      >
+                        <MdLocalPrintshop />
+                      </button>
+                    )}
+                    content={() => componentRef.current}
+                    onBeforeGetContent={(e) => {
+                      return new Promise((resolve) => {
+                        setIsPrint(true);
+                        resolve();
+                      });
+                    }}
+                    onAfterPrint={() => setIsPrint(false)}
+                  />
+                </span>
+              </Tooltip>
+            </div>
           </div>
-          <div ref={componentRef} className="  pt-3 pb-0">
-            <table className="w-1/2 overflow-scroll text-sm text-center rounded-xl  ">
+          <div ref={componentRef} className="p-5 pt-3 pb-0">
+            <table className="w-full text-sm text-center rounded-xl overflow-hidden ">
               <thead className="text-xs text-gray-700 bg-class2-50 uppercase">
                 <tr className="text-white text-base">
-                  <th scope="col" className="py-4 px-3 text-center ">
+                  <th scope="col" className="py-4 px-2 text-center ">
                     Serial No
                   </th>
-                  <th scope="col" className="py-4 px-3 text-center ">
+                  <th scope="col" className="py-4 px-2 text-center ">
                     Student ID
                   </th>
-                  <th scope="col" className="py-4 px-3 text-center ">
+                  <th scope="col" className="py-4 px-2 text-center ">
                     Name
                   </th>
-                  <th scope="col" className="py-4 px-3 text-center ">
+                  <th scope="col" className="py-4 px-2 text-center ">
                     Class
                   </th>
-                  <th scope="col" className="py-4 px-3 text-center ">
+                  <th scope="col" className="py-4 px-2 text-center ">
                     Phone
                   </th>
-                  <th scope="col" className="py-4 px-3 text-center ">
+                  <th scope="col" className="py-4 px-2 text-center ">
                     Total
                   </th>
-                  <th scope="col" className="py-4 px-3 text-center ">
+                  <th scope="col" className="py-4 px-2 text-center ">
                     Paidup
                   </th>
-                  <th scope="col" className="py-4 px-3 text-center ">
+                  <th scope="col" className="py-4 px-2 text-center ">
                     Pending
                   </th>
                   {!isPrint ? (
                     <>
-                      <th scope="col" className="px-3 py-4">
+                      <th scope="col" className="px-2 py-4">
                         Profile
                       </th>
-                      <th scope="col" className="px-3 py-4">
+                      <th scope="col" className="px-2 py-4">
                         Action
                       </th>
                     </>
@@ -226,161 +274,173 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody className="bg-white border items-center ">
-                {isPrint
-                  ? Student.map((item, key) => {
-                      const Paid_up =
-                        item.academics[0].fees[0].net_fees -
-                        item.academics[0].fees[0].pending_amount;
-
-                      return (
-                        <tr key={key} className="border-b">
-                          <th className="py-5 px-3">
-                            {key + 1 + (itemsPerPage * Serialno - itemsPerPage)}
-                          </th>
-                          <td className="py-5 px-3 text-center ">
-                            {item.student_id}
-                          </td>
-                          <td className="py-5 px-3 text-center capitalize">
-                            {item.basic_info[0].full_name}
-                          </td>
-                          <td className="py-5 px-3 text-center ">
-                            {item.academics[0].class[0].class_name}
-                          </td>
-                          <td className="py-5 px-3 text-center ">
-                            {item.contact_info[0].whatsapp_no}
-                          </td>
-                          <td className="py-5 px-3 text-center ">
-                            {item.academics[0].fees[0].net_fees}
-                          </td>
-                          <td className="py-5 px-3 text-center ">{Paid_up}</td>
-                          <td className="py-5 px-3 text-center ">
-                            {item.academics[0].fees[0].pending_amount}
-                          </td>
-                          <td
-                            className={`py-5 px-3 text-center  ${
-                              isPrint ? "hidden" : "block"
-                            }`}
-                          >
-                            <div className="flex justify-center space-x-2">
-                              <NavLink
-                                className="nav-link"
-                                to={`/myclass/class/Profilestudent/${item.student_id}`}
-                              >
-                                <Tooltip
-                                  content="Show Profile"
-                                  placement="bottom-end"
-                                  className="text-white bg-black rounded p-2"
-                                >
-                                  <span className="text-xl text-darkblue-500">
-                                    <AiFillEye />
-                                  </span>
-                                </Tooltip>
-                              </NavLink>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  : currentItems.map((item, key) => {
-                      const Paid_up =
-                        item.academics[0].fees[0].net_fees -
-                        item.academics[0].fees[0].pending_amount;
-
-                      return (
-                        <tr key={key} className="border-b">
-                          <th className="py-5 px-3">
-                            {key + 1 + (itemsPerPage * Serialno - itemsPerPage)}
-                          </th>
-                          <td className="py-5 px-3 text-center ">
-                            {item.student_id}
-                          </td>
-                          <td className="py-5 px-3 text-center capitalize">
-                            {item.basic_info[0].full_name}
-                          </td>
-                          <td className="py-5 px-3 text-center ">
-                            {item.academics[0].class[0].class_name}
-                          </td>
-                          <td className="py-5 px-3 text-center ">
-                            {item.contact_info[0].whatsapp_no}
-                          </td>
-                          <td className="py-5 px-3 text-center ">
-                            {item.academics[0].fees[0].net_fees}
-                          </td>
-                          <td className="py-5 px-3 text-center ">{Paid_up}</td>
-                          <td className="py-5 px-3 text-center ">
-                            {item.academics[0].fees[0].pending_amount}
-                          </td>
-                          <td
-                            className={`py-5 px-3 text-center  ${
-                              isPrint ? "hidden" : "block"
-                            }`}
-                          >
-                            <div className="flex justify-center space-x-2">
-                              <NavLink
-                                className="nav-link"
-                                to={`/myclass/class/Profilestudent/${item.student_id}`}
-                              >
-                                <Tooltip
-                                  content="Show Profile"
-                                  placement="bottom-end"
-                                  className="text-white bg-black rounded p-2"
-                                >
-                                  <span className="text-xl text-darkblue-500">
-                                    <AiFillEye />
-                                  </span>
-                                </Tooltip>
-                              </NavLink>
-                            </div>
-                          </td>
-                          <td className="px-3 py-5 ">
-                            <div className="flex justify-center space-x-3">
-                              <NavLink
-                                to={"/receipt/FeesDetail"}
-                                state={{
-                                  rollno: item.student_id,
-                                  full_name: item.basic_info[0].full_name,
-                                  class_name:
-                                    item.academics[0].class[0].class_name,
-                                  medium: item.academics[0].class[0].medium,
-                                  stream: item.academics[0].class[0].stream,
-                                  batch: `${item.academics[0].class[0].batch_start_year}-${item.academics[0].class[0].batch_end_year}`,
-                                }}
-                              >
-                                <button
-                                  className={`${
-                                    item.academics[0].fees[0].pending_amount <=
-                                    0
-                                      ? "disabled:opacity-40"
-                                      : "bg-darkblue-500 hover:bg-blue-900"
-                                  } bg-darkblue-500 rounded-lg  duration-200 transition text-white px-5 font-semibold py-1`}
-                                  disabled={
-                                    item.academics[0].fees[0].pending_amount <=
-                                    0
-                                      ? true
-                                      : false
-                                  }
-                                >
-                                  Pay
-                                </button>
-                              </NavLink>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                {isStudentNotFound ? (
-                  <tr className="">
-                    <td
-                      colSpan={10}
-                      className="bg-red-200  font-bold p-2 rounded"
-                    >
-                      <div className="flex space-x-2 justify-center items-center">
-                        <IoMdInformationCircle className="text-xl text-red-600" />
-                        <h1 className="text-red-800">Students not found </h1>
-                      </div>
+                {
+                  isloading
+                  ?
+                    <td colSpan={10}>
+                      <LoaderSmall />
                     </td>
-                  </tr>
-                ) : null}
+                  :
+                    isPrint
+                    ? 
+                      Student.map((item, key) => {
+                      const Paid_up =
+                        item.academics[0].fees[0].net_fees -
+                        item.academics[0].fees[0].pending_amount;
+
+                      return (
+                        <tr key={key} className="border-b">
+                          <th className="py-5 px-2">
+                            {key + 1 + (itemsPerPage * Serialno - itemsPerPage)}
+                          </th>
+                          <td className="py-5 px-2 text-center ">
+                            {item.student_id}
+                          </td>
+                          <td className="py-5 px-2 text-center capitalize">
+                            {item.basic_info[0].full_name}
+                          </td>
+                          <td className="py-5 px-2 text-center ">
+                            {item.academics[0].class[0].class_name}
+                          </td>
+                          <td className="py-5 px-2 text-center ">
+                            {item.contact_info[0].whatsapp_no}
+                          </td>
+                          <td className="py-5 px-2 text-center ">
+                            {item.academics[0].fees[0].net_fees}
+                          </td>
+                          <td className="py-5 px-2 text-center ">{Paid_up}</td>
+                          <td className="py-5 px-2 text-center ">
+                            {item.academics[0].fees[0].pending_amount}
+                          </td>
+                          <td
+                            className={`py-5 px-2 text-center  ${isPrint ? "hidden" : "block"
+                              }`}
+                          >
+                            <div className="flex justify-center space-x-2">
+                              <NavLink
+                                className="nav-link"
+                                to={`/myclass/class/Profilestudent/${item.student_id}`}
+                              >
+                                <Tooltip
+                                  content="Show Profile"
+                                  placement="bottom-end"
+                                  className="text-white bg-black rounded p-2"
+                                >
+                                  <span className="text-xl text-darkblue-500">
+                                    <AiFillEye />
+                                  </span>
+                                </Tooltip>
+                              </NavLink>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                      })
+                    : 
+                      currentItems.map((item, key) => {
+                        const Paid_up =
+                          item.academics[0].fees[0].net_fees -
+                          item.academics[0].fees[0].pending_amount;
+
+                        return (
+                          <tr key={key} className="border-b">
+                            <th className="py-5 px-2">
+                              {key + 1 + (itemsPerPage * Serialno - itemsPerPage)}
+                            </th>
+                            <td className="py-5 px-2 text-center ">
+                              {item.student_id}
+                            </td>
+                            <td className="py-5 px-2 text-center capitalize">
+                              {item.basic_info[0].full_name}
+                            </td>
+                            <td className="py-5 px-2 text-center ">
+                              {item.academics[0].class[0].class_name}
+                            </td>
+                            <td className="py-5 px-2 text-center ">
+                              {item.contact_info[0].whatsapp_no}
+                            </td>
+                            <td className="py-5 px-2 text-center ">
+                              {item.academics[0].fees[0].net_fees}
+                            </td>
+                            <td className="py-5 px-2 text-center ">{Paid_up}</td>
+                            <td className="py-5 px-2 text-center ">
+                              {item.academics[0].fees[0].pending_amount}
+                            </td>
+                            <td
+                              className={`py-5 px-2 text-center  ${isPrint ? "hidden" : "block"
+                                }`}
+                            >
+                              <div className="flex justify-center space-x-2">
+                                <NavLink
+                                  className="nav-link"
+                                  to={`/myclass/class/Profilestudent/${item.student_id}`}
+                                >
+                                  <Tooltip
+                                    content="Show Profile"
+                                    placement="bottom-end"
+                                    className="text-white bg-black rounded p-2"
+                                  >
+                                    <span className="text-xl text-darkblue-500">
+                                      <AiFillEye />
+                                    </span>
+                                  </Tooltip>
+                                </NavLink>
+                              </div>
+                            </td>
+                            <td className="px-2 py-5 ">
+                              <div className="flex justify-center space-x-3">
+                                <NavLink
+                                  to={"/receipt/FeesDetail"}
+                                  state={{
+                                    rollno: item.student_id,
+                                    full_name: item.basic_info[0].full_name,
+                                    class_name:
+                                      item.academics[0].class[0].class_name,
+                                    medium: item.academics[0].class[0].medium,
+                                    stream: item.academics[0].class[0].stream,
+                                    batch: `${item.academics[0].class[0].batch_start_year}-${item.academics[0].class[0].batch_end_year}`,
+                                  }}
+                                >
+                                  <button
+                                    className={`${item.academics[0].fees[0].pending_amount <=
+                                        0
+                                        ? "disabled:opacity-40"
+                                        : "bg-darkblue-500 hover:bg-blue-900"
+                                      } bg-darkblue-500 rounded-lg  duration-200 transition text-white px-5 font-semibold py-1`}
+                                    disabled={
+                                      item.academics[0].fees[0].pending_amount <=
+                                        0
+                                        ? true
+                                        : false
+                                    }
+                                  >
+                                    Pay
+                                  </button>
+                                </NavLink>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                }
+                {
+                  isStudentNotFound && !isloading 
+                  ? 
+                    (
+                      <tr className="">
+                        <td
+                          colSpan={10}
+                          className="bg-red-200  font-bold p-2 rounded"
+                        >
+                          <div className="flex space-x-2 justify-center items-center">
+                            <IoMdInformationCircle className="text-xl text-red-600" />
+                            <h1 className="text-red-800">No students with pending fees</h1>
+                          </div>
+                        </td>
+                      </tr>
+                    ) 
+                  : null
+                }
               </tbody>
             </table>
           </div>

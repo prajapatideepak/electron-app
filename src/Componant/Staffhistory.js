@@ -80,11 +80,11 @@ const Staffhistory = () => {
             <table className="w-full text-sm text-left  ">
               <thead className="text-sm uppercase bg-darkblue-500">
                 <tr className='text-white'>
-                  <th scope="col" className="py-3 px-6 text-center">Reciept No</th>
-                  <th scope="col" className="py-3 px-6 text-center">Date</th>
-                  <th scope="col" className="py-3 px-6 text-center">Total</th>
-                  <th scope="col" className="py-3 px-6 text-center">Admin</th>
-                  <th scope="col" className={`py-3 px-6 text-center ${isPrint ? "hidden" : "block"}`}>Action</th>
+                  <th scope="col" className="py-3 px-2 text-center">Reciept No</th>
+                  <th scope="col" className="py-3 px-2 text-center">Date</th>
+                  <th scope="col" className="py-3 px-2 text-center">Total</th>
+                  <th scope="col" className="py-3 px-2 text-center">Admin</th>
+                  <th scope="col" className={`py-3 px-2 text-center ${isPrint ? "hidden" : "block"}`}>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -99,11 +99,11 @@ const Staffhistory = () => {
                       today.getFullYear();
                     return (
                       <tr className="bg-white border-b">
-                        <td className="py-4 px-6 text-center">{item.salary_receipt_id}</td>
-                        <td className="py-4 px-6 text-center">{date}</td>
-                        <td className="py-4 px-6 text-center">{item.transaction_id.amount}</td>
-                        <td className="py-4 px-6 text-center">{item.admin_id.username}</td>
-                        <td className={`py-4 px-6 flex justify-center item-center ${isPrint ? "hidden" : "flex"}`}>
+                        <td className="py-4 px-2 text-center">{item.salary_receipt_id}</td>
+                        <td className="py-4 px-2 text-center">{date}</td>
+                        <td className="py-4 px-2 text-center">{item.transaction_id.amount}</td>
+                        <td className="py-4 px-2 text-center">{item.admin_id.username}</td>
+                        <td className={`py-4 px-2 flex justify-center item-center ${isPrint ? "hidden" : "flex"}`}>
                             <NavLink className="nav-link" to={`/Staffhistory/Receipt_teacher/${item.salary_receipt_id}`} state={{ isStaff: true, isSalaried: item.is_hourly }}>
 
                               <Tooltip content="Show Receipt" placement="bottom-end" className='text-white bg-black rounded p-2'><span className="text-xl bg-white text-darkblue-500"><AiFillEye /></span></Tooltip>

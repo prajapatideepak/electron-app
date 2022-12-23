@@ -226,7 +226,8 @@ const Updateprofile = () => {
       {admin ? (
         <section className="">
           <form
-          className="flex justify-center items-center  w-full h-full"
+            className="flex justify-center items-center w-full"
+            style={{minHeight: "calc(100vh - 70px)"}}
             onSubmit={(e) => setState(valid.handleSubmit(e, onSubmit))}
           >
             <div className="w-2/3 grid grid-cols-1 rounded-lg drop-shadow-md truncate bg-white p-10 my-10">
@@ -236,7 +237,7 @@ const Updateprofile = () => {
                 </h1>
               </div>
               <div className=" flex flex-col items-center gap-5">
-                <div div className="flex lg:flex-row md:flex-col gap-4 mt-7">
+                <div div className="flex lg:flex-row md:flex-col flex-col gap-4 mt-7">
                   <div className="fullname">
                     <label className="block">
                       <span className="block text-sm font-medium text-slate-700">
@@ -286,7 +287,7 @@ const Updateprofile = () => {
                     </label>
                   </div>
                 </div>
-                <div className="flex lg:flex-row md:flex-col gap-4">
+                <div className="flex lg:flex-row md:flex-col flex-col gap-4">
                   <div className="whatsappno">
                     <label className="block">
                       <span className="block text-sm font-medium text-slate-700">
@@ -336,7 +337,7 @@ const Updateprofile = () => {
                     </label>
                   </div>
                 </div>
-                <div className="flex lg:flex-row md:flex-col gap-4">
+                <div className="flex lg:flex-row md:flex-col flex-col gap-4">
                   <div className="security_pin">
                     <label className="block">
                       <span className="block text-sm font-medium text-slate-700">
@@ -386,7 +387,7 @@ const Updateprofile = () => {
                     </label>
                   </div>
                 </div>
-                <div className="flex lg:flex-row md:flex-col gap-4">
+                <div className="flex lg:flex-row md:flex-col flex-col gap-4">
                   <div className="dateofbirth">
                     <label className="block">
                       <span className="block text-sm font-medium text-slate-700">

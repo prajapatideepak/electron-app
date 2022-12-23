@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { months } from "../hooks/Constant";
 import { useGetMonthlyReport } from "../hooks/usePost";
 import { NasirContext } from "../NasirContext";
-import Loader from "./Loader";
+import LoaderSmall from "./LoaderSmall";
 
 function StudentChart() {
   const { section } = React.useContext(NasirContext);
@@ -143,7 +143,7 @@ function StudentChart() {
           </div>
         </div>
       ) : (
-        <Loader />
+        <LoaderSmall />
       )}
     </div>
   );
